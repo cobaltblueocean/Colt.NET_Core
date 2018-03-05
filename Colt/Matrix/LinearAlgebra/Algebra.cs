@@ -57,6 +57,26 @@
         }
 
         /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <param name="A"></param>
+        /// <returns></returns>
+        public static DoubleMatrix2D MultOuter(DoubleMatrix1D x, DoubleMatrix1D y, DoubleMatrix2D A)
+        {
+            int rows = x.Size();
+            int columns = y.Size();
+            if (A == null) A = x.Like2D(rows, columns);
+            if (A.Rows != rows || A.Columns != columns) throw new ArgumentException();
+
+            for (int row = rows; --row >= 0;) A.ViewRow(row).Assign(y);
+
+            for (int column = columns; --column >= 0;) A.ViewColumn(column).Assign(x, BinaryFunctions.Mult);
+            return A;
+        }
+
+        /// <summary>
         /// Returns the one-norm of vector <tt>x</tt>, which is <tt>Sum(abs(x[i]))</tt>.
         /// </summary>
         /// <param name="x">
@@ -72,6 +92,31 @@
         }
 
         /// <summary>
+        /// Returns the one-norm of matrix <tt>A</tt>, which is the maximum absolute column sum.
+        /// </summary>
+        /// <param name="A">The matrix A</param>
+        /// <returns>The one-norm of A.</returns>
+        public static double Norm1(DoubleMatrix2D A)
+        {
+            double max = 0;
+            for (int column = A.Columns; --column >= 0;)
+            {
+                max = Math.Max(max, Norm1(A.ViewColumn(column)));
+            }
+            return max;
+        }
+
+        /// <summary>
+        /// Returns the two-norm (aka <i>euclidean norm</i>) of vector <tt>x</tt>; equivalent to <tt>mult(x,x)</tt>.
+        /// </summary>
+        /// <param name="x">The vector x.</param>
+        /// <returns>The two-norm of A.</returns>
+        public static double Norm2(DoubleMatrix1D x)
+        {
+            return Mult(x, x);
+        }
+
+        /// <summary>
         /// Returns the two-norm of matrix <tt>A</tt>, which is the maximum singular value; obtained from SVD.
         /// </summary>
         /// <param name="a">The matrix A.</param>
@@ -79,6 +124,33 @@
         public static double Norm2(DoubleMatrix2D a)
         {
             return svd(a).Norm2();
+        }
+
+        public static double NormInfinity(DoubleMatrix1D x)
+        {
+            // fix for bug reported by T.J.Hunt@open.ac.uk
+            if (x.Size() == 0) return 0;
+            return x.Aggregate(Math.Max, Math.Abs);
+            //	if (x.size()==0) return 0;
+            //	return x.aggregate(cern.jet.math.Functions.plus,cern.jet.math.Functions.abs);
+            //	double max = 0;
+            //	for (int i = x.size(); --i >= 0; ) {
+            //		max = Math.max(max, x.getQuick(i));
+            //	}
+            //	return max;
+        }
+        /**
+         * Returns the infinity norm of matrix <tt>A</tt>, which is the maximum absolute row sum.
+         */
+        public static double NormInfinity(DoubleMatrix2D A)
+        {
+            double max = 0;
+            for (int row = A.Rows; --row >= 0;)
+            {
+                //max = Math.max(max, normInfinity(A.viewRow(row)));
+                max = Math.Max(max, Norm1(A.ViewRow(row)));
+            }
+            return max;
         }
 
         /// <summary>
