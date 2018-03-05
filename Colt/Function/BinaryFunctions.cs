@@ -218,7 +218,7 @@ namespace Colt.Function
         public static readonly DoubleDoubleFunction Minus = (a, b) => a - b;
 
         /// <summary>
-        /// Function that returns <tt>a - b</tt>.
+        /// Function that returns <tt>a * b</tt>.
         /// </summary>
         public static readonly DoubleDoubleFunction Mult = (a, b) => a * b;
     }
