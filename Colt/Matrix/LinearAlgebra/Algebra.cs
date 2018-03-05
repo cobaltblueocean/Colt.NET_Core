@@ -57,12 +57,12 @@
         }
 
         /// <summary>
-        /// 
+        /// Outer product of two vectors; Sets <tt>A[i,j] = x[i] * y[j]</tt>.
         /// </summary>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
-        /// <param name="A"></param>
-        /// <returns></returns>
+        /// <param name="x">the first source vector.</param>
+        /// <param name="y">the second source vector.</param>
+        /// <param name="A">the matrix to hold the results. Set this parameter to <tt>null</tt> to indicate that a new result matrix shall be constructed.</param>
+        /// <returns>A (for convenience only).</returns>
         public static DoubleMatrix2D MultOuter(DoubleMatrix1D x, DoubleMatrix1D y, DoubleMatrix2D A)
         {
             int rows = x.Size();
@@ -126,6 +126,11 @@
             return svd(a).Norm2();
         }
 
+        /// <summary>
+        /// Returns the infinity norm of vector <tt>x</tt>, which is <tt>Max(abs(x[i]))</tt>.
+        /// </summary>
+        /// <param name="x">The vector x.</param>
+        /// <returns>The infinity norm of matrix <tt>A</tt></returns>
         public static double NormInfinity(DoubleMatrix1D x)
         {
             // fix for bug reported by T.J.Hunt@open.ac.uk
@@ -139,9 +144,12 @@
             //	}
             //	return max;
         }
-        /**
-         * Returns the infinity norm of matrix <tt>A</tt>, which is the maximum absolute row sum.
-         */
+
+        /// <summary>
+        /// Returns the infinity norm of matrix <tt>A</tt>, which is the maximum absolute row sum.
+        /// </summary>
+        /// <param name="A">The matrix A.</param>
+        /// <returns>The infinity norm of matrix <tt>A</tt></returns>
         public static double NormInfinity(DoubleMatrix2D A)
         {
             double max = 0;
