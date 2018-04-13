@@ -1,0 +1,126 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{96A33131-26F7-40C5-A095-031D0A77EA89}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Cern</RootNamespace>
+    <AssemblyName>Cern</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Colt\Function\BooleanProcedure.cs" />
+    <Compile Include="Colt\Function\ByteComparator.cs" />
+    <Compile Include="Colt\Function\ByteProcedure.cs" />
+    <Compile Include="Colt\Function\CharComparator.cs" />
+    <Compile Include="Colt\Function\CharProcedure.cs" />
+    <Compile Include="Colt\Function\Double27Function.cs" />
+    <Compile Include="Colt\Function\Double5Function.cs" />
+    <Compile Include="Colt\Function\Double9Function.cs" />
+    <Compile Include="Colt\GenericPermuting.cs" />
+    <Compile Include="Colt\Matrix\DoubleFactory1D.cs" />
+    <Compile Include="Colt\GenericSorting.cs" />
+    <Compile Include="Colt\Matrix\DoubleAlgorithms\Formatter.cs" />
+    <Compile Include="Colt\Matrix\DoubleAlgorithms\Functions.cs" />
+    <Compile Include="Colt\Matrix\DoubleAlgorithms\MergeSort.cs" />
+    <Compile Include="Colt\Matrix\DoubleAlgorithms\Sorting.cs" />
+    <Compile Include="Colt\Matrix\DoubleFactory2D.cs" />
+    <Compile Include="Colt\Matrix\DoubleMatrix1D.cs" />
+    <Compile Include="Colt\Matrix\DoubleMatrix2D.cs" />
+    <Compile Include="Colt\Matrix\Implementation\AbstractFormatter.cs" />
+    <Compile Include="Colt\Matrix\Implementation\AbstractMatrix.cs" />
+    <Compile Include="Colt\Matrix\Implementation\AbstractMatrix1D.cs" />
+    <Compile Include="Colt\Matrix\Implementation\AbstractMatrix2D.cs" />
+    <Compile Include="Colt\Matrix\Implementation\DenseDoubleMatrix1D.cs" />
+    <Compile Include="Colt\Matrix\Implementation\DenseDoubleMatrix2D.cs" />
+    <Compile Include="Colt\Matrix\Implementation\SelectedDenseDoubleMatrix1D.cs" />
+    <Compile Include="Colt\Matrix\Implementation\SelectedDenseDoubleMatrix2D.cs" />
+    <Compile Include="Colt\Matrix\Implementation\SelectedSparseDoubleMatrix1D.cs" />
+    <Compile Include="Colt\Matrix\Implementation\SelectedSparseDoubleMatrix2D.cs" />
+    <Compile Include="Colt\Matrix\Implementation\SparseDoubleMatrix1D.cs" />
+    <Compile Include="Colt\Matrix\Implementation\SparseDoubleMatrix2D.cs" />
+    <Compile Include="Colt\Matrix\LinearAlgebra\Algebra.cs" />
+    <Compile Include="Colt\Matrix\LinearAlgebra\Diagonal.cs" />
+    <Compile Include="Colt\Matrix\LinearAlgebra\LUDecomposition.cs" />
+    <Compile Include="Colt\Matrix\LinearAlgebra\LUDecompositionQuick.cs" />
+    <Compile Include="Colt\Matrix\LinearAlgebra\Property.cs" />
+    <Compile Include="Colt\Matrix\LinearAlgebra\SingularValueDecomposition.cs" />
+    <Compile Include="Colt\PersistentObject.cs" />
+    <Compile Include="Jet\Math\Algebraic.cs" />
+    <Compile Include="Jet\Math\Arithmetic.cs" />
+    <Compile Include="Jet\Math\Bessel.cs" />
+    <Compile Include="Jet\Math\Complex.cs" />
+    <Compile Include="Jet\Math\Constants.cs" />
+    <Compile Include="Jet\Math\Elliptic.cs" />
+    <Compile Include="Jet\Math\Exponential.cs" />
+    <Compile Include="Jet\Math\ExponentialIntegral.cs" />
+    <Compile Include="Jet\Math\Functions.cs" />
+    <Compile Include="Jet\Math\IntFunctions.cs" />
+    <Compile Include="Jet\Math\Misc.cs" />
+    <Compile Include="Jet\Math\Mult.cs" />
+    <Compile Include="Jet\Math\NumericalIntegration.cs" />
+    <Compile Include="Jet\Math\PlusMult.cs" />
+    <Compile Include="Jet\Math\Polynomial.cs" />
+    <Compile Include="Jet\Random\AbstractContinousDistribution.cs" />
+    <Compile Include="Jet\Random\AbstractDiscreteDistribution.cs" />
+    <Compile Include="Jet\Random\AbstractDistribution.cs" />
+    <Compile Include="Jet\Random\Engine\MersenneTwister.cs" />
+    <Compile Include="Jet\Random\Engine\RandomEngine.cs" />
+    <Compile Include="Jet\Random\Uniform.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Colt\Sorting.cs" />
+    <Compile Include="Colt\Swapper.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
