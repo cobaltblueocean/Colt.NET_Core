@@ -208,7 +208,7 @@ namespace Cern.Colt.Matrix.Implementation
                 return this;
             }
 
-            if (haveSharedCells(other))
+            if (HaveSharedCells(other))
             {
                 DoubleMatrix1D c = other.Copy();
                 if (!(c is DenseDoubleMatrix1D))
@@ -501,7 +501,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <returns>
         /// <tt>true</tt> if both matrices share at least one identical cell.
         /// </returns>
-        protected override bool haveSharedCellsRaw(DoubleMatrix1D other)
+        protected override bool HaveSharedCellsRaw(DoubleMatrix1D other)
         {
             if (other is SelectedDenseDoubleMatrix1D)
             {
@@ -527,7 +527,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <returns>
         /// A new view.
         /// </returns>
-        protected override DoubleMatrix1D viewSelectionLike(int[] offsets)
+        protected override DoubleMatrix1D ViewSelectionLike(int[] offsets)
         {
             return new SelectedDenseDoubleMatrix1D(elements, offsets);
         }

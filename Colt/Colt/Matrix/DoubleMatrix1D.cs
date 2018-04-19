@@ -18,6 +18,7 @@ namespace Cern.Colt.Matrix
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Reflection;
 
     using DoubleAlgorithms;
 
@@ -205,7 +206,7 @@ namespace Cern.Colt.Matrix
         {
             if (other == this) return this;
             CheckSize(other);
-            if (haveSharedCells(other)) other = other.Copy();
+            if (HaveSharedCells(other)) other = other.Copy();
 
             for (int i = size; --i >= 0;)
                 this[i] = other[i];
@@ -245,14 +246,56 @@ namespace Cern.Colt.Matrix
             return this;
         }
 
+        public DoubleMatrix1D Assign(DoubleMatrix1D y, Cern.Jet.Math.PlusMult function)
+        {
+            return Assign(y, function.Apply);
+        }
 
-        public DoubleMatrix1D assign(DoubleMatrix1D y, Cern.Colt.Function.DoubleDoubleFunction function, List<int> nonZeroIndexes)
+        public DoubleMatrix1D Assign(DoubleMatrix1D y, Cern.Jet.Math.PlusMult function, List<int> nonZeroIndexes)
+        {
+            CheckSize(y);
+            int[] nonZeroElements = nonZeroIndexes.ToArray();
+
+            double multiplicator = function.Multiplicator;
+            if (multiplicator == 0)
+            { // x[i] = x[i] + 0*y[i]
+                return this;
+            }
+            else if (multiplicator == 1)
+            { // x[i] = x[i] + y[i]
+                for (int index = nonZeroIndexes.Count; --index >= 0;)
+                {
+                    int i = nonZeroElements[index];
+                    this[i] = this[i] + y[i];
+                }
+            }
+            else if (multiplicator == -1)
+            { // x[i] = x[i] - y[i]
+                for (int index = nonZeroIndexes.Count; --index >= 0;)
+                {
+                    int i = nonZeroElements[index];
+                    this[i] = this[i] - y[i];
+                }
+            }
+            else
+            { // the general case x[i] = x[i] + mult*y[i]
+                for (int index = nonZeroIndexes.Count; --index >= 0;)
+                {
+                    int i = nonZeroElements[index];
+                    this[i] = this[i] + multiplicator * y[i];
+                }
+            }
+
+            return this;
+        }
+
+        public DoubleMatrix1D Assign(DoubleMatrix1D y, Cern.Colt.Function.DoubleDoubleFunction function, List<int> nonZeroIndexes)
         {
             CheckSize(y);
             int[] nonZeroElements = nonZeroIndexes.ToArray();
 
             // specialized for speed
-            if (function == Cern.Jet.Math.Functions.Mult)
+            if (function == Cern.Jet.Math.Functions.DoubleDoubleFunctions.Mult)
             {  // x[i] = x[i] * y[i]
                 int j = 0;
                 for (int index = nonZeroIndexes.Count; --index >= 0;)
@@ -263,41 +306,13 @@ namespace Cern.Colt.Matrix
                     j++;
                 }
             }
-            else if (function is Cern.Jet.Math.PlusMult)
-            {
-                double multiplicator = ((Cern.Jet.Math.PlusMult)function).multiplicator;
-                if (multiplicator == 0)
-                { // x[i] = x[i] + 0*y[i]
-                    return this;
-                }
-                else if (multiplicator == 1)
-                { // x[i] = x[i] + y[i]
-                    for (int index = nonZeroIndexes.Count; --index >= 0;)
-                    {
-                        int i = nonZeroElements[index];
-                        setQuick(i, getQuick(i) + y.getQuick(i));
-                    }
-                }
-                else if (multiplicator == -1)
-                { // x[i] = x[i] - y[i]
-                    for (int index = nonZeroIndexes.Count; --index >= 0;)
-                    {
-                        int i = nonZeroElements[index];
-                        setQuick(i, getQuick(i) - y.getQuick(i));
-                    }
-                }
-                else
-                { // the general case x[i] = x[i] + mult*y[i]
-                    for (int index = nonZeroIndexes.Count; --index >= 0;)
-                    {
-                        int i = nonZeroElements[index];
-                        setQuick(i, getQuick(i) + multiplicator * y.getQuick(i));
-                    }
-                }
-            }
+            //else if (function is Cern.Jet.Math.PlusMult.Apply)
+            //{
+
+            //}
             else
             { // the general case x[i] = f(x[i],y[i])
-                return assign(y, function);
+                return Assign(y, function);
             }
             return this;
         }
@@ -601,7 +616,7 @@ namespace Cern.Colt.Matrix
         /// </returns>
         public DoubleMatrix1D ViewFlip()
         {
-            return (DoubleMatrix1D)view().vFlip();
+            return (DoubleMatrix1D)View().vFlip();
         }
 
         /// <summary>
@@ -621,7 +636,7 @@ namespace Cern.Colt.Matrix
         /// </exception>
         public DoubleMatrix1D ViewPart(int index, int width)
         {
-            return (DoubleMatrix1D)view().vPart(index, width);
+            return (DoubleMatrix1D)View().vPart(index, width);
         }
 
         /// <summary>
@@ -651,7 +666,7 @@ namespace Cern.Colt.Matrix
             var offsets = new int[indexes.Length];
             for (int i = indexes.Length; --i >= 0;)
                 offsets[i] = index(indexes[i]);
-            return viewSelectionLike(offsets);
+            return ViewSelectionLike(offsets);
         }
 
         /// <summary>
@@ -699,7 +714,7 @@ namespace Cern.Colt.Matrix
         /// </exception>
         public DoubleMatrix1D ViewStrides(int s)
         {
-            return (DoubleMatrix1D)view().vStrides(s);
+            return (DoubleMatrix1D)View().vStrides(s);
         }
 
         /// <summary>
@@ -838,7 +853,7 @@ namespace Cern.Colt.Matrix
         /// <returns>
         /// The content of this matrix if it is a wrapper; or <tt>this</tt> otherwise.
         /// </returns>
-        protected DoubleMatrix1D getContent()
+        protected DoubleMatrix1D GetContent()
         {
             return this;
         }
@@ -852,11 +867,11 @@ namespace Cern.Colt.Matrix
         /// <returns>
         /// <tt>true</tt> if both matrices share at least one identical cell.
         /// </returns>
-        protected virtual bool haveSharedCells(DoubleMatrix1D other)
+        protected virtual bool HaveSharedCells(DoubleMatrix1D other)
         {
             if (other == null) return false;
             if (this == other) return true;
-            return getContent().haveSharedCellsRaw(other.getContent());
+            return GetContent().HaveSharedCellsRaw(other.GetContent());
         }
 
         /// <summary>
@@ -868,7 +883,7 @@ namespace Cern.Colt.Matrix
         /// <returns>
         /// <tt>true</tt> if both matrices share at least one identical cell.
         /// </returns>
-        protected virtual bool haveSharedCellsRaw(DoubleMatrix1D other)
+        protected virtual bool HaveSharedCellsRaw(DoubleMatrix1D other)
         {
             return false;
         }
@@ -880,7 +895,7 @@ namespace Cern.Colt.Matrix
         /// <returns>
         /// A new view of the receiver.
         /// </returns>
-        protected DoubleMatrix1D view()
+        protected DoubleMatrix1D View()
         {
             return (DoubleMatrix1D)Clone();
         }
@@ -894,7 +909,7 @@ namespace Cern.Colt.Matrix
         /// <returns>
         /// A new view.
         /// </returns>
-        protected abstract DoubleMatrix1D viewSelectionLike(int[] offsets);
+        protected abstract DoubleMatrix1D ViewSelectionLike(int[] offsets);
 
         /// <summary>
         /// Returns the dot product of two vectors x and y, which is <tt>Sum(x[i]*y[i])</tt>,
@@ -909,7 +924,7 @@ namespace Cern.Colt.Matrix
         /// <returns>
         /// The sum of products.
         /// </returns>
-        protected double zDotProduct(DoubleMatrix1D y, List<int> nonZeroIndexes)
+        protected double ZDotProduct(DoubleMatrix1D y, List<int> nonZeroIndexes)
         {
             return ZDotProduct(y, 0, size, nonZeroIndexes);
         }

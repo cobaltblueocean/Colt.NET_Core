@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Cern.Colt.Function;
 
 namespace Cern.Jet.Math
 {
@@ -11,7 +12,7 @@ namespace Cern.Jet.Math
 
         #region Local Variables
         public double Multiplicator;
-
+        public DoubleDoubleFunction Apply;
         #endregion
 
         #region Property
@@ -22,6 +23,7 @@ namespace Cern.Jet.Math
         public PlusMult(double multiplicator)
         {
             this.Multiplicator = multiplicator;
+            Apply = new DoubleDoubleFunction((a, b) => { return a + b * Multiplicator; });
         }
 
         #endregion
@@ -31,13 +33,6 @@ namespace Cern.Jet.Math
         #endregion
 
         #region Local Public Methods
-        /**
-         * Returns the result of the function evaluation.
-         */
-        public double Apply(double a, double b)
-        {
-            return a + b * Multiplicator;
-        }
         /**
          * <tt>a - b/constant</tt>.
          */

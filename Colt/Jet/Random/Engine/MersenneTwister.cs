@@ -40,6 +40,11 @@ namespace Cern.Jet.Random.Engine
         {
             SetSeed((uint)seed);
         }
+
+        public MersenneTwister(DateTime d): this((int)d.Ticks)
+        {
+            
+        }
         #endregion
 
         #region Implement Methods

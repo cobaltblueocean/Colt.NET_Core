@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Cern.Colt.Function;
 
 namespace Cern.Jet.Math
 {
@@ -19,12 +20,10 @@ namespace Cern.Jet.Math
         protected Mult(double multiplicator)
         {
             this._multiplicator = multiplicator;
+            Apply = new DoubleFunction((a) => { return a * _multiplicator; });
         }
 
-        public double Apply(double a)
-        {
-            return a * _multiplicator;
-        }
+        public DoubleFunction Apply;
 
         public static Mult Div(double constant)
         {

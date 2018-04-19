@@ -829,7 +829,7 @@ namespace Cern.Colt.Matrix
         {
             if (transposeA) return ViewDice().ZMult(y, z, alpha, beta, false);
             if (z == null) z = new DenseDoubleMatrix1D(Rows);
-            if (Columns != y.Count || Rows > z.Count)
+            if (Columns != y.size || Rows > z.size)
                 throw new ArgumentOutOfRangeException("Incompatible args: " + this + ", " + y + ", " + z);
 
             for (int i = Rows; --i >= 0;)
