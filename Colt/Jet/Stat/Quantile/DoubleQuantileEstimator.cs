@@ -24,7 +24,7 @@ namespace Cern.Jet.Stat.Quantile
         /// <summary>
         /// 
         /// </summary>
-        DoubleBufferSet BufferSet
+        public DoubleBufferSet BufferSet
         {
             get { return bufferSet; }
             set { bufferSet = value; }
@@ -33,7 +33,7 @@ namespace Cern.Jet.Stat.Quantile
         /// <summary>
         /// 
         /// </summary>
-        DoubleBuffer CurrentBufferToFill
+        public DoubleBuffer CurrentBufferToFill
         {
             get { return currentBufferToFill; }
             set { currentBufferToFill = value; }

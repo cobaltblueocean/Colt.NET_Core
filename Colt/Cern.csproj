@@ -116,8 +116,10 @@
     <Compile Include="Jet\Stat\Quantile\DoubleBuffer.cs" />
     <Compile Include="Jet\Stat\Quantile\DoubleBufferSet.cs" />
     <Compile Include="Jet\Stat\Quantile\DoubleQuantileEstimator.cs" />
+    <Compile Include="Jet\Stat\Quantile\EquiDepthHistogram.cs" />
     <Compile Include="Jet\Stat\Quantile\ExactDoubleQuantileFinder.cs" />
     <Compile Include="Jet\Stat\Quantile\IDoubleQuantileFinder.cs" />
+    <Compile Include="Jet\Stat\Quantile\KnownDoubleQuantileEstimator.cs" />
     <Compile Include="Jet\Stat\Quantile\Utils.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Colt\Sorting.cs" />
