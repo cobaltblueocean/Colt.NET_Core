@@ -49,6 +49,13 @@ namespace Cern.Jet.Random.Engine
 
         #region Implement Methods
 
+        public override RandomEngine Clone()
+        {
+            RandomEngine copy = (RandomEngine)this.MemberwiseClone();
+
+            return copy;
+        }
+
         /// <summary>
         /// Generate new random value of Unsigned Int32
         /// </summary>

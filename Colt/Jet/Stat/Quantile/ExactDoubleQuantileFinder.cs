@@ -8,7 +8,7 @@ using Cern.Colt.Function;
 namespace Cern.Jet.Stat.Quantile
 {
     /// <summary>
-    /// Exact quantile finding algorithm for known and unknown <tt>N</tt> requiring large main memory; computes quantiles over a sequence of <tt>double</tt> elements.
+    /// Exact quantile finding algorithm for known and unknown <i>N</i> requiring large main memory; computes quantiles over a sequence of <i>double</i> elements.
  /// The folkore algorithm: Keeps all elements in main memory, sorts the list, then picks the quantiles.
      /// </summary>
     public class ExactDoubleQuantileFinder : Cern.Colt.PersistentObject, IDoubleQuantileFinder
@@ -85,7 +85,7 @@ namespace Cern.Jet.Stat.Quantile
         }
 
         /// <summary>
-        /// Adds the part of the specified list between indexes <tt>from</tt> (inclusive) and <tt>to</tt> (inclusive) to the receiver.
+        /// Adds the part of the specified list between indexes <i>from</i> (inclusive) and <i>to</i> (inclusive) to the receiver.
         /// </summary>
         /// <param name="values">the list of which elements shall be added.</param>
         /// <param name="from">the index of the first element to be added (inclusive).</param>
@@ -99,7 +99,7 @@ namespace Cern.Jet.Stat.Quantile
         }
 
         /// <summary>
-        /// Removes all elements from the receiver.  The receiver will be empty after this call returns, and its memory requirements will be close to zero.
+        /// Removes all elements from the receiverd  The receiver will be empty after this call returns, and its memory requirements will be close to zero.
         /// </summary>
         public void Clear()
         {
@@ -123,8 +123,8 @@ namespace Cern.Jet.Stat.Quantile
         /// Applies a procedure to each element of the receiver, if any.
         /// Iterates over the receiver in no particular order.
         /// </summary>
-        /// <param name="procedure">the procedure to be applied. Stops iteration if the procedure returns <tt>false</tt>, otherwise continues. </param>
-        /// <returns><tt>false</tt> if the procedure stopped before all elements where iterated over, <tt>true</tt> otherwise.</returns>
+        /// <param name="procedure">the procedure to be appliedd Stops iteration if the procedure returns <i>false</i>, otherwise continuesd </param>
+        /// <returns><i>false</i> if the procedure stopped before all elements where iterated over, <i>true</i> otherwise.</returns>
         public bool ForEach(DoubleProcedure procedure)
         {
             double[] theElements = buffer.ToArray();
@@ -136,7 +136,7 @@ namespace Cern.Jet.Stat.Quantile
 
         /// <summary>
         /// Returns the number of elements currently needed to store all contained elements.
-        /// This number usually differs from the results of method <tt>size()</tt>, according to the underlying datastructure.
+        /// This number usually differs from the results of method <i>size()</i>, according to the underlying datastructure.
         /// </summary>
         /// <returns></returns>
         public long Memory()
@@ -145,11 +145,11 @@ namespace Cern.Jet.Stat.Quantile
         }
 
         /// <summary>
-        /// Returns how many percent of the elements contained in the receiver are <tt>&lt;= element</tt>.
+        /// Returns how many percent of the elements contained in the receiver are <i>&lt;= element</i>.
         /// Does linear interpolation if the element is not contained but lies in between two contained elements.
         /// </summary>
         /// <param name="element">the element to search for.</param>
-        /// <returns>the percentage <tt>p</tt> of elements <tt>&lt;= element</tt> (<tt>0.0 &lt;= p &lt;=1.0)</tt>.</returns>
+        /// <returns>the percentage <i>p</i> of elements <i>&lt;= element</i> (<i>0.0 &lt;= p &lt;=1.0)</i>.</returns>
         public double Phi(double element)
         {
             this.Sort();
@@ -159,7 +159,7 @@ namespace Cern.Jet.Stat.Quantile
         /// <summary>
         /// Computes the specified quantile elements over the values previously added.
         /// </summary>
-        /// <param name="phis">the quantiles for which elements are to be computed. Each phi must be in the interval [0.0,1.0]. <tt>phis</tt> must be sorted ascending.</param>
+        /// <param name="phis">the quantiles for which elements are to be computedd Each phi must be in the interval [0.0,1.0]d <i>phis</i> must be sorted ascending.</param>
         /// <returns>the exact quantile elements.</returns>
         public List<double> QuantileElements(List<double> phis)
         {
@@ -178,7 +178,7 @@ namespace Cern.Jet.Stat.Quantile
 
         /// <summary>
         /// Returns the number of elements currently needed to store all contained elements.
-        /// This number usually differs from the results of method <tt>size()</tt>, according to the underlying datastructure.
+        /// This number usually differs from the results of method <i>size()</i>, according to the underlying datastructure.
         /// </summary>
         /// <returns></returns>
         public long TotalMemory()

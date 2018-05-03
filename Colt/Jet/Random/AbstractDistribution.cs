@@ -106,6 +106,18 @@ namespace Cern.Jet.Random
         }
 
         /// <summary>
+        /// Returns a deep copy of the receiver; the copy will produce identical sequences.
+        /// After this call has returned, the copy and the receiver have equal but separate state.
+        /// </summary>
+        /// <returns>a copy of the receiver.</returns>
+        public Object Clone()
+        {
+            AbstractDistribution copy = (AbstractDistribution)base.MemberwiseClone();
+            if (this.randomGenerator != null) copy.randomGenerator = (RandomEngine)this.randomGenerator.Clone();
+            return copy;
+        }
+
+        /// <summary>
         /// Returns a random number from the distribution; returns <see cref="System.Math.Round(nextDouble())"/>.
         /// Override this method if necessary.
         /// </summary>

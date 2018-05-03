@@ -54,6 +54,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Colt\Buffer\DoubleBuffer.cs" />
+    <Compile Include="Colt\Buffer\IDoubleBufferConsumer.cs" />
+    <Compile Include="Colt\Buffer\IObjectBufferConsumer.cs" />
+    <Compile Include="Colt\Buffer\ObjectBuffer.cs" />
     <Compile Include="Colt\Function\BinaryFunctions.cs" />
     <Compile Include="Colt\Function\UnaryFunctions.cs" />
     <Compile Include="Colt\GenericPermuting.cs" />
@@ -87,6 +91,12 @@
     <Compile Include="Colt\PersistentObject.cs" />
     <Compile Include="Extensions\ArrayExtensions.cs" />
     <Compile Include="Extensions\ListExtensions.cs" />
+    <Compile Include="Hep\Aida\Bin\AbstractBin.cs" />
+    <Compile Include="Hep\Aida\Bin\AbstractBin1D.cs" />
+    <Compile Include="Hep\Aida\Bin\DynamicBin1D.cs" />
+    <Compile Include="Hep\Aida\Bin\MightyStaticBin1D.cs" />
+    <Compile Include="Hep\Aida\Bin\QuantileBin1D.cs" />
+    <Compile Include="Hep\Aida\Bin\StaticBin1D.cs" />
     <Compile Include="Jet\Math\Algebraic.cs" />
     <Compile Include="Jet\Math\Arithmetic.cs" />
     <Compile Include="Jet\Math\Bessel.cs" />
@@ -107,6 +117,10 @@
     <Compile Include="Jet\Random\AbstractDistribution.cs" />
     <Compile Include="Jet\Random\Engine\MersenneTwister.cs" />
     <Compile Include="Jet\Random\Engine\RandomEngine.cs" />
+    <Compile Include="Jet\Random\Sampling\Benchmark.cs" />
+    <Compile Include="Jet\Random\Sampling\RandomSampler.cs" />
+    <Compile Include="Jet\Random\Sampling\RandomSamplingAssistant.cs" />
+    <Compile Include="Jet\Random\Sampling\WeightedRandomSampler.cs" />
     <Compile Include="Jet\Random\Uniform.cs" />
     <Compile Include="Jet\Stat\Descriptive.cs" />
     <Compile Include="Jet\Stat\Gamma.cs" />
