@@ -26,5 +26,13 @@ namespace System
         {
             EnsureCapacity(list, size);
         }
+
+        public static List<T> Copy<T>(this List<T> list)
+        {
+            T[] buf = new T[list.Count];
+            list.CopyTo(buf);
+
+            return new List<T>(buf);
+        }
     }
 }
