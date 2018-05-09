@@ -136,6 +136,7 @@
     <Compile Include="Jet\Stat\Quantile\ExactDoubleQuantileFinder.cs" />
     <Compile Include="Jet\Stat\Quantile\IDoubleQuantileFinder.cs" />
     <Compile Include="Jet\Stat\Quantile\KnownDoubleQuantileEstimator.cs" />
+    <Compile Include="Jet\Stat\Quantile\QuantileCalc.cs" />
     <Compile Include="Jet\Stat\Quantile\QuantileFinderFactory.cs" />
     <Compile Include="Jet\Stat\Quantile\UnknownDoubleQuantileEstimator.cs" />
     <Compile Include="Jet\Stat\Quantile\Utils.cs" />
