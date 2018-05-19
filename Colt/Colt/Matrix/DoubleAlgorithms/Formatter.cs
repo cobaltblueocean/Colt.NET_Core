@@ -15,6 +15,7 @@
 
 namespace Cern.Colt.Matrix.DoubleAlgorithms
 {
+    using System;
     using Implementation;
 
     /// <summary>
@@ -148,6 +149,17 @@ namespace Cern.Colt.Matrix.DoubleAlgorithms
         protected override string toString(AbstractMatrix2D matrix)
         {
             return this.ToString((DoubleMatrix2D)matrix);
+        }
+
+        protected String toTitleString(DoubleMatrix2D matrix, String[] rowNames, String[] columnNames, String rowAxisName, String columnAxisName, String title)
+        {
+            if (matrix.Size() == 0) return "Empty matrix";
+            String[][] s = Format(matrix);
+            //String oldAlignment = this.alignment;
+            //this.alignment = DECIMAL;
+            align(s);
+            //this.alignment = oldAlignment;
+            return new Cern.Colt.Matrix.DoubleAlgorithms.Formatter().toTitleString(Cern.Colt.Matrix.ObjectFactory2D.dense.make(s), rowNames, columnNames, rowAxisName, columnAxisName, title);
         }
     }
 }

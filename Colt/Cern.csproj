@@ -70,10 +70,12 @@
     <Compile Include="Colt\Matrix\DoubleFactory2D.cs" />
     <Compile Include="Colt\Matrix\DoubleMatrix1D.cs" />
     <Compile Include="Colt\Matrix\DoubleMatrix2D.cs" />
+    <Compile Include="Colt\Matrix\DoubleMatrix3D.cs" />
     <Compile Include="Colt\Matrix\Implementation\AbstractFormatter.cs" />
     <Compile Include="Colt\Matrix\Implementation\AbstractMatrix.cs" />
     <Compile Include="Colt\Matrix\Implementation\AbstractMatrix1D.cs" />
     <Compile Include="Colt\Matrix\Implementation\AbstractMatrix2D.cs" />
+    <Compile Include="Colt\Matrix\Implementation\AbstractMatrix3D.cs" />
     <Compile Include="Colt\Matrix\Implementation\DenseDoubleMatrix1D.cs" />
     <Compile Include="Colt\Matrix\Implementation\DenseDoubleMatrix2D.cs" />
     <Compile Include="Colt\Matrix\Implementation\SelectedDenseDoubleMatrix1D.cs" />
@@ -88,6 +90,7 @@
     <Compile Include="Colt\Matrix\LinearAlgebra\LUDecompositionQuick.cs" />
     <Compile Include="Colt\Matrix\LinearAlgebra\Property.cs" />
     <Compile Include="Colt\Matrix\LinearAlgebra\SingularValueDecomposition.cs" />
+    <Compile Include="Colt\Matrix\ObjectFactory2D.cs" />
     <Compile Include="Colt\PersistentObject.cs" />
     <Compile Include="Extensions\ArrayExtensions.cs" />
     <Compile Include="Extensions\DateTimeExtension.cs" />
@@ -98,6 +101,12 @@
     <Compile Include="Hep\Aida\Bin\MightyStaticBin1D.cs" />
     <Compile Include="Hep\Aida\Bin\QuantileBin1D.cs" />
     <Compile Include="Hep\Aida\Bin\StaticBin1D.cs" />
+    <Compile Include="Hep\Aida\IAxis.cs" />
+    <Compile Include="Hep\Aida\IHistogram.cs" />
+    <Compile Include="Hep\Aida\IHistogram1D.cs" />
+    <Compile Include="Hep\Aida\IHistogram2D.cs" />
+    <Compile Include="Hep\Aida\IHistogram3D.cs" />
+    <Compile Include="Hep\Aida\Ref\Converter.cs" />
     <Compile Include="Jet\Math\Algebraic.cs" />
     <Compile Include="Jet\Math\Arithmetic.cs" />
     <Compile Include="Jet\Math\Bessel.cs" />

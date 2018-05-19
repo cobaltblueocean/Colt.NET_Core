@@ -29,19 +29,19 @@ namespace Cern.Hep.Aida.Bin
         /// Returns the maximum.
         /// </summary>
         /// <returns></returns>
-        public abstract double Max();
+        public abstract double Max { get; set; }
 
         /// <summary>
         /// Returns the minimum.
         /// </summary>
         /// <returns></returns>
-        public abstract double Min();
+        public abstract double Min { get; set; }
 
         /// <summary>
         /// Returns the sum of all elements, which is <tt>Sum( x[i] )</tt>.
         /// </summary>
         /// <returns></returns>
-        public abstract double Sum();
+        public abstract double Sum { get; set; }
 
         /// <summary>
         /// Returns the sum of squares, which is <tt>Sum( x[i] * x[i] )</tt>.

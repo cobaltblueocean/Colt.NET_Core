@@ -59,7 +59,7 @@ namespace Cern.Jet.Stat.Quantile
             return known_N_compute_B_and_K_quick(N, epsilon);
         }
 
-        public static IDoubleQuantileFinder newDoubleQuantileFinder(Boolean known_N, long N, double epsilon, double delta, int quantiles, RandomEngine generator)
+        public static IDoubleQuantileFinder NewDoubleQuantileFinder(Boolean known_N, long N, double epsilon, double delta, int quantiles, RandomEngine generator)
         {
             //Boolean known_N = true;
             //if (N==long.MaxValue) known_N = false;
@@ -123,7 +123,7 @@ namespace Cern.Jet.Stat.Quantile
             }
         }
 
-        public static List<Double> newEquiDepthPhis(int quantiles)
+        public static List<Double> NewEquiDepthPhis(int quantiles)
         {
             List<Double> phis = new List<Double>(quantiles - 1);
             for (int i = 1; i <= quantiles - 1; i++) phis.Add(i / (double)quantiles);

@@ -28,7 +28,7 @@ namespace Cern.Hep.Aida.Bin
         /// <summary>
         /// Returns the number of elements contained.
         /// </summary>
-        public abstract int Size { get; }
+        public abstract int Size { get; set; }
         #endregion
 
         #region Abstract Methods
