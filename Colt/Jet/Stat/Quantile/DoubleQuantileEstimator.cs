@@ -42,7 +42,7 @@ namespace Cern.Jet.Stat.Quantile
         /// <summary>
         /// 
         /// </summary>
-        int TotalElementsFilled
+        public int TotalElementsFilled
         {
             get { return totalElementsFilled; }
         }

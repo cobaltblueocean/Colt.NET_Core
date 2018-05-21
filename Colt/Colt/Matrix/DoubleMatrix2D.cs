@@ -21,6 +21,30 @@ namespace Cern.Colt.Matrix
     using Function;
     using Implementation;
     using LinearAlgebra;
+    /// <summary>
+    /// A condition or procedure : takes a single argument and returns a boolean value.
+    /// </summary>
+    /// <param name="element">
+    /// The element passed to the procedure.
+    /// </param>
+    /// <returns>
+    /// A flag to inform the object calling the procedure.
+    /// </returns>
+    public delegate bool DoubleMatrix2DProcedure(DoubleMatrix2D element);
+
+    /// <summary>
+    /// A binary function of two 1-d matrices returning a single value.
+    /// </summary>
+    /// <param name="x">
+    /// The x.
+    /// </param>
+    /// <param name="y">
+    /// The y.
+    /// </param>
+    /// <returns>
+    /// The dinstance.
+    /// </returns>
+    public delegate double DoubleMatrix2DDinstance(DoubleMatrix2D x, DoubleMatrix2D y);
 
     /// <summary>
     /// Abstract base class for 2-d matrices holding <tt>double</tt> elements.

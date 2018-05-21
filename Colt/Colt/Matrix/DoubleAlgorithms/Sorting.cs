@@ -211,56 +211,49 @@ namespace Cern.Colt.Matrix.DoubleAlgorithms
 
         public DoubleMatrix3D sort(DoubleMatrix3D matrix, int row, int column)
         {
-            if (row < 0 || row >= matrix.rows()) throw new IndexOutOfRangeException("row=" + row + ", matrix=" + Formatter.shape(matrix));
-            if (column < 0 || column >= matrix.columns()) throw new IndexOutOfRangeException("column=" + column + ", matrix=" + Formatter.shape(matrix));
+            if (row < 0 || row >= matrix.Rows) throw new IndexOutOfRangeException("row=" + row + ", matrix=" + Formatter.Shape(matrix));
+            if (column < 0 || column >= matrix.Columns) throw new IndexOutOfRangeException("column=" + column + ", matrix=" + Formatter.Shape(matrix));
 
-            int[] sliceIndexes = new int[matrix.slices()]; // indexes to reorder instead of matrix itself
+            int[] sliceIndexes = new int[matrix.Slices]; // indexes to reorder instead of matrix itself
             for (int i = sliceIndexes.Length; --i >= 0;) sliceIndexes[i] = i;
 
-            DoubleMatrix1D sliceView = matrix.viewRow(row).viewColumn(column);
-            IntComparator comp = new IntComparator((a, b) => {
-                double av = sliceView.getQuick(a);
-                double bv = sliceView.getQuick(b);
+            DoubleMatrix1D sliceView = matrix.viewRow(row).ViewColumn(column);
+            IntComparator comp = new IntComparator((a, b) =>
+            {
+                double av = sliceView[a];
+                double bv = sliceView[b];
                 if (av != av || bv != bv) return compareNaN(av, bv); // swap NaNs to the end
                 return av < bv ? -1 : (av == bv ? 0 : 1);
             }
                 );
 
 
-            runSort(sliceIndexes,0, sliceIndexes.Length, comp);
+            runSort(sliceIndexes, 0, sliceIndexes.Length, comp);
 
-	// view the matrix according to the reordered slice indexes
-	// take all rows and columns in the original order
-	return matrix.viewSelection(sliceIndexes,null,null);
-}
+            // view the matrix according to the reordered slice indexes
+            // take all rows and columns in the original order
+            return matrix.viewSelection(sliceIndexes, null, null);
+        }
 
-public DoubleMatrix3D sort(DoubleMatrix3D matrix, DoubleMatrix2DComparator c)
-{
-    int[] sliceIndexes = new int[matrix.slices()]; // indexes to reorder instead of matrix itself
-    for (int i = sliceIndexes.Length; --i >= 0;) sliceIndexes[i] = i;
+        public DoubleMatrix3D sort(DoubleMatrix3D matrix, Cern.Colt.Matrix.DoubleAlgorithms.DoubleMatrix2DComparator c)
+        {
+            int[] sliceIndexes = new int[matrix.Slices]; // indexes to reorder instead of matrix itself
+            for (int i = sliceIndexes.Length; --i >= 0;) sliceIndexes[i] = i;
 
-    DoubleMatrix2D[] views = new DoubleMatrix2D[matrix.slices()]; // precompute views for speed
-    for (int i = views.Length; --i >= 0;) views[i] = matrix.viewSlice(i);
+            DoubleMatrix2D[] views = new DoubleMatrix2D[matrix.Slices]; // precompute views for speed
+            for (int i = views.Length; --i >= 0;) views[i] = matrix.viewSlice(i);
 
-    IntComparator comp = new IntComparator()
-    {
-
-        public int compare(int a, int b)
-{
-    //return c.compare(matrix.viewSlice(a), matrix.viewSlice(b));
-    return c.compare(views[a], views[b]);
-}
-	};
+            IntComparator comp = new IntComparator((a, b) => { return c(views[a], views[b]); });
 
 
-    runSort(sliceIndexes,0, sliceIndexes.Length, comp);
+            runSort(sliceIndexes, 0, sliceIndexes.Length, comp);
 
-	// view the matrix according to the reordered slice indexes
-	// take all rows and columns in the original order
-	return matrix.viewSelection(sliceIndexes,null,null);
-}
+            // view the matrix according to the reordered slice indexes
+            // take all rows and columns in the original order
+            return matrix.viewSelection(sliceIndexes, null, null);
+        }
 
-protected void runSort(int[] a, int fromIndex, int toIndex, IntComparator c)
+        protected void runSort(int[] a, int fromIndex, int toIndex, IntComparator c)
         {
             Cern.Colt.Sorting.QuickSort(a, fromIndex, toIndex, c);
         }

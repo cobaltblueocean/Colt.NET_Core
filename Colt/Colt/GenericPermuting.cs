@@ -34,20 +34,20 @@ namespace Cern.Colt
         #region Local Public Methods
         public static int[] permutation(long p, int N)
         {
-            if (p < 1) throw new ArgumentException("Permutations are enumerated 1 .. N!");
+            if (p < 1) throw new ArgumentException("Permutations are enumerated 1 .d N!");
             if (N < 0) throw new ArgumentException("Must satisfy N >= 0");
 
             int[] permutation = new int[N];
 
             if (N > 20)
             { // factorial(21) would overflow 64-bit long)
-              // Simply make a list (0,1,..N-1) and randomize it, seeded with "p". 
+              // Simply make a list (0,1,..N-1) and randomize it, seeded with "p"d 
               // Note that this is perhaps not what you want...
                 for (int i = N; --i >= 0;) permutation[i] = i;
-                Random gen = new Cern.Jet.Random.Uniform(new Cern.Jet.Random.Engine.MersenneTwister((int)p));
+                var gen = new Cern.Jet.Random.Uniform(new Cern.Jet.Random.Engine.MersenneTwister((int)p));
                 for (int i = 0; i < N - 1; i++)
                 {
-                    int random = gen.nextIntFromTo(i, N - 1);
+                    int random = gen.NextIntFromTo(i, N - 1);
 
                     //swap(i, random)
                     int tmp = permutation[random];
@@ -59,22 +59,23 @@ namespace Cern.Colt
             }
 
             // the normal case - exact enumeration
-            if (p > cern.Cern.Jet.math.Arithmetic.longFactorial(N))
+            if (p > Cern.Jet.Math.Arithmetic.LongFactorial(N))
+                throw new ArgumentException("N too large (a sequence of N elements only has N! permutations).");
 
-            int[] tmp = new int[N];
-            for (int i = 1; i <= N; i++) tmp[i - 1] = i;
+            var tmp2 = new int[N];
+            for (int i = 1; i <= N; i++) tmp2[i - 1] = i;
 
             long io = p - 1;
             for (int M = N - 1; M >= 1; M--)
             {
-                long fac = cern.Cern.Jet.math.Arithmetic.longFactorial(M);
-                int in = ((int)(io / fac)) + 1;
+                long fac = Cern.Jet.Math.Arithmetic.LongFactorial(M);
+                int i = ((int)(io / fac)) + 1;
                 io = io % fac;
-                permutation[N - M - 1] = tmp[in-1];
+                permutation[N - M - 1] = tmp2[i-1];
 
-                for (int j = in; j <= M; j++) tmp[j - 1] = tmp[j];
+                for (int j = i; j <= M; j++) tmp2[j - 1] = tmp2[j];
             }
-            if (N > 0) permutation[N - 1] = tmp[0];
+            if (N > 0) permutation[N - 1] = tmp2[0];
 
             for (int i = N; --i >= 0;) permutation[i] = permutation[i] - 1;
             return permutation;
@@ -82,16 +83,16 @@ namespace Cern.Colt
 
         public static void permute(int[] list, int[] indexes)
         {
-            int[] copy = (int[])list.clone();
-            for (int i = list.length; --i >= 0;) list[i] = copy[indexes[i]];
+            int[] copy = (int[])list.Clone();
+            for (int i = list.Length; --i >= 0;) list[i] = copy[indexes[i]];
         }
 
-        public static void permute(int[] indexes, cern.Cern.Colt.Swapper swapper, int[] work)
+        public static void permute(int[] indexes, Cern.Colt.Swapper swapper, int[] work)
         {
             permute(indexes, swapper, work, null);
         }
 
-        public static void permute(int[] indexes, cern.Cern.Colt.Swapper swapper, int[] work1, int[] work2)
+        public static void permute(int[] indexes, Cern.Colt.Swapper swapper, int[] work1, int[] work2)
         {
             // "tracks" and "pos" keeps track of the current indexes of the elements
             // Example: We have a list==[A,B,C,D,E], indexes==[0,4,1,2,3] and swap B and E we need to know that the element formlerly at index 1 is now at index 4, and the one formerly at index 4 is now at index 1.
@@ -99,11 +100,11 @@ namespace Cern.Colt
             // Initially index i really is at index i, but this will change due to swapping.
 
             // work1, work2 to avoid high frequency memalloc's
-            int s = indexes.length;
+            int s = indexes.Length;
             int[] tracks = work1;
             int[] pos = work2;
-            if (tracks == null || tracks.length < s) tracks = new int[s];
-            if (pos == null || pos.length < s) pos = new int[s];
+            if (tracks == null || tracks.Length < s) tracks = new int[s];
+            if (pos == null || pos.Length < s) pos = new int[s];
             for (int i = s; --i >= 0;)
             {
                 tracks[i] = i;
@@ -117,7 +118,7 @@ namespace Cern.Colt
 
                 if (i != track)
                 {
-                    swapper.swap(i, track);
+                    swapper(i, track);
                     tracks[index] = i; tracks[pos[i]] = track;
                     int tmp = pos[i]; pos[i] = pos[track]; pos[track] = tmp;
                 }
@@ -126,8 +127,8 @@ namespace Cern.Colt
 
         public static void permute(Object[] list, int[] indexes)
         {
-            Object[] copy = (Object[])list.clone();
-            for (int i = list.length; --i >= 0;) list[i] = copy[indexes[i]];
+            Object[] copy = (Object[])list.Clone();
+            for (int i = list.Length; --i >= 0;) list[i] = copy[indexes[i]];
         }
 
         #endregion

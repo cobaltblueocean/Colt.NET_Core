@@ -49,7 +49,7 @@ namespace Cern.Colt.Matrix
     /// <returns>
     /// The dinstance.
     /// </returns>
-    public delegate double Dinstance(DoubleMatrix1D x, DoubleMatrix1D y);
+    public delegate double DoubleMatrix1DDinstance(DoubleMatrix1D x, DoubleMatrix1D y);
 
     /// <summary>
     /// Abstract base class for 1-d matrices (aka <i>vectors</i>) holding <tt>double</tt> elements.

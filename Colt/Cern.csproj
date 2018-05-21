@@ -128,6 +128,8 @@
     <Compile Include="Jet\Random\Engine\DRand.cs" />
     <Compile Include="Jet\Random\Engine\MersenneTwister.cs" />
     <Compile Include="Jet\Random\Engine\RandomEngine.cs" />
+    <Compile Include="Jet\Random\Fun.cs" />
+    <Compile Include="Jet\Random\Gamma.cs" />
     <Compile Include="Jet\Random\Sampling\Benchmark.cs" />
     <Compile Include="Jet\Random\Sampling\RandomSampler.cs" />
     <Compile Include="Jet\Random\Sampling\RandomSamplingAssistant.cs" />

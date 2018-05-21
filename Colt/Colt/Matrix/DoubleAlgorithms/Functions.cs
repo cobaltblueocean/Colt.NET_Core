@@ -29,4 +29,19 @@ namespace Cern.Colt.Matrix.DoubleAlgorithms
     /// to, or greater than the second.
     /// </returns>
     public delegate int DoubleMatrix1DComparator(DoubleMatrix1D o1, DoubleMatrix1D o2);
+
+    /// <summary>
+    /// A comparison function which imposes a <i>total ordering</i> on some collection of elements. 
+    /// </summary>
+    /// <param name="o1">
+    /// The first matrix.
+    /// </param>
+    /// <param name="o2">
+    /// The second matrix.
+    /// </param>
+    /// <returns>
+    /// A negative integer, zero, or a positive integer as the first argument is less than, equal
+    /// to, or greater than the second.
+    /// </returns>
+    public delegate int DoubleMatrix2DComparator(DoubleMatrix2D o1, DoubleMatrix2D o2);
 }

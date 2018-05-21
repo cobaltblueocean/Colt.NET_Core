@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Cern.Jet.Random.Engine;
+using Cern.Jet.Random.Sampling;
 
 namespace Cern.Jet.Stat.Quantile
 {
@@ -44,11 +45,11 @@ namespace Cern.Jet.Stat.Quantile
             }
             else
             {
-                this.samplingAssistant = new RandomSamplingAssistant(Arithmetic.floor(N / samplingRate), N, generator);
+                this.samplingAssistant = new RandomSamplingAssistant((long)System.Math.Floor(N / samplingRate), N, generator);
             }
 
             SetUp(b, k);
-            this.clear();
+            this.Clear();
         }
         #endregion
 
@@ -56,23 +57,62 @@ namespace Cern.Jet.Stat.Quantile
 
         protected override void NewBuffer()
         {
-            throw new NotImplementedException();
+            int numberOfEmptyBuffers = this.BufferSet.GetNumberOfEmptyBuffers();
+            //DoubleBuffer[] emptyBuffers = this.BufferSet.GetEmptyBuffers();
+            if (numberOfEmptyBuffers == 0) throw new InvalidOperationException("Oops, no empty buffer.");
+
+            this.CurrentBufferToFill = this.BufferSet.GetFirstEmptyBuffer();
+            if (numberOfEmptyBuffers == 1 && !this.weHadMoreThanOneEmptyBuffer)
+            {
+                this.CurrentBufferToFill.Level = this.BufferSet.GetMinLevelOfFullOrPartialBuffers();
+            }
+            else
+            {
+                this.weHadMoreThanOneEmptyBuffer = true;
+                this.CurrentBufferToFill.Level = 0;
+                /*
+                for (int i=0; i<emptyBuffers.Length; i++) {
+                    emptyBuffers[i].level = 0;			
+                }
+                */
+            }
+            //currentBufferToFill.state = DoubleBuffer.PARTIAL;
+            this.CurrentBufferToFill.Weight = 1;
+
         }
 
         protected override void PostCollapse(DoubleBuffer[] toCollapse)
         {
-            throw new NotImplementedException();
+            this.weHadMoreThanOneEmptyBuffer = false;
         }
 
         protected override bool SampleNextElement()
         {
-            throw new NotImplementedException();
+            if (samplingAssistant == null) return true;
+
+            /*
+             * This is a KNOWN N quantile finder!
+             * One should not try to fill more than N elements,
+             * because otherwise we can't give explicit approximation guarantees anymore.
+             * Use an UNKNOWN quantile finder instead if your app may fill more than N elements.
+             *
+             * However, to make this class meaningful even under wired use cases, we actually do allow to fill more than N elements (without explicit approxd guarantees, of course).
+             * Normally, elements beyond N will not get sampled because the sampler is exhaustedd 
+             * Therefore the histogram will no more change no matter how much you fill.
+             * This might not be what the user expects.
+             * Therefore we use a new (unexhausted) sampler with the same parametrization.
+             *
+             * If you want this class to ignore any elements beyong N, then comment the following line.
+             */
+            //if ((totalElementsFilled-1) % N == 0) setSamplingRate(samplingRate, N); // delete if appropriate
+
+            return samplingAssistant.SampleNextElement();
         }
 
         #endregion
 
         #region Local Public Methods
-        public void clear()
+        public new void Clear()
         {
             base.Clear();
             this.beta = 1.0;
@@ -82,18 +122,18 @@ namespace Cern.Jet.Stat.Quantile
             RandomSamplingAssistant assist = this.samplingAssistant;
             if (assist != null)
             {
-                this.samplingAssistant = new RandomSamplingAssistant(Arithmetic.floor(N / samplingRate), N, assist.getRandomGenerator());
+                this.samplingAssistant = new RandomSamplingAssistant((long)System.Math.Floor(N / samplingRate), N, assist.RandomGenerator);
             }
         }
 
-        public Object clone()
+        public new Object Clone()
         {
             KnownDoubleQuantileEstimator copy = (KnownDoubleQuantileEstimator)base.Clone();
-            if (this.samplingAssistant != null) copy.samplingAssistant = (RandomSamplingAssistant)copy.samplingAssistant.clone();
+            if (this.samplingAssistant != null) copy.samplingAssistant = (RandomSamplingAssistant)copy.samplingAssistant.Clone();
             return copy;
         }
 
-        public List<Double> quantileElements(List<Double> phis)
+        public new List<Double> QuantileElements(List<Double> phis)
         {
             /*
             * The KNOWN quantile finder reads off quantiles from FULL buffers only.
@@ -110,14 +150,14 @@ namespace Cern.Jet.Stat.Quantile
             int missingValues = 0;
             if (partial != null)
             { // any auxiliary infinities needed?
-                missingValues = bufferSet.k() - partial.Count;
-                if (missingValues <= 0) throw new RuntimeException("Oops! illegal missing values.");
+                missingValues = BufferSet.BufferSize - partial.Size;
+                if (missingValues <= 0) throw new InvalidOperationException("Oops! illegal missing values.");
 
                 //System.out.println("adding "+missingValues+" infinity elements...");
-                this.addInfinities(missingValues, partial);
+                this.AddInfinities(missingValues, partial);
 
                 //determine beta (N + Infinity values = beta * N)
-                this.beta = (this.totalElementsFilled + missingValues) / (double)this.TotalElementsFilled;
+                this.beta = (this.TotalElementsFilled + missingValues) / (double)this.TotalElementsFilled;
             }
             else
             {
@@ -128,7 +168,7 @@ namespace Cern.Jet.Stat.Quantile
 
             // restore state we were in before.
             // remove the temporarily added infinities.
-            if (partial != null) removeInfinitiesFrom(missingValues, partial);
+            if (partial != null) RemoveInfinitiesFrom(missingValues, partial);
 
             // now you can continue filling the remaining values, if any.
             return quantileElements;
@@ -136,7 +176,7 @@ namespace Cern.Jet.Stat.Quantile
         #endregion
 
         #region Local Protected Methods
-        protected void addInfinities(int missingInfinities, DoubleBuffer buffer)
+        protected void AddInfinities(int missingInfinities, DoubleBuffer buffer)
         {
             RandomSamplingAssistant oldAssistant = this.samplingAssistant;
             this.samplingAssistant = null; // switch off sampler
@@ -163,56 +203,26 @@ namespace Cern.Jet.Stat.Quantile
             this.samplingAssistant = oldAssistant; // switch on sampler again
         }
 
-        protected DoubleBuffer[] buffersToCollapse()
+        protected new DoubleBuffer[] BuffersToCollapse()
         {
             int minLevel = this.BufferSet.GetMinLevelOfFullOrPartialBuffers();
             return this.BufferSet.GetFullOrPartialBuffersWithLevel(minLevel);
         }
 
-        protected void newBuffer()
-        {
-            int numberOfEmptyBuffers = this.BufferSet.GetNumberOfEmptyBuffers();
-            //DoubleBuffer[] emptyBuffers = this.BufferSet.GetEmptyBuffers();
-            if (numberOfEmptyBuffers == 0) throw new RuntimeException("Oops, no empty buffer.");
-
-            this.CurrentBufferToFill = this.BufferSet.GetFirstEmptyBuffer();
-            if (numberOfEmptyBuffers == 1 && !this.weHadMoreThanOneEmptyBuffer)
-            {
-                this.CurrentBufferToFill.Level = this.BufferSet.GetMinLevelOfFullOrPartialBuffers();
-            }
-            else
-            {
-                this.weHadMoreThanOneEmptyBuffer = true;
-                this.CurrentBufferToFill.Level = 0;
-                /*
-                for (int i=0; i<emptyBuffers.Length; i++) {
-                    emptyBuffers[i].level = 0;			
-                }
-                */
-            }
-            //currentBufferToFill.state = DoubleBuffer.PARTIAL;
-            this.CurrentBufferToFill.Weight = 1;
-        }
-
-        protected void postCollapse(DoubleBuffer[] toCollapse)
-        {
-            this.weHadMoreThanOneEmptyBuffer = false;
-        }
-
-        protected List<Double> preProcessPhis(List<Double> phis)
+        protected new List<Double> PreProcessPhis(List<Double> phis)
         {
             if (beta > 1.0)
             {
                 phis = phis.Copy();
                 for (int i = phis.Count; --i >= 0;)
                 {
-                    phis.[i] =  (2 * phis[i] + beta - 1) / (2 * beta);
+                    phis[i] = (2 * phis[i] + beta - 1) / (2 * beta);
                 }
             }
             return phis;
         }
 
-        protected void removeInfinitiesFrom(int infinities, DoubleBuffer buffer)
+        protected void RemoveInfinitiesFrom(int infinities, DoubleBuffer buffer)
         {
             int plusInf = 0;
             int minusInf = 0;
@@ -225,32 +235,9 @@ namespace Cern.Jet.Stat.Quantile
                 even = !even;
             }
 
-            buffer.Values.RemoveFromTo(buffer.Count - plusInf, buffer.Count - 1);
-            buffer.Values.RemoveFromTo(0, minusInf - 1);
+            buffer.Values.RemoveRange(buffer.Size - plusInf, buffer.Size - 1);
+            buffer.Values.RemoveRange(0, minusInf - 1);
             //this.totalElementsFilled -= infinities;
-        }
-
-        protected Boolean sampleNextElement()
-        {
-            if (samplingAssistant == null) return true;
-
-            /*
-             * This is a KNOWN N quantile finder!
-             * One should not try to fill more than N elements,
-             * because otherwise we can't give explicit approximation guarantees anymore.
-             * Use an UNKNOWN quantile finder instead if your app may fill more than N elements.
-             *
-             * However, to make this class meaningful even under wired use cases, we actually do allow to fill more than N elements (without explicit approxd guarantees, of course).
-             * Normally, elements beyond N will not get sampled because the sampler is exhaustedd 
-             * Therefore the histogram will no more change no matter how much you fill.
-             * This might not be what the user expects.
-             * Therefore we use a new (unexhausted) sampler with the same parametrization.
-             *
-             * If you want this class to ignore any elements beyong N, then comment the following line.
-             */
-            //if ((totalElementsFilled-1) % N == 0) setSamplingRate(samplingRate, N); // delete if appropriate
-
-            return samplingAssistant.sampleNextElement();
         }
         #endregion
 

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Cern.Jet.Random.Engine;
+using Cern.Hep.Aida.Bin;
 
 namespace Cern.Jet.Random.Sampling
 {
@@ -48,26 +49,26 @@ namespace Cern.Jet.Random.Sampling
             double lambda = 1 / (variance / mean);
 
             // for tests and debugging use a random engine with CONSTANT seed --> deterministic and reproducible results
-            cern.jet.random.engine.RandomEngine engine = new cern.jet.random.engine.MersenneTwister();
+            RandomEngine engine = new MersenneTwister();
 
             // your favourite distribution goes here
-            cern.jet.random.AbstractDistribution dist = new cern.jet.random.Gamma(alpha, lambda, engine);
+            AbstractDistribution dist = new Gamma(alpha, lambda, engine);
 
             // collect random numbers and print statistics
             int size = 100000;
-            cern.colt.list.List<Double> numbers = new cern.colt.list.List<Double>(size);
-            for (int i = 0; i < size; i++) numbers.Add(dist.nextDouble());
+            List<Double> numbers = new List<Double>(size);
+            for (int i = 0; i < size; i++) numbers.Add(dist.NextDouble());
 
-            hep.aida.bin.DynamicBin1D bin = new hep.aida.bin.DynamicBin1D();
-            bin.addAllOf(numbers);
+            DynamicBin1D bin = new DynamicBin1D();
+            bin.AddAllOf(numbers);
             Console.WriteLine(bin);
         }
 
-        public static void main(String args[])
+        public static void main(String[] args)
         {
-            int size = int.parseInt(args[0]);
-            Boolean print = new Boolean(args[1]).BooleanValue();
-            double mean = new Double(args[2]).doubleValue();
+            int size = int.Parse(args[0]);
+            Boolean print = Boolean.Parse(args[1]);
+            double mean = Double.Parse(args[2]);
             String generatorName = args[3];
             random(size, print, mean, generatorName);
         }
@@ -79,24 +80,18 @@ namespace Cern.Jet.Random.Sampling
             //int large = 100000000;
             int largeVariance = 100;
             RandomEngine gen; // = new MersenneTwister();
-            try
-            {
-                gen = (RandomEngine)Class.forName(generatorName).newInstance();
-            }
-            catch (Exception exc)
-            {
-                throw new InternalError(exc.getMessage());
-            }
+            gen = (RandomEngine)Activator.CreateInstance(Type.GetType(generatorName)); //(RandomEngine)Class.forName(generatorName).newInstance();
         }
 
         public static void randomInstance(int size, Boolean print, AbstractDistribution dist)
         {
             Console.Write("\n" + dist + " ...");
-            cern.colt.Timer timer = new cern.colt.Timer().start();
+            System.Timers.Timer timer = new System.Timers.Timer();
+            timer.Start();
 
             for (int i = size; --i >= 0;)
             {
-                double rand = dist.nextDouble();
+                double rand = dist.NextDouble();
                 if (print)
                 {
                     if ((size - i - 1) % 8 == 0) Console.WriteLine();
@@ -104,7 +99,7 @@ namespace Cern.Jet.Random.Sampling
                 }
             }
 
-            timer.stop();
+            timer.Stop();
             Console.WriteLine("\n" + timer);
         }
 
@@ -112,7 +107,7 @@ namespace Cern.Jet.Random.Sampling
         {
             for (int j = 0, i = size; --i >= 0; j++)
             {
-                Console.Write(" " + distribution.nextDouble());
+                Console.Write(" " + distribution.NextDouble());
                 if (j % 8 == 7) Console.WriteLine();
             }
             Console.WriteLine("\n\nGood bye.\n");
@@ -120,10 +115,10 @@ namespace Cern.Jet.Random.Sampling
 
         public static void test2(int size, AbstractDistribution distribution)
         {
-            hep.aida.bin.DynamicBin1D bin = new hep.aida.bin.DynamicBin1D();
+            DynamicBin1D bin = new DynamicBin1D();
             for (int j = 0, i = size; --i >= 0; j++)
             {
-                bin.Add(distribution.nextDouble());
+                bin.Add(distribution.NextDouble());
             }
             Console.WriteLine(bin);
             Console.WriteLine("\n\nGood bye.\n");
@@ -131,12 +126,12 @@ namespace Cern.Jet.Random.Sampling
 
         public static void test2(int size, AbstractDistribution a, AbstractDistribution b)
         {
-            hep.aida.bin.DynamicBin1D binA = new hep.aida.bin.DynamicBin1D();
-            hep.aida.bin.DynamicBin1D binB = new hep.aida.bin.DynamicBin1D();
+            DynamicBin1D binA = new DynamicBin1D();
+            DynamicBin1D binB = new DynamicBin1D();
             for (int j = 0, i = size; --i >= 0; j++)
             {
-                binA.Add(a.nextDouble());
-                binB.Add(b.nextDouble());
+                binA.Add(a.NextDouble());
+                binB.Add(b.NextDouble());
             }
         }
         #endregion

@@ -101,6 +101,35 @@ namespace Cern.Colt.Function
     /// </returns>
     public delegate bool DoubleDoubleProcedure(double x, double y);
 
+    /// <summary>
+    /// A function that takes two arguments and returns a single value.
+    /// </summary>
+    /// <param name="x">
+    /// The first argument passed to the function.
+    /// </param>
+    /// <param name="y">
+    /// The second argument passed to the function.
+    /// </param>
+    /// <returns>
+    /// The result of the function.
+    /// </returns>
+    public delegate int IntIntFunction(int x, int y);
+
+
+    /// <summary>
+    /// Applies a procedure to an argument.
+    /// Optionally can return a boolean flag to inform the object calling the procedure.
+    /// </summary>
+    /// <param name="x">
+    /// The first argument passed to the function.
+    /// </param>
+    /// <param name="y">
+    /// The second argument passed to the function.
+    /// </param>
+    /// <returns>
+    /// A flag to inform the object calling the procedure.
+    /// </returns>
+    public delegate bool IntIntProcedure(int x, int y);
 
     /// <summary>
     /// Compares its two arguments for order.  Returns a negative integer,

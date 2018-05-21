@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Cern.Colt.Function;
 
 namespace Cern.Jet.Random.Engine
 {
@@ -26,6 +27,16 @@ namespace Cern.Jet.Random.Engine
     /// </summary>
     public abstract class RandomEngine
     {
+        public IntFunction ApplyIntFunction()
+        {
+            return new IntFunction((a) => { return NextInt32(); });
+        }
+
+        public DoubleFunction ApplyDoubleFunction()
+        {
+            return new DoubleFunction((a) => { return Raw(); });
+        }
+
         /// <summary>
         /// Equivalent to <tt><see cref="Raw()"/></tt>.
         /// This has the effect that random engines can now be used as function objects, returning a random number upon function evaluation.
