@@ -150,6 +150,20 @@ namespace Cern.Colt.Matrix.Implementation
         }
 
         /// <summary>
+        /// Returns a short string representation describing the shape of the matrix.
+        /// </summary>
+        /// <param name="matrix">
+        /// The matrix.
+        /// </param>
+        /// <returns>
+        /// A short string representation describing the shape of the matrix.
+        /// </returns>
+        public static string Shape(AbstractMatrix3D matrix)
+        {
+            return matrix.Slices + " x " + matrix.Rows + " x " + matrix.Columns + " matrix ";
+        }
+
+        /// <summary>
         /// Sets the column alignment (left,center,right,decimal).
         /// </summary>
         /// <param name="align">

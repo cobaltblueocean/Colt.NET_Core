@@ -3,8 +3,8 @@
 //   Copyright © 1999 CERN - European Organization for Nuclear Research.
 //   Permission to use, copy, modify, distribute and sell this software and its documentation for any purpose 
 //   is hereby granted without fee, provided that the above copyright notice appear in all copies and 
-//   that both that copyright notice and this permission notice appear in supporting documentation. 
-//   CERN makes no representations about the suitability of this software for any purpose. 
+//   that both that copyright notice and this permission notice appear in supporting documentationd 
+//   CERN makes no representations about the suitability of this software for any purposed 
 //   It is provided "as is" without expressed or implied warranty.
 //   Ported from Java to C# by Mauro Mazzieri, 2010.
 // </copyright>
@@ -43,7 +43,7 @@ namespace Cern.Colt.Matrix.DoubleAlgorithms
         /// The  vector to be sorted.
         /// </param>
         /// <returns>
-        /// A new sorted vector (matrix) view. 
+        /// A new sorted vector (matrix) viewd 
         /// </returns>
         public DoubleMatrix1D Sort(DoubleMatrix1D vector)
         {
@@ -89,29 +89,29 @@ namespace Cern.Colt.Matrix.DoubleAlgorithms
         }
 
         /// <summary>
-        /// Sorts the matrix rows into ascending order, according to the <i>natural ordering</i> of the matrix values in the virtual column <tt>aggregates</tt>;
+        /// Sorts the matrix rows into ascending order, according to the <i>natural ordering</i> of the matrix values in the virtual column <i>aggregates</i>;
         /// Particularly efficient when comparing expensive aggregates, because aggregates need not be recomputed time and again, as is the case for comparator based sorts.
         /// Essentially, this algorithm makes expensive comparisons cheap.
-        /// Normally each element of <tt>aggregates</tt> is a summary measure of a row.
-        /// Speedup over comparator based sorting = <tt>2*log(rows)</tt>, on average.
+        /// Normally each element of <i>aggregates</i> is a summary measure of a row.
+        /// Speedup over comparator based sorting = <i>2*log(rows)</i>, on average.
         /// For this operation, quicksort is usually faster.
         /// </summary>
         /// <param name="matrix">
         /// The matrix to be sorted.
         /// </param>
         /// <param name="aggregates">
-        /// The values to sort on. (As a side effect, this array will also get sorted).
+        /// The values to sort ond (As a side effect, this array will also get sorted).
         /// </param>
         /// <returns>
         /// A new matrix view having rows sorted.
         /// </returns>
         /// <exception cref="ArgumentOutOfRangeException">
-        /// If <tt>aggregates.length != matrix.rows()</tt>.
+        /// If <i>aggregates.Length != matrix.rows()</i>.
         /// </exception>
         public DoubleMatrix2D Sort(DoubleMatrix2D matrix, double[] aggregates)
         {
             int rows = matrix.Rows;
-            if (aggregates.Length != rows) throw new ArgumentOutOfRangeException("aggregates", "aggregates.length != matrix.rows()");
+            if (aggregates.Length != rows) throw new ArgumentOutOfRangeException("aggregates", "aggregates.Length != matrix.rows()");
 
             // set up index reordering
             var indexes = new int[rows];
@@ -152,7 +152,7 @@ namespace Cern.Colt.Matrix.DoubleAlgorithms
         /// A new matrix view having rows sorted by the given column.
         /// </returns>
         /// <exception cref="IndexOutOfRangeException">
-        /// If <tt>column &lt; 0 || column &gt;= matrix.columns()</tt>.
+        /// If <i>column &lt; 0 || column &gt;= matrix.columns()</i>.
         /// </exception>
         public DoubleMatrix2D Sort(DoubleMatrix2D matrix, int column)
         {
@@ -209,7 +209,58 @@ namespace Cern.Colt.Matrix.DoubleAlgorithms
             return matrix.ViewSelection(rowIndexes, null);
         }
 
-        protected void runSort(int[] a, int fromIndex, int toIndex, IntComparator c)
+        public DoubleMatrix3D sort(DoubleMatrix3D matrix, int row, int column)
+        {
+            if (row < 0 || row >= matrix.rows()) throw new IndexOutOfRangeException("row=" + row + ", matrix=" + Formatter.shape(matrix));
+            if (column < 0 || column >= matrix.columns()) throw new IndexOutOfRangeException("column=" + column + ", matrix=" + Formatter.shape(matrix));
+
+            int[] sliceIndexes = new int[matrix.slices()]; // indexes to reorder instead of matrix itself
+            for (int i = sliceIndexes.Length; --i >= 0;) sliceIndexes[i] = i;
+
+            DoubleMatrix1D sliceView = matrix.viewRow(row).viewColumn(column);
+            IntComparator comp = new IntComparator((a, b) => {
+                double av = sliceView.getQuick(a);
+                double bv = sliceView.getQuick(b);
+                if (av != av || bv != bv) return compareNaN(av, bv); // swap NaNs to the end
+                return av < bv ? -1 : (av == bv ? 0 : 1);
+            }
+                );
+
+
+            runSort(sliceIndexes,0, sliceIndexes.Length, comp);
+
+	// view the matrix according to the reordered slice indexes
+	// take all rows and columns in the original order
+	return matrix.viewSelection(sliceIndexes,null,null);
+}
+
+public DoubleMatrix3D sort(DoubleMatrix3D matrix, DoubleMatrix2DComparator c)
+{
+    int[] sliceIndexes = new int[matrix.slices()]; // indexes to reorder instead of matrix itself
+    for (int i = sliceIndexes.Length; --i >= 0;) sliceIndexes[i] = i;
+
+    DoubleMatrix2D[] views = new DoubleMatrix2D[matrix.slices()]; // precompute views for speed
+    for (int i = views.Length; --i >= 0;) views[i] = matrix.viewSlice(i);
+
+    IntComparator comp = new IntComparator()
+    {
+
+        public int compare(int a, int b)
+{
+    //return c.compare(matrix.viewSlice(a), matrix.viewSlice(b));
+    return c.compare(views[a], views[b]);
+}
+	};
+
+
+    runSort(sliceIndexes,0, sliceIndexes.Length, comp);
+
+	// view the matrix according to the reordered slice indexes
+	// take all rows and columns in the original order
+	return matrix.viewSelection(sliceIndexes,null,null);
+}
+
+protected void runSort(int[] a, int fromIndex, int toIndex, IntComparator c)
         {
             Cern.Colt.Sorting.QuickSort(a, fromIndex, toIndex, c);
         }
@@ -236,10 +287,10 @@ namespace Cern.Colt.Matrix.DoubleAlgorithms
             if (a != a)
             {
                 if (b != b) return 0; // NaN equals NaN
-                return 1; // e.g. NaN > 5
+                return 1; // e.gd NaN > 5
             }
 
-            return -1; // e.g. 5 < NaN
+            return -1; // e.gd 5 < NaN
         }
     }
 }

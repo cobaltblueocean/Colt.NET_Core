@@ -24,6 +24,45 @@ namespace Cern.Hep.Aida.Bin
         static protected double[] arguments = new double[20];
         #endregion
 
+        #region Property
+        /// <summary>
+        /// Gets or sets the minimum.
+        /// </summary>
+        public override double Min
+        {
+            get { return this.min; }
+            set { this.min = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the maximum.
+        /// </summary>
+        public override double Max
+        {
+            get { return this.max; }
+            set { this.max = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the sum of all elements, which is <i>Sum( x[i] )</i>.
+        /// </summary>
+        public override double Sum
+        {
+            get { return this.sum; }
+            set { this.sum = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the sum of squares, which is <i>Sum( x[i] * x[i] )</i>.
+        /// </summary>
+        public double SumOfSquares
+        {
+            get { return this.sum_xx; }
+            set { this.sum_xx = value; }
+        }
+
+        #endregion
+
         #region Implement Property
         /// <summary>
         /// Returns <i>false</i>.
@@ -52,6 +91,10 @@ namespace Cern.Hep.Aida.Bin
             get
             {
                 return this.size;
+            }
+            set
+            {
+                this.size = value;
             }
         }
         #endregion
@@ -84,42 +127,6 @@ namespace Cern.Hep.Aida.Bin
         {
             ClearAllMeasures();
             this.size = 0;
-        }
-
-        /// <summary>
-        /// Returns the maximum.
-        /// </summary>
-        /// <returns></returns>
-        public override double Max()
-        {
-            return this.max;
-        }
-
-        /// <summary>
-        /// Returns the minimum.
-        /// </summary>
-        /// <returns></returns>
-        public override double Min()
-        {
-            return this.min;
-        }
-
-        /// <summary>
-        /// Returns the sum of all elements, which is <i>Sum( x[i] )</i>.
-        /// </summary>
-        /// <returns></returns>
-        public override double Sum()
-        {
-            return this.sum;
-        }
-
-        /// <summary>
-        /// Returns the sum of squares, which is <i>Sum( x[i] * x[i] )</i>.
-        /// </summary>
-        /// <returns></returns>
-        public override double SumOfSquares()
-        {
-            return this.sum_xx;
         }
         #endregion
 

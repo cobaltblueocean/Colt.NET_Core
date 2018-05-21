@@ -229,5 +229,31 @@ namespace System
         //    return newArray;
         //}
 
+        public static T[][] Initialize<T>(this T[][] array, int row, int col)
+        {
+            array = new T[row][];
+            for(int i =0; i < row; i++)
+            {
+                array[i] = new T[col];
+            }
+
+            return array;
+        }
+
+
+        public static T[][][] Initialize<T>(this T[][][] array, int slice, int row, int col)
+        {
+            array = new T[slice][][];
+            for (int i = 0; i < slice; i++)
+            {
+                array[i] = new T[row][];
+                for (int j = 0; j < row; j++)
+                {
+                    array[i][j] = new T[col];
+                }
+            }
+
+            return array;
+        }
     }
 }

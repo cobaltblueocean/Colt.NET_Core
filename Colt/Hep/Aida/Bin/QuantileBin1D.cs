@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Cern.Jet.Stat.Quantile;
 using Cern.Jet.Random.Engine;
+using System.Runtime.CompilerServices;
+using Cern.Jet.Stat;
 
 namespace Cern.Hep.Aida.Bin
 {
@@ -55,7 +57,7 @@ namespace Cern.Hep.Aida.Bin
     /// For example, <i>delta = 0.0001</i> is equivalent to a confidence of<i>99.99%</i>.
     /// <li><i>quantiles</i> - the number of quantiles to be computed; in <i>[0, int.MaxValue]</i>.
     /// <li><i>is N known?</i> - specifies whether the exact size of the dataset over which quantiles are to be computed is known.
-    /// <li>N<sub> max</sub> - the exact dataset size, if known.Otherwise, an upper limit on the dataset size.If no upper limit is known set to infinity (<i>Long.MaxValue</i>).
+    /// <li>N<sub> max</sub> - the exact dataset size, if known.Otherwise, an upper limit on the dataset size.If no upper limit is known set to infinity (<i>long.MaxValue</i>).
     /// </ul>
     /// 	N<sub> max</sub>=inf - we are sure that exactly (<i>known</i>) or less than(<i>unknown</i>) infinity elements will be added.
     /// <br>N<sub> max</sub>=10<sup>6</sup> - we are sure that exactly (<i>known</i>) or less than(<i>unknown</i>) 10<sup>6</sup> elements will be added.
@@ -560,25 +562,52 @@ namespace Cern.Hep.Aida.Bin
         #endregion
 
         #region Constructor
+        /// <summary>
+        /// 
+        /// </summary>
         protected QuantileBin1D(): base(false, false, 2)
         {
             
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="epsilon"></param>
         public QuantileBin1D(double epsilon): this(false, long.MaxValue, epsilon, 0.001, 10000, new Cern.Jet.Random.Engine.DRand(new DateTime()))
         {
             
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="known_N"></param>
+        /// <param name="N"></param>
+        /// <param name="epsilon"></param>
+        /// <param name="delta"></param>
+        /// <param name="quantiles"></param>
+        /// <param name="randomGenerator"></param>
         public QuantileBin1D(Boolean known_N, long N, double epsilon, double delta, int quantiles, RandomEngine randomGenerator): this(known_N, N, epsilon, delta, quantiles, randomGenerator, false, false, 2)
         {
             
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="known_N"></param>
+        /// <param name="N"></param>
+        /// <param name="epsilon"></param>
+        /// <param name="delta"></param>
+        /// <param name="quantiles"></param>
+        /// <param name="randomGenerator"></param>
+        /// <param name="hasSumOfLogarithms"></param>
+        /// <param name="hasSumOfInversions"></param>
+        /// <param name="maxOrderForSumOfPowers"></param>
         public QuantileBin1D(Boolean known_N, long N, double epsilon, double delta, int quantiles, RandomEngine randomGenerator, Boolean hasSumOfLogarithms, Boolean hasSumOfInversions, int maxOrderForSumOfPowers): base(hasSumOfLogarithms, hasSumOfInversions, maxOrderForSumOfPowers)
         {
-            
-            this.finder = QuantileFinderFactory.newDoubleQuantileFinder(known_N, N, epsilon, delta, quantiles, randomGenerator);
+            this.finder = QuantileFinderFactory.NewDoubleQuantileFinder(known_N, N, epsilon, delta, quantiles, randomGenerator);
             this.Clear();
         }
         #endregion
@@ -588,6 +617,228 @@ namespace Cern.Hep.Aida.Bin
         #endregion
 
         #region Local Public Methods
+        [MethodImpl(MethodImplOptions.Synchronized)]
+        public void addAllOfFromTo(List<Double> list, int from, int to)
+        {
+            base.AddAllOfFromTo(list, from, to);
+            if (this.finder != null) this.finder.AddAllOfFromTo(list, from, to);
+        }
+
+        [MethodImpl(MethodImplOptions.Synchronized)]
+        public void clear()
+        {
+            base.Clear();
+            if (this.finder != null) this.finder.Clear();
+        }
+
+        [MethodImpl(MethodImplOptions.Synchronized)]
+        public Object clone()
+        {
+            QuantileBin1D clone = (QuantileBin1D)base.Clone();
+            if (this.finder != null) clone.finder = (IDoubleQuantileFinder)clone.finder.Clone();
+            return clone;
+        }
+
+        public String compareWith(AbstractBin1D other)
+        {
+            StringBuilder buf = new StringBuilder(base.CompareWith(other));
+            if (other is QuantileBin1D) {
+                QuantileBin1D q = (QuantileBin1D)other;
+                buf.Append("25%, 50% and 75% Quantiles: " + RelError(quantile(0.25), q.quantile(0.25)) + ", " + RelError(quantile(0.5), q.quantile(0.5)) + ", " + RelError(quantile(0.75), q.quantile(0.75)));
+                buf.Append("\nquantileInverse(mean): " + RelError(quantileInverse(Mean()), q.quantileInverse(q.Mean())) + " %");
+                buf.Append("\n");
+            }
+            return buf.ToString();
+        }
+
+        public double median()
+        {
+            return quantile(0.5);
+        }
+
+        [MethodImpl(MethodImplOptions.Synchronized)]
+        public double quantile(double phi)
+        {
+            return quantiles(new List<Double>(new double[] { phi }))[0];
+        }
+
+        [MethodImpl(MethodImplOptions.Synchronized)]
+        public double quantileInverse(double element)
+        {
+            return finder.Phi(element);
+        }
+
+        [MethodImpl(MethodImplOptions.Synchronized)]
+        public List<Double> quantiles(List<Double> phis)
+        {
+            return finder.QuantileElements(phis);
+        }
+
+        public int sizeOfRange(double minElement, double maxElement)
+        {
+            return (int)System.Math.Round(Size * (quantileInverse(maxElement) - quantileInverse(minElement)));
+        }
+
+        [MethodImpl(MethodImplOptions.Synchronized)]
+        public MightyStaticBin1D[] splitApproximately(List<Double> percentages, int k)
+        {
+            /*
+               percentages = [p0, p1, p2, ..d, p(size-2), p(size-1)]
+               defines bins [p0,p1), [p1,p2), ..d, [p(size-2),p(size-1))
+               each bin is divided into k equi-percent-distant sub bins (subintervals).
+               e.gd k = 2 means "compute" with a resolution (accuracy) of 2 subbins (subintervals) per bin,
+
+               percentages = [0.1, 0.2, 0.3, ..d, 0.9, 1.0] means
+               bin 0 holds the first 0.1-0.0=10% of the sorted elements,
+               bin 1 holds the next  0.2-0.1=10% of the sorted elements,
+               ...
+
+               bins =          [0.1, 0.2), [0.2, 0.3), ..d, [0.9, 1.0)
+                     subBins = [0.1,    0.15,     0.2,     0.25,    0.3,    ....]
+
+                               [0.1, 0.15) [0.15, 0.2)             [0.3, 0.35) [0.35, 0.4)
+
+                                                 [0.2, 0.25) [0.25, 0.3)
+
+             */
+            int percentSize = percentages.Count;
+            if (k < 1 || percentSize < 2) throw new ArgumentException();
+
+            double[] percent = percentages.ToArray();
+            int noOfBins = percentSize - 1;
+
+
+            // construct subintervals
+            double[] subBins = new double[1 + k * (percentSize - 1)];
+            subBins[0] = percent[0];
+            int c = 1;
+
+            for (int i = 0; i < noOfBins; i++)
+            {
+                double step = (percent[i + 1] - percent[i]) / k;
+                for (int j = 1; j <= k; j++)
+                {
+                    subBins[c++] = percent[i] + j * step;
+                }
+            }
+
+            // compute quantile elements;
+            double[] quantiles = quantiles(new List<Double>(subBins)).ToArray();
+
+            // collect summary statistics for each bin.
+            // one bin's statistics are the integrated statistics of its subintervals.
+            MightyStaticBin1D[] splitBins = new MightyStaticBin1D[noOfBins];
+            int maxOrderForSumOfPowers = GetMaxOrderForSumOfPowers();
+            maxOrderForSumOfPowers = System.Math.Min(10, maxOrderForSumOfPowers); // don't compute tons of measures
+
+            int dataSize = this.Size;
+            c = 0;
+            for (int i = 0; i < noOfBins; i++)
+            { // for each bin
+                double step = (percent[i + 1] - percent[i]) / k;
+                double binSum = 0;
+                double binSumOfSquares = 0;
+                double binSumOfLogarithms = 0;
+                double binSumOfInversions = 0;
+                double[] binSumOfPowers = null;
+                if (maxOrderForSumOfPowers > 2)
+                {
+                    binSumOfPowers = new double[maxOrderForSumOfPowers - 2];
+                }
+
+                double binMax;
+                                double binMin = quantiles[c++];
+                double safe_min = binMin;
+                double subIntervalSize = dataSize * step;
+
+                for (int j = 1; j <= k; j++)
+                { // integrate all subintervals
+                    binMax = quantiles[c++];
+                    double binMean = (binMin + binMax) / 2;
+                    binSum += binMean * subIntervalSize;
+                    binSumOfSquares += binMean * binMean * subIntervalSize;
+                    if (this.HasSumOfLogarithms)
+                    {
+                        binSumOfLogarithms += (System.Math.Log(binMean)) * subIntervalSize;
+                    }
+                    if (this.HasSumOfInversions)
+                    {
+                        binSumOfInversions += (1 / binMean) * subIntervalSize;
+                    }
+                    if (maxOrderForSumOfPowers >= 3) binSumOfPowers[0] += binMean * binMean * binMean * subIntervalSize;
+                    if (maxOrderForSumOfPowers >= 4) binSumOfPowers[1] += binMean * binMean * binMean * binMean * subIntervalSize;
+                    for (int p = 5; p <= maxOrderForSumOfPowers; p++)
+                    {
+                        binSumOfPowers[p - 3] += System.Math.Pow(binMean, p) * subIntervalSize;
+                    }
+
+                    binMin = binMax;
+                }
+                c--;
+
+                // example: bin(0) contains (0.2-0.1) == 10% of all elements
+                int binSize = (int)System.Math.Round((percent[i + 1] - percent[i]) * dataSize);
+                binMax = binMin;
+                binMin = safe_min;
+
+                // fill statistics
+                splitBins[i] = new MightyStaticBin1D(this.HasSumOfLogarithms, this.HasSumOfInversions, maxOrderForSumOfPowers);
+                if (binSize > 0)
+                {
+                    splitBins[i].Size = binSize;
+                    splitBins[i].Min = binMin;
+                    splitBins[i].Max = binMax;
+                    splitBins[i].Sum = binSum;
+                    splitBins[i].SumOfSquares = binSumOfSquares;
+                    splitBins[i].SumOfLogarithms = binSumOfLogarithms;
+                    splitBins[i].SumOfInversions = binSumOfInversions;
+                    splitBins[i].SumOfPowers = binSumOfPowers;
+                }
+                /*
+                double binMean = binSum / binSize;
+                Console.WriteLine("size="+binSize);
+                Console.WriteLine("min="+binMin);
+                Console.WriteLine("max="+binMax);
+                Console.WriteLine("mean="+binMean);
+                Console.WriteLine("sum_x="+binSum);
+                Console.WriteLine("sum_xx="+binSumOfSquares);
+                Console.WriteLine("rms="+System.Math.Sqrt(binSumOfSquares / binSize));
+                Console.WriteLine();
+                */
+
+            }
+            return splitBins;
+        }
+
+        [MethodImpl(MethodImplOptions.Synchronized)]
+        public MightyStaticBin1D[] splitApproximately(Hep.Aida.IAxis axis, int k)
+        {
+            List<Double> percentages = new List<Double>(new Hep.Aida.Ref.Converter().edges(axis));
+            percentages.Insert(0, Double.NegativeInfinity);
+            percentages.Add(Double.PositiveInfinity);
+            for (int i = percentages.Count; --i >= 0;)
+            {
+                percentages[i] = quantileInverse(percentages[i]);
+            }
+
+            return splitApproximately(percentages, k);
+        }
+        /**
+         * Returns a String representation of the receiver.
+         */
+        [MethodImpl(MethodImplOptions.Synchronized)]
+        public override String ToString()
+        {
+            StringBuilder buf = new StringBuilder(base.ToString());
+            buf.Append("25%, 50%, 75% Quantiles: " + quantile(0.25) + ", " + quantile(0.5) + ", " + quantile(0.75));
+            //buf.Append("10%, 25%, 50%, 75%, 90% Quantiles: "+quantile(0.1) + ", "+ quantile(0.25) + ", "+ quantile(0.5) + ", " + quantile(0.75) + ", " + quantile(0.9));
+            buf.Append("\nquantileInverse(median): " + quantileInverse(median()));
+            buf.Append("\n");
+            return buf.ToString();
+        }
+        #endregion
+
+        #region Local Protected Methods
 
         #endregion
 

@@ -17,13 +17,9 @@ namespace Cern.Colt.Matrix
 {
     using System;
     using System.Collections.Generic;
-
     using DoubleAlgorithms;
-
     using Function;
-
     using Implementation;
-
     using LinearAlgebra;
 
     /// <summary>
