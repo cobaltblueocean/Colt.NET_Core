@@ -90,9 +90,9 @@ namespace Cern.Colt.Matrix.Implementation
         /// <returns>
         /// The number of cells.
         /// </returns>
-        public override int Size()
+        public override int Size
         {
-            return Rows * Columns;
+            get { return Rows * Columns; }
         }
 
         /// <summary>
@@ -317,7 +317,7 @@ namespace Cern.Colt.Matrix.Implementation
             this.rowStride = rStride;
             this.columnStride = cStride;
 
-            isView = false;
+            IsView = false;
             if ((double)columns * rows > int.MaxValue) throw new ArgumentException("matrix too large");
         }
 
@@ -333,7 +333,7 @@ namespace Cern.Colt.Matrix.Implementation
             {
                 columnZero += (Columns - 1) * columnStride;
                 columnStride = -columnStride;
-                isView = true;
+                IsView = true;
             }
 
             return this;
@@ -359,7 +359,7 @@ namespace Cern.Colt.Matrix.Implementation
             columnZero = tmp;
 
             // flips stay unaffected
-            isView = true;
+            IsView = true;
             return this;
         }
 
@@ -391,7 +391,7 @@ namespace Cern.Colt.Matrix.Implementation
             columnZero += columnStride * column;
             Rows = height;
             Columns = width;
-            isView = true;
+            IsView = true;
             return this;
         }
 
@@ -407,7 +407,7 @@ namespace Cern.Colt.Matrix.Implementation
             {
                 rowZero += (Rows - 1) * rowStride;
                 rowStride = -rowStride;
-                isView = true;
+                IsView = true;
             }
 
             return this;
@@ -435,7 +435,7 @@ namespace Cern.Colt.Matrix.Implementation
             this.columnStride *= cStride;
             if (Rows != 0) Rows = ((Rows - 1) / rStride) + 1;
             if (Columns != 0) Columns = ((Columns - 1) / cStride) + 1;
-            isView = true;
+            IsView = true;
             return this;
         }
     }

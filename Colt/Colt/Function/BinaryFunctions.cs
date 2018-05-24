@@ -56,6 +56,17 @@ namespace Cern.Colt.Function
     public delegate double Double9Function(
         double a00, double a01, double a02, double a10, double a11, double a12, double a20, double a21, double a22);
 
+
+    /// <summary>
+    /// A function that takes arguments and returns a single value.
+    /// </summary>
+    /// <returns>
+    /// The result of the function.
+    /// </returns>
+    public delegate double Double27Function(double a000, double a001, double a002, double a010, double a011, double a012, double a020, double a021, double a022,
+                                            double a100, double a101, double a102, double a110, double a111, double a112, double a120, double a121, double a122,
+                                            double a200, double a201, double a202, double a210, double a211, double a212, double a220, double a221, double a222);
+
     /// <summary>
     /// A comparison function which imposes a <i>total ordering</i> on some collection of elements.
     /// Returns a negative integer, zero, or a positive integer as the first argument is less than, equal to, or greater than the second.
@@ -132,6 +143,24 @@ namespace Cern.Colt.Function
     public delegate bool IntIntProcedure(int x, int y);
 
     /// <summary>
+    /// Applies a procedure to an argument.
+    /// Optionally can return a boolean flag to inform the object calling the procedure.
+    /// </summary>
+    /// <param name="x">
+    /// The first argument passed to the function.
+    /// </param>
+    /// <param name="y">
+    /// The second argument passed to the function.
+    /// </param>
+    /// <param name="z">
+    /// The third argument passed to the function.
+    /// </param>
+    /// <returns>
+    /// A flag to inform the object calling the procedure.
+    /// </returns>
+    public delegate bool IntIntIntProcedure(int x, int y, int z);
+
+    /// <summary>
     /// Compares its two arguments for order.  Returns a negative integer,
     /// zero, or a positive integer as the first argument is less than, equal
     /// to, or greater than the second.
@@ -179,6 +208,23 @@ namespace Cern.Colt.Function
     /// The result of the function.
     /// </returns>
     public delegate double IntIntDoubleFunction(int first, int second, double third);
+
+    /// <summary>
+    /// A function that takes three arguments.
+    /// </summary>
+    /// <param name="first">
+    /// The first argument passed to the function.
+    /// </param>
+    /// <param name="second">
+    /// The second argument passed to the function.
+    /// </param>
+    /// <param name="third">
+    /// The third argument passed to the function.
+    /// </param>
+    /// <returns>
+    /// The result of the function.
+    /// </returns>
+    public delegate int IntIntIntFunction(int first, int second, int third);
 
     /// <summary>
     /// Compares its two arguments for order.  Returns a negative integer,

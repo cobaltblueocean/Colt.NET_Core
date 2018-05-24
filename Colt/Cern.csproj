@@ -91,6 +91,8 @@
     <Compile Include="Colt\Matrix\LinearAlgebra\Property.cs" />
     <Compile Include="Colt\Matrix\LinearAlgebra\SingularValueDecomposition.cs" />
     <Compile Include="Colt\Matrix\ObjectFactory2D.cs" />
+    <Compile Include="Colt\Matrix\ObjectMatrix1D.cs" />
+    <Compile Include="Colt\Matrix\ObjectMatrix2D.cs" />
     <Compile Include="Colt\PersistentObject.cs" />
     <Compile Include="Extensions\ArrayExtensions.cs" />
     <Compile Include="Extensions\DateTimeExtension.cs" />

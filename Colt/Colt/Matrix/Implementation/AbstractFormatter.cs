@@ -290,7 +290,7 @@ namespace Cern.Colt.Matrix.Implementation
                 {
                     string s = strings[row][column];
                     maxWidth = Math.Max(maxWidth, s.Length);
-                    if (isDecimal) maxLead = Math.Max(maxLead, lead(s));
+                    if (isDecimal) maxLead = Math.Max(maxLead, Lead(s));
                 }
 
                 maxColWidth[column] = maxWidth;
@@ -356,7 +356,7 @@ namespace Cern.Colt.Matrix.Implementation
                 }
                 else if (alignmentString.Equals(DECIMAL))
                 {
-                    s.Append(blanks(maxColLead[column] - lead(c)));
+                    s.Append(blanks(maxColLead[column] - Lead(c)));
                     s.Append(c);
                     s.Append(blanks(maxColWidth[column] - s.Length));
                 }
@@ -406,7 +406,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <returns>
         /// A string representations of all cells.
         /// </returns>
-        protected abstract string[][] format(AbstractMatrix2D matrix);
+        protected abstract string[][] Format(AbstractMatrix2D matrix);
 
         /// <summary>
         /// Returns a string representations of all cells; no alignment considered.
@@ -435,7 +435,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <returns>
         /// The number of characters or the number of characters before the decimal point.
         /// </returns>
-        protected virtual int lead(string s)
+        protected virtual int Lead(string s)
         {
             return s.Length;
         }
@@ -503,9 +503,9 @@ namespace Cern.Colt.Matrix.Implementation
         /// <returns>
         /// A string representation of the given matrix.
         /// </returns>
-        protected virtual string toString(AbstractMatrix2D matrix)
+        protected virtual string ToString(AbstractMatrix2D matrix)
         {
-            var strings = this.format(matrix);
+            var strings = this.Format(matrix);
             align(strings);
             var total = new StringBuilder(toString(strings));
             if (printShape) total.Insert(0, Shape(matrix) + "\n");

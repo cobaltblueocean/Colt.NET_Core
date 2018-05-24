@@ -47,7 +47,7 @@ namespace Cern.Colt.Matrix.Implementation
             this.columnOffsets = columnOffsets;
             this.offset = offset;
 
-            isView = true;
+            IsView = true;
         }
 
         /// <summary>
@@ -94,7 +94,7 @@ namespace Cern.Colt.Matrix.Implementation
             this.columnOffsets = columnOffsets;
             this.offset = offset;
 
-            isView = true;
+            IsView = true;
         }
 
         /// <summary>
@@ -348,7 +348,7 @@ namespace Cern.Colt.Matrix.Implementation
             columnOffsets = tmp;
 
             // flips stay unaffected
-            isView = true;
+            IsView = true;
             return this;
         }
 

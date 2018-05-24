@@ -92,7 +92,7 @@ namespace Cern.Colt.Matrix.Implementation
         {
             setUp(rows, columns, rowZero, columnZero, rowStride, columnStride);
             this.elements = elements;
-            isView = true;
+            IsView = true;
         }
 
         /// <summary>
@@ -143,7 +143,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// </exception>
         public override DoubleMatrix2D Assign(double[][] values)
         {
-            if (isView) base.Assign(values);
+            if (IsView) base.Assign(values);
             else
             {
                 if (values.Length != Rows) throw new ArgumentOutOfRangeException("values", "Must have same number of rows: rows=" + values.Length + "rows()=" + Rows);
@@ -243,7 +243,7 @@ namespace Cern.Colt.Matrix.Implementation
             if (other == this) return this; // nothing to do
             checkShape(other);
 
-            if (!isView && !other.isView)
+            if (!IsView && !other.IsView)
             {
                 // quickest
                 Array.Copy(other.elements, 0, elements, 0, elements.Length);
@@ -485,7 +485,7 @@ namespace Cern.Colt.Matrix.Implementation
             if (z == null) z = new DenseDoubleMatrix1D(Rows);
             if (!(y is DenseDoubleMatrix1D) && z is DenseDoubleMatrix1D) return base.ZMult(y, z, alpha, beta, false);
 
-            if (Columns != y.size || Rows > z.size)
+            if (Columns != y._size || Rows > z._size)
                 throw new ArgumentException("Incompatible args: " + this + ", " + y + ", " + z);
 
             var yy = (DenseDoubleMatrix1D)y;
@@ -495,12 +495,12 @@ namespace Cern.Colt.Matrix.Implementation
             double[] zElems = zz.elements;
             if (aElems == null || yElems == null || zElems == null) throw new ApplicationException();
             int _as = columnStride;
-            int ys = yy.stride;
-            int zs = zz.stride;
+            int ys = yy._stride;
+            int zs = zz._stride;
 
             int indexA = index(0, 0);
-            int indexY = yy.index(0);
-            int indexZ = zz.index(0);
+            int indexY = yy.Index(0);
+            int indexZ = zz.Index(0);
 
             int cols = Columns;
             for (int row = Rows; --row >= 0;)

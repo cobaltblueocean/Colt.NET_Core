@@ -33,7 +33,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// </param>
         public SparseDoubleMatrix1D(double[] values)
         {
-            setUp(values.Length);
+            SetUp(values.Length);
             Assign(values);
         }
 
@@ -49,7 +49,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// </exception>
         public SparseDoubleMatrix1D(int size)
         {
-            setUp(size);
+            SetUp(size);
             this.elements = new Dictionary<int, double>();
         }
 
@@ -73,9 +73,9 @@ namespace Cern.Colt.Matrix.Implementation
         /// </exception>
         internal SparseDoubleMatrix1D(int size, IDictionary<int, double> elements, int offset, int stride)
         {
-            setUp(size, offset, stride);
+            SetUp(size, offset, stride);
             this.elements = elements;
-            isView = true;
+            IsView = true;
         }
 
         /// <summary>
@@ -93,13 +93,13 @@ namespace Cern.Colt.Matrix.Implementation
         {
             get
             {
-                int i = zero + (index * stride);
+                int i = _zero + (index * _stride);
                 return elements.ContainsKey(i) ? elements[i] : 0;
             }
 
             set
             {
-                int i = zero + (index * stride);
+                int i = _zero + (index * _stride);
                 if (value == 0)
                     this.elements.Remove(i);
                 else
@@ -151,7 +151,7 @@ namespace Cern.Colt.Matrix.Implementation
         public override DoubleMatrix1D Assign(double value)
         {
             // overriden for performance only
-            if (!isView && value == 0) this.elements.Clear();
+            if (!IsView && value == 0) this.elements.Clear();
             else base.Assign(value);
             return this;
         }
@@ -183,7 +183,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// </returns>
         public override int Cardinality()
         {
-            return isView ? base.Cardinality() : elements.Count;
+            return IsView ? base.Cardinality() : elements.Count;
         }
 
         /// <summary>
@@ -251,10 +251,10 @@ namespace Cern.Colt.Matrix.Implementation
         /// <returns>
         /// The position of the element with the given relative rank.
         /// </returns>
-        protected internal override int index(int rank)
+        protected internal override int Index(int rank)
         {
             // overriden for manual inlining only
-            return zero + (rank * stride);
+            return _zero + (rank * _stride);
         }
 
         /// <summary>

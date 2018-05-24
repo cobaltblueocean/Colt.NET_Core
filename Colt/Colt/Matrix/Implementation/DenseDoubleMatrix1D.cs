@@ -32,7 +32,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// </param>
         public DenseDoubleMatrix1D(double[] values)
         {
-            setUp(values.Length);
+            SetUp(values.Length);
             elements = new double[values.Length];
             Assign(values);
         }
@@ -49,7 +49,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// </exception>
         public DenseDoubleMatrix1D(int size)
         {
-            setUp(size);
+            SetUp(size);
             elements = new double[size];
         }
 
@@ -74,9 +74,9 @@ namespace Cern.Colt.Matrix.Implementation
         /// </exception>
         internal DenseDoubleMatrix1D(int size, double[] elements, int zero, int stride)
         {
-            setUp(size, zero, stride);
+            SetUp(size, zero, stride);
             this.elements = elements;
-            isView = true;
+            IsView = true;
         }
 
         /// <summary>
@@ -94,12 +94,12 @@ namespace Cern.Colt.Matrix.Implementation
         {
             get
             {
-                return elements[zero + (index * stride)];
+                return elements[_zero + (index * _stride)];
             }
 
             set
             {
-                elements[zero + (index * stride)] = value;
+                elements[_zero + (index * _stride)] = value;
             }
         }
 
@@ -117,13 +117,13 @@ namespace Cern.Colt.Matrix.Implementation
         /// </exception>
         public override DoubleMatrix1D Assign(double[] values)
         {
-            if (isView)
+            if (IsView)
             {
                 base.Assign(values);
             }
             else
             {
-                if (values.Length != size)
+                if (values.Length != _size)
                     throw new ArgumentOutOfRangeException("Must have same number of cells: length=" + values.Length + "size()=" + Size());
                 Array.Copy(values, 0, elements, 0, values.Length);
             }
@@ -142,10 +142,10 @@ namespace Cern.Colt.Matrix.Implementation
         /// </returns>
         public override DoubleMatrix1D Assign(double value)
         {
-            int index = this.index(0);
-            int s = stride;
+            int index = this.Index(0);
+            int s = _stride;
             double[] elems = elements;
-            for (int i = size; --i >= 0;)
+            for (int i = _size; --i >= 0;)
             {
                 elems[index] = value;
                 index += s;
@@ -166,12 +166,12 @@ namespace Cern.Colt.Matrix.Implementation
         /// </returns>
         public override DoubleMatrix1D Assign(DoubleFunction function)
         {
-            int s = stride;
-            int i = index(0);
+            int s = _stride;
+            int i = Index(0);
             double[] elems = elements;
             if (elems == null) throw new ApplicationException();
 
-            for (int k = size; --k >= 0;)
+            for (int k = _size; --k >= 0;)
             {
                 elems[i] = function(elems[i]);
                 i += s;
@@ -201,7 +201,7 @@ namespace Cern.Colt.Matrix.Implementation
             var other = (DenseDoubleMatrix1D)source;
             if (other == this) return this;
             CheckSize(other);
-            if (!isView && !other.isView)
+            if (!IsView && !other.IsView)
             {
                 // quickest
                 Array.Copy(other.elements, 0, elements, 0, elements.Length);
@@ -223,12 +223,12 @@ namespace Cern.Colt.Matrix.Implementation
             double[] elems = elements;
             double[] otherElems = other.elements;
             if (elements == null || otherElems == null) throw new ArgumentException();
-            int s = stride;
-            int ys = other.stride;
+            int s = _stride;
+            int ys = other._stride;
 
-            int index = this.index(0);
-            int otherIndex = other.index(0);
-            for (int k = size; --k >= 0;)
+            int index = this.Index(0);
+            int otherIndex = other.Index(0);
+            for (int k = _size; --k >= 0;)
             {
                 elems[index] = otherElems[otherIndex];
                 index += s;
@@ -266,14 +266,14 @@ namespace Cern.Colt.Matrix.Implementation
             double[] elems = elements;
             double[] otherElems = other.elements;
             if (elems == null || otherElems == null) throw new ApplicationException();
-            int s = stride;
-            int ys = other.stride;
+            int s = _stride;
+            int ys = other._stride;
 
-            int index = this.index(0);
-            int otherIndex = other.index(0);
+            int index = this.Index(0);
+            int otherIndex = other.Index(0);
 
             // specialized for speed
-            for (int k = size; --k >= 0;)
+            for (int k = _size; --k >= 0;)
             {
                 elems[index] = function(elems[index], otherElems[otherIndex]);
                 index += s;
@@ -336,12 +336,12 @@ namespace Cern.Colt.Matrix.Implementation
             double[] elems = elements;
             double[] otherElems = y.elements;
             if (elements == null || otherElems == null) throw new ApplicationException();
-            int s = stride;
-            int ys = y.stride;
+            int s = _stride;
+            int ys = y._stride;
 
-            int index = this.index(0);
-            int otherIndex = y.index(0);
-            for (int k = size; --k >= 0;)
+            int index = this.Index(0);
+            int otherIndex = y.Index(0);
+            for (int k = _size; --k >= 0;)
             {
                 double tmp = elems[index];
                 elems[index] = otherElems[otherIndex];
@@ -364,8 +364,8 @@ namespace Cern.Colt.Matrix.Implementation
         /// </exception>
         public override void ToArray(double[] values)
         {
-            if (values.Length < size) throw new ArgumentOutOfRangeException("values", "values too small");
-            if (!isView) Array.Copy(elements, 0, values, 0, elements.Length);
+            if (values.Length < _size) throw new ArgumentOutOfRangeException("values", "values too small");
+            if (!IsView) Array.Copy(elements, 0, values, 0, elements.Length);
             else base.ToArray(values);
         }
 
@@ -395,14 +395,14 @@ namespace Cern.Colt.Matrix.Implementation
 
             int tail = from + length;
             if (from < 0 || length < 0) return 0;
-            if (size < tail) tail = size;
+            if (_size < tail) tail = _size;
             if (y.Size() < tail) tail = y.Size();
             int min = tail - from;
 
-            int i = index(from);
-            int j = yy.index(from);
-            int s = stride;
-            int ys = yy.stride;
+            int i = Index(from);
+            int j = yy.Index(from);
+            int s = _stride;
+            int ys = yy._stride;
             double[] elems = elements;
             double[] yElems = yy.elements;
             if (elems == null || yElems == null) throw new ApplicationException();
@@ -438,11 +438,11 @@ namespace Cern.Colt.Matrix.Implementation
         public override double ZSum()
         {
             double sum = 0;
-            int s = stride;
-            int i = index(0);
+            int s = _stride;
+            int i = Index(0);
             double[] elems = elements;
             if (elems == null) throw new ApplicationException();
-            for (int k = size; --k >= 0;)
+            for (int k = _size; --k >= 0;)
             {
                 sum += elems[i];
                 i += s;
@@ -461,10 +461,10 @@ namespace Cern.Colt.Matrix.Implementation
         /// <returns>
         /// The position of the element with the given relative rank within the (virtual or non-virtual) internal 1-dimensional array.
         /// </returns>
-        protected internal override int index(int rank)
+        protected internal override int Index(int rank)
         {
             // overriden for manual inlining only
-            return zero + (rank * stride);
+            return _zero + (rank * _stride);
         }
 
         /// <summary>
@@ -479,10 +479,10 @@ namespace Cern.Colt.Matrix.Implementation
         protected override int Cardinality(int maxCardinality)
         {
             int cardinality = 0;
-            int index = this.index(0);
-            int s = stride;
+            int index = this.Index(0);
+            int s = _stride;
             double[] elems = elements;
-            int i = size;
+            int i = _size;
             while (--i >= 0 && cardinality < maxCardinality)
             {
                 if (elems[index] != 0) cardinality++;

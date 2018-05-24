@@ -94,7 +94,7 @@ namespace Cern.Colt.Matrix.Implementation
         {
             setUp(rows, columns, rowZero, columnZero, rowStride, columnStride);
             this.elements = elements;
-            this.isView = true;
+            this.IsView = true;
         }
 
         /// <summary>
@@ -142,7 +142,7 @@ namespace Cern.Colt.Matrix.Implementation
         public override DoubleMatrix2D Assign(double value)
         {
             // overriden for performance only
-            if (!isView && value == 0) this.elements.Clear();
+            if (!IsView && value == 0) this.elements.Clear();
             else base.Assign(value);
             return this;
         }
@@ -171,7 +171,7 @@ namespace Cern.Colt.Matrix.Implementation
             if (other == this) return this; // nothing to do
             checkShape(other);
 
-            if (!this.isView && !other.isView)
+            if (!this.IsView && !other.IsView)
             { // quickest
                 this.elements = new Dictionary<int, double>(other.elements);
                 return this;
@@ -198,7 +198,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// </exception>
         public override DoubleMatrix2D Assign(DoubleMatrix2D y, DoubleDoubleFunction function)
         {
-            if (!isView)
+            if (!IsView)
                 checkShape(y);
             return base.Assign(y, function);
         }
@@ -211,7 +211,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// </returns>
         public override int Cardinality()
         {
-            return isView ? base.Cardinality() : this.elements.Count;
+            return IsView ? base.Cardinality() : this.elements.Count;
         }
 
         /// <summary>
@@ -225,7 +225,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// </returns>
         public override DoubleMatrix2D ForEachNonZero(IntIntDoubleFunction function)
         {
-            if (isView) base.ForEachNonZero(function);
+            if (IsView) base.ForEachNonZero(function);
             else
             {
                 foreach (var e in elements)

@@ -96,9 +96,9 @@ namespace Cern.Colt.Matrix
         /// </returns>
         public virtual double Aggregate(DoubleDoubleFunction aggr, DoubleFunction f)
         {
-            if (size == 0) return double.NaN;
-            double a = f(this[size - 1]);
-            for (int i = size - 1; --i >= 0;)
+            if (_size == 0) return double.NaN;
+            double a = f(this[_size - 1]);
+            for (int i = _size - 1; --i >= 0;)
                 a = aggr(a, f(this[i]));
             return a;
         }
@@ -124,9 +124,9 @@ namespace Cern.Colt.Matrix
         public double Aggregate(DoubleMatrix1D other, DoubleDoubleFunction aggr, DoubleDoubleFunction f)
         {
             CheckSize(other);
-            if (size == 0) return double.NaN;
-            double a = f(this[size - 1], other[size - 1]);
-            for (int i = size - 1; --i >= 0;)
+            if (_size == 0) return double.NaN;
+            double a = f(this[_size - 1], other[_size - 1]);
+            for (int i = _size - 1; --i >= 0;)
                 a = aggr(a, f(this[i], other[i]));
             return a;
         }
@@ -149,8 +149,8 @@ namespace Cern.Colt.Matrix
         /// </exception>
         public virtual DoubleMatrix1D Assign(double[] values)
         {
-            if (values.Length != size) throw new ArgumentOutOfRangeException("Must have same number of cells: length=" + values.Length + "size()=" + Size());
-            for (int i = size; --i >= 0;)
+            if (values.Length != _size) throw new ArgumentOutOfRangeException("Must have same number of cells: length=" + values.Length + "size()=" + Size());
+            for (int i = _size; --i >= 0;)
                 this[i] = values[i];
             return this;
         }
@@ -166,7 +166,7 @@ namespace Cern.Colt.Matrix
         /// </returns>
         public virtual DoubleMatrix1D Assign(double value)
         {
-            for (int i = size; --i >= 0;)
+            for (int i = _size; --i >= 0;)
                 this[i] = value;
             return this;
         }
@@ -183,7 +183,7 @@ namespace Cern.Colt.Matrix
         /// </returns>
         public virtual DoubleMatrix1D Assign(DoubleFunction function)
         {
-            for (int i = size; --i >= 0;)
+            for (int i = _size; --i >= 0;)
                 this[i] = function(this[i]);
             return this;
         }
@@ -208,7 +208,7 @@ namespace Cern.Colt.Matrix
             CheckSize(other);
             if (HaveSharedCells(other)) other = other.Copy();
 
-            for (int i = size; --i >= 0;)
+            for (int i = _size; --i >= 0;)
                 this[i] = other[i];
             return this;
         }
@@ -216,7 +216,7 @@ namespace Cern.Colt.Matrix
 
         public virtual DoubleMatrix1D Assign(Cern.Jet.Math.Mult mult)
         {
-            for (int i = size; --i >= 0;)
+            for (int i = _size; --i >= 0;)
                 this[i] = mult.Apply(this[i]);
             return this;
         }
@@ -241,7 +241,7 @@ namespace Cern.Colt.Matrix
         public virtual DoubleMatrix1D Assign(DoubleMatrix1D y, DoubleDoubleFunction function)
         {
             CheckSize(y);
-            for (int i = size; --i >= 0;)
+            for (int i = _size; --i >= 0;)
                 this[i] = function(this[i], y[i]);
             return this;
         }
@@ -327,7 +327,7 @@ namespace Cern.Colt.Matrix
         public virtual int Cardinality()
         {
             int cardinality = 0;
-            for (int i = size; --i >= 0;)
+            for (int i = _size; --i >= 0;)
                 if (this[i] != 0) cardinality++;
             return cardinality;
         }
@@ -407,7 +407,7 @@ namespace Cern.Colt.Matrix
         /// </exception>
         public double Get(int index)
         {
-            if (index < 0 || index >= size) checkIndex(index);
+            if (index < 0 || index >= _size) CheckIndex(index);
             return this[index];
         }
 
@@ -428,7 +428,7 @@ namespace Cern.Colt.Matrix
             bool fillValueList = valueList != null;
             if (fillIndexList) indexList.Clear();
             if (fillValueList) valueList.Clear();
-            int s = size;
+            int s = _size;
             for (int i = 0; i < s; i++)
             {
                 double value = this[i];
@@ -465,7 +465,7 @@ namespace Cern.Colt.Matrix
 
             if (fillIndexList) indexList.Clear();
             if (fillValueList) valueList.Clear();
-            int s = size;
+            int s = _size;
             for (int i = 0; i < s; i++)
             {
                 double value = this[i];
@@ -485,7 +485,7 @@ namespace Cern.Colt.Matrix
         /// </returns>
         public DoubleMatrix1D Like()
         {
-            return Like(size);
+            return Like(_size);
         }
 
         /// <summary>
@@ -527,7 +527,7 @@ namespace Cern.Colt.Matrix
         /// </exception>
         public void Set(int index, double value)
         {
-            if (index < 0 || index >= size) checkIndex(index);
+            if (index < 0 || index >= _size) CheckIndex(index);
             this[index] = value;
         }
 
@@ -543,7 +543,7 @@ namespace Cern.Colt.Matrix
         public virtual void Swap(DoubleMatrix1D other)
         {
             CheckSize(other);
-            for (int i = size; --i >= 0;)
+            for (int i = _size; --i >= 0;)
             {
                 double tmp = this[i];
                 this[i] = other[i];
@@ -560,7 +560,7 @@ namespace Cern.Colt.Matrix
         /// </returns>
         public virtual double[] ToArray()
         {
-            var values = new double[size];
+            var values = new double[_size];
             ToArray(values);
             return values;
         }
@@ -577,8 +577,8 @@ namespace Cern.Colt.Matrix
         /// </exception>
         public virtual void ToArray(double[] values)
         {
-            if (values.Length < size) throw new ArgumentOutOfRangeException("values", "values too small");
-            for (int i = size; --i >= 0;)
+            if (values.Length < _size) throw new ArgumentOutOfRangeException("values", "values too small");
+            for (int i = _size; --i >= 0;)
             {
                 values[i] = this[i];
             }
@@ -592,7 +592,7 @@ namespace Cern.Colt.Matrix
         /// </returns>
         public virtual IEnumerator<double> GetEnumerator()
         {
-            for (int i = 0; i < size; i++) yield return this[i];
+            for (int i = 0; i < _size; i++) yield return this[i];
         }
 
         /// <summary>
@@ -616,7 +616,7 @@ namespace Cern.Colt.Matrix
         /// </returns>
         public DoubleMatrix1D ViewFlip()
         {
-            return (DoubleMatrix1D)View().vFlip();
+            return (DoubleMatrix1D)View().VFlip();
         }
 
         /// <summary>
@@ -636,7 +636,7 @@ namespace Cern.Colt.Matrix
         /// </exception>
         public DoubleMatrix1D ViewPart(int index, int width)
         {
-            return (DoubleMatrix1D)View().vPart(index, width);
+            return (DoubleMatrix1D)View().VPart(index, width);
         }
 
         /// <summary>
@@ -658,14 +658,14 @@ namespace Cern.Colt.Matrix
             // check for "all"
             if (indexes == null)
             {
-                indexes = new int[size];
-                for (int i = size; --i >= 0;) indexes[i] = i;
+                indexes = new int[_size];
+                for (int i = _size; --i >= 0;) indexes[i] = i;
             }
 
-            checkIndexes(indexes);
+            CheckIndexes(indexes);
             var offsets = new int[indexes.Length];
             for (int i = indexes.Length; --i >= 0;)
-                offsets[i] = index(indexes[i]);
+                offsets[i] = Index(indexes[i]);
             return ViewSelectionLike(offsets);
         }
 
@@ -682,7 +682,7 @@ namespace Cern.Colt.Matrix
         public DoubleMatrix1D ViewSelection(DoubleProcedure condition)
         {
             var matches = new List<int>();
-            for (int i = 0; i < size; i++)
+            for (int i = 0; i < _size; i++)
                 if (condition(this[i])) matches.Add(i);
             return ViewSelection(matches.ToArray());
         }
@@ -714,7 +714,7 @@ namespace Cern.Colt.Matrix
         /// </exception>
         public DoubleMatrix1D ViewStrides(int s)
         {
-            return (DoubleMatrix1D)View().vStrides(s);
+            return (DoubleMatrix1D)View().VStrides(s);
         }
 
         /// <summary>
@@ -730,7 +730,7 @@ namespace Cern.Colt.Matrix
         /// </returns>
         public virtual double ZDotProduct(DoubleMatrix1D y)
         {
-            return ZDotProduct(y, 0, size);
+            return ZDotProduct(y, 0, _size);
         }
 
         /// <summary>
@@ -755,8 +755,8 @@ namespace Cern.Colt.Matrix
             if (from < 0 || length <= 0) return 0;
 
             int tail = from + length;
-            if (size < tail) tail = size;
-            if (y.size < tail) tail = y.size;
+            if (_size < tail) tail = _size;
+            if (y._size < tail) tail = y._size;
             length = tail - from;
 
             double sum = 0;
@@ -791,8 +791,8 @@ namespace Cern.Colt.Matrix
             if (from < 0 || length <= 0) return 0;
 
             int tail = from + length;
-            if (size < tail) tail = size;
-            if (y.size < tail) tail = y.size;
+            if (_size < tail) tail = _size;
+            if (y._size < tail) tail = y._size;
             length = tail - from;
             if (length <= 0) return 0;
 
@@ -840,7 +840,7 @@ namespace Cern.Colt.Matrix
         protected virtual int Cardinality(int maxCardinality)
         {
             int cardinality = 0;
-            int i = size;
+            int i = _size;
             while (--i >= 0 && cardinality < maxCardinality)
                 if (this[i] != 0) cardinality++;
             return cardinality;
@@ -926,7 +926,7 @@ namespace Cern.Colt.Matrix
         /// </returns>
         protected double ZDotProduct(DoubleMatrix1D y, List<int> nonZeroIndexes)
         {
-            return ZDotProduct(y, 0, size, nonZeroIndexes);
+            return ZDotProduct(y, 0, _size, nonZeroIndexes);
         }
     }
 }

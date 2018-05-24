@@ -523,7 +523,7 @@ public void getNonZeros(List<int> sliceList, List<int> rowList, List<int> column
         /// Returns a string representation using default formatting.
         /// @see Cern.Colt.Matrix.DoubleAlgorithms.Formatter
         /// </summary>
-        public String ToString()
+        public override String ToString()
         {
             return new Cern.Colt.Matrix.DoubleAlgorithms.Formatter().ToString(this);
         }
@@ -540,7 +540,7 @@ public void getNonZeros(List<int> sliceList, List<int> rowList, List<int> column
         /// </summary>
         protected DoubleMatrix3D view()
         {
-            return (DoubleMatrix3D)clone();
+            return (DoubleMatrix3D)Clone();
         }
         /// <summary>
 //        Constructs and returns a new 2-dimensional<i> slice view</i> representing the Slices and Rows of the given column.
@@ -748,7 +748,7 @@ public DoubleMatrix3D viewSelection(DoubleMatrix2DProcedure condition)
             if (condition(viewSlice(i))) matches.Add(i);
         }
 
-        matches.trimToSize();
+        matches.TrimExcess();
         return viewSelection(matches.ToArray(), null, null); // take all Rows and Columns
     }
     /// <summary>

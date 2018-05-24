@@ -16,6 +16,7 @@
 namespace Cern.Colt.Matrix.DoubleAlgorithms
 {
     using System;
+    using System.Text;
     using Implementation;
 
     /// <summary>
@@ -87,7 +88,27 @@ namespace Cern.Colt.Matrix.DoubleAlgorithms
         /// </returns>
         public string ToString(DoubleMatrix2D matrix)
         {
-            return base.toString(matrix);
+            return base.ToString(matrix);
+        }
+
+        /// <summary>
+        /// Returns a string representation of the given matrix.
+        /// </summary>
+        /// <param name="matrix">the matrix to convert.</param>
+        /// <returns>A string representation of the given matrix.</returns>
+        public String ToString(DoubleMatrix3D matrix)
+        {
+            var buf = new StringBuilder();
+            Boolean oldPrintShape = this.printShape;
+            this.printShape = false;
+            for (int slice = 0; slice < matrix.Slices; slice++)
+            {
+                if (slice != 0) buf.Append(sliceSeparator);
+                buf.Append(ToString((AbstractMatrix2D)matrix.viewSlice(slice)));
+            }
+            this.printShape = oldPrintShape;
+            if (printShape) buf.Insert(0, Shape(matrix) + "\n");
+            return buf.ToString();
         }
 
         /// <summary>
@@ -99,7 +120,7 @@ namespace Cern.Colt.Matrix.DoubleAlgorithms
         /// <returns>
         /// A string representations of all cells.
         /// </returns>
-        protected override string[][] format(AbstractMatrix2D matrix)
+        protected override string[][] Format(AbstractMatrix2D matrix)
         {
             return Format((DoubleMatrix2D)matrix);
         }
@@ -113,7 +134,7 @@ namespace Cern.Colt.Matrix.DoubleAlgorithms
         /// <returns>
         /// The index of the decimal point.
         /// </returns>
-        protected int indexOfDecimalPoint(string s)
+        protected int IndexOfDecimalPoint(string s)
         {
             int i = s.LastIndexOf('.');
             if (i < 0) i = s.LastIndexOf('e');
@@ -131,10 +152,10 @@ namespace Cern.Colt.Matrix.DoubleAlgorithms
         /// <returns>
         /// The number of characters before the decimal point.
         /// </returns>
-        protected override int lead(string s)
+        protected override int Lead(string s)
         {
-            if (alignmentString.Equals(DECIMAL)) return indexOfDecimalPoint(s);
-            return base.lead(s);
+            if (alignmentString.Equals(DECIMAL)) return IndexOfDecimalPoint(s);
+            return base.Lead(s);
         }
 
         /// <summary>
@@ -146,12 +167,12 @@ namespace Cern.Colt.Matrix.DoubleAlgorithms
         /// <returns>
         /// A string representation of the given matrix.
         /// </returns>
-        protected override string toString(AbstractMatrix2D matrix)
+        protected override string ToString(AbstractMatrix2D matrix)
         {
             return this.ToString((DoubleMatrix2D)matrix);
         }
 
-        protected String toTitleString(DoubleMatrix2D matrix, String[] rowNames, String[] columnNames, String rowAxisName, String columnAxisName, String title)
+        protected String ToTitleString(DoubleMatrix2D matrix, String[] rowNames, String[] columnNames, String rowAxisName, String columnAxisName, String title)
         {
             if (matrix.Size() == 0) return "Empty matrix";
             String[][] s = Format(matrix);
@@ -159,7 +180,7 @@ namespace Cern.Colt.Matrix.DoubleAlgorithms
             //this.alignment = DECIMAL;
             align(s);
             //this.alignment = oldAlignment;
-            return new Cern.Colt.Matrix.DoubleAlgorithms.Formatter().toTitleString(Cern.Colt.Matrix.ObjectFactory2D.dense.make(s), rowNames, columnNames, rowAxisName, columnAxisName, title);
+            return new Cern.Colt.Matrix.DoubleAlgorithms.Formatter().toTitleString(Cern.Colt.Matrix.ObjectFactory2D.Dense.Make(s), rowNames, columnNames, rowAxisName, columnAxisName, title);
         }
     }
 }

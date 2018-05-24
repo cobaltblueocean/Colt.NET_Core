@@ -47,7 +47,7 @@ namespace Cern.Hep.Aida.Bin
         /// Returns the sum of squares, which is <tt>Sum( x[i] * x[i] )</tt>.
         /// </summary>
         /// <returns></returns>
-        public abstract double SumOfSquares();
+        public abstract double SumOfSquares { get; set; }
         #endregion
 
         #region Local Public Methods
@@ -97,10 +97,10 @@ namespace Cern.Hep.Aida.Bin
             StringBuilder buf = new StringBuilder();
             buf.Append("\nDifferences [percent]");
             buf.Append("\nSize: " + RelError(Size, other.Size) + " %");
-            buf.Append("\nSum: " + RelError(Sum(), other.Sum()) + " %");
-            buf.Append("\nSumOfSquares: " + RelError(SumOfSquares(), other.SumOfSquares()) + " %");
-            buf.Append("\nMin: " + RelError(Min(), other.Min()) + " %");
-            buf.Append("\nMax: " + RelError(Max(), other.Max()) + " %");
+            buf.Append("\nSum: " + RelError(Sum, other.Sum) + " %");
+            buf.Append("\nSumOfSquares: " + RelError(SumOfSquares, other.SumOfSquares) + " %");
+            buf.Append("\nMin: " + RelError(Min, other.Min) + " %");
+            buf.Append("\nMax: " + RelError(Max, other.Max) + " %");
             buf.Append("\nMean: " + RelError(Mean(), other.Mean()) + " %");
             buf.Append("\nRMS: " + RelError(Rms(), other.Rms()) + " %");
             buf.Append("\nVariance: " + RelError(Variance(), other.Variance()) + " %");
@@ -120,8 +120,8 @@ namespace Cern.Hep.Aida.Bin
         {
             if (!(obj is AbstractBin1D)) return false;
             AbstractBin1D other = (AbstractBin1D)obj;
-            return Size == other.Size && Min() == other.Min() && Max() == other.Max()
-                && Sum() == other.Sum() && SumOfSquares() == other.SumOfSquares();
+            return Size == other.Size && Min == other.Min && Max == other.Max
+                && Sum == other.Sum && SumOfSquares == other.SumOfSquares;
         }
 
         /// <summary>
@@ -131,7 +131,7 @@ namespace Cern.Hep.Aida.Bin
         [MethodImpl(MethodImplOptions.Synchronized)]
         public double Mean()
         {
-            return Sum() / Size;
+            return Sum / Size;
         }
 
         /// <summary>
@@ -141,7 +141,7 @@ namespace Cern.Hep.Aida.Bin
         [MethodImpl(MethodImplOptions.Synchronized)]
         public double Rms()
         {
-            return Descriptive.Rms(Size, SumOfSquares());
+            return Descriptive.Rms(Size, SumOfSquares);
         }
 
         /// <summary>
@@ -175,10 +175,10 @@ namespace Cern.Hep.Aida.Bin
             buf.Append(this.GetType().Name);
             buf.Append("\n-------------");
             buf.Append("\nSize: " + Size);
-            buf.Append("\nSum: " + Sum());
-            buf.Append("\nSumOfSquares: " + SumOfSquares());
-            buf.Append("\nMin: " + Min());
-            buf.Append("\nMax: " + Max());
+            buf.Append("\nSum: " + Sum);
+            buf.Append("\nSumOfSquares: " + SumOfSquares);
+            buf.Append("\nMin: " + Min);
+            buf.Append("\nMax: " + Max);
             buf.Append("\nMean: " + Mean());
             buf.Append("\nRMS: " + Rms());
             buf.Append("\nVariance: " + Variance());
@@ -208,7 +208,7 @@ namespace Cern.Hep.Aida.Bin
         [MethodImpl(MethodImplOptions.Synchronized)]
         public double Variance()
         {
-            return Descriptive.SampleVariance(Size, Sum(), SumOfSquares());
+            return Descriptive.SampleVariance(Size, Sum, SumOfSquares);
         }
 
         /// <summary>

@@ -44,12 +44,12 @@ namespace Cern.Colt.Matrix.Implementation
         /// </param>
         internal SelectedSparseDoubleMatrix1D(IDictionary<int, double> elements, int[] offsets)
         {
-            setUp(offsets.Length, 0, 1);
+            SetUp(offsets.Length, 0, 1);
 
             this.elements = elements;
             this.offsets = offsets;
             this.offset = 0;
-            this.isView = true;
+            this.IsView = true;
         }
 
         /// <summary>
@@ -76,12 +76,12 @@ namespace Cern.Colt.Matrix.Implementation
         /// </param>
         internal SelectedSparseDoubleMatrix1D(int size, IDictionary<int, double> elements, int zero, int stride, int[] offsets, int offset)
         {
-            setUp(size, zero, stride);
+            SetUp(size, zero, stride);
 
             this.elements = elements;
             this.offsets = offsets;
             this.offset = offset;
-            this.isView = true;
+            this.IsView = true;
         }
 
         /// <summary>
@@ -99,12 +99,12 @@ namespace Cern.Colt.Matrix.Implementation
         {
             get
             {
-                return elements[offset + offsets[zero + (index * stride)]];
+                return elements[offset + offsets[_zero + (index * _stride)]];
             }
 
             set
             {
-                int i = offset + offsets[zero + (index * stride)];
+                int i = offset + offsets[_zero + (index * _stride)];
                 if (value == 0)
                     this.elements.Remove(i);
                 else
@@ -153,10 +153,10 @@ namespace Cern.Colt.Matrix.Implementation
         /// <returns>
         /// Tthe position of the element with the given relative rank within the (virtual or non-virtual) internal 1-dimensional array.
         /// </returns>
-        protected internal override int index(int rank)
+        protected internal override int Index(int rank)
         {
             // manually inlined:
-            return offset + offsets[zero + (rank * stride)];
+            return offset + offsets[_zero + (rank * _stride)];
         }
 
         /// <summary>
@@ -191,10 +191,10 @@ namespace Cern.Colt.Matrix.Implementation
         /// <param name="n">
         /// The number of cells the matrix shall have.
         /// </param>
-        protected override void setUp(int n)
+        protected override void SetUp(int n)
         {
-            base.setUp(n);
-            this.stride = 1;
+            base.SetUp(n);
+            this._stride = 1;
             this.offset = 0;
         }
 

@@ -272,7 +272,7 @@ namespace Cern.Colt.Matrix.Implementation
             this.Rowstride = Rowstride;
             this.Columnstride = Columnstride;
 
-            this.isView = false;
+            this.IsView = false;
         }
 
         protected int[] shape()
@@ -309,7 +309,7 @@ namespace Cern.Colt.Matrix.Implementation
             {
                 columnZero += (Columns - 1) * Columnstride;
                 Columnstride = -Columnstride;
-                this.isView = true;
+                this.IsView = true;
             }
             return this;
         }
@@ -344,7 +344,7 @@ namespace Cern.Colt.Matrix.Implementation
             this.Rowstride = strides[axis1];
             this.Columnstride = strides[axis2];
 
-            this.isView = true;
+            this.IsView = true;
             return this;
         }
 
@@ -364,7 +364,7 @@ namespace Cern.Colt.Matrix.Implementation
             this.Rows = height;
             this.Columns = width;
 
-            this.isView = true;
+            this.IsView = true;
             return this;
         }
         
@@ -377,7 +377,7 @@ namespace Cern.Colt.Matrix.Implementation
             {
                 rowZero += (Rows - 1) * Rowstride;
                 Rowstride = -Rowstride;
-                this.isView = true;
+                this.IsView = true;
             }
             return this;
         }
@@ -391,7 +391,7 @@ namespace Cern.Colt.Matrix.Implementation
             {
                 sliceZero += (Slices - 1) * Slicestride;
                 Slicestride = -Slicestride;
-                this.isView = true;
+                this.IsView = true;
             }
             return this;
         }
@@ -413,7 +413,7 @@ namespace Cern.Colt.Matrix.Implementation
             if (this.Rows != 0) this.Rows = (this.Rows - 1) / Rowstride + 1;
             if (this.Columns != 0) this.Columns = (this.Columns - 1) / Columnstride + 1;
 
-            this.isView = true;
+            this.IsView = true;
             return this;
         }
     }

@@ -12,13 +12,13 @@ namespace Cern.Hep.Aida.Bin
 
         #region Local Variables
         // The number of elements consumed by incremental parameter maintainance.
-        protected int size = 0;
+        private int size = 0;
 
         // cached parameters
-        protected double min = 0.0;    // Min( x[i] )
-        protected double max = 0.0;    // Max( x[i] )
-        protected double sum = 0.0;    // Sum( x[i] )
-        protected double sum_xx = 0.0; // Sum( x[i]*x[i] )
+        private double min = 0.0;    // Min( x[i] )
+        private double max = 0.0;    // Max( x[i] )
+        private double sum = 0.0;    // Sum( x[i] )
+        private double sum_xx = 0.0; // Sum( x[i]*x[i] )
 
         [NonSerialized]
         static protected double[] arguments = new double[20];
@@ -55,7 +55,7 @@ namespace Cern.Hep.Aida.Bin
         /// <summary>
         /// Gets or sets the sum of squares, which is <i>Sum( x[i] * x[i] )</i>.
         /// </summary>
-        public double SumOfSquares
+        public override double SumOfSquares
         {
             get { return this.sum_xx; }
             set { this.sum_xx = value; }

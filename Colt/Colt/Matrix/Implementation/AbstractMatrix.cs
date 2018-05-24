@@ -23,7 +23,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <summary>
         /// Gets or sets a value indicating whether the receiver is a view or not.
         /// </summary>
-        protected bool isView { get; set; }
+        protected bool IsView { get; set; }
 
         /// <summary>
         /// Returns the number of cells.
@@ -31,6 +31,6 @@ namespace Cern.Colt.Matrix.Implementation
         /// <returns>
         /// The number of cells.
         /// </returns>
-        public abstract int Size();
+        public virtual int Size { get; }
     }
 }

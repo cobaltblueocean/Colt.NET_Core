@@ -44,12 +44,12 @@ namespace Cern.Colt.Matrix.Implementation
         /// </param>
         internal SelectedDenseDoubleMatrix1D(double[] elements, int[] offsets)
         {
-            setUp(offsets.Length, 0, 1);
+            SetUp(offsets.Length, 0, 1);
 
             this.elements = elements;
             this.offsets = offsets;
             this.offset = 0;
-            isView = true;
+            IsView = true;
         }
 
         /// <summary>
@@ -76,12 +76,12 @@ namespace Cern.Colt.Matrix.Implementation
         /// </param>
         internal SelectedDenseDoubleMatrix1D(int size, double[] elements, int zero, int stride, int[] offsets, int offset)
         {
-            setUp(size, zero, stride);
+            SetUp(size, zero, stride);
 
             this.elements = elements;
             this.offsets = offsets;
             this.offset = offset;
-            isView = true;
+            IsView = true;
         }
 
         /// <summary>
@@ -99,12 +99,12 @@ namespace Cern.Colt.Matrix.Implementation
         {
             get
             {
-                return elements[offset + offsets[zero + (index * stride)]];
+                return elements[offset + offsets[_zero + (index * _stride)]];
             }
 
             set
             {
-                elements[offset + offsets[zero + (index * stride)]] = value;
+                elements[offset + offsets[_zero + (index * _stride)]] = value;
             }
         }
 
@@ -149,11 +149,11 @@ namespace Cern.Colt.Matrix.Implementation
         /// <returns>
         /// Returns the position of the element with the given relative rank.
         /// </returns>
-        protected internal override int index(int rank)
+        protected internal override int Index(int rank)
         {
             ////return this.offset + super.index(rank);
             // manually inlined:
-            return offset + offsets[zero + (rank * stride)];
+            return offset + offsets[_zero + (rank * _stride)];
         }
 
         /// <summary>
@@ -206,10 +206,10 @@ namespace Cern.Colt.Matrix.Implementation
         /// <exception cref="ArgumentOutOfRangeException">
         /// If <tt>size &lt; 0</tt>.
         /// </exception>
-        protected override void setUp(int n)
+        protected override void SetUp(int n)
         {
-            base.setUp(n);
-            this.stride = 1;
+            base.SetUp(n);
+            this._stride = 1;
             this.offset = 0;
         }
 

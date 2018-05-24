@@ -51,7 +51,7 @@ namespace Cern.Colt.Matrix.DoubleAlgorithms
             for (int i = indexes.Length; --i >= 0;)
                 indexes[i] = i;
 
-            runSort(
+            RunSort(
                 indexes,
                 0,
                 indexes.Length,
@@ -59,7 +59,7 @@ namespace Cern.Colt.Matrix.DoubleAlgorithms
                 {
                     double av = vector[a];
                     double bv = vector[b];
-                    if (av != av || bv != bv) return compareNaN(av, bv); // swap NaNs to the end
+                    if (av != av || bv != bv) return CompareNaN(av, bv); // swap NaNs to the end
                     return av < bv ? -1 : (av == bv ? 0 : 1);
                 });
 
@@ -83,7 +83,7 @@ namespace Cern.Colt.Matrix.DoubleAlgorithms
             var indexes = new int[vector.Size()]; // row indexes to reorder instead of matrix itself
             for (int i = indexes.Length; --i >= 0;) indexes[i] = i;
 
-            runSort(indexes, 0, indexes.Length, (a, b) => c(vector[a], vector[b]));
+            RunSort(indexes, 0, indexes.Length, (a, b) => c(vector[a], vector[b]));
 
             return vector.ViewSelection(indexes);
         }
@@ -118,14 +118,14 @@ namespace Cern.Colt.Matrix.DoubleAlgorithms
             for (int i = rows; --i >= 0;) indexes[i] = i;
 
             // sort indexes and aggregates
-            runSort(
+            RunSort(
                 0,
                 rows,
                 (x, y) =>
                 {
                     double a = aggregates[x];
                     double b = aggregates[y];
-                    if (a != a || b != b) return compareNaN(a, b); // swap NaNs to the end
+                    if (a != a || b != b) return CompareNaN(a, b); // swap NaNs to the end
                     return a < b ? -1 : (a == b) ? 0 : 1;
                 },
                 (x, y) =>
@@ -165,7 +165,7 @@ namespace Cern.Colt.Matrix.DoubleAlgorithms
             }
 
             DoubleMatrix1D col = matrix.ViewColumn(column);
-            runSort(
+            RunSort(
                 rowIndexes,
                 0,
                 rowIndexes.Length,
@@ -173,7 +173,7 @@ namespace Cern.Colt.Matrix.DoubleAlgorithms
                 {
                     double av = col[a];
                     double bv = col[b];
-                    if (av != av || bv != bv) return compareNaN(av, bv); // swap NaNs to the end
+                    if (av != av || bv != bv) return CompareNaN(av, bv); // swap NaNs to the end
                     return av < bv ? -1 : (av == bv ? 0 : 1);
                 });
 
@@ -202,14 +202,14 @@ namespace Cern.Colt.Matrix.DoubleAlgorithms
             var views = new DoubleMatrix1D[matrix.Rows]; // precompute views for speed
             for (int i = views.Length; --i >= 0;) views[i] = matrix.ViewRow(i);
 
-            runSort(rowIndexes, 0, rowIndexes.Length, (a, b) => c(views[a], views[b]));
+            RunSort(rowIndexes, 0, rowIndexes.Length, (a, b) => c(views[a], views[b]));
 
             // view the matrix according to the reordered row indexes
             // take all columns in the original order
             return matrix.ViewSelection(rowIndexes, null);
         }
 
-        public DoubleMatrix3D sort(DoubleMatrix3D matrix, int row, int column)
+        public DoubleMatrix3D Sort(DoubleMatrix3D matrix, int row, int column)
         {
             if (row < 0 || row >= matrix.Rows) throw new IndexOutOfRangeException("row=" + row + ", matrix=" + Formatter.Shape(matrix));
             if (column < 0 || column >= matrix.Columns) throw new IndexOutOfRangeException("column=" + column + ", matrix=" + Formatter.Shape(matrix));
@@ -222,20 +222,20 @@ namespace Cern.Colt.Matrix.DoubleAlgorithms
             {
                 double av = sliceView[a];
                 double bv = sliceView[b];
-                if (av != av || bv != bv) return compareNaN(av, bv); // swap NaNs to the end
+                if (av != av || bv != bv) return CompareNaN(av, bv); // swap NaNs to the end
                 return av < bv ? -1 : (av == bv ? 0 : 1);
             }
                 );
 
 
-            runSort(sliceIndexes, 0, sliceIndexes.Length, comp);
+            RunSort(sliceIndexes, 0, sliceIndexes.Length, comp);
 
             // view the matrix according to the reordered slice indexes
             // take all rows and columns in the original order
             return matrix.viewSelection(sliceIndexes, null, null);
         }
 
-        public DoubleMatrix3D sort(DoubleMatrix3D matrix, Cern.Colt.Matrix.DoubleAlgorithms.DoubleMatrix2DComparator c)
+        public DoubleMatrix3D Sort(DoubleMatrix3D matrix, Cern.Colt.Matrix.DoubleAlgorithms.DoubleMatrix2DComparator c)
         {
             int[] sliceIndexes = new int[matrix.Slices]; // indexes to reorder instead of matrix itself
             for (int i = sliceIndexes.Length; --i >= 0;) sliceIndexes[i] = i;
@@ -246,19 +246,19 @@ namespace Cern.Colt.Matrix.DoubleAlgorithms
             IntComparator comp = new IntComparator((a, b) => { return c(views[a], views[b]); });
 
 
-            runSort(sliceIndexes, 0, sliceIndexes.Length, comp);
+            RunSort(sliceIndexes, 0, sliceIndexes.Length, comp);
 
             // view the matrix according to the reordered slice indexes
             // take all rows and columns in the original order
             return matrix.viewSelection(sliceIndexes, null, null);
         }
 
-        protected void runSort(int[] a, int fromIndex, int toIndex, IntComparator c)
+        protected void RunSort(int[] a, int fromIndex, int toIndex, IntComparator c)
         {
             Cern.Colt.Sorting.QuickSort(a, fromIndex, toIndex, c);
         }
 
-        protected void runSort(int fromIndex, int toIndex, IntComparator c, Swapper swapper)
+        protected void RunSort(int fromIndex, int toIndex, IntComparator c, Swapper swapper)
         {
             GenericSorting.QuickSort(fromIndex, toIndex, c, swapper);
         }
@@ -275,7 +275,7 @@ namespace Cern.Colt.Matrix.DoubleAlgorithms
         /// <returns>
         /// The comparison.
         /// </returns>
-        private static int compareNaN(double a, double b)
+        private static int CompareNaN(double a, double b)
         {
             if (a != a)
             {

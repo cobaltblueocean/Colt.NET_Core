@@ -25,17 +25,17 @@ namespace Cern.Colt.Matrix.Implementation
         /// <summary>
         /// Gets or sets the number of cells this matrix (view) has.
         /// </summary>
-        protected internal int size { get; set; }
+        private int _size;
 
         /// <summary>
         /// Gets or sets the number of indexes between any two elements, i.e. <tt>index(i+1) - index(i)</tt>.
         /// </summary>
-        protected internal int stride { get; set; }
+        private int _stride;
 
         /// <summary>
         /// Gets or sets the index of the first element.
         /// </summary>
-        protected int zero { get; set; }
+        private int _zero;
 
         /// <summary>
         /// Sanity check for operations requiring two matrices with the same size.
@@ -48,7 +48,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// </exception>
         public void CheckSize(AbstractMatrix1D b)
         {
-            if (size != b.size) throw new ArgumentOutOfRangeException("Incompatible sizes: " + this + " and " + b);
+            if (_size != b._size) throw new ArgumentOutOfRangeException("Incompatible sizes: " + this + " and " + b);
         }
 
         /// <summary>
@@ -57,9 +57,22 @@ namespace Cern.Colt.Matrix.Implementation
         /// <returns>
         /// The number of cells.
         /// </returns>
-        public override int Size()
+        public override int Size
         {
-            return size;
+            get { return _size; }
+        }
+
+        /// <summary>
+        /// the number of indexes between any two elements, i.e. <tt>index(i+1) - index(i)</tt>.
+        /// </summary>
+        public int Stride
+        {
+            get { return _stride; }
+        }
+
+        public int Zero
+        {
+            get { return _zero; }
         }
 
         /// <summary>
@@ -83,7 +96,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <returns>
         /// Returns the position of the element with the given relative rank.
         /// </returns>
-        protected internal virtual int index(int rank)
+        protected internal virtual int Index(int rank)
         {
             return _offset(_rank(rank));
         }
@@ -97,9 +110,9 @@ namespace Cern.Colt.Matrix.Implementation
         /// <exception cref="IndexOutOfRangeException">
         /// If <tt>index &lt; 0 || index &gt;= size()</tt>.
         /// </exception>
-        protected void checkIndex(int index)
+        protected void CheckIndex(int index)
         {
-            if (index < 0 || index >= size) throw new IndexOutOfRangeException("Attempted to access " + this + " at index=" + index);
+            if (index < 0 || index >= _size) throw new IndexOutOfRangeException("Attempted to access " + this + " at index=" + index);
         }
 
         /// <summary>
@@ -111,12 +124,12 @@ namespace Cern.Colt.Matrix.Implementation
         /// <exception cref="ArgumentOutOfRangeException">
         /// If <tt>! (0 &lt;= indexes[i] &lt; size())</tt> for any i=0..indexes.length()-1.
         /// </exception>
-        protected void checkIndexes(int[] indexes)
+        protected void CheckIndexes(int[] indexes)
         {
             for (int i = indexes.Length; --i >= 0;)
             {
                 int index = indexes[i];
-                if (index < 0 || index >= size) checkIndex(index);
+                if (index < 0 || index >= _size) CheckIndex(index);
             }
         }
 
@@ -132,10 +145,10 @@ namespace Cern.Colt.Matrix.Implementation
         /// <exception cref="ArgumentException">
         /// If <tt>index &lt; 0 || index+width &gt; size()</tt>.
         /// </exception>
-        protected void checkRange(int index, int width)
+        protected void CheckRange(int index, int width)
         {
-            if (index < 0 || index + width > size)
-                throw new ArgumentException("index: " + index + ", width: " + width + ", size=" + size);
+            if (index < 0 || index + width > _size)
+                throw new ArgumentException("index: " + index + ", width: " + width + ", size=" + _size);
         }
 
         /// <summary>
@@ -147,9 +160,9 @@ namespace Cern.Colt.Matrix.Implementation
         /// <exception cref="ArgumentOutOfRangeException">
         /// If <tt>size() != B.size()</tt>.
         /// </exception>
-        protected void checkSize(double[] b)
+        protected void CheckSize(double[] b)
         {
-            if (size != b.Length) throw new ArgumentOutOfRangeException("Incompatible sizes: " + this + " and " + b.Length);
+            if (_size != b.Length) throw new ArgumentOutOfRangeException("Incompatible sizes: " + this + " and " + b.Length);
         }
 
         /// <summary>
@@ -178,7 +191,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// </returns>
         protected virtual int _rank(int rank)
         {
-            return zero + (rank * stride);
+            return _zero + (rank * _stride);
         }
 
         /// <summary>
@@ -190,9 +203,9 @@ namespace Cern.Colt.Matrix.Implementation
         /// <exception cref="ArgumentOutOfRangeException">
         /// If <tt>size &lt; 0</tt>.
         /// </exception>
-        protected virtual void setUp(int s)
+        protected virtual void SetUp(int s)
         {
-            setUp(s, 0, 1);
+            SetUp(s, 0, 1);
         }
 
         /// <summary>
@@ -210,14 +223,14 @@ namespace Cern.Colt.Matrix.Implementation
         /// <exception cref="ArgumentOutOfRangeException">
         /// If <tt>size &lt; 0</tt>.
         /// </exception>
-        protected virtual void setUp(int sz, int z, int str)
+        protected virtual void SetUp(int sz, int z, int str)
         {
             if (sz < 0) throw new ArgumentOutOfRangeException("sz", "negative size");
 
-            this.size = sz;
-            this.zero = z;
-            this.stride = str;
-            isView = false;
+            this._size = sz;
+            this._zero = z;
+            this._stride = str;
+            IsView = false;
         }
 
         /// <summary>
@@ -227,13 +240,13 @@ namespace Cern.Colt.Matrix.Implementation
         /// <returns>
         /// A new flip view.
         /// </returns>
-        protected AbstractMatrix1D vFlip()
+        protected AbstractMatrix1D VFlip()
         {
-            if (size > 0)
+            if (_size > 0)
             {
-                this.zero += (this.size - 1) * this.stride;
-                this.stride = -this.stride;
-                isView = true;
+                this._zero += (this._size - 1) * this._stride;
+                this._stride = -this._stride;
+                IsView = true;
             }
 
             return this;
@@ -254,12 +267,12 @@ namespace Cern.Colt.Matrix.Implementation
         /// /// <exception cref="ArgumentException">
         /// If <tt>index &lt; 0 || index+width &gt; size()</tt>.
         /// </exception>
-        protected AbstractMatrix1D vPart(int index, int width)
+        protected AbstractMatrix1D VPart(int index, int width)
         {
-            checkRange(index, width);
-            this.zero += this.stride * index;
-            this.size = width;
-            isView = true;
+            CheckRange(index, width);
+            this._zero += this._stride * index;
+            this._size = width;
+            IsView = true;
             return this;
         }
 
@@ -275,12 +288,12 @@ namespace Cern.Colt.Matrix.Implementation
         /// <exception cref="ArgumentOutOfRangeException">
         /// If <tt>stride &lt;= 0</tt>.
         /// </exception>
-        protected AbstractMatrix1D vStrides(int str)
+        protected AbstractMatrix1D VStrides(int str)
         {
-            if (stride <= 0) throw new ArgumentOutOfRangeException("str", "illegal stride: " + stride);
-            this.stride *= stride;
-            if (this.size != 0) this.size = ((this.size - 1) / stride) + 1;
-            isView = true;
+            if (_stride <= 0) throw new ArgumentOutOfRangeException("str", "illegal stride: " + _stride);
+            this._stride *= _stride;
+            if (this._size != 0) this._size = ((this._size - 1) / _stride) + 1;
+            IsView = true;
             return this;
         }
     }

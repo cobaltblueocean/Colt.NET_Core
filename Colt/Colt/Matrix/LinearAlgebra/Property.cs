@@ -66,7 +66,7 @@
         {
             if (a == null) return false;
             double epsilon = Tolerance;
-            for (int i = a.size; --i >= 0;)
+            for (int i = a._size; --i >= 0;)
             {
                 double x = a[i];
                 double diff = System.Math.Abs(value - x);
@@ -98,8 +98,8 @@
         {
             if (a == b) return true;
             if (!(a != null && b != null)) return false;
-            int size = a.size;
-            if (size != b.size) return false;
+            int size = a._size;
+            if (size != b._size) return false;
 
             double epsilon = Tolerance;
             for (int i = size; --i >= 0;)
