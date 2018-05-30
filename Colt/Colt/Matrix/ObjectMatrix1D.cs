@@ -130,7 +130,7 @@ public ObjectMatrix1D assign(Cern.Colt.Function.ObjectFunction<Object> function)
         public ObjectMatrix1D assign(ObjectMatrix1D other)
         {
             if (other == this) return this;
-            checkSize(other);
+            CheckSize(other);
             if (haveSharedCells(other)) other = other.copy();
 
             for (int i = Size; --i >= 0;)
@@ -162,10 +162,10 @@ public ObjectMatrix1D assign(Cern.Colt.Function.ObjectFunction<Object> function)
 /// </summary>
 public ObjectMatrix1D assign(ObjectMatrix1D y, Cern.Colt.Function.ObjectObjectFunction<Object> function)
         {
-            checkSize(y);
+            CheckSize(y);
             for (int i = Size; --i >= 0;)
             {
-                setQuick(i, function.apply(this[i], y[i]));
+                setQuick(i, function(this[i], y[i]));
             }
             return this;
         }
@@ -234,7 +234,7 @@ public override Boolean Equals(Object otherObj)
 /// * @param testForEquality if true -> tests for equality, otherwise for identity.
 /// * @return true if the specified Object is equal to the receiver.
 /// </summary>
-public override Boolean Equals(Object otherObj, Boolean testForEquality)
+public Boolean Equals(Object otherObj, Boolean testForEquality)
         { //delta
             if (!(otherObj is ObjectMatrix1D)) { return false; }
             if (this == otherObj) return true;
@@ -453,7 +453,7 @@ public void ToArray(Object[] values)
         /// Returns a string representation using default formatting.
         /// @see Cern.Colt.Matrix.objectalgo.Formatter
         /// </summary>
-        public String ToString()
+        public override String ToString()
         {
             return new Cern.Colt.Matrix.objectalgo.Formatter().ToString(this);
         }
@@ -470,7 +470,7 @@ public void ToArray(Object[] values)
         /// </summary>
         protected ObjectMatrix1D view()
         {
-            return (ObjectMatrix1D)clone();
+            return (ObjectMatrix1D)Clone();
         }
         /// <summary>
 /// Constructs and returns a new <i>flip view</i>.
@@ -570,12 +570,12 @@ public ObjectMatrix1D viewSelection(int[] indexes)
 /// @param condition The condition to be matched.
 /// @return the new view.
 /// </summary>
-public ObjectMatrix1D viewSelection(Cern.Colt.Function.ObjectProcedure condition)
+public ObjectMatrix1D viewSelection(Cern.Colt.Function.ObjectProcedure<Object> condition)
     {
         List<int> matches = new List<int>();
         for (int i = 0; i < Size; i++)
         {
-            if (condition.apply(this[i])) matches.Add(i);
+            if (condition(this[i])) matches.Add(i);
         }
         matches.TrimExcess();
         return viewSelection(matches.ToArray());
@@ -628,11 +628,11 @@ public ObjectMatrix1D viewSorted()
         /// @param procedure a procedure object taking as argument the current cell's valued Stops iteration if the procedure returns <i>false</i>, otherwise continuesd 
         /// @return <i>false</i> if the procedure stopped before all elements where iterated over, <i>true</i> otherwised 
         /// </summary>
-        private Boolean xforEach(Cern.Colt.Function.ObjectProcedure procedure)
+        private Boolean xforEach(Cern.Colt.Function.ObjectProcedure<Object> procedure)
         {
             for (int i = Size; --i >= 0;)
             {
-                if (!procedure.apply(this[i])) return false;
+                if (!procedure(this[i])) return false;
             }
             return true;
         }

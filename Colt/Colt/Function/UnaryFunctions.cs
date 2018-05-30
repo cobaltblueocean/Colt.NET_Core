@@ -75,6 +75,21 @@ namespace Cern.Colt.Function
     /// </typeparam>
     public delegate C ObjectFunction<C>(C argument);
 
+
+    /// <summary>
+    /// A function that takes a single argument and returns a single value.
+    /// </summary>
+    /// <param name="argument">
+    /// The argument passed to the function.
+    /// </param>
+    /// <returns>
+    /// The result of the function.
+    /// </returns>
+    /// <typeparam name="C">
+    /// The type of the argument and of the return value.
+    /// </typeparam>
+    public delegate bool ObjectProcedure<C>(C argument);
+
     /// <summary>
     /// Function to be passed to generic methods.
     /// </summary>

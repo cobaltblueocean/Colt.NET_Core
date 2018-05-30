@@ -217,7 +217,7 @@ namespace Cern.Colt.Matrix.DoubleAlgorithms
             int[] sliceIndexes = new int[matrix.Slices]; // indexes to reorder instead of matrix itself
             for (int i = sliceIndexes.Length; --i >= 0;) sliceIndexes[i] = i;
 
-            DoubleMatrix1D sliceView = matrix.viewRow(row).ViewColumn(column);
+            DoubleMatrix1D sliceView = matrix.ViewRow(row).ViewColumn(column);
             IntComparator comp = new IntComparator((a, b) =>
             {
                 double av = sliceView[a];
@@ -232,7 +232,7 @@ namespace Cern.Colt.Matrix.DoubleAlgorithms
 
             // view the matrix according to the reordered slice indexes
             // take all rows and columns in the original order
-            return matrix.viewSelection(sliceIndexes, null, null);
+            return matrix.ViewSelection(sliceIndexes, null, null);
         }
 
         public DoubleMatrix3D Sort(DoubleMatrix3D matrix, Cern.Colt.Matrix.DoubleAlgorithms.DoubleMatrix2DComparator c)
@@ -241,7 +241,7 @@ namespace Cern.Colt.Matrix.DoubleAlgorithms
             for (int i = sliceIndexes.Length; --i >= 0;) sliceIndexes[i] = i;
 
             DoubleMatrix2D[] views = new DoubleMatrix2D[matrix.Slices]; // precompute views for speed
-            for (int i = views.Length; --i >= 0;) views[i] = matrix.viewSlice(i);
+            for (int i = views.Length; --i >= 0;) views[i] = matrix.ViewSlice(i);
 
             IntComparator comp = new IntComparator((a, b) => { return c(views[a], views[b]); });
 
@@ -250,7 +250,7 @@ namespace Cern.Colt.Matrix.DoubleAlgorithms
 
             // view the matrix according to the reordered slice indexes
             // take all rows and columns in the original order
-            return matrix.viewSelection(sliceIndexes, null, null);
+            return matrix.ViewSelection(sliceIndexes, null, null);
         }
 
         protected void RunSort(int[] a, int fromIndex, int toIndex, IntComparator c)

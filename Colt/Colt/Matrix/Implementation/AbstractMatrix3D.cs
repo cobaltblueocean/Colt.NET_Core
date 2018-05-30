@@ -31,32 +31,41 @@ namespace Cern.Colt.Matrix.Implementation
         /// <summary>
         /// Gets or sets the number of elements between two Slices, i.ed <i>index(i+1,j,k) - index(i,j,k)</i>.
         /// </summary>
-        protected int Slicestride { get; set; }
+        protected int SliceStride { get; set; }
 
         /// <summary>
         /// Gets or sets the number of elements between two Rows, i.ed <i>index(i+1,j,k) - index(i,j,k)</i>.
         /// </summary>
-        protected int Rowstride { get; set; }
+        protected int RowStride { get; set; }
 
         /// <summary>
         /// Gets or sets the number of elements between two Columns, i.ed <i>index(i,j+1,k) - index(i,j,k)</i>.
         /// </summary>
-        protected int Columnstride { get; set; }
+        protected int ColumnStride { get; set; }
 
         /// <summary>
         /// Gets or sets the Slices index of the first element.
         /// </summary>
-        protected int sliceZero { get; set; }
+        protected int SliceZero { get; set; }
 
         /// <summary>
         /// Gets or sets the row index of the first element.
         /// </summary>
-        protected int rowZero { get; set; }
+        protected int RowZero { get; set; }
 
         /// <summary>
         /// Gets or sets the column index of the first element.
         /// </summary>
-        protected int columnZero { get; set; }
+        protected int ColumnZero { get; set; }
+
+
+        /// <summary>
+        /// Returns the number of cells which is <i>Slices()*Rows()*Columns()</i>.
+        /// </summary>
+        public override int Size
+        {
+            get { return Slices * Rows * Columns; }
+        }
 
         /// <summary>
         /// Returns the position of the given absolute rank within the (virtual or non-virtual) internal 1-dimensional arrayd 
@@ -64,7 +73,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// </summary>
         /// <param name="absRank">the absolute rank of the element.</param>
         /// <returns>the position.</returns>
-        protected int columnOffset(int absRank)
+        protected int ColumnOffset(int absRank)
         {
             return absRank;
         }
@@ -74,9 +83,9 @@ namespace Cern.Colt.Matrix.Implementation
         /// </summary>
         /// <param name="rank">the relative rank of the element.</param>
         /// <returns>the absolute rank of the element.</returns>
-        protected int columnRank(int rank)
+        protected int ColumnRank(int rank)
         {
-            return columnZero + rank * Columnstride;
+            return ColumnZero + rank * ColumnStride;
         }
 
         /// <summary>
@@ -85,7 +94,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// </summary>
         /// <param name="rank">the absolute rank of the element.</param>
         /// <returns>the position.</returns>
-        protected int rowOffset(int absRank)
+        protected int RowOffset(int absRank)
         {
             return absRank;
         }
@@ -95,9 +104,9 @@ namespace Cern.Colt.Matrix.Implementation
         /// </summary>
         /// <param name="rank">the relative rank of the element.</param>
         /// <returns>the absolute rank of the element.</returns>
-        protected int rowRank(int rank)
+        protected int RowRank(int rank)
         {
-            return rowZero + rank * Rowstride;
+            return RowZero + rank * RowStride;
         }
 
         /// <summary>
@@ -106,7 +115,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// </summary>
         /// <param name="rank">the absolute rank of the element.</param>
         /// <returns>the position.</returns>
-        protected int sliceOffset(int absRank)
+        protected int SliceOffset(int absRank)
         {
             return absRank;
         }
@@ -116,39 +125,39 @@ namespace Cern.Colt.Matrix.Implementation
         /// </summary>
         /// <param name="rank">the relative rank of the element.</param>
         /// <returns>the absolute rank of the element.</returns>
-        protected int sliceRank(int rank)
+        protected int SliceRank(int rank)
         {
-            return sliceZero + rank * Slicestride;
+            return SliceZero + rank * SliceStride;
         }
 
         /// <summary>
         /// Checks whether the receiver contains the given box and thRows an exception, if necessary.
         /// </summary>
         /// <exception cref="IndexOutOfRangeException">if <i>row %lt; 0 || height %lt; 0 || row + height %gt; Rows || slice %lt; 0 || depth %lt; 0 || slice+depth %gt; Slices  || column %lt; 0 || width %lt; 0 || column + width %gt; Columns</i></exception>
-        protected void checkBox(int slice, int row, int column, int depth, int height, int width)
+        protected void CheckBox(int slice, int row, int column, int depth, int height, int width)
         {
-            if (slice < 0 || depth < 0 || slice + depth > Slices || row < 0 || height < 0 || row + height > Rows || column < 0 || width < 0 || column + width > Columns) throw new IndexOutOfRangeException(toStringShort() + ", slice:" + slice + ", row:" + row + " ,column:" + column + ", depth:" + depth + " ,height:" + height + ", width:" + width);
+            if (slice < 0 || depth < 0 || slice + depth > Slices || row < 0 || height < 0 || row + height > Rows || column < 0 || width < 0 || column + width > Columns) throw new IndexOutOfRangeException(ToStringShort() + ", slice:" + slice + ", row:" + row + " ,column:" + column + ", depth:" + depth + " ,height:" + height + ", width:" + width);
         }
 
         /// <summary>
         /// Sanity check for operations requiring a column index to be within bounds.
         /// </summary>
         /// <exception cref="IndexOutOfRangeException">if <i>column  %lt; 0 || column  %gt;= Columns()</i>.</exception>
-        protected void checkColumn(int column)
+        protected void CheckColumn(int column)
         {
-            if (column < 0 || column >= Columns) throw new IndexOutOfRangeException("Attempted to access " + toStringShort() + " at column=" + column);
+            if (column < 0 || column >= Columns) throw new IndexOutOfRangeException("Attempted to access " + ToStringShort() + " at column=" + column);
         }
 
         /// <summary>
         /// Checks whether indexes are legal and thRows an exception, if necessary.
         /// </summary>
         /// <exception cref="IndexOutOfRangeException">if <i>! (0 %lt;= indexes[i] %lt; Columns())</i> for any i=0..indexes.Length()-1.</exception>
-        protected void checkColumnIndexes(int[] indexes)
+        protected void CheckColumnIndexes(int[] indexes)
         {
             for (int i = indexes.Length; --i >= 0;)
             {
                 int index = indexes[i];
-                if (index < 0 || index >= Columns) checkColumn(index);
+                if (index < 0 || index >= Columns) CheckColumn(index);
             }
         }
 
@@ -156,21 +165,21 @@ namespace Cern.Colt.Matrix.Implementation
         /// Sanity check for operations requiring a row index to be within bounds.
         /// </summary>
         /// <exception cref="IndexOutOfRangeException">if <i>row %lt; 0 || row %gt;= Rows()</i>.</exception>
-        protected void checkRow(int row)
+        protected void CheckRow(int row)
         {
-            if (row < 0 || row >= Rows) throw new IndexOutOfRangeException("Attempted to access " + toStringShort() + " at row=" + row);
+            if (row < 0 || row >= Rows) throw new IndexOutOfRangeException("Attempted to access " + ToStringShort() + " at row=" + row);
         }
 
         /// <summary>
         /// Checks whether indexes are legal and thRows an exception, if necessary.
         /// </summary>
         /// <exception cref="IndexOutOfRangeException">if <i>! (0 %lt;= indexes[i] %lt; Rows())</i> for any i=0..indexes.Length()-1.</exception>
-        protected void checkRowIndexes(int[] indexes)
+        protected void CheckRowIndexes(int[] indexes)
         {
             for (int i = indexes.Length; --i >= 0;)
             {
                 int index = indexes[i];
-                if (index < 0 || index >= Rows) checkRow(index);
+                if (index < 0 || index >= Rows) CheckRow(index);
             }
         }
 
@@ -178,39 +187,39 @@ namespace Cern.Colt.Matrix.Implementation
         /// Sanity check for operations requiring two matrices with the same number of Slices, Rows and Columns.
         /// </summary>
         /// <exception cref="ArgumentException">if <i>Slices() != B.Slices() || Rows() != B.Rows() || Columns() != B.Columns()</i>.</exception>
-        public void checkShape(AbstractMatrix3D B)
+        public void CheckShape(AbstractMatrix3D B)
         {
-            if (Slices != B.Slices || Rows != B.Rows || Columns != B.Columns) throw new ArgumentException("Incompatible dimensions: " + toStringShort() + " and " + B.toStringShort());
+            if (Slices != B.Slices || Rows != B.Rows || Columns != B.Columns) throw new ArgumentException("Incompatible dimensions: " + ToStringShort() + " and " + B.ToStringShort());
         }
 
         /// <summary>
         /// Sanity check for operations requiring matrices with the same number of Slices, Rows and Columns.
         /// </summary>
         /// <exception cref="ArgumentException">if <i>Slices() != B.Slices() || Rows() != B.Rows() || Columns() != B.Columns() || Slices() != C.Slices() || Rows() != C.Rows() || Columns() != C.Columns()</i>.</exception>
-        public void checkShape(AbstractMatrix3D B, AbstractMatrix3D C)
+        public void CheckShape(AbstractMatrix3D B, AbstractMatrix3D C)
         {
-            if (Slices != B.Slices || Rows != B.Rows || Columns != B.Columns || Slices != C.Slices || Rows != C.Rows || Columns != C.Columns) throw new ArgumentException("Incompatible dimensions: " + toStringShort() + ", " + B.toStringShort() + ", " + C.toStringShort());
+            if (Slices != B.Slices || Rows != B.Rows || Columns != B.Columns || Slices != C.Slices || Rows != C.Rows || Columns != C.Columns) throw new ArgumentException("Incompatible dimensions: " + ToStringShort() + ", " + B.ToStringShort() + ", " + C.ToStringShort());
         }
 
         /// <summary>
         /// Sanity check for operations requiring a slice index to be within bounds.
         /// </summary>
         /// <exception cref="IndexOutOfRangeException">if <i>slice %lt; 0 || slice %gt;= Slices()</i>.</exception>
-        protected void checkSlice(int slice)
+        protected void CheckSlice(int slice)
         {
-            if (slice < 0 || slice >= Slices) throw new IndexOutOfRangeException("Attempted to access " + toStringShort() + " at slice=" + slice);
+            if (slice < 0 || slice >= Slices) throw new IndexOutOfRangeException("Attempted to access " + ToStringShort() + " at slice=" + slice);
         }
 
         /// <summary>
         /// Checks whether indexes are legal and thRows an exception, if necessary.
         /// </summary>
         /// <exception cref="IndexOutOfRangeException">if <i>! (0 %lt;= indexes[i] %lt; Slices())</i> for any i=0..indexes.Length()-1.</exception>
-        protected void checkSliceIndexes(int[] indexes)
+        protected void CheckSliceIndexes(int[] indexes)
         {
             for (int i = indexes.Length; --i >= 0;)
             {
                 int index = indexes[i];
-                if (index < 0 || index >= Slices) checkSlice(index);
+                if (index < 0 || index >= Slices) CheckSlice(index);
             }
         }
 
@@ -221,9 +230,9 @@ namespace Cern.Colt.Matrix.Implementation
         /// <param name="row">the index of the row-coordinate.</param>
         /// <param name="column">the index of the third-coordinate.</param>
         /// <returns></returns>
-        protected int index(int slice, int row, int column)
+        protected int Index(int slice, int row, int column)
         {
-            return sliceOffset(sliceRank(slice)) + rowOffset(rowRank(row)) + columnOffset(columnRank(column));
+            return SliceOffset(SliceRank(slice)) + RowOffset(RowRank(row)) + ColumnOffset(ColumnRank(column));
         }
 
         /// <summary>
@@ -235,9 +244,9 @@ namespace Cern.Colt.Matrix.Implementation
         /// <returns></returns>
         /// <exception cref="ArgumentException">if <i>(double)Rows * Slices %gt; int.MaxValue</i>.</exception>
         /// <exception cref="ArgumentException">if <i>Slices %lt; 0 || Rows %lt; 0 || Columns %lt; 0</i>.</exception>
-        protected void setUp(int Slices, int Rows, int Columns)
+        protected void Setup(int Slices, int Rows, int Columns)
         {
-            setUp(Slices, Rows, Columns, 0, 0, 0, Rows * Columns, Columns, 1);
+            Setup(Slices, Rows, Columns, 0, 0, 0, Rows * Columns, Columns, 1);
         }
 
         /// <summary>
@@ -255,7 +264,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <returns></returns>
         /// <exception cref="ArgumentException">if <i>(double)Slices * Rows * Columnss %gt; int.MaxValue</i>.</exception>
         /// <exception cref="ArgumentException">if <i>Slices %lt; 0 || Rows %lt; 0 || Columns %lt; 0</i>.</exception>
-        protected void setUp(int Slices, int Rows, int Columns, int sliceZero, int rowZero, int columnZero, int Slicestride, int Rowstride, int Columnstride)
+        protected void Setup(int Slices, int Rows, int Columns, int sliceZero, int rowZero, int columnZero, int Slicestride, int Rowstride, int Columnstride)
         {
             if (Slices < 0 || Rows < 0 || Columns < 0) throw new ArgumentException("negative size");
             if ((double)Slices * Rows * Columns > int.MaxValue) throw new ArgumentException("matrix too large");
@@ -264,18 +273,18 @@ namespace Cern.Colt.Matrix.Implementation
             this.Rows = Rows;
             this.Columns = Columns;
 
-            this.sliceZero = sliceZero;
-            this.rowZero = rowZero;
-            this.columnZero = columnZero;
+            this.SliceZero = sliceZero;
+            this.RowZero = rowZero;
+            this.ColumnZero = columnZero;
 
-            this.Slicestride = Slicestride;
-            this.Rowstride = Rowstride;
-            this.Columnstride = Columnstride;
+            this.SliceStride = Slicestride;
+            this.RowStride = Rowstride;
+            this.ColumnStride = Columnstride;
 
             this.IsView = false;
         }
 
-        protected int[] shape()
+        protected int[] Shape()
         {
             int[] shape = new int[3];
             shape[0] = Slices;
@@ -283,32 +292,24 @@ namespace Cern.Colt.Matrix.Implementation
             shape[2] = Columns;
             return shape;
         }
-        
-        /// <summary>
-        /// Returns the number of cells which is <i>Slices()*Rows()*Columns()</i>.
-        /// </summary>
-        public int size()
-        {
-            return Slices * Rows * Columns;
-        }
-        
+
         /// <summary>
         /// Returns a string representation of the receiver's shape.
         /// </summary>
-        public String toStringShort()
+        public String ToStringShort()
         {
             return AbstractFormatter.Shape(this);
         }
-        
+
         /// <summary>
         /// Self modifying version of viewColumnFlip().
         /// </summary>
-        protected AbstractMatrix3D vColumnFlip()
+        protected AbstractMatrix3D ViewColumnFlipSelf()
         {
             if (Columns > 0)
             {
-                columnZero += (Columns - 1) * Columnstride;
-                Columnstride = -Columnstride;
+                ColumnZero += (Columns - 1) * ColumnStride;
+                ColumnStride = -ColumnStride;
                 this.IsView = true;
             }
             return this;
@@ -318,7 +319,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// Self modifying version of viewDice().
         /// </summary>
         /// <exception cref="ArgumentException">if some of the parameters are equal or not in range 0..2.</exception>
-        protected AbstractMatrix3D vDice(int axis0, int axis1, int axis2)
+        protected AbstractMatrix3D ViewDiceSelf(int axis0, int axis1, int axis2)
         {
             int d = 3;
             if (axis0 < 0 || axis0 >= d || axis1 < 0 || axis1 >= d || axis2 < 0 || axis2 >= d ||
@@ -328,7 +329,7 @@ namespace Cern.Colt.Matrix.Implementation
             }
 
             // swap shape
-            int[] shapes = shape();
+            int[] shapes = Shape();
 
             this.Slices = shapes[axis0];
             this.Rows = shapes[axis1];
@@ -336,13 +337,13 @@ namespace Cern.Colt.Matrix.Implementation
 
             // swap strides
             int[] strides = new int[3];
-            strides[0] = this.Slicestride;
-            strides[1] = this.Rowstride;
-            strides[2] = this.Columnstride;
+            strides[0] = this.SliceStride;
+            strides[1] = this.RowStride;
+            strides[2] = this.ColumnStride;
 
-            this.Slicestride = strides[axis0];
-            this.Rowstride = strides[axis1];
-            this.Columnstride = strides[axis2];
+            this.SliceStride = strides[axis0];
+            this.RowStride = strides[axis1];
+            this.ColumnStride = strides[axis2];
 
             this.IsView = true;
             return this;
@@ -352,13 +353,13 @@ namespace Cern.Colt.Matrix.Implementation
         /// Self modifying version of viewPart().
         /// </summary>
         /// <exception cref="IndexOutOfRangeException">if <i>slice %lt; 0 || depth %lt; 0 || slice+depth %gt; Slices() || row %lt; 0 || height %lt; 0 || row+height %gt; Rows() || column %lt; 0 || width %lt; 0 || column + width %gt; Columns()</i></exception>
-        protected AbstractMatrix3D vPart(int slice, int row, int column, int depth, int height, int width)
+        protected AbstractMatrix3D ViewPartSelf(int slice, int row, int column, int depth, int height, int width)
         {
-            checkBox(slice, row, column, depth, height, width);
+            CheckBox(slice, row, column, depth, height, width);
 
-            this.sliceZero += this.Slicestride * slice;
-	this.rowZero += this.Rowstride * row;
-	this.columnZero += this.Columnstride * column;
+            this.SliceZero += this.SliceStride * slice;
+            this.RowZero += this.RowStride * row;
+            this.ColumnZero += this.ColumnStride * column;
 
             this.Slices = depth;
             this.Rows = height;
@@ -367,30 +368,30 @@ namespace Cern.Colt.Matrix.Implementation
             this.IsView = true;
             return this;
         }
-        
+
         /// <summary>
         /// Self modifying version of viewRowFlip().
         /// </summary>
-        protected AbstractMatrix3D vRowFlip()
+        protected AbstractMatrix3D ViewRowFlipSelf()
         {
             if (Rows > 0)
             {
-                rowZero += (Rows - 1) * Rowstride;
-                Rowstride = -Rowstride;
+                RowZero += (Rows - 1) * RowStride;
+                RowStride = -RowStride;
                 this.IsView = true;
             }
             return this;
         }
-        
+
         /// <summary>
         /// Self modifying version of viewSliceFlip().
         /// </summary>
-        protected AbstractMatrix3D vSliceFlip()
+        protected AbstractMatrix3D ViewSliceFlipSelf()
         {
             if (Slices > 0)
             {
-                sliceZero += (Slices - 1) * Slicestride;
-                Slicestride = -Slicestride;
+                SliceZero += (Slices - 1) * SliceStride;
+                SliceStride = -SliceStride;
                 this.IsView = true;
             }
             return this;
@@ -401,13 +402,13 @@ namespace Cern.Colt.Matrix.Implementation
         /// @thRows  
         /// </summary>
         /// <exception cref="IndexOutOfRangeException">if <i>Slicestride %lt;= 0 || Rowstride %lt;= 0 || Columnstride %lt;= 0</i>.</exception>
-        protected AbstractMatrix3D vStrides(int Slicestride, int Rowstride, int Columnstride)
+        protected AbstractMatrix3D ViewStridesSelf(int Slicestride, int Rowstride, int Columnstride)
         {
             if (Slicestride <= 0 || Rowstride <= 0 || Columnstride <= 0) throw new IndexOutOfRangeException("illegal strides: " + Slicestride + ", " + Rowstride + ", " + Columnstride);
 
-            this.Slicestride *= Slicestride;
-	this.Rowstride *= Rowstride;
-	this.Columnstride *= Columnstride;
+            this.SliceStride *= Slicestride;
+            this.RowStride *= Rowstride;
+            this.ColumnStride *= Columnstride;
 
             if (this.Slices != 0) this.Slices = (this.Slices - 1) / Slicestride + 1;
             if (this.Rows != 0) this.Rows = (this.Rows - 1) / Rowstride + 1;

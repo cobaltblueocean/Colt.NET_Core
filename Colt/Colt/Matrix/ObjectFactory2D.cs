@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Cern.Colt.Matrix.Implementation;
 
 namespace Cern.Colt.Matrix
 {
@@ -15,12 +16,12 @@ namespace Cern.Colt.Matrix
         #endregion
 
         #region Property
-        static ObjectFactory2D Dense
+        public static ObjectFactory2D Dense
         {
             get { return _dense; }
         }
 
-        static ObjectFactory2D Sparse
+        public static ObjectFactory2D Sparse
         {
             get { return _sparse; }
         }
@@ -38,7 +39,7 @@ namespace Cern.Colt.Matrix
         #endregion
 
         #region Local Public Methods
-        public ObjectMatrix2D appendColumns(ObjectMatrix2D A, ObjectMatrix2D B)
+        public ObjectMatrix2D AppendColumns(ObjectMatrix2D A, ObjectMatrix2D B)
         {
             // force both to have maximal shared number of rows.
             if (B.Rows > A.Rows) B = B.ViewPart(0, 0, A.Rows, B.Columns);
@@ -48,13 +49,13 @@ namespace Cern.Colt.Matrix
             int ac = A.Columns;
             int bc = B.Columns;
             int r = A.Rows;
-            ObjectMatrix2D matrix = make(r, ac + bc);
+            ObjectMatrix2D matrix = Make(r, ac + bc);
             matrix.viewPart(0, 0, r, ac).assign(A);
             matrix.viewPart(0, ac, r, bc).assign(B);
             return matrix;
         }
 
-        public ObjectMatrix2D appendRows(ObjectMatrix2D A, ObjectMatrix2D B)
+        public ObjectMatrix2D AppendRows(ObjectMatrix2D A, ObjectMatrix2D B)
         {
             // force both to have maximal shared number of columns.
             if (B.Columns > A.Columns) B = B.viewPart(0, 0, B.Rows, A.Columns);
@@ -64,13 +65,13 @@ namespace Cern.Colt.Matrix
             int ar = A.Rows;
             int br = B.Rows;
             int c = A.Columns;
-            ObjectMatrix2D matrix = make(ar + br, c);
+            ObjectMatrix2D matrix = Make(ar + br, c);
             matrix.viewPart(0, 0, ar, c).assign(A);
             matrix.viewPart(ar, 0, br, c).assign(B);
             return matrix;
         }
 
-        protected static void checkRectangularShape(ObjectMatrix2D[][] array)
+        protected static void CheckRectangularShape(ObjectMatrix2D[][] array)
         {
             int columns = -1;
             for (int row = array.Length; --row >= 0;)
@@ -83,7 +84,7 @@ namespace Cern.Colt.Matrix
             }
         }
 
-        protected static void checkRectangularShape(Object[][] array)
+        protected static void CheckRectangularShape(Object[][] array)
         {
             int columns = -1;
             for (int row = array.Length; --row >= 0;)
@@ -96,13 +97,13 @@ namespace Cern.Colt.Matrix
             }
         }
 
-        public ObjectMatrix2D compose(ObjectMatrix2D[][] parts)
+        public ObjectMatrix2D Compose(ObjectMatrix2D[][] parts)
         {
-            checkRectangularShape(parts);
+            CheckRectangularShape(parts);
             int rows = parts.Length;
             int columns = 0;
             if (parts.Length > 0) columns = parts.GetLength(1);
-            ObjectMatrix2D empty = make(0, 0);
+            ObjectMatrix2D empty = Make(0, 0);
 
             if (rows == 0 || columns == 0) return empty;
 
@@ -149,7 +150,7 @@ namespace Cern.Colt.Matrix
             int resultCols = 0;
             for (int column = columns; --column >= 0;) resultCols += maxWidths[column];
 
-            ObjectMatrix2D matrix = make(resultRows, resultCols);
+            ObjectMatrix2D matrix = Make(resultRows, resultCols);
 
             // copy
             int r = 0;
@@ -171,28 +172,28 @@ namespace Cern.Colt.Matrix
             return matrix;
         }
 
-        public ObjectMatrix2D composeDiagonal(ObjectMatrix2D A, ObjectMatrix2D B)
+        public ObjectMatrix2D ComposeDiagonal(ObjectMatrix2D A, ObjectMatrix2D B)
         {
             int ar = A.Rows; int ac = A.Columns;
             int br = B.Rows; int bc = B.Columns;
-            ObjectMatrix2D sum = make(ar + br, ac + bc);
+            ObjectMatrix2D sum = Make(ar + br, ac + bc);
             sum.viewPart(0, 0, ar, ac).assign(A);
             sum.viewPart(ar, ac, br, bc).assign(B);
             return sum;
         }
 
-        public ObjectMatrix2D composeDiagonal(ObjectMatrix2D A, ObjectMatrix2D B, ObjectMatrix2D C)
+        public ObjectMatrix2D ComposeDiagonal(ObjectMatrix2D A, ObjectMatrix2D B, ObjectMatrix2D C)
         {
-            ObjectMatrix2D diag = make(A.Rows + B.Rows + C.Rows, A.Columns + B.Columns + C.Columns);
+            ObjectMatrix2D diag = Make(A.Rows + B.Rows + C.Rows, A.Columns + B.Columns + C.Columns);
             diag.viewPart(0, 0, A.Rows, A.Columns).assign(A);
             diag.viewPart(A.Rows, A.Columns, B.Rows, B.Columns).assign(B);
             diag.viewPart(A.Rows + B.Rows, A.Columns + B.Columns, C.Rows, C.Columns).assign(C);
             return diag;
         }
 
-        public void decompose(ObjectMatrix2D[][] parts, ObjectMatrix2D matrix)
+        public void Decompose(ObjectMatrix2D[][] parts, ObjectMatrix2D matrix)
         {
-            checkRectangularShape(parts);
+            CheckRectangularShape(parts);
             int rows = parts.Length;
             int columns = 0;
             if (parts.Length > 0) columns = parts.GetLength(1);
@@ -253,7 +254,7 @@ namespace Cern.Colt.Matrix
                     ObjectMatrix2D part = parts[row][column];
                     if (part != null)
                     {
-                        part.assign(matrix.viewPart(r, c, part.Rows, part.Columns));
+                        part.Assign(matrix.viewPart(r, c, part.Rows, part.Columns));
                     }
                     c += maxWidths[column];
                 }
@@ -262,21 +263,21 @@ namespace Cern.Colt.Matrix
 
         }
 
-        public ObjectMatrix2D diagonal(ObjectMatrix1D vector)
+        public ObjectMatrix2D Diagonal(ObjectMatrix1D vector)
         {
             int size = vector.Size;
-            ObjectMatrix2D diag = make(size, size);
+            ObjectMatrix2D diag = Make(size, size);
             for (int i = size; --i >= 0;)
             {
-                diag.setQuick(i, i, vector.getQuick(i));
+                diag[i, i] = vector[i];
             }
             return diag;
         }
 
-        public ObjectMatrix1D diagonal(ObjectMatrix2D A)
+        public ObjectMatrix1D Diagonal(ObjectMatrix2D A)
         {
             int min = System.Math.Min(A.Rows, A.Columns);
-            ObjectMatrix1D diag = make1D(min);
+            ObjectMatrix1D diag = Make1D(min);
             for (int i = min; --i >= 0;)
             {
                 diag.setQuick(i, A.getQuick(i, i));
@@ -284,19 +285,19 @@ namespace Cern.Colt.Matrix
             return diag;
         }
 
-        public ObjectMatrix2D make(Object[][] values)
+        public ObjectMatrix2D Make(Object[][] values)
         {
             if (this == Sparse) return new SparseObjectMatrix2D(values);
             else return new DenseObjectMatrix2D(values);
         }
 
-        public ObjectMatrix2D make(Object[] values, int rows)
+        public ObjectMatrix2D Make(Object[] values, int rows)
         {
             int columns = (rows != 0 ? values.Length / rows : 0);
             if (rows * columns != values.Length)
                 throw new ArgumentException("Array Length must be a multiple of m.");
 
-            ObjectMatrix2D matrix = make(rows, columns);
+            ObjectMatrix2D matrix = Make(rows, columns);
             for (int row = 0; row < rows; row++)
             {
                 for (int column = 0; column < columns; column++)
@@ -308,7 +309,7 @@ namespace Cern.Colt.Matrix
         }
 
 
-        public ObjectMatrix2D make(int rows, int columns)
+        public ObjectMatrix2D Make(int rows, int columns)
         {
             if (this == Sparse) return new SparseObjectMatrix2D(rows, columns);
             else return new DenseObjectMatrix2D(rows, columns);
@@ -316,17 +317,17 @@ namespace Cern.Colt.Matrix
         /**
          * Constructs a matrix with the given shape, each cell initialized with the given value.
          */
-        public ObjectMatrix2D make(int rows, int columns, Object initialValue)
+        public ObjectMatrix2D Make(int rows, int columns, Object initialValue)
         {
-            if (initialValue == null) return make(rows, columns);
-            return make(rows, columns).assign(initialValue);
+            if (initialValue == null) return Make(rows, columns);
+            return Make(rows, columns).assign(initialValue);
         }
         /**
          * Constructs a 1d matrix of the right dynamic type.
          */
-        protected ObjectMatrix1D make1D(int size)
+        protected ObjectMatrix1D Make1D(int size)
         {
-            return make(0, 0).like1D(size);
+            return Make(0, 0).like1D(size);
         }
         /**
 C = A||A||..||A; Constructs a new matrix which is duplicated both along the row and column dimension.
@@ -341,11 +342,11 @@ repeat(2,3) -->
 2 3 2 3 2 3
 </pre>
 */
-        public ObjectMatrix2D repeat(ObjectMatrix2D A, int rowRepeat, int columnRepeat)
+        public ObjectMatrix2D Repeat(ObjectMatrix2D A, int rowRepeat, int columnRepeat)
         {
             int r = A.Rows;
             int c = A.Columns;
-            ObjectMatrix2D matrix = make(r * rowRepeat, c * columnRepeat);
+            ObjectMatrix2D matrix = Make(r * rowRepeat, c * columnRepeat);
             for (int i = rowRepeat; --i >= 0;)
             {
                 for (int j = columnRepeat; --j >= 0;)

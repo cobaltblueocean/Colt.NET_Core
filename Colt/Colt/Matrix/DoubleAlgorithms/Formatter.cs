@@ -72,7 +72,7 @@ namespace Cern.Colt.Matrix.DoubleAlgorithms
         /// </returns>
         public string ToString(DoubleMatrix1D matrix)
         {
-            DoubleMatrix2D easy = matrix.Like2D(1, matrix.Size());
+            DoubleMatrix2D easy = matrix.Like2D(1, matrix.Size);
             easy.ViewRow(0).Assign(matrix);
             return ToString(easy);
         }
@@ -104,7 +104,7 @@ namespace Cern.Colt.Matrix.DoubleAlgorithms
             for (int slice = 0; slice < matrix.Slices; slice++)
             {
                 if (slice != 0) buf.Append(sliceSeparator);
-                buf.Append(ToString((AbstractMatrix2D)matrix.viewSlice(slice)));
+                buf.Append(ToString((AbstractMatrix2D)matrix.ViewSlice(slice)));
             }
             this.printShape = oldPrintShape;
             if (printShape) buf.Insert(0, Shape(matrix) + "\n");
@@ -174,13 +174,13 @@ namespace Cern.Colt.Matrix.DoubleAlgorithms
 
         protected String ToTitleString(DoubleMatrix2D matrix, String[] rowNames, String[] columnNames, String rowAxisName, String columnAxisName, String title)
         {
-            if (matrix.Size() == 0) return "Empty matrix";
+            if (matrix.Size == 0) return "Empty matrix";
             String[][] s = Format(matrix);
             //String oldAlignment = this.alignment;
             //this.alignment = DECIMAL;
             align(s);
             //this.alignment = oldAlignment;
-            return new Cern.Colt.Matrix.DoubleAlgorithms.Formatter().toTitleString(Cern.Colt.Matrix.ObjectFactory2D.Dense.Make(s), rowNames, columnNames, rowAxisName, columnAxisName, title);
+            return new Cern.Colt.Matrix.DoubleAlgorithms.Formatter().ToTitleString(Cern.Colt.Matrix.ObjectFactory2D.Dense.Make(s), rowNames, columnNames, rowAxisName, columnAxisName, title);
         }
     }
 }
