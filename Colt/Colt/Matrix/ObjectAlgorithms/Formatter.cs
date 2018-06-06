@@ -75,7 +75,7 @@
         public String ToSourceCode(ObjectMatrix2D matrix)
         {
             Formatter copy = (Formatter)this.Clone();
-            String b3 = blanks(3);
+            String b3 = Blanks(3);
             copy.SetPrintShape(false);
             copy.SetColumnSeparator(", ");
             copy.SetRowSeparator("},\n" + b3 + "{");
@@ -90,8 +90,8 @@
         public String ToSourceCode(ObjectMatrix3D matrix)
         {
             Formatter copy = (Formatter)this.Clone();
-            String b3 = blanks(3);
-            String b6 = blanks(6);
+            String b3 = Blanks(3);
+            String b6 = Blanks(6);
             copy.SetPrintShape(false);
             copy.SetColumnSeparator(", ");
             copy.SetRowSeparator("},\n" + b6 + "{");
@@ -209,12 +209,12 @@
             if (columnNames != null)
             {
                 int i = str.IndexOf(rowSeparator);
-                total.Insert(i + 1, repeat('-', i) + rowSeparator);
+                total.Insert(i + 1, Repeat('-', i) + rowSeparator);
             }
             else if (columnAxisName != null)
             {
                 int i = str.IndexOf(rowSeparator);
-                total.Insert(0, repeat('-', i) + rowSeparator);
+                total.Insert(0, Repeat('-', i) + rowSeparator);
             }
 
             // insert line for column axis name
@@ -222,7 +222,7 @@
             {
                 int j = 0;
                 if (c > 0) j = str.IndexOf('|');
-                String s = blanks(j);
+                String s = Blanks(j);
                 if (c > 0) s = s + "| ";
                 s = s + columnAxisName + "\n";
                 total.Insert(0, s);

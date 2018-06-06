@@ -119,7 +119,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <summary>
         /// for efficient String manipulations
         /// </summary>
-        private static readonly string[] blanksCache = setupBlanksCache();
+        private static readonly string[] blanksCache = SetupBlanksCache();
 
         /// <summary>
         /// Returns a short string representation describing the shape of the matrix.
@@ -132,7 +132,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// </returns>
         public static string Shape(AbstractMatrix1D matrix)
         {
-            return matrix.Size() + " matrix";
+            return matrix.Size + " matrix";
         }
 
         /// <summary>
@@ -248,7 +248,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// </summary>
         /// <returns>
         /// </returns>
-        protected static string[] setupBlanksCache()
+        protected static string[] SetupBlanksCache()
         {
             // Pre-fabricate 40 static strings with 0,1,2,..,39 blanks, for usage within method blanks(length).
             // Now, we don't need to construct and fill them on demand, and garbage collect them again.
@@ -270,7 +270,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <param name="strings">
         /// The strings.
         /// </param>
-        protected void align(string[][] strings)
+        protected void Align(string[][] strings)
         {
             int rows = strings.Length;
             int columns = 0;
@@ -300,7 +300,7 @@ namespace Cern.Colt.Matrix.Implementation
             // format each row according to alignment parameters
             for (int row = 0; row < rows; row++)
             {
-                alignRow(strings[row], maxColWidth, maxColLead);
+                AlignRow(strings[row], maxColWidth, maxColLead);
             }
         }
 
@@ -316,7 +316,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <exception cref="ArgumentOutOfRangeException">
         /// If the alignment is not left, enter, right or decimal.
         /// </exception>
-        protected int alignmentCode(string align)
+        protected int AlignmentCode(string align)
         {
             // {-1,0,1,2} = {left,centered,right,decimal point}
             if (align.Equals(LEFT)) return -1;
@@ -340,7 +340,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// </param>
         /// <exception cref="ApplicationException">
         /// </exception>
-        protected void alignRow(string[] row, int[] maxColWidth, int[] maxColLead)
+        protected void AlignRow(string[] row, int[] maxColWidth, int[] maxColLead)
         {
             StringBuilder s;
 
@@ -351,25 +351,25 @@ namespace Cern.Colt.Matrix.Implementation
                 string c = row[column];
                 if (alignmentString.Equals(RIGHT))
                 {
-                    s.Append(blanks(maxColWidth[column] - s.Length));
+                    s.Append(Blanks(maxColWidth[column] - s.Length));
                     s.Append(c);
                 }
                 else if (alignmentString.Equals(DECIMAL))
                 {
-                    s.Append(blanks(maxColLead[column] - Lead(c)));
+                    s.Append(Blanks(maxColLead[column] - Lead(c)));
                     s.Append(c);
-                    s.Append(blanks(maxColWidth[column] - s.Length));
+                    s.Append(Blanks(maxColWidth[column] - s.Length));
                 }
                 else if (alignmentString.Equals(CENTER))
                 {
-                    s.Append(blanks((maxColWidth[column] - c.Length) / 2));
+                    s.Append(Blanks((maxColWidth[column] - c.Length) / 2));
                     s.Append(c);
-                    s.Append(blanks(maxColWidth[column] - s.Length));
+                    s.Append(Blanks(maxColWidth[column] - s.Length));
                 }
                 else if (alignmentString.Equals(LEFT))
                 {
                     s.Append(c);
-                    s.Append(blanks(maxColWidth[column] - s.Length));
+                    s.Append(Blanks(maxColWidth[column] - s.Length));
                 }
                 else throw new ApplicationException();
 
@@ -386,7 +386,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <returns>
         /// A string with <tt>length</tt> blanks.
         /// </returns>
-        protected string blanks(int length)
+        protected string Blanks(int length)
         {
             if (length < 0) length = 0;
             if (length < blanksCache.Length) return blanksCache[length];
@@ -417,9 +417,9 @@ namespace Cern.Colt.Matrix.Implementation
         /// <returns>
         /// A string representations of all cells.
         /// </returns>
-        protected string[] formatRow(DoubleMatrix1D vector)
+        protected string[] FormatRow(DoubleMatrix1D vector)
         {
-            int s = vector.Size();
+            int s = vector.Size;
             var strings = new string[s];
             for (int i = 0; i < s; i++)
                 strings[i] = vector[i].ToString();
@@ -452,9 +452,9 @@ namespace Cern.Colt.Matrix.Implementation
         /// <returns>
         /// A string with the given character repeated <tt>length</tt> times.
         /// </returns>
-        protected string repeat(char character, int length)
+        protected string Repeat(char character, int length)
         {
-            if (character == ' ') return blanks(length);
+            if (character == ' ') return Blanks(length);
             if (length < 0) length = 0;
             var buf = new StringBuilder(length);
             for (int k = 0; k < length; k++)
@@ -471,7 +471,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <returns>
         /// A single string representation of the given string matrix.
         /// </returns>
-        protected virtual string toString(string[][] strings)
+        protected virtual string ToString(string[][] strings)
         {
             int rows = strings.Length;
             int columns = strings.Length <= 0 ? 0 : strings[0].Length;
@@ -506,8 +506,8 @@ namespace Cern.Colt.Matrix.Implementation
         protected virtual string ToString(AbstractMatrix2D matrix)
         {
             var strings = this.Format(matrix);
-            align(strings);
-            var total = new StringBuilder(toString(strings));
+            Align(strings);
+            var total = new StringBuilder(ToString(strings));
             if (printShape) total.Insert(0, Shape(matrix) + "\n");
             return total.ToString();
         }

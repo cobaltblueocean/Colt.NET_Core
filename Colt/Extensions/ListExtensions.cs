@@ -34,5 +34,58 @@ namespace System
 
             return new List<T>(buf);
         }
+
+        public static int BinarySearchFromTo<T>(this List<T> list, T item, int from, int to)
+        {
+            var dc = new DefaultComparer<T>();
+            if (from > to)
+                throw new IndexOutOfRangeException();
+
+            int count = to - from;
+            return list.BinarySearch(from, count, item, dc);
+        }
+
+        private class DefaultComparer<T> : IComparer<T>
+        {
+            public int Compare(T x, T y)
+            {
+                if (Nullable.GetUnderlyingType(x.GetType()) != null)
+                {
+                    if (x == null)
+                    {
+                        if (y == null)
+                        {
+                            // If x is null and y is null, they're
+                            // equal. 
+                            return 0;
+                        }
+                        else
+                        {
+                            // If x is null and y is not null, y
+                            // is greater. 
+                            return -1;
+                        }
+                    }
+                    else
+                    {
+                        // If x is not null...
+                        //
+                        if (y == null)
+                        // ...and y is null, x is greater.
+                        {
+                            return 1;
+                        }
+                        else
+                        {
+                            return Comparer<T>.Default.Compare(x, y);
+                        }
+                    }
+                }
+                else
+                {
+                    return Comparer<T>.Default.Compare(x, y);
+                }
+            }
+        }
     }
 }

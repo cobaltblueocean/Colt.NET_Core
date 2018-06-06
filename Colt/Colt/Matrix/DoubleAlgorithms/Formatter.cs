@@ -57,7 +57,7 @@ namespace Cern.Colt.Matrix.DoubleAlgorithms
         public string[][] Format(DoubleMatrix2D matrix)
         {
             var strings = new string[matrix.Rows][];
-            for (int row = matrix.Rows; --row >= 0;) strings[row] = formatRow(matrix.ViewRow(row));
+            for (int row = matrix.Rows; --row >= 0;) strings[row] = FormatRow(matrix.ViewRow(row));
             return strings;
         }
 
@@ -178,9 +178,89 @@ namespace Cern.Colt.Matrix.DoubleAlgorithms
             String[][] s = Format(matrix);
             //String oldAlignment = this.alignment;
             //this.alignment = DECIMAL;
-            align(s);
+            Align(s);
             //this.alignment = oldAlignment;
             return new Cern.Colt.Matrix.DoubleAlgorithms.Formatter().ToTitleString(Cern.Colt.Matrix.ObjectFactory2D.Dense.Make(s), rowNames, columnNames, rowAxisName, columnAxisName, title);
+        }
+
+        public String ToTitleString(ObjectMatrix2D matrix, String[] rowNames, String[] columnNames, String rowAxisName, String columnAxisName, String title)
+        {
+            if (matrix.Size == 0) return "Empty matrix";
+            String oldFormat = this.formatString;
+            this.formatString = LEFT;
+
+            int rows = matrix.Rows;
+            int columns = matrix.Columns;
+
+            // determine how many rows and columns are needed
+            int r = 0;
+            int c = 0;
+            r += (columnNames == null ? 0 : 1);
+            c += (rowNames == null ? 0 : 1);
+            c += (rowAxisName == null ? 0 : 1);
+            c += (rowNames != null || rowAxisName != null ? 1 : 0);
+
+            int height = r + Math.Max(rows, rowAxisName == null ? 0 : rowAxisName.Length);
+            int width = c + columns;
+
+            // make larger matrix holding original matrix and naming strings
+            Cern.Colt.Matrix.ObjectMatrix2D titleMatrix = matrix.Like(height, width);
+
+            // insert original matrix into larger matrix
+            titleMatrix.viewPart(r, c, rows, columns).assign(matrix);
+
+            // insert column axis name in leading row
+            if (r > 0) titleMatrix.viewRow(0).viewPart(c, columns).assign(columnNames);
+
+            // insert row axis name in leading column
+            if (rowAxisName != null)
+            {
+                String[] rowAxisStrings = new String[rowAxisName.Length];
+                for (int i = rowAxisName.Length; --i >= 0;) rowAxisStrings[i] = rowAxisName.Substring(i, i + 1);
+                titleMatrix.viewColumn(0).viewPart(r, rowAxisName.Length).assign(rowAxisStrings);
+            }
+            // insert row names in next leading columns
+            if (rowNames != null) titleMatrix.viewColumn(c - 2).viewPart(r, rows).assign(rowNames);
+
+            // insert vertical "---------" separator line in next leading column
+            if (c > 0) titleMatrix.viewColumn(c - 2 + 1).viewPart(0, rows + r).assign("|");
+
+            // convert the large matrix to a string
+            Boolean oldPrintShape = this.printShape;
+            this.printShape = false;
+            String str = ToString(titleMatrix);
+            this.printShape = oldPrintShape;
+
+            // insert horizontal "--------------" separator line
+            var total = new StringBuilder(str);
+            if (columnNames != null)
+            {
+                int i = str.IndexOf(rowSeparator);
+                total.Insert(i + 1, Repeat('-', i) + rowSeparator);
+            }
+            else if (columnAxisName != null)
+            {
+                int i = str.IndexOf(rowSeparator);
+                total.Insert(0, Repeat('-', i) + rowSeparator);
+            }
+
+            // insert line for column axis name
+            if (columnAxisName != null)
+            {
+                int j = 0;
+                if (c > 0) j = str.IndexOf('|');
+                String s = Blanks(j);
+                if (c > 0) s = s + "| ";
+                s = s + columnAxisName + "\n";
+                total.Insert(0, s);
+            }
+
+            // insert title
+            if (title != null) total.Insert(0, title + "\n");
+
+            this.formatString = oldFormat;
+
+            return total.ToString();
         }
     }
 }

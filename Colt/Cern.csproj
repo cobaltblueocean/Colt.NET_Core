@@ -111,6 +111,7 @@
     <Compile Include="Extensions\ArrayExtensions.cs" />
     <Compile Include="Extensions\DateTimeExtension.cs" />
     <Compile Include="Extensions\ListExtensions.cs" />
+    <Compile Include="Extensions\PremitiveExtensions.cs" />
     <Compile Include="Hep\Aida\Bin\AbstractBin.cs" />
     <Compile Include="Hep\Aida\Bin\AbstractBin1D.cs" />
     <Compile Include="Hep\Aida\Bin\DynamicBin1D.cs" />
