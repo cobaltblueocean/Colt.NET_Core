@@ -45,8 +45,7 @@ namespace Cern.Colt.Matrix
         /// <param name="aggr">an aggregation function taking as first argument the current aggregation and as second argument the transformed current cell value.</param>
         /// <param name="f">a function transforming the current cell value.</param>
         /// <returns>the aggregated measure.</returns>
-        
-        public Object aggregate(Cern.Colt.Function.ObjectObjectFunction<Object> aggr, Cern.Colt.Function.ObjectFunction<Object> f)
+        public Object Aggregate(Cern.Colt.Function.ObjectObjectFunction<Object> aggr, Cern.Colt.Function.ObjectFunction<Object> f)
         {
             if (Size == 0) return null;
             Object a = f(this[Size - 1]);
@@ -81,7 +80,7 @@ namespace Cern.Colt.Matrix
         /// <param name="f">a function transforming the current cell value.</param>
         /// <returns>the aggregated measure.</returns>
         /// <exception cref="ArgumentException">if <i>Size != other.Count</i>.</exception>
-        public Object aggregate(ObjectMatrix1D other, Cern.Colt.Function.ObjectObjectFunction<Object> aggr, Cern.Colt.Function.ObjectObjectFunction<Object> f)
+        public Object Aggregate(ObjectMatrix1D other, Cern.Colt.Function.ObjectObjectFunction<Object> aggr, Cern.Colt.Function.ObjectObjectFunction<Object> f)
         {
             CheckSize(other);
             if (Size == 0) return null;
@@ -102,7 +101,7 @@ namespace Cern.Colt.Matrix
         /// <param name="values">the values to be filled into the cells.</param>
         /// <returns><i>this</i> (for convenience only).</returns>
         /// <exception cref="ArgumentException">if <i>values.Length != Size</i>.</exception>
-        public ObjectMatrix1D assign(Object[] values)
+        public ObjectMatrix1D Assign(Object[] values)
         {
             if (values.Length != Size) throw new ArgumentException("Must have same number of cells: Length=" + values.Length + ", Size=" + Size);
             for (int i = Size; --i >= 0;)
