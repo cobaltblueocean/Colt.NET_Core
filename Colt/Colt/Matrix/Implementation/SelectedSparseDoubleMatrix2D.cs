@@ -40,7 +40,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// </param>
         protected internal SelectedSparseDoubleMatrix2D(IDictionary<int, double> elements, int[] rowOffsets, int[] columnOffsets, int offset)
         {
-            setUp(rowOffsets.Length, columnOffsets.Length, 0, 0, 1, 1);
+            Setup(rowOffsets.Length, columnOffsets.Length, 0, 0, 1, 1);
 
             this.elements = elements;
             this.rowOffsets = rowOffsets;
@@ -86,7 +86,7 @@ namespace Cern.Colt.Matrix.Implementation
         protected SelectedSparseDoubleMatrix2D(int rows, int columns, IDictionary<int, double> elements, int rowZero, int columnZero, int rowStride, int columnStride, int[] rowOffsets, int[] columnOffsets, int offset)
         {
             // be sure parameters are valid, we do not check...
-            setUp(rows, columns, rowZero, columnZero, rowStride, columnStride);
+            Setup(rows, columns, rowZero, columnZero, rowStride, columnStride);
 
             this.elements = elements;
             this.rowOffsets = rowOffsets;
@@ -129,12 +129,12 @@ namespace Cern.Colt.Matrix.Implementation
         {
             get
             {
-                return elements[offset + rowOffsets[rowZero + (row * rowStride)] + columnOffsets[columnZero + (column * columnStride)]];
+                return elements[offset + rowOffsets[RowZero + (row * RowStride)] + columnOffsets[ColumnZero + (column * ColumnStride)]];
             }
 
             set
             {
-                int index = offset + rowOffsets[rowZero + (row * rowStride)] + columnOffsets[columnZero + (column * columnStride)];
+                int index = offset + rowOffsets[RowZero + (row * RowStride)] + columnOffsets[ColumnZero + (column * ColumnStride)];
 
                 if (value == 0)
                     this.elements.Remove(index);
@@ -188,12 +188,12 @@ namespace Cern.Colt.Matrix.Implementation
         /// </exception>
         public override DoubleMatrix1D ViewColumn(int column)
         {
-            checkColumn(column);
+            CheckColumn(column);
             int viewSize = this.Rows;
-            int viewZero = this.rowZero;
-            int viewStride = this.rowStride;
+            int viewZero = this.RowZero;
+            int viewStride = this.RowStride;
             int[] viewOffsets = this.rowOffsets;
-            int viewOffset = this.offset + columnOffset(columnRank(column));
+            int viewOffset = this.offset + ColumnOffset(ColumnRank(column));
             return new SelectedSparseDoubleMatrix1D(viewSize, this.elements, viewZero, viewStride, viewOffsets, viewOffset);
         }
 
@@ -212,12 +212,12 @@ namespace Cern.Colt.Matrix.Implementation
         /// </exception>
         public override DoubleMatrix1D ViewRow(int row)
         {
-            checkRow(row);
+            CheckRow(row);
             int viewSize = this.Columns;
-            int viewZero = columnZero;
-            int viewStride = this.columnStride;
+            int viewZero = ColumnZero;
+            int viewStride = this.ColumnStride;
             int[] viewOffsets = this.columnOffsets;
-            int viewOffset = this.offset + rowOffset(rowRank(row));
+            int viewOffset = this.offset + RowOffset(RowRank(row));
             return new SelectedSparseDoubleMatrix1D(viewSize, this.elements, viewZero, viewStride, viewOffsets, viewOffset);
         }
 
@@ -247,7 +247,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// </summary>
         /// <param name="absRank">the absolute rank of the element.</param>
         /// <returns>the position.</returns>
-        protected override int columnOffset(int absRank)
+        protected override int ColumnOffset(int absRank)
         {
             return columnOffsets[absRank];
         }
@@ -262,7 +262,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <returns>
         /// The position.
         /// </returns>
-        protected override int rowOffset(int absRank)
+        protected override int RowOffset(int absRank)
         {
             return rowOffsets[absRank];
         }
@@ -305,11 +305,11 @@ namespace Cern.Colt.Matrix.Implementation
         /// <returns>
         /// The position of the given coordinate within the (virtual or non-virtual) internal 1-dimensional array. 
         /// </returns>
-        protected override int index(int row, int column)
+        protected override int Index(int row, int column)
         {
             ////return this.offset + super.index(row,column);
             // manually inlined:
-            return this.offset + rowOffsets[rowZero + (row * rowStride)] + columnOffsets[columnZero + (column * columnStride)];
+            return this.offset + rowOffsets[RowZero + (row * RowStride)] + columnOffsets[ColumnZero + (column * ColumnStride)];
         }
 
         /// <summary>
@@ -324,11 +324,11 @@ namespace Cern.Colt.Matrix.Implementation
         /// <exception cref="ArgumentException">
         /// If <tt>rows &lt; 0 || columns &lt; 0 || (double)columns*rows &gt; Integer.MAX_VALUE</tt>.
         /// </exception>
-        protected override void setUp(int rows, int columns)
+        protected override void Setup(int rows, int columns)
         {
-            base.setUp(rows, columns);
-            this.rowStride = 1;
-            this.columnStride = 1;
+            base.Setup(rows, columns);
+            this.RowStride = 1;
+            this.ColumnStride = 1;
             this.offset = 0;
         }
 
@@ -338,9 +338,9 @@ namespace Cern.Colt.Matrix.Implementation
         /// <returns>
         /// A new dice view.
         /// </returns>
-        protected override AbstractMatrix2D vDice()
+        protected override AbstractMatrix2D VDice()
         {
-            base.vDice();
+            base.VDice();
 
             // swap
             int[] tmp = rowOffsets;

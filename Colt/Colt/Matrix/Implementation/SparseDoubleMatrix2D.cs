@@ -38,7 +38,7 @@ namespace Cern.Colt.Matrix.Implementation
         {
             var rows = values.Length;
             var columns = values.Length == 0 ? 0 : values[0].Length;
-            setUp(rows, columns);
+            Setup(rows, columns);
             this.elements = new Dictionary<int, double>(rows * (columns / 1000));
             Assign(values);
         }
@@ -58,7 +58,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// </exception>
         public SparseDoubleMatrix2D(int rows, int columns)
         {
-            setUp(rows, columns);
+            Setup(rows, columns);
             this.elements = new Dictionary<int, double>(rows * (columns / 1000));
         }
 
@@ -92,7 +92,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// </exception>
         internal SparseDoubleMatrix2D(int rows, int columns, IDictionary<int, double> elements, int rowZero, int columnZero, int rowStride, int columnStride)
         {
-            setUp(rows, columns, rowZero, columnZero, rowStride, columnStride);
+            Setup(rows, columns, rowZero, columnZero, rowStride, columnStride);
             this.elements = elements;
             this.IsView = true;
         }
@@ -115,13 +115,13 @@ namespace Cern.Colt.Matrix.Implementation
         {
             get
             {
-                int index = rowZero + (row * rowStride) + columnZero + (column * columnStride);
+                int index = RowZero + (row * RowStride) + ColumnZero + (column * ColumnStride);
                 return elements.ContainsKey(index) ? elements[index] : 0;
             }
 
             set
             {
-                int index = rowZero + (row * rowStride) + columnZero + (column * columnStride);
+                int index = RowZero + (row * RowStride) + ColumnZero + (column * ColumnStride);
 
                 if (value == 0)
                     this.elements.Remove(index);
@@ -169,7 +169,7 @@ namespace Cern.Colt.Matrix.Implementation
 
             var other = (SparseDoubleMatrix2D)source;
             if (other == this) return this; // nothing to do
-            checkShape(other);
+            CheckShape(other);
 
             if (!this.IsView && !other.IsView)
             { // quickest
@@ -199,7 +199,7 @@ namespace Cern.Colt.Matrix.Implementation
         public override DoubleMatrix2D Assign(DoubleMatrix2D y, DoubleDoubleFunction function)
         {
             if (!IsView)
-                checkShape(y);
+                CheckShape(y);
             return base.Assign(y, function);
         }
 
@@ -340,11 +340,11 @@ namespace Cern.Colt.Matrix.Implementation
         /// <returns>
         /// The position of the given coordinate within the (virtual or non-virtual) internal 1-dimensional array. 
         /// </returns>
-        protected override int index(int row, int column)
+        protected override int Index(int row, int column)
         {
             // return super.index(row,column);
             // manually inlined for speed:
-            return rowZero + (row * rowStride) + columnZero + (column * columnStride);
+            return RowZero + (row * RowStride) + ColumnZero + (column * ColumnStride);
         }
 
         /// <summary>

@@ -536,7 +536,7 @@ namespace Cern.Colt.Matrix
         /// <see cref="ViewRowFlip()"/>
         public DoubleMatrix3D ViewColumnFlip()
         {
-            return (DoubleMatrix3D)(View().ViewColumnFlipSelf());
+            return (DoubleMatrix3D)(View().VColumnFlip());
         }
 
         /// <summary>
@@ -551,7 +551,7 @@ namespace Cern.Colt.Matrix
         /// <exception cref="ArgumentException">if some of the parameters are equal or not in range 0.2.</exception>
         public DoubleMatrix3D ViewDice(int axis0, int axis1, int axis2)
         {
-            return (DoubleMatrix3D)(View().ViewDiceSelf(axis0, axis1, axis2));
+            return (DoubleMatrix3D)(View().VDice(axis0, axis1, axis2));
         }
 
         /// <summary>
@@ -569,7 +569,7 @@ namespace Cern.Colt.Matrix
         /// <exception cref="IndexOutOfRangeException">if <i>slice %lt; 0 || depth %lt; 0 || slice+depth>Slices || row %lt; 0 || height %lt; 0 || row+height>Rows || column %lt; 0 || width %lt; 0 || column+width>Columns</i></exception>
         public DoubleMatrix3D ViewPart(int slice, int row, int column, int depth, int height, int width)
         {
-            return (DoubleMatrix3D)(View().ViewPartSelf(slice, row, column, depth, height, width));
+            return (DoubleMatrix3D)(View().VPart(slice, row, column, depth, height, width));
         }
 
         /// <summary>
@@ -611,7 +611,7 @@ namespace Cern.Colt.Matrix
         /// <see cref="ViewColumnFlip(int)"/>
         public DoubleMatrix3D ViewRowFlip()
         {
-            return (DoubleMatrix3D)(View().ViewRowFlipSelf());
+            return (DoubleMatrix3D)(View().VRowFlip());
         }
 
         /// <summary>
@@ -747,7 +747,7 @@ namespace Cern.Colt.Matrix
         /// <see cref="ViewColumnFlip()"/>
         public DoubleMatrix3D ViewSliceFlip()
         {
-            return (DoubleMatrix3D)(View().ViewSliceFlipSelf());
+            return (DoubleMatrix3D)(View().VSliceFlip());
         }
 
         /// <summary>

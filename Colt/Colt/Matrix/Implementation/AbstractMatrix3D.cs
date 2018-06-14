@@ -1,4 +1,13 @@
-﻿using System;
+﻿// <copyright file="AbstractMatrix3D.cs" company="CERN">
+//   Copyright © 1999 CERN - European Organization for Nuclear Research.
+//   Permission to use, copy, modify, distribute and sell this software and its documentation for any purpose 
+//   is hereby granted without fee, provided that the above copyright notice appear in all copies and 
+//   that both that copyright notice and this permission notice appear in supporting documentation. 
+//   CERN makes no representations about the suitability of this software for any purpose. 
+//   It is provided "as is" without expressed or implied warranty.
+//   Ported from Java to C# by Kei Nakai, 2018.
+// </copyright>
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,7 +21,6 @@ namespace Cern.Colt.Matrix.Implementation
     /// <remarks>This implementation is not synchronized.</remarks>
     public abstract class AbstractMatrix3D : AbstractMatrix
     {
-
         /// <summary>
         /// Gets or sets the number of Slices this matrix (view) has.
         /// </summary>
@@ -304,7 +312,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <summary>
         /// Self modifying version of viewColumnFlip().
         /// </summary>
-        protected AbstractMatrix3D ViewColumnFlipSelf()
+        protected AbstractMatrix3D VColumnFlip()
         {
             if (Columns > 0)
             {
@@ -319,7 +327,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// Self modifying version of viewDice().
         /// </summary>
         /// <exception cref="ArgumentException">if some of the parameters are equal or not in range 0..2.</exception>
-        protected AbstractMatrix3D ViewDiceSelf(int axis0, int axis1, int axis2)
+        protected AbstractMatrix3D VDice(int axis0, int axis1, int axis2)
         {
             int d = 3;
             if (axis0 < 0 || axis0 >= d || axis1 < 0 || axis1 >= d || axis2 < 0 || axis2 >= d ||
@@ -353,7 +361,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// Self modifying version of viewPart().
         /// </summary>
         /// <exception cref="IndexOutOfRangeException">if <i>slice %lt; 0 || depth %lt; 0 || slice+depth %gt; Slices() || row %lt; 0 || height %lt; 0 || row+height %gt; Rows() || column %lt; 0 || width %lt; 0 || column + width %gt; Columns()</i></exception>
-        protected AbstractMatrix3D ViewPartSelf(int slice, int row, int column, int depth, int height, int width)
+        protected AbstractMatrix3D VPart(int slice, int row, int column, int depth, int height, int width)
         {
             CheckBox(slice, row, column, depth, height, width);
 
@@ -372,7 +380,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <summary>
         /// Self modifying version of viewRowFlip().
         /// </summary>
-        protected AbstractMatrix3D ViewRowFlipSelf()
+        protected AbstractMatrix3D VRowFlip()
         {
             if (Rows > 0)
             {
@@ -386,7 +394,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <summary>
         /// Self modifying version of viewSliceFlip().
         /// </summary>
-        protected AbstractMatrix3D ViewSliceFlipSelf()
+        protected AbstractMatrix3D VSliceFlip()
         {
             if (Slices > 0)
             {
@@ -402,7 +410,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// @thRows  
         /// </summary>
         /// <exception cref="IndexOutOfRangeException">if <i>Slicestride %lt;= 0 || Rowstride %lt;= 0 || Columnstride %lt;= 0</i>.</exception>
-        protected AbstractMatrix3D ViewStridesSelf(int Slicestride, int Rowstride, int Columnstride)
+        protected AbstractMatrix3D VStrides(int Slicestride, int Rowstride, int Columnstride)
         {
             if (Slicestride <= 0 || Rowstride <= 0 || Columnstride <= 0) throw new IndexOutOfRangeException("illegal strides: " + Slicestride + ", " + Rowstride + ", " + Columnstride);
 

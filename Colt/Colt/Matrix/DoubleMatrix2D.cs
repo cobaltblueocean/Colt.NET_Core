@@ -114,7 +114,7 @@ namespace Cern.Colt.Matrix
         /// </exception>
         public double Aggregate(DoubleMatrix2D other, DoubleDoubleFunction aggr, DoubleDoubleFunction f)
         {
-            checkShape(other);
+            CheckShape(other);
             if (Size() == 0) return double.NaN;
             double a = f(this[Rows - 1, Columns - 1], other[Rows - 1, Columns - 1]);
             int d = 1; // last cell already done
@@ -212,7 +212,7 @@ namespace Cern.Colt.Matrix
         public virtual DoubleMatrix2D Assign(DoubleMatrix2D other)
         {
             if (other == this) return this;
-            checkShape(other);
+            CheckShape(other);
             if (haveSharedCells(other)) other = other.Copy();
 
             for (int row = Rows; --row >= 0;)
@@ -239,7 +239,7 @@ namespace Cern.Colt.Matrix
         /// </exception>
         public virtual DoubleMatrix2D Assign(DoubleMatrix2D y, DoubleDoubleFunction function)
         {
-            checkShape(y);
+            CheckShape(y);
             for (int row = Rows; --row >= 0;) for (int column = Columns; --column >= 0;) this[row, column] = function(this[row, column], y[row, column]);
             return this;
         }
@@ -548,10 +548,10 @@ namespace Cern.Colt.Matrix
         /// </exception>
         public virtual DoubleMatrix1D ViewColumn(int column)
         {
-            checkColumn(column);
+            CheckColumn(column);
             int viewSize = Rows;
-            int viewZero = index(0, column);
-            int viewStride = rowStride;
+            int viewZero = Index(0, column);
+            int viewStride = RowStride;
             return like1D(viewSize, viewZero, viewStride);
         }
 
@@ -565,7 +565,7 @@ namespace Cern.Colt.Matrix
         /// </returns>
         public virtual DoubleMatrix2D ViewColumnFlip()
         {
-            return (DoubleMatrix2D)view().vColumnFlip();
+            return (DoubleMatrix2D)view().VColumnFlip();
         }
 
         /// <summary>
@@ -580,7 +580,7 @@ namespace Cern.Colt.Matrix
         /// </returns>
         public DoubleMatrix2D ViewDice()
         {
-            return (DoubleMatrix2D)view().vDice();
+            return (DoubleMatrix2D)view().VDice();
         }
 
         /// <summary>
@@ -606,7 +606,7 @@ namespace Cern.Colt.Matrix
         /// </exception>
         public DoubleMatrix2D ViewPart(int row, int column, int height, int width)
         {
-            return (DoubleMatrix2D)view().vPart(row, column, height, width);
+            return (DoubleMatrix2D)view().VPart(row, column, height, width);
         }
 
         /// <summary>
@@ -624,10 +624,10 @@ namespace Cern.Colt.Matrix
         /// </exception>
         public virtual DoubleMatrix1D ViewRow(int row)
         {
-            checkRow(row);
+            CheckRow(row);
             int viewSize = Columns;
-            int viewZero = index(row, 0);
-            int viewStride = columnStride;
+            int viewZero = Index(row, 0);
+            int viewStride = ColumnStride;
             return like1D(viewSize, viewZero, viewStride);
         }
 
@@ -641,7 +641,7 @@ namespace Cern.Colt.Matrix
         /// </returns>
         public DoubleMatrix2D ViewRowFlip()
         {
-            return (DoubleMatrix2D)view().vRowFlip();
+            return (DoubleMatrix2D)view().VRowFlip();
         }
 
         /// <summary>
@@ -676,14 +676,14 @@ namespace Cern.Colt.Matrix
                 for (int i = Columns; --i >= 0;) columnIndexes[i] = i;
             }
 
-            checkRowIndexes(rowIndexes);
-            checkColumnIndexes(columnIndexes);
+            CheckRowIndexes(rowIndexes);
+            CheckColumnIndexes(columnIndexes);
             var rowOffsets = new int[rowIndexes.Length];
             var columnOffsets = new int[columnIndexes.Length];
             for (int i = rowIndexes.Length; --i >= 0;)
-                rowOffsets[i] = rowOffset(rowRank(rowIndexes[i]));
+                rowOffsets[i] = RowOffset(RowRank(rowIndexes[i]));
             for (int i = columnIndexes.Length; --i >= 0;)
-                columnOffsets[i] = columnOffset(columnRank(columnIndexes[i]));
+                columnOffsets[i] = ColumnOffset(ColumnRank(columnIndexes[i]));
             return viewSelectionLike(rowOffsets, columnOffsets);
         }
 
@@ -746,7 +746,7 @@ namespace Cern.Colt.Matrix
         /// </exception>
         public DoubleMatrix2D ViewStrides(int rStride, int cStride)
         {
-            return (DoubleMatrix2D)view().vStrides(rStride, cStride);
+            return (DoubleMatrix2D)view().VStrides(rStride, cStride);
         }
 
         /// <summary>
@@ -769,7 +769,7 @@ namespace Cern.Colt.Matrix
         public virtual void ZAssign8Neighbors(DoubleMatrix2D b, Double9Function function)
         {
             if (function == null) throw new ArgumentNullException("function", "function must not be null.");
-            checkShape(b);
+            CheckShape(b);
             if (Rows < 3 || Columns < 3) return; // nothing to do
             int r = Rows - 1;
             int c = Columns - 1;

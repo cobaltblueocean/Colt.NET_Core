@@ -207,23 +207,23 @@ namespace Cern.Colt.Matrix.DoubleAlgorithms
             Cern.Colt.Matrix.ObjectMatrix2D titleMatrix = matrix.Like(height, width);
 
             // insert original matrix into larger matrix
-            titleMatrix.viewPart(r, c, rows, columns).assign(matrix);
+            titleMatrix.ViewPart(r, c, rows, columns).Assign(matrix);
 
             // insert column axis name in leading row
-            if (r > 0) titleMatrix.viewRow(0).viewPart(c, columns).assign(columnNames);
+            if (r > 0) titleMatrix.ViewRow(0).viewPart(c, columns).assign(columnNames);
 
             // insert row axis name in leading column
             if (rowAxisName != null)
             {
                 String[] rowAxisStrings = new String[rowAxisName.Length];
                 for (int i = rowAxisName.Length; --i >= 0;) rowAxisStrings[i] = rowAxisName.Substring(i, i + 1);
-                titleMatrix.viewColumn(0).viewPart(r, rowAxisName.Length).assign(rowAxisStrings);
+                titleMatrix.ViewColumn(0).viewPart(r, rowAxisName.Length).assign(rowAxisStrings);
             }
             // insert row names in next leading columns
-            if (rowNames != null) titleMatrix.viewColumn(c - 2).viewPart(r, rows).assign(rowNames);
+            if (rowNames != null) titleMatrix.ViewColumn(c - 2).viewPart(r, rows).assign(rowNames);
 
             // insert vertical "---------" separator line in next leading column
-            if (c > 0) titleMatrix.viewColumn(c - 2 + 1).viewPart(0, rows + r).assign("|");
+            if (c > 0) titleMatrix.ViewColumn(c - 2 + 1).viewPart(0, rows + r).assign("|");
 
             // convert the large matrix to a string
             Boolean oldPrintShape = this.printShape;

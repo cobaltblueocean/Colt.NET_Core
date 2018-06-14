@@ -1,4 +1,13 @@
-﻿using System;
+﻿// <copyright file="ObjectMatrix1D.cs" company="CERN">
+//   Copyright © 1999 CERN - European Organization for Nuclear Research.
+//   Permission to use, copy, modify, distribute and sell this software and its documentation for any purpose 
+//   is hereby granted without fee, provided that the above copyright notice appear in all copies and 
+//   that both that copyright notice and this permission notice appear in supporting documentation. 
+//   CERN makes no representations about the suitability of this software for any purpose. 
+//   It is provided "as is" without expressed or implied warranty.
+//   Ported from Java to C# by Kei Nakai, 2018.
+// </copyright>
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,6 +16,16 @@ using Cern.Colt.Matrix.Implementation;
 
 namespace Cern.Colt.Matrix
 {
+    /// <summary>
+    /// Delegate that represents a condition or procedure object: takes
+    /// a single argument and returns a boolean value.
+    /// 
+    /// Optionally can return a boolean flag to inform the object calling the procedure.
+    /// </summary>
+    /// <param name="element">element passed to the procedure.</param>
+    /// <returns>a flag to inform the object calling the procedure.</returns>
+    public delegate Boolean ObjectMatrix1DProcedure(ObjectMatrix1D element);
+
     public abstract class ObjectMatrix1D : AbstractMatrix1D
     {
 
@@ -22,8 +41,46 @@ namespace Cern.Colt.Matrix
         protected ObjectMatrix1D() { }
         #endregion
 
-        #region Implement Methods
+        #region Abstract Methods
 
+        /// <summary>
+        /// Returns the matrix cell value at coordinate <i>index</i>.
+        ///
+        /// <p>Provided with invalid parameters this method may return invalid objects without throwing any exception.
+        /// <b>You should only use this method when you are absolutely sure that the coordinate is within bounds.</b>
+        /// Precondition (unchecked): <i>index&lt;0 || index&gt;=Size</i>.
+        /// </summary>
+        /// <param name="index">the index of the cell.</param>
+        /// <returns>the value of the specified cell.</returns>
+        /// <exception cref=""></exception>
+        public abstract Object this[int index] { get; set; }
+
+        /// <summary>
+        /// Construct and returns a new empty matrix <i>of the same dynamic type</i> as the receiver, having the specified size.
+        /// For example, if the receiver is an instance of type <i>DenseObjectMatrix1D</i> the new matrix must also be of type <i>DenseObjectMatrix1D</i>,
+        /// if the receiver is an instance of type <i>SparseObjectMatrix1D</i> the new matrix must also be of type <i>SparseObjectMatrix1D</i>, etc.
+        /// In general, the new matrix should have internal parametrization as similar as possible.
+        /// </summary>
+        /// <param name="size">the number of cell the matrix shall have.</param>
+        /// <returns>a new empty matrix of the same dynamic type.</returns>
+        public abstract ObjectMatrix1D Like(int size);
+
+        /// <summary>
+        /// Construct and returns a new 2-d matrix <i>of the corresponding dynamic type</i>, entirelly independent of the receiver.
+        /// For example, if the receiver is an instance of type <i>DenseObjectMatrix1D</i> the new matrix must be of type <i>DenseObjectMatrix2D</i>,
+        /// if the receiver is an instance of type <i>SparseObjectMatrix1D</i> the new matrix must be of type <i>SparseObjectMatrix2D</i>, etc.
+        /// </summary>
+        /// <param name="rows">the number of rows the matrix shall have.</param>
+        /// <param name="columns">the number of columns the matrix shall have.</param>
+        /// <returns>a new matrix of the corresponding dynamic type.</returns>
+        public abstract ObjectMatrix2D Like2D(int rows, int columns);
+
+        /// <summary>
+        /// Construct and returns a new selection view.
+        /// </summary>
+        /// <param name="offsets">the offsets of the visible elements.</param>
+        /// <returns>a new view.</returns>
+        protected abstract ObjectMatrix1D ViewSelectionLike(int[] offsets);
         #endregion
 
         #region Local Public Methods
@@ -129,7 +186,7 @@ namespace Cern.Colt.Matrix
         /// <returns><i>this</i> (for convenience only).</returns>
         /// <see cref="Cern.Jet.Math.Functions"/>
         /// <exception cref=""></exception>
-        public ObjectMatrix1D assign(Cern.Colt.Function.ObjectFunction<Object> function)
+        public ObjectMatrix1D Assign(Cern.Colt.Function.ObjectFunction<Object> function)
         {
             for (int i = Size; --i >= 0;)
             {
@@ -146,11 +203,11 @@ namespace Cern.Colt.Matrix
         /// <param name="other">the source matrix to copy from (may be identical to the receiver).</param>
         /// <returns><i>this</i> (for convenience only).</returns>
         /// <exception cref="ArgumentException">if <i>Size != other.Count</i>.</exception>
-        public ObjectMatrix1D assign(ObjectMatrix1D other)
+        public ObjectMatrix1D Assign(ObjectMatrix1D other)
         {
             if (other == this) return this;
             CheckSize(other);
-            if (haveSharedCells(other)) other = other.copy();
+            if (HaveSharedCells(other)) other = other.Copy();
 
             for (int i = Size; --i >= 0;)
             {
@@ -178,7 +235,7 @@ namespace Cern.Colt.Matrix
         /// <returns><i>this</i> (for convenience only).</returns>
         /// <exception cref="ArgumentException">if <i>Size != y.Count</i>.</exception>
         /// <see cref="Cern.Jet.Math.Functions"/>
-        public ObjectMatrix1D assign(ObjectMatrix1D y, Cern.Colt.Function.ObjectObjectFunction<Object> function)
+        public ObjectMatrix1D Assign(ObjectMatrix1D y, Cern.Colt.Function.ObjectObjectFunction<Object> function)
         {
             CheckSize(y);
             for (int i = Size; --i >= 0;)
@@ -193,7 +250,7 @@ namespace Cern.Colt.Matrix
         /// </summary>
         /// <param name="value">the value to be filled into the cells.</param>
         /// <returns><i>this</i> (for convenience only).</returns>
-        public ObjectMatrix1D assign(Object value)
+        public ObjectMatrix1D Assign(Object value)
         {
             for (int i = Size; --i >= 0;)
             {
@@ -205,7 +262,7 @@ namespace Cern.Colt.Matrix
         /// <summary>
         /// Returns the number of cells having non-zero values; ignores tolerance.
         /// </summary>
-        public int cardinality()
+        public int Cardinality()
         {
             int cardinality = 0;
             for (int i = Size; --i >= 0;)
@@ -222,10 +279,10 @@ namespace Cern.Colt.Matrix
         /// The returned matrix is not backed by this matrix, so changes in the returned matrix are not reflected in this matrix, and vice-versad 
         /// </summary>
         /// <returns>a deep copy of the receiver.</returns>
-        public ObjectMatrix1D copy()
+        public ObjectMatrix1D Copy()
         {
-            ObjectMatrix1D copy = like();
-            copy.assign(this);
+            ObjectMatrix1D copy = Like();
+            copy.Assign(this);
             return copy;
         }
 
@@ -292,19 +349,11 @@ namespace Cern.Colt.Matrix
         /// <param name="index">the index of the cell.</param>
         /// <returns>the value of the specified cell.</returns>
         /// <exception cref="IndexOutOfRangeException">if <i>index&lt;0 || index&gt;=Size</i>.</exception>
-        public Object get(int index)
+        [Obsolete("Get(int index) is deprecated, please use indexer instead.")]
+        public Object Get(int index)
         {
             if (index < 0 || index >= Size) CheckIndex(index);
             return this[index];
-        }
-
-        /// <summary>
-        /// Returns the content of this matrix if it is a wrapper; or <i>this</i> otherwise.
-        /// Override this method in wrappers.
-        /// </summary>
-        protected ObjectMatrix1D getContent()
-        {
-            return this;
         }
 
         /// <summary>
@@ -329,7 +378,7 @@ namespace Cern.Colt.Matrix
         /// </summary>
         /// <param name="indexList">the list to be filled with indexes, can have any size.</param>
         /// <param name="valueList">the list to be filled with values, can have any size.</param>
-        public void getNonZeros(List<int> indexList, List<Object> valueList)
+        public void GetNonZeros(ref List<int> indexList, ref List<Object> valueList)
         {
             Boolean fillIndexList = indexList != null;
             Boolean fillValueList = valueList != null;
@@ -348,66 +397,16 @@ namespace Cern.Colt.Matrix
         }
 
         /// <summary>
-        /// Returns the matrix cell value at coordinate <i>index</i>.
-        ///
-        /// <p>Provided with invalid parameters this method may return invalid objects without throwing any exception.
-        /// <b>You should only use this method when you are absolutely sure that the coordinate is within bounds.</b>
-        /// Precondition (unchecked): <i>index&lt;0 || index&gt;=Size</i>.
-        /// </summary>
-        /// <param name="index">the index of the cell.</param>
-        /// <returns>the value of the specified cell.</returns>
-        /// <exception cref=""></exception>
-        public abstract Object this[int index] { get; set; }
-
-        /// <summary>
-        /// Returns <i>true</i> if both matrices share at least one identical cell.
-        /// </summary>
-        protected Boolean haveSharedCells(ObjectMatrix1D other)
-        {
-            if (other == null) return false;
-            if (this == other) return true;
-            return getContent().haveSharedCellsRaw(other.getContent());
-        }
-
-        /// <summary>
-        /// Returns <i>true</i> if both matrices share at least one identical cell.
-        /// </summary>
-        protected Boolean haveSharedCellsRaw(ObjectMatrix1D other)
-        {
-            return false;
-        }
-
-        /// <summary>
         /// Construct and returns a new empty matrix <i>of the same dynamic type</i> as the receiver, having the same size.
         /// For example, if the receiver is an instance of type <i>DenseObjectMatrix1D</i> the new matrix must also be of type <i>DenseObjectMatrix1D</i>,
         /// if the receiver is an instance of type <i>SparseObjectMatrix1D</i> the new matrix must also be of type <i>SparseObjectMatrix1D</i>, etc.
         /// In general, the new matrix should have internal parametrization as similar as possible.
         /// </summary>
         /// <returns>a new empty matrix of the same dynamic type.</returns>
-        public ObjectMatrix1D like()
+        public ObjectMatrix1D Like()
         {
-            return like(Size);
+            return Like(Size);
         }
-
-        /// <summary>
-        /// Construct and returns a new empty matrix <i>of the same dynamic type</i> as the receiver, having the specified size.
-        /// For example, if the receiver is an instance of type <i>DenseObjectMatrix1D</i> the new matrix must also be of type <i>DenseObjectMatrix1D</i>,
-        /// if the receiver is an instance of type <i>SparseObjectMatrix1D</i> the new matrix must also be of type <i>SparseObjectMatrix1D</i>, etc.
-        /// In general, the new matrix should have internal parametrization as similar as possible.
-        /// </summary>
-        /// <param name="size">the number of cell the matrix shall have.</param>
-        /// <returns>a new empty matrix of the same dynamic type.</returns>
-        public abstract ObjectMatrix1D like(int size);
-
-        /// <summary>
-        /// Construct and returns a new 2-d matrix <i>of the corresponding dynamic type</i>, entirelly independent of the receiver.
-        /// For example, if the receiver is an instance of type <i>DenseObjectMatrix1D</i> the new matrix must be of type <i>DenseObjectMatrix2D</i>,
-        /// if the receiver is an instance of type <i>SparseObjectMatrix1D</i> the new matrix must be of type <i>SparseObjectMatrix2D</i>, etc.
-        /// </summary>
-        /// <param name="rows">the number of rows the matrix shall have.</param>
-        /// <param name="columns">the number of columns the matrix shall have.</param>
-        /// <returns>a new matrix of the corresponding dynamic type.</returns>
-        public abstract ObjectMatrix2D like2D(int rows, int columns);
 
         /// <summary>
         /// Sets the matrix cell at coordinate <i>index</i> to the specified value.
@@ -415,7 +414,8 @@ namespace Cern.Colt.Matrix
         /// <param name="index">the index of the cell.</param>
         /// <param name="value">the value to be filled into the specified cell.</param>
         /// <exception cref="IndexOutOfRangeException">if <i>index &lt; 0 || index &gt;= Size</i>.</exception>
-        public void set(int index, Object value)
+        [Obsolete("Set(int index, Object value) is deprecated, please use indexer instead.")]
+        public void Set(int index, Object value)
         {
             if (index < 0 || index >= Size) CheckIndex(index);
             this[index] = value;
@@ -425,7 +425,7 @@ namespace Cern.Colt.Matrix
         /// Swaps each element<i> this[i]</i> with <i>other [i]</i>.
         /// </summary>
         /// <exception cref="ArgumentException">if <i>Size != other.Count</i>.</exception>
-        public void swap(ObjectMatrix1D other)
+        public void Swap(ObjectMatrix1D other)
         {
             CheckSize(other);
             for (int i = Size; --i >= 0;)
@@ -479,29 +479,14 @@ namespace Cern.Colt.Matrix
         }
 
         /// <summary>
-        /// Constructs and returns a new view equal to the receiver.
-        /// The view is a shallow cloned Calls <code>clone()</code> and casts the result.
-        /// <p>
-        /// <b>Note that the view is not a deep copy.</b>
-        /// The returned matrix is backed by this matrix, so changes in the returned matrix are reflected in this matrix, and vice-versad 
-        /// <p>
-        /// Use <see cref="copy()"/> to construct an independent deep copy rather than a new view.
-        /// </summary>
-        /// <returns>a new view of the receiver.</returns>
-        protected ObjectMatrix1D view()
-        {
-            return (ObjectMatrix1D)Clone();
-        }
-
-        /// <summary>
         /// Constructs and returns a new <i>flip view</i>.
         /// What used to be index<i>0</i> is now index <i>Size-1</i>, ..d, what used to be index<i> Size-1</i> is now index <i>0</i>.
         /// The returned view is backed by this matrix, so changes in the returned view are reflected in this matrix, and vice-versa.
         /// </summary>
         /// <returns>a new flip view.</returns>
-        public ObjectMatrix1D viewFlip()
+        public ObjectMatrix1D ViewFlip()
         {
-            return (ObjectMatrix1D)(view().VFlip());
+            return (ObjectMatrix1D)(View().VFlip());
         }
 
         /// <summary>
@@ -523,9 +508,9 @@ namespace Cern.Colt.Matrix
         /// <param name="width">The width of the range.</param>
         /// <returns>the new view.</returns>
         /// <exception cref="IndexOutOfRangeException">if <i>index &lt; 0 || width &lt; 0 || index + width > Size</i>.</exception>
-        public ObjectMatrix1D viewPart(int index, int width)
+        public ObjectMatrix1D ViewPart(int index, int width)
         {
-            return (ObjectMatrix1D)(view().VPart(index, width));
+            return (ObjectMatrix1D)(View().VPart(index, width));
         }
 
         /// <summary>
@@ -547,7 +532,7 @@ namespace Cern.Colt.Matrix
         /// <param name="indexes">The indexes of the cells that shall be visible in the new view.To indicate that<i> all</i> cells shall be visible, simply set this parameter to <i>null</i>.</param>
         /// <returns>the new view.</returns>
         /// <exception cref="IndexOutOfRangeException">if <i>!(0 &lt;= indexes[i] < Size)</i> for any<i> i = 0..indexes.Length() - 1 </ tt >.</exception>
-        public ObjectMatrix1D viewSelection(int[] indexes)
+        public ObjectMatrix1D ViewSelection(int[] indexes)
         {
             // check for "all"
             if (indexes == null)
@@ -562,7 +547,7 @@ namespace Cern.Colt.Matrix
             {
                 offsets[i] = Index(indexes[i]);
             }
-            return viewSelectionLike(offsets);
+            return ViewSelectionLike(offsets);
         }
 
         /// <summary>
@@ -588,7 +573,7 @@ namespace Cern.Colt.Matrix
         /// </summary>
         /// <param name="condition">The condition to be matched.</param>
         /// <returns>the new view.</returns>
-        public ObjectMatrix1D viewSelection(Cern.Colt.Function.ObjectProcedure<Object> condition)
+        public ObjectMatrix1D ViewSelection(Cern.Colt.Function.ObjectProcedure<Object> condition)
         {
             List<int> matches = new List<int>();
             for (int i = 0; i < Size; i++)
@@ -596,15 +581,8 @@ namespace Cern.Colt.Matrix
                 if (condition(this[i])) matches.Add(i);
             }
             matches.TrimExcess();
-            return viewSelection(matches.ToArray());
+            return ViewSelection(matches.ToArray());
         }
-
-        /// <summary>
-        /// Construct and returns a new selection view.
-        /// </summary>
-        /// <param name="offsets">the offsets of the visible elements.</param>
-        /// <returns>a new view.</returns>
-        protected abstract ObjectMatrix1D viewSelectionLike(int[] offsets);
 
         /// <summary>
         /// Sorts the vector into ascending order, according to the<i>natural ordering</i>.
@@ -613,7 +591,7 @@ namespace Cern.Colt.Matrix
         /// For more advanced sorting functionality, see <see cref="Cern.Colt.Matrix.ObjectAlgorithms.Sorting"/>.
         /// </summary>
         /// <returns>a new sorted vector(matrix) view.</returns>
-        public ObjectMatrix1D viewSorted()
+        public ObjectMatrix1D ViewSorted()
         {
             return Cern.Colt.Matrix.ObjectAlgorithms.Sorting.mergeSort.sort(this);
         }
@@ -625,10 +603,57 @@ namespace Cern.Colt.Matrix
         /// <param name="stride">the step factor.</param>
         /// <returns>the new view.</returns>
         /// <exception cref="IndexOutOfRangeException">if < tt > stride <= 0 </ tt >.</exception>
-        public ObjectMatrix1D viewStrides(int stride)
+        public ObjectMatrix1D ViewStrides(int stride)
         {
-            return (ObjectMatrix1D)(view().VStrides(stride));
+            return (ObjectMatrix1D)(View().VStrides(stride));
         }
+        #endregion
+
+        #region Local Protected Methods
+        /// <summary>
+        /// Returns the content of this matrix if it is a wrapper; or <i>this</i> otherwise.
+        /// Override this method in wrappers.
+        /// </summary>
+        protected ObjectMatrix1D GetContent()
+        {
+            return this;
+        }
+
+        /// <summary>
+        /// Returns <i>true</i> if both matrices share at least one identical cell.
+        /// </summary>
+        protected Boolean HaveSharedCells(ObjectMatrix1D other)
+        {
+            if (other == null) return false;
+            if (this == other) return true;
+            return GetContent().HaveSharedCellsRaw(other.GetContent());
+        }
+
+        /// <summary>
+        /// Returns <i>true</i> if both matrices share at least one identical cell.
+        /// </summary>
+        protected Boolean HaveSharedCellsRaw(ObjectMatrix1D other)
+        {
+            return false;
+        }
+
+        /// <summary>
+        /// Constructs and returns a new view equal to the receiver.
+        /// The view is a shallow cloned Calls <code>clone()</code> and casts the result.
+        /// <p>
+        /// <b>Note that the view is not a deep copy.</b>
+        /// The returned matrix is backed by this matrix, so changes in the returned matrix are reflected in this matrix, and vice-versad 
+        /// <p>
+        /// Use <see cref="Copy()"/> to construct an independent deep copy rather than a new view.
+        /// </summary>
+        /// <returns>a new view of the receiver.</returns>
+        protected ObjectMatrix1D View()
+        {
+            return (ObjectMatrix1D)Clone();
+        }
+        #endregion
+
+        #region Local Private Methods
 
         /// <summary>
         /// Applies a procedure to each cell's value.
@@ -644,7 +669,7 @@ namespace Cern.Colt.Matrix
         /// </summary>
         /// <param name="procedure">a procedure object taking as argument the current cell's valued Stops iteration if the procedure returns <i>false</i>, otherwise continuesd</param>
         /// <returns><i>false</i> if the procedure stopped before all elements where iterated over, <i>true</i> otherwised</returns>
-        private Boolean xforEach(Cern.Colt.Function.ObjectProcedure<Object> procedure)
+        private Boolean XforEach(Cern.Colt.Function.ObjectProcedure<Object> procedure)
         {
             for (int i = Size; --i >= 0;)
             {
@@ -652,9 +677,6 @@ namespace Cern.Colt.Matrix
             }
             return true;
         }
-        #endregion
-
-        #region Local Private Methods
 
         #endregion
 

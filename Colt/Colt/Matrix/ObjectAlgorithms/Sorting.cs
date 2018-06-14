@@ -96,7 +96,7 @@ namespace Cern.Colt.Matrix.ObjectAlgorithms
 
             RunSort(indexes, 0, indexes.Length, comp);
 
-            return vector.viewSelection(indexes);
+            return vector.ViewSelection(indexes);
         }
         /// <summary>
         /// Sorts the vector into ascending order, according to the order induced by the specified comparator.
@@ -132,7 +132,7 @@ namespace Cern.Colt.Matrix.ObjectAlgorithms
 
             RunSort(indexes, 0, indexes.Length, comp);
 
-            return vector.viewSelection(indexes);
+            return vector.ViewSelection(indexes);
         }
         /// <summary>
         /// Sorts the matrix rows into ascending order, according to the <i>natural ordering</i> of the matrix values in the given column.
@@ -179,7 +179,7 @@ namespace Cern.Colt.Matrix.ObjectAlgorithms
             int[] rowIndexes = new int[matrix.Rows]; // row indexes to reorder instead of matrix itself
             for (int i = rowIndexes.Length; --i >= 0;) rowIndexes[i] = i;
 
-            ObjectMatrix1D col = matrix.viewColumn(column);
+            ObjectMatrix1D col = matrix.ViewColumn(column);
             IntComparator comp = new IntComparator((a, b) =>
             {
                 IComparable av = (IComparable)(col[a]);
@@ -193,7 +193,7 @@ namespace Cern.Colt.Matrix.ObjectAlgorithms
 
             // view the matrix according to the reordered row indexes
             // take all columns in the original order
-            return matrix.viewSelection(rowIndexes, null);
+            return matrix.ViewSelection(rowIndexes, null);
         }
         /// <summary>
         /// Sorts the matrix rows according to the order induced by the specified comparator.
@@ -224,7 +224,7 @@ namespace Cern.Colt.Matrix.ObjectAlgorithms
             for (int i = rowIndexes.Length; --i >= 0;) rowIndexes[i] = i;
 
             ObjectMatrix1D[] views = new ObjectMatrix1D[matrix.Rows]; // precompute views for speed
-            for (int i = views.Length; --i >= 0;) views[i] = matrix.viewRow(i);
+            for (int i = views.Length; --i >= 0;) views[i] = matrix.ViewRow(i);
 
             IntComparator comp = new IntComparator((a, b) => { return c(views[a], views[b]); });
 
@@ -232,7 +232,7 @@ namespace Cern.Colt.Matrix.ObjectAlgorithms
 
             // view the matrix according to the reordered row indexes
             // take all columns in the original order
-            return matrix.viewSelection(rowIndexes, null);
+            return matrix.ViewSelection(rowIndexes, null);
         }
         /// <summary>
         /// Sorts the matrix slices into ascending order, according to the <i>natural ordering</i> of the matrix values in the given <i>[row,column]</i> position.

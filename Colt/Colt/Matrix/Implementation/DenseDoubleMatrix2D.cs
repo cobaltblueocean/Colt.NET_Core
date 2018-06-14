@@ -39,7 +39,7 @@ namespace Cern.Colt.Matrix.Implementation
         {
             int rows = values.Length;
             int columns = values.Length == 0 ? 0 : values[0].Length;
-            setUp(rows, columns);
+            Setup(rows, columns);
             elements = new double[rows * columns];
             Assign(values);
         }
@@ -59,7 +59,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// </exception>
         public DenseDoubleMatrix2D(int rows, int columns)
         {
-            setUp(rows, columns);
+            Setup(rows, columns);
             elements = new double[rows * columns];
         }
 
@@ -90,7 +90,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// </param>
         internal DenseDoubleMatrix2D(int rows, int columns, double[] elements, int rowZero, int columnZero, int rowStride, int columnStride)
         {
-            setUp(rows, columns, rowZero, columnZero, rowStride, columnStride);
+            Setup(rows, columns, rowZero, columnZero, rowStride, columnStride);
             this.elements = elements;
             IsView = true;
         }
@@ -119,13 +119,13 @@ namespace Cern.Colt.Matrix.Implementation
             get
             {
                 // manually inlined:
-                return elements[rowZero + (row * rowStride) + columnZero + (column * columnStride)];
+                return elements[RowZero + (row * RowStride) + ColumnZero + (column * ColumnStride)];
             }
 
             set
             {
                 // manually inlined:
-                elements[rowZero + (row * rowStride) + columnZero + (column * columnStride)] = value;
+                elements[RowZero + (row * RowStride) + ColumnZero + (column * ColumnStride)] = value;
             }
         }
 
@@ -172,9 +172,9 @@ namespace Cern.Colt.Matrix.Implementation
         public override DoubleMatrix2D Assign(double value)
         {
             double[] elems = elements;
-            int index = this.index(0, 0);
-            int cs = columnStride;
-            int rs = rowStride;
+            int index = this.Index(0, 0);
+            int cs = ColumnStride;
+            int rs = RowStride;
             for (int row = Rows; --row >= 0;)
             {
                 for (int i = index, column = Columns; --column >= 0;)
@@ -202,9 +202,9 @@ namespace Cern.Colt.Matrix.Implementation
         {
             double[] elems = elements;
             if (elems == null) throw new ApplicationException();
-            int ind = index(0, 0);
-            int cs = columnStride;
-            int rs = rowStride;
+            int ind = Index(0, 0);
+            int cs = ColumnStride;
+            int rs = RowStride;
 
             // the general case x[i] = f(x[i])
             for (int row = Rows; --row >= 0;)
@@ -241,7 +241,7 @@ namespace Cern.Colt.Matrix.Implementation
 
             var other = (DenseDoubleMatrix2D)source;
             if (other == this) return this; // nothing to do
-            checkShape(other);
+            CheckShape(other);
 
             if (!IsView && !other.IsView)
             {
@@ -265,13 +265,13 @@ namespace Cern.Colt.Matrix.Implementation
             double[] elems = elements;
             double[] otherElems = other.elements;
             if (elems == null || otherElems == null) throw new ApplicationException();
-            int cs = columnStride;
-            int ocs = other.columnStride;
-            int rs = rowStride;
-            int ors = other.rowStride;
+            int cs = ColumnStride;
+            int ocs = other.ColumnStride;
+            int rs = RowStride;
+            int ors = other.RowStride;
 
-            int otherIndex = other.index(0, 0);
-            int ind = index(0, 0);
+            int otherIndex = other.Index(0, 0);
+            int ind = Index(0, 0);
             for (int row = Rows; --row >= 0;)
             {
                 for (int i = ind, j = otherIndex, column = Columns; --column >= 0;)
@@ -310,18 +310,18 @@ namespace Cern.Colt.Matrix.Implementation
                 return base.Assign(y, function);
 
             var other = (DenseDoubleMatrix2D)y;
-            checkShape(y);
+            CheckShape(y);
 
             double[] elems = elements;
             double[] otherElems = other.elements;
             if (elems == null || otherElems == null) throw new ApplicationException();
-            int cs = columnStride;
-            int ocs = columnStride;
-            int rs = rowStride;
-            int ors = other.rowStride;
+            int cs = ColumnStride;
+            int ocs = ColumnStride;
+            int rs = RowStride;
+            int ors = other.RowStride;
 
-            int otherIndex = other.index(0, 0);
-            int index = this.index(0, 0);
+            int otherIndex = other.Index(0, 0);
+            int index = this.Index(0, 0);
 
             // specialized for speed
             for (int row = Rows; --row >= 0;)
@@ -396,22 +396,22 @@ namespace Cern.Colt.Matrix.Implementation
                 return;
             }
 
-            checkShape(b);
+            CheckShape(b);
             int r = Rows - 1;
             int c = Columns - 1;
             if (Rows < 3 || Columns < 3) return; // nothing to do
 
             var bb = (DenseDoubleMatrix2D)b;
-            int a_rs = rowStride;
-            int b_rs = bb.rowStride;
-            int a_cs = columnStride;
-            int b_cs = bb.columnStride;
+            int a_rs = RowStride;
+            int b_rs = bb.RowStride;
+            int a_cs = ColumnStride;
+            int b_cs = bb.ColumnStride;
             double[] elems = elements;
             double[] b_elems = bb.elements;
             if (elems == null || b_elems == null) throw new ApplicationException();
 
-            int a_index = index(1, 1);
-            int b_index = bb.index(1, 1);
+            int a_index = Index(1, 1);
+            int b_index = bb.Index(1, 1);
             for (int i = 1; i < r; i++)
             {
                 int b11 = b_index;
@@ -494,11 +494,11 @@ namespace Cern.Colt.Matrix.Implementation
             double[] yElems = yy.elements;
             double[] zElems = zz.elements;
             if (aElems == null || yElems == null || zElems == null) throw new ApplicationException();
-            int _as = columnStride;
+            int _as = ColumnStride;
             int ys = yy._stride;
             int zs = zz._stride;
 
-            int indexA = index(0, 0);
+            int indexA = Index(0, 0);
             int indexY = yy.Index(0);
             int indexZ = zz.Index(0);
 
@@ -530,7 +530,7 @@ namespace Cern.Colt.Matrix.Implementation
                 }
 
                 zElems[indexZ] = (alpha * sum) + (beta * zElems[indexZ]);
-                indexA += rowStride;
+                indexA += RowStride;
                 indexZ += zs;
             }
 
@@ -606,13 +606,13 @@ namespace Cern.Colt.Matrix.Implementation
             double[] cElems = cc.elements;
             if (aElems == null || bElems == null || cElems == null) throw new ApplicationException();
 
-            int cA = columnStride;
-            int cB = bb.columnStride;
-            int cC = cc.columnStride;
+            int cA = ColumnStride;
+            int cB = bb.ColumnStride;
+            int cC = cc.ColumnStride;
 
-            int rA = rowStride;
-            int rB = bb.rowStride;
-            int rC = cc.rowStride;
+            int rA = RowStride;
+            int rB = bb.RowStride;
+            int rC = cc.RowStride;
 
             /*
             A is blocked to hide memory latency
@@ -636,9 +636,9 @@ namespace Cern.Colt.Matrix.Implementation
             if (m % m_optimal != 0) blocks++;
             for (; --blocks >= 0;)
             {
-                int jB = bb.index(0, 0);
-                int indexA = index(rr, 0);
-                int jC = cc.index(rr, 0);
+                int jB = bb.Index(0, 0);
+                int indexA = Index(rr, 0);
+                int jC = cc.Index(rr, 0);
                 rr += m_optimal;
                 if (blocks == 0) m_optimal += m - rr;
 
@@ -700,9 +700,9 @@ namespace Cern.Colt.Matrix.Implementation
             double sum = 0;
             double[] elems = elements;
             if (elems == null) throw new ApplicationException();
-            int index = this.index(0, 0);
-            int cs = columnStride;
-            int rs = rowStride;
+            int index = this.Index(0, 0);
+            int cs = ColumnStride;
+            int rs = RowStride;
             for (int row = Rows; --row >= 0;)
             {
                 for (int i = index, column = Columns; --column >= 0;)
@@ -781,11 +781,11 @@ namespace Cern.Colt.Matrix.Implementation
         /// <returns>
         /// The position of the given coordinate within the (virtual or non-virtual) internal 1-dimensional array. 
         /// </returns>
-        protected override int index(int row, int column)
+        protected override int Index(int row, int column)
         {
             // return super.index(row,column);
             // manually inlined for speed:
-            return rowZero + (row * rowStride) + columnZero + (column * columnStride);
+            return RowZero + (row * RowStride) + ColumnZero + (column * ColumnStride);
         }
 
         /// <summary>

@@ -80,6 +80,9 @@
     <Compile Include="Colt\Matrix\Implementation\DenseDoubleMatrix1D.cs" />
     <Compile Include="Colt\Matrix\Implementation\DenseDoubleMatrix2D.cs" />
     <Compile Include="Colt\Matrix\Implementation\DenseDoubleMatrix3D.cs" />
+    <Compile Include="Colt\Matrix\Implementation\DenseObjectMatrix1D.cs" />
+    <Compile Include="Colt\Matrix\Implementation\DenseObjectMatrix2D.cs" />
+    <Compile Include="Colt\Matrix\Implementation\DenseObjectMatrix3D.cs" />
     <Compile Include="Colt\Matrix\Implementation\SelectedDenseDoubleMatrix1D.cs" />
     <Compile Include="Colt\Matrix\Implementation\SelectedDenseDoubleMatrix2D.cs" />
     <Compile Include="Colt\Matrix\Implementation\SelectedDenseDoubleMatrix3D.cs" />

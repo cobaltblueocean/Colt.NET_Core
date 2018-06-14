@@ -229,6 +229,87 @@ namespace System
         //    return newArray;
         //}
 
+        public static T[][] ToJagged<T>(this T[,] array)
+        {
+            int row = array.GetLength(0);
+
+            T[][] jagary = new T[row][];
+            for (int i = 0; i < row; i++)
+            {
+                int col = array.GetLength(1);
+                jagary[i] = new T[col];
+                for (int j = 0; j < col; j++)
+                {
+                    jagary[i][j] = array[i, j];
+                }
+            }
+
+            return jagary;
+        }
+
+
+        public static T[][][] ToJagged<T>(this T[,,] array)
+        {
+            int slice = array.GetLength(0);
+
+            T[][][] jagary = new T[slice][][];
+            for (int i = 0; i < slice; i++)
+            {
+                int row = array.GetLength(1);
+                jagary[i] = new T[row][];
+                for (int j = 0; j < row; j++)
+                {
+                    int col = array.GetLength(2);
+                    jagary[i][j] = new T[col];
+                    for (int k = 0; k < col; k++)
+                    {
+                        jagary[i][j][k] = array[i, j, k];
+                    }
+                }
+            }
+
+            return jagary;
+        }
+
+        public static T[,] ToMultidimensional<T>(this T[][] array)
+        {
+            T[,] mult = new T[array.GetLength(0), array.GetLength(1)];
+            int row = array.GetLength(0);
+            int col = array.GetLength(1);
+
+            for (int i = 0; i < row; i++)
+            {
+                for (int j = 0; j < col; j++)
+                {
+                    mult[i, j] = array[i][j];
+                }
+            }
+
+            return mult;
+        }
+
+
+        public static T[,,] ToMultidimensional<T>(this T[][][] array)
+        {
+            T[,,] mult = new T[array.GetLength(0), array.GetLength(1), array.GetLength(2)];
+            int slice = array.GetLength(0);
+            int row = array.GetLength(1);
+            int col = array.GetLength(2);
+
+            for (int i = 0; i < slice; i++)
+            {
+                for (int j = 0; j < row; j++)
+                {
+                    for (int k = 0; k < col; k++)
+                    {
+                        mult[i, j, k] = array[i][j][k];
+                    }
+                }
+            }
+
+            return mult;
+        }
+
         public static T[][] Initialize<T>(this T[][] array, int row, int col)
         {
             array = new T[row][];

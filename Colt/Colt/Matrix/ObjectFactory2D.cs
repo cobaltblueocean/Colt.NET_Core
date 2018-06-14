@@ -43,31 +43,31 @@ namespace Cern.Colt.Matrix
         {
             // force both to have maximal shared number of rows.
             if (B.Rows > A.Rows) B = B.ViewPart(0, 0, A.Rows, B.Columns);
-            else if (B.Rows < A.Rows) A = A.viewPart(0, 0, B.Rows, A.Columns);
+            else if (B.Rows < A.Rows) A = A.ViewPart(0, 0, B.Rows, A.Columns);
 
             // concatenate
             int ac = A.Columns;
             int bc = B.Columns;
             int r = A.Rows;
             ObjectMatrix2D matrix = Make(r, ac + bc);
-            matrix.viewPart(0, 0, r, ac).assign(A);
-            matrix.viewPart(0, ac, r, bc).assign(B);
+            matrix.ViewPart(0, 0, r, ac).Assign(A);
+            matrix.ViewPart(0, ac, r, bc).Assign(B);
             return matrix;
         }
 
         public ObjectMatrix2D AppendRows(ObjectMatrix2D A, ObjectMatrix2D B)
         {
             // force both to have maximal shared number of columns.
-            if (B.Columns > A.Columns) B = B.viewPart(0, 0, B.Rows, A.Columns);
-            else if (B.Columns < A.Columns) A = A.viewPart(0, 0, A.Rows, B.Columns);
+            if (B.Columns > A.Columns) B = B.ViewPart(0, 0, B.Rows, A.Columns);
+            else if (B.Columns < A.Columns) A = A.ViewPart(0, 0, A.Rows, B.Columns);
 
             // concatenate
             int ar = A.Rows;
             int br = B.Rows;
             int c = A.Columns;
             ObjectMatrix2D matrix = Make(ar + br, c);
-            matrix.viewPart(0, 0, ar, c).assign(A);
-            matrix.viewPart(ar, 0, br, c).assign(B);
+            matrix.ViewPart(0, 0, ar, c).Assign(A);
+            matrix.ViewPart(ar, 0, br, c).Assign(B);
             return matrix;
         }
 
@@ -162,7 +162,7 @@ namespace Cern.Colt.Matrix
                     ObjectMatrix2D part = parts[row][column];
                     if (part != null)
                     {
-                        matrix.viewPart(r, c, part.Rows, part.Columns).assign(part);
+                        matrix.ViewPart(r, c, part.Rows, part.Columns).Assign(part);
                     }
                     c += maxWidths[column];
                 }
@@ -177,17 +177,17 @@ namespace Cern.Colt.Matrix
             int ar = A.Rows; int ac = A.Columns;
             int br = B.Rows; int bc = B.Columns;
             ObjectMatrix2D sum = Make(ar + br, ac + bc);
-            sum.viewPart(0, 0, ar, ac).assign(A);
-            sum.viewPart(ar, ac, br, bc).assign(B);
+            sum.ViewPart(0, 0, ar, ac).Assign(A);
+            sum.ViewPart(ar, ac, br, bc).Assign(B);
             return sum;
         }
 
         public ObjectMatrix2D ComposeDiagonal(ObjectMatrix2D A, ObjectMatrix2D B, ObjectMatrix2D C)
         {
             ObjectMatrix2D diag = Make(A.Rows + B.Rows + C.Rows, A.Columns + B.Columns + C.Columns);
-            diag.viewPart(0, 0, A.Rows, A.Columns).assign(A);
-            diag.viewPart(A.Rows, A.Columns, B.Rows, B.Columns).assign(B);
-            diag.viewPart(A.Rows + B.Rows, A.Columns + B.Columns, C.Rows, C.Columns).assign(C);
+            diag.ViewPart(0, 0, A.Rows, A.Columns).Assign(A);
+            diag.ViewPart(A.Rows, A.Columns, B.Rows, B.Columns).Assign(B);
+            diag.ViewPart(A.Rows + B.Rows, A.Columns + B.Columns, C.Rows, C.Columns).Assign(C);
             return diag;
         }
 
@@ -254,7 +254,7 @@ namespace Cern.Colt.Matrix
                     ObjectMatrix2D part = parts[row][column];
                     if (part != null)
                     {
-                        part.Assign(matrix.viewPart(r, c, part.Rows, part.Columns));
+                        part.Assign(matrix.ViewPart(r, c, part.Rows, part.Columns));
                     }
                     c += maxWidths[column];
                 }
@@ -320,14 +320,14 @@ namespace Cern.Colt.Matrix
         public ObjectMatrix2D Make(int rows, int columns, Object initialValue)
         {
             if (initialValue == null) return Make(rows, columns);
-            return Make(rows, columns).assign(initialValue);
+            return Make(rows, columns).Assign(initialValue);
         }
         /**
          * Constructs a 1d matrix of the right dynamic type.
          */
         protected ObjectMatrix1D Make1D(int size)
         {
-            return Make(0, 0).like1D(size);
+            return Make(0, 0).Like1D(size);
         }
         /**
 C = A||A||..||A; Constructs a new matrix which is duplicated both along the row and column dimension.
@@ -351,7 +351,7 @@ repeat(2,3) -->
             {
                 for (int j = columnRepeat; --j >= 0;)
                 {
-                    matrix.viewPart(r * i, c * j, r, c).assign(A);
+                    matrix.ViewPart(r * i, c * j, r, c).Assign(A);
                 }
             }
             return matrix;

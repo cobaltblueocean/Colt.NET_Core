@@ -36,22 +36,22 @@ namespace Cern.Colt.Matrix.Implementation
         /// <summary>
         /// Gets or sets the number of elements between two rows, i.e. <tt>index(i+1,j,k) - index(i,j,k)</tt>.
         /// </summary>
-        protected int rowStride { get; set; }
+        protected int RowStride { get; set; }
 
         /// <summary>
         /// Gets or sets the number of elements between two columns, i.e. <tt>index(i,j+1,k) - index(i,j,k)</tt>.
         /// </summary>
-        protected int columnStride { get; set; }
+        protected int ColumnStride { get; set; }
 
         /// <summary>
         /// Gets or sets the row index of the first element.
         /// </summary>
-        protected int rowZero { get; set; }
+        protected int RowZero { get; set; }
 
         /// <summary>
         /// Gets or sets the column index of the first element.
         /// </summary>
-        protected int columnZero { get; set; }
+        protected int ColumnZero { get; set; }
 
         /// <summary>
         /// Sanity check for operations requiring two matrices with the same number of columns and rows.
@@ -62,7 +62,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <exception cref="ArgumentOutOfRangeException">
         /// If <tt>columns() != B.columns() || rows() != B.rows()</tt>.
         /// </exception>
-        public void checkShape(AbstractMatrix2D b)
+        public void CheckShape(AbstractMatrix2D b)
         {
             if (Columns != b.Columns || Rows != b.Rows) throw new ArgumentOutOfRangeException("Incompatible dimensions: " + this + " and " + b);
         }
@@ -79,7 +79,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <exception cref="ArgumentOutOfRangeException">
         /// If <tt>columns() != B.columns() || rows() != B.rows() || columns() != C.columns() || rows() != C.rows()</tt>.
         /// </exception>
-        public void checkShape(AbstractMatrix2D b, AbstractMatrix2D c)
+        public void CheckShape(AbstractMatrix2D b, AbstractMatrix2D c)
         {
             if (Columns != b.Columns || Rows != b.Rows || Columns != c.Columns || Rows != c.Rows) throw new ArgumentOutOfRangeException("Incompatible dimensions: " + this + ", " + b + ", " + c);
         }
@@ -112,7 +112,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// </summary>
         /// <param name="absRank">the absolute rank of the element.</param>
         /// <returns>the position.</returns>
-        protected virtual int columnOffset(int absRank)
+        protected virtual int ColumnOffset(int absRank)
         {
             return absRank;
         }
@@ -126,9 +126,9 @@ namespace Cern.Colt.Matrix.Implementation
         /// <returns>
         /// The absolute rank of the element.
         /// </returns>
-        protected int columnRank(int rank)
+        protected int ColumnRank(int rank)
         {
-            return columnZero + (rank * columnStride);
+            return ColumnZero + (rank * ColumnStride);
         }
 
         /// <summary>
@@ -141,7 +141,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <returns>
         /// The position.
         /// </returns>
-        protected virtual int rowOffset(int absRank)
+        protected virtual int RowOffset(int absRank)
         {
             return absRank;
         }
@@ -155,9 +155,9 @@ namespace Cern.Colt.Matrix.Implementation
         /// <returns>
         /// The absolute rank of the element.
         /// </returns>
-        protected virtual int rowRank(int rank)
+        protected virtual int RowRank(int rank)
         {
-            return rowZero + (rank * rowStride);
+            return RowZero + (rank * RowStride);
         }
 
         /// <summary>
@@ -178,7 +178,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <exception cref="IndexOutOfRangeException">
         /// If <tt>column &lt; 0 || width &lt; 0 || column+width &gt; columns() || row &lt; 0 || height &lt; 0 || row+height &gt; rows()</tt>
         /// </exception>
-        protected void checkBox(int row, int column, int height, int width)
+        protected void CheckBox(int row, int column, int height, int width)
         {
             if (column < 0 || width < 0 || column + width > Columns || row < 0 || height < 0 || row + height > Rows) throw new ArgumentException(this + ", column:" + column + ", row:" + row + " ,width:" + width + ", height:" + height);
         }
@@ -192,7 +192,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <exception cref="IndexOutOfRangeException">
         /// If <tt>column &lt; 0 || column &gt;= columns()</tt>.
         /// </exception>
-        protected void checkColumn(int column)
+        protected void CheckColumn(int column)
         {
             if (column < 0 || column >= Columns) throw new IndexOutOfRangeException("Attempted to access " + this + " at column=" + column);
         }
@@ -206,12 +206,12 @@ namespace Cern.Colt.Matrix.Implementation
         /// <exception cref="IndexOutOfRangeException">
         /// If <tt>! (0 &lt;= indexes[i] &lt; columns())</tt> for any i=0..indexes.length()-1.
         /// </exception>
-        protected void checkColumnIndexes(int[] indexes)
+        protected void CheckColumnIndexes(int[] indexes)
         {
             for (int i = indexes.Length; --i >= 0;)
             {
                 int index = indexes[i];
-                if (index < 0 || index >= Columns) checkColumn(index);
+                if (index < 0 || index >= Columns) CheckColumn(index);
             }
         }
 
@@ -224,7 +224,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <exception cref="IndexOutOfRangeException">
         /// If <tt>row &lt; 0 || row &gt;= rows()</tt>.
         /// </exception>
-        protected void checkRow(int row)
+        protected void CheckRow(int row)
         {
             if (row < 0 || row >= Rows) throw new IndexOutOfRangeException("Attempted to access " + this + " at row=" + row);
         }
@@ -238,12 +238,12 @@ namespace Cern.Colt.Matrix.Implementation
         /// <exception cref="IndexOutOfRangeException">
         /// f <tt>! (0 &lt;= indexes[i] &lt; rows())</tt> for any i=0..indexes.length()-1.
         /// </exception>
-        protected void checkRowIndexes(int[] indexes)
+        protected void CheckRowIndexes(int[] indexes)
         {
             for (int i = indexes.Length; --i >= 0;)
             {
                 int index = indexes[i];
-                if (index < 0 || index >= Rows) checkRow(index);
+                if (index < 0 || index >= Rows) CheckRow(index);
             }
         }
 
@@ -259,9 +259,9 @@ namespace Cern.Colt.Matrix.Implementation
         /// <returns>
         /// The position of the given coordinate within the (virtual or non-virtual) internal 1-dimensional array. 
         /// </returns>
-        protected virtual int index(int row, int column)
+        protected virtual int Index(int row, int column)
         {
-            return rowOffset(rowRank(row)) + columnOffset(columnRank(column));
+            return RowOffset(RowRank(row)) + ColumnOffset(ColumnRank(column));
         }
 
         /// <summary>
@@ -276,9 +276,9 @@ namespace Cern.Colt.Matrix.Implementation
         /// <exception cref="ArgumentException">
         /// If <tt>rows &lt; 0 || columns &lt; 0 || (double)columns*rows &gt; Integer.MAX_VALUE</tt>.
         /// </exception>
-        protected virtual void setUp(int rows, int columns)
+        protected virtual void Setup(int rows, int columns)
         {
-            setUp(rows, columns, 0, 0, columns, 1);
+            Setup(rows, columns, 0, 0, columns, 1);
         }
 
         /// <summary>
@@ -305,17 +305,17 @@ namespace Cern.Colt.Matrix.Implementation
         /// <exception cref="ArgumentException">
         /// If <tt>rows&lt;0 || columns&lt;0 || (double)columns*rows &gt; Integer.MAX_VALUE</tt> or flip's are illegal.
         /// </exception>
-        protected void setUp(int rows, int columns, int rZero, int cZero, int rStride, int cStride)
+        protected void Setup(int rows, int columns, int rZero, int cZero, int rStride, int cStride)
         {
             if (rows < 0 || columns < 0) throw new ArgumentException("negative size");
             Rows = rows;
             Columns = columns;
 
-            this.rowZero = rZero;
-            this.columnZero = cZero;
+            this.RowZero = rZero;
+            this.ColumnZero = cZero;
 
-            this.rowStride = rStride;
-            this.columnStride = cStride;
+            this.RowStride = rStride;
+            this.ColumnStride = cStride;
 
             IsView = false;
             if ((double)columns * rows > int.MaxValue) throw new ArgumentException("matrix too large");
@@ -327,12 +327,12 @@ namespace Cern.Colt.Matrix.Implementation
         /// <returns>
         /// A new flip view.
         /// </returns>
-        protected AbstractMatrix2D vColumnFlip()
+        protected AbstractMatrix2D VColumnFlip()
         {
             if (Columns > 0)
             {
-                columnZero += (Columns - 1) * columnStride;
-                columnStride = -columnStride;
+                ColumnZero += (Columns - 1) * ColumnStride;
+                ColumnStride = -ColumnStride;
                 IsView = true;
             }
 
@@ -345,18 +345,18 @@ namespace Cern.Colt.Matrix.Implementation
         /// <returns>
         /// A new dice view.
         /// </returns>
-        protected virtual AbstractMatrix2D vDice()
+        protected virtual AbstractMatrix2D VDice()
         {
             // swap;
             int tmp = Rows;
             Rows = Columns;
             Columns = tmp;
-            tmp = rowStride;
-            rowStride = columnStride;
-            columnStride = tmp;
-            tmp = rowZero;
-            rowZero = columnZero;
-            columnZero = tmp;
+            tmp = RowStride;
+            RowStride = ColumnStride;
+            ColumnStride = tmp;
+            tmp = RowZero;
+            RowZero = ColumnZero;
+            ColumnZero = tmp;
 
             // flips stay unaffected
             IsView = true;
@@ -384,11 +384,11 @@ namespace Cern.Colt.Matrix.Implementation
         /// <exception cref="ArgumentException">
         /// If <tt>column &lt; 0 || width &lt; 0 || column+width &gt; columns() || row &lt; 0 || height &lt; 0 || row+height &gt; rows()</tt>
         /// </exception>
-        protected AbstractMatrix2D vPart(int row, int column, int height, int width)
+        protected AbstractMatrix2D VPart(int row, int column, int height, int width)
         {
-            checkBox(row, column, height, width);
-            rowZero += rowStride * row;
-            columnZero += columnStride * column;
+            CheckBox(row, column, height, width);
+            RowZero += RowStride * row;
+            ColumnZero += ColumnStride * column;
             Rows = height;
             Columns = width;
             IsView = true;
@@ -401,12 +401,12 @@ namespace Cern.Colt.Matrix.Implementation
         /// <returns>
         /// A new row flip.
         /// </returns>
-        protected AbstractMatrix2D vRowFlip()
+        protected AbstractMatrix2D VRowFlip()
         {
             if (Rows > 0)
             {
-                rowZero += (Rows - 1) * rowStride;
-                rowStride = -rowStride;
+                RowZero += (Rows - 1) * RowStride;
+                RowStride = -RowStride;
                 IsView = true;
             }
 
@@ -428,11 +428,11 @@ namespace Cern.Colt.Matrix.Implementation
         /// <exception cref="ArgumentException">
         /// If <tt>rStride &lt;= 0 || cStride &lt;= 0</tt>.
         /// </exception>
-        protected AbstractMatrix2D vStrides(int rStride, int cStride)
+        protected AbstractMatrix2D VStrides(int rStride, int cStride)
         {
             if (rStride <= 0 || cStride <= 0) throw new ArgumentException("illegal strides: " + rStride + ", " + cStride);
-            this.rowStride *= rStride;
-            this.columnStride *= cStride;
+            this.RowStride *= rStride;
+            this.ColumnStride *= cStride;
             if (Rows != 0) Rows = ((Rows - 1) / rStride) + 1;
             if (Columns != 0) Columns = ((Columns - 1) / cStride) + 1;
             IsView = true;
