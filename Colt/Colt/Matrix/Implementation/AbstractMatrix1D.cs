@@ -68,11 +68,13 @@ namespace Cern.Colt.Matrix.Implementation
         public int Stride
         {
             get { return _stride; }
+            set { _stride = value; }
         }
 
         public int Zero
         {
             get { return _zero; }
+            set { _zero = value; }
         }
 
         /// <summary>
@@ -98,7 +100,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// </returns>
         protected internal virtual int Index(int rank)
         {
-            return _offset(_rank(rank));
+            return GetOffset(GetRank(rank));
         }
 
         /// <summary>
@@ -175,7 +177,8 @@ namespace Cern.Colt.Matrix.Implementation
         /// <returns>
         /// The position
         /// </returns>
-        protected virtual int _offset(int absRank)
+        [Obsolete("GetOffset(int absRank) is deprecated, please use Offsets[absRank] instead.")]
+        protected virtual int GetOffset(int absRank)
         {
             return absRank;
         }
@@ -189,7 +192,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <returns>
         /// The absolute rank of the element.
         /// </returns>
-        protected virtual int _rank(int rank)
+        protected virtual int GetRank(int rank)
         {
             return _zero + (rank * _stride);
         }
@@ -203,9 +206,9 @@ namespace Cern.Colt.Matrix.Implementation
         /// <exception cref="ArgumentOutOfRangeException">
         /// If <tt>size &lt; 0</tt>.
         /// </exception>
-        protected virtual void SetUp(int s)
+        protected virtual void Setup(int s)
         {
-            SetUp(s, 0, 1);
+            Setup(s, 0, 1);
         }
 
         /// <summary>
@@ -223,7 +226,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <exception cref="ArgumentOutOfRangeException">
         /// If <tt>size &lt; 0</tt>.
         /// </exception>
-        protected virtual void SetUp(int sz, int z, int str)
+        protected virtual void Setup(int sz, int z, int str)
         {
             if (sz < 0) throw new ArgumentOutOfRangeException("sz", "negative size");
 

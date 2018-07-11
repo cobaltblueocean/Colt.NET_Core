@@ -42,10 +42,10 @@ namespace Cern.Colt.Matrix.Implementation
         {
             Setup(rowOffsets.Length, columnOffsets.Length, 0, 0, 1, 1);
 
-            this.elements = elements;
-            this.rowOffsets = rowOffsets;
-            this.columnOffsets = columnOffsets;
-            this.offset = offset;
+            this.Elements = elements;
+            this.RowOffsets = rowOffsets;
+            this.ColumnOffsets = columnOffsets;
+            this.Offset = offset;
 
             IsView = true;
         }
@@ -84,15 +84,15 @@ namespace Cern.Colt.Matrix.Implementation
         /// <param name="offset">
         /// The offset.
         /// </param>
-        protected SelectedDenseDoubleMatrix2D(int rows, int columns, double[] elements, int rowZero, int columnZero, int rowStride, int columnStride, int[] rowOffsets, int[] columnOffsets, int offset)
+        public SelectedDenseDoubleMatrix2D(int rows, int columns, double[] elements, int rowZero, int columnZero, int rowStride, int columnStride, int[] rowOffsets, int[] columnOffsets, int offset)
         {
             // be sure parameters are valid, we do not check...
             Setup(rows, columns, rowZero, columnZero, rowStride, columnStride);
 
-            this.elements = elements;
-            this.rowOffsets = rowOffsets;
-            this.columnOffsets = columnOffsets;
-            this.offset = offset;
+            this.Elements = elements;
+            this.RowOffsets = rowOffsets;
+            this.ColumnOffsets = columnOffsets;
+            this.Offset = offset;
 
             IsView = true;
         }
@@ -100,22 +100,22 @@ namespace Cern.Colt.Matrix.Implementation
         /// <summary>
         /// Gets the elements of this matrix.
         /// </summary>
-        protected internal double[] elements { get; private set; }
+        protected internal double[] Elements { get; private set; }
 
         /// <summary>
         /// Gets the row offsets of the visible cells of this matrix.
         /// </summary>
-        protected int[] rowOffsets { get; private set; }
+        protected int[] RowOffsets { get; private set; }
 
         /// <summary>
         /// Gets the column offsets of the visible cells of this matrix.
         /// </summary>
-        protected int[] columnOffsets { get; private set; }
+        protected int[] ColumnOffsets { get; private set; }
 
         /// <summary>
         /// Gets the offset.
         /// </summary>
-        protected int offset { get; private set; }
+        protected int Offset { get; private set; }
 
         /// <summary>
         /// Gets or sets the matrix cell value at coordinate <tt>[row,column]</tt>.
@@ -130,12 +130,12 @@ namespace Cern.Colt.Matrix.Implementation
         {
             get
             {
-                return elements[offset + rowOffsets[RowZero + (row * RowStride)] + columnOffsets[ColumnZero + (column * ColumnStride)]];
+                return Elements[Offset + RowOffsets[RowZero + (row * RowStride)] + ColumnOffsets[ColumnZero + (column * ColumnStride)]];
             }
 
             set
             {
-                elements[offset + rowOffsets[RowZero + (row * RowStride)] + columnOffsets[ColumnZero + (column * ColumnStride)]] = value;
+                Elements[Offset + RowOffsets[RowZero + (row * RowStride)] + ColumnOffsets[ColumnZero + (column * ColumnStride)]] = value;
             }
         }
 
@@ -188,9 +188,9 @@ namespace Cern.Colt.Matrix.Implementation
             int viewSize = this.Rows;
             int viewZero = this.RowZero;
             int viewStride = this.RowStride;
-            int[] viewOffsets = this.rowOffsets;
-            int viewOffset = this.offset + ColumnOffset(ColumnRank(column));
-            return new SelectedDenseDoubleMatrix1D(viewSize, this.elements, viewZero, viewStride, viewOffsets, viewOffset);
+            int[] viewOffsets = this.RowOffsets;
+            int viewOffset = this.Offset + ColumnOffset(ColumnRank(column));
+            return new SelectedDenseDoubleMatrix1D(viewSize, this.Elements, viewZero, viewStride, viewOffsets, viewOffset);
         }
 
         /// <summary>
@@ -212,9 +212,9 @@ namespace Cern.Colt.Matrix.Implementation
             int viewSize = this.Columns;
             int viewZero = ColumnZero;
             int viewStride = this.ColumnStride;
-            int[] viewOffsets = this.columnOffsets;
-            int viewOffset = this.offset + RowOffset(RowRank(row));
-            return new SelectedDenseDoubleMatrix1D(viewSize, this.elements, viewZero, viewStride, viewOffsets, viewOffset);
+            int[] viewOffsets = this.ColumnOffsets;
+            int viewOffset = this.Offset + RowOffset(RowRank(row));
+            return new SelectedDenseDoubleMatrix1D(viewSize, this.Elements, viewZero, viewStride, viewOffsets, viewOffset);
         }
 
         /// <summary>
@@ -232,7 +232,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <returns>
         /// A new matrix of the corresponding dynamic type.
         /// </returns>
-        protected internal override DoubleMatrix1D like1D(int size, int zero, int stride)
+        protected internal override DoubleMatrix1D Like1D(int size, int zero, int stride)
         {
             throw new ApplicationException(); // this method is never called since viewRow() and viewColumn are overridden properly.
         }
@@ -249,7 +249,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// </returns>
         protected override int ColumnOffset(int absRank)
         {
-            return columnOffsets[absRank];
+            return ColumnOffsets[absRank];
         }
 
         /// <summary>
@@ -264,7 +264,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// </returns>
         protected override int RowOffset(int absRank)
         {
-            return rowOffsets[absRank];
+            return RowOffsets[absRank];
         }
 
         /// <summary>
@@ -276,18 +276,18 @@ namespace Cern.Colt.Matrix.Implementation
         /// <returns>
         /// <tt>true</tt> if both matrices share at least one identical cell.
         /// </returns>
-        protected override bool haveSharedCellsRaw(DoubleMatrix2D other)
+        protected override bool HaveSharedCellsRaw(DoubleMatrix2D other)
         {
             if (other is SelectedDenseDoubleMatrix2D)
             {
                 var otherMatrix = (SelectedDenseDoubleMatrix2D)other;
-                return this.elements == otherMatrix.elements;
+                return this.Elements == otherMatrix.Elements;
             }
 
             if (other is DenseDoubleMatrix2D)
             {
                 var otherMatrix = (DenseDoubleMatrix2D)other;
-                return this.elements == otherMatrix.elements;
+                return this.Elements == otherMatrix.elements;
             }
 
             return false;
@@ -309,7 +309,7 @@ namespace Cern.Colt.Matrix.Implementation
         {
             ////return this.offset + super.index(row,column);
             // manually inlined:
-            return this.offset + rowOffsets[RowZero + (row * RowStride)] + columnOffsets[ColumnZero + (column * ColumnStride)];
+            return this.Offset + RowOffsets[RowZero + (row * RowStride)] + ColumnOffsets[ColumnZero + (column * ColumnStride)];
         }
 
         /// <summary>
@@ -329,7 +329,7 @@ namespace Cern.Colt.Matrix.Implementation
             base.Setup(rows, columns);
             this.RowStride = 1;
             this.ColumnStride = 1;
-            this.offset = 0;
+            this.Offset = 0;
         }
 
         /// <summary>
@@ -343,9 +343,9 @@ namespace Cern.Colt.Matrix.Implementation
             base.VDice();
 
             // swap
-            int[] tmp = rowOffsets;
-            rowOffsets = columnOffsets;
-            columnOffsets = tmp;
+            int[] tmp = RowOffsets;
+            RowOffsets = ColumnOffsets;
+            ColumnOffsets = tmp;
 
             // flips stay unaffected
             IsView = true;
@@ -364,9 +364,9 @@ namespace Cern.Colt.Matrix.Implementation
         /// <returns>
         /// A new view.
         /// </returns>
-        protected override DoubleMatrix2D viewSelectionLike(int[] rOffsets, int[] cOffsets)
+        protected override DoubleMatrix2D ViewSelectionLike(int[] rOffsets, int[] cOffsets)
         {
-            return new SelectedDenseDoubleMatrix2D(this.elements, rOffsets, cOffsets, this.offset);
+            return new SelectedDenseDoubleMatrix2D(this.Elements, rOffsets, cOffsets, this.Offset);
         }
     }
 }

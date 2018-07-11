@@ -33,7 +33,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// </param>
         public SparseDoubleMatrix1D(double[] values)
         {
-            SetUp(values.Length);
+            Setup(values.Length);
             Assign(values);
         }
 
@@ -49,7 +49,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// </exception>
         public SparseDoubleMatrix1D(int size)
         {
-            SetUp(size);
+            Setup(size);
             this.elements = new Dictionary<int, double>();
         }
 
@@ -73,7 +73,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// </exception>
         internal SparseDoubleMatrix1D(int size, IDictionary<int, double> elements, int offset, int stride)
         {
-            SetUp(size, offset, stride);
+            Setup(size, offset, stride);
             this.elements = elements;
             IsView = true;
         }
@@ -93,13 +93,13 @@ namespace Cern.Colt.Matrix.Implementation
         {
             get
             {
-                int i = _zero + (index * _stride);
+                int i = Zero + (index * Stride);
                 return elements.ContainsKey(i) ? elements[i] : 0;
             }
 
             set
             {
-                int i = _zero + (index * _stride);
+                int i = Zero + (index * Stride);
                 if (value == 0)
                     this.elements.Remove(i);
                 else
@@ -254,7 +254,7 @@ namespace Cern.Colt.Matrix.Implementation
         protected internal override int Index(int rank)
         {
             // overriden for manual inlining only
-            return _zero + (rank * _stride);
+            return Zero + (rank * Stride);
         }
 
         /// <summary>

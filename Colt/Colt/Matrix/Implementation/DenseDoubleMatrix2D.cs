@@ -250,7 +250,7 @@ namespace Cern.Colt.Matrix.Implementation
                 return this;
             }
 
-            if (haveSharedCells(other))
+            if (HaveSharedCells(other))
             {
                 DoubleMatrix2D c = other.Copy();
                 if (!(c is DenseDoubleMatrix2D))
@@ -732,7 +732,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <returns>
         /// A new matrix of the corresponding dynamic type.
         /// </returns>
-        protected internal override DoubleMatrix1D like1D(int size, int zero, int stride)
+        protected internal override DoubleMatrix1D Like1D(int size, int zero, int stride)
         {
             return new DenseDoubleMatrix1D(size, elements, zero, stride);
         }
@@ -752,12 +752,12 @@ namespace Cern.Colt.Matrix.Implementation
         /// <returns>
         /// <tt>true</tt> if both matrices share common cells.
         /// </returns>
-        protected override bool haveSharedCellsRaw(DoubleMatrix2D other)
+        protected override bool HaveSharedCellsRaw(DoubleMatrix2D other)
         {
             if (other is SelectedDenseDoubleMatrix2D)
             {
                 var otherMatrix = (SelectedDenseDoubleMatrix2D)other;
-                return elements == otherMatrix.elements;
+                return elements == otherMatrix.Elements;
             }
 
             if (other is DenseDoubleMatrix2D)
@@ -800,7 +800,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <returns>
         /// A new view.
         /// </returns>
-        protected override DoubleMatrix2D viewSelectionLike(int[] rowOffsets, int[] cOffsets)
+        protected override DoubleMatrix2D ViewSelectionLike(int[] rowOffsets, int[] cOffsets)
         {
             return new SelectedDenseDoubleMatrix2D(elements, rowOffsets, cOffsets, 0);
         }

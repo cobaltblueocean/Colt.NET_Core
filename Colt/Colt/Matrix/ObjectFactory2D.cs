@@ -280,7 +280,7 @@ namespace Cern.Colt.Matrix
             ObjectMatrix1D diag = Make1D(min);
             for (int i = min; --i >= 0;)
             {
-                diag.setQuick(i, A.getQuick(i, i));
+                diag[i] = A[i, i];
             }
             return diag;
         }
@@ -302,7 +302,7 @@ namespace Cern.Colt.Matrix
             {
                 for (int column = 0; column < columns; column++)
                 {
-                    matrix.setQuick(row, column, values[row + column * rows]);
+                    matrix[row, column] = values[row + column * rows];
                 }
             }
             return matrix;

@@ -44,7 +44,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// </param>
         internal SelectedSparseDoubleMatrix1D(IDictionary<int, double> elements, int[] offsets)
         {
-            SetUp(offsets.Length, 0, 1);
+            Setup(offsets.Length, 0, 1);
 
             this.elements = elements;
             this.offsets = offsets;
@@ -76,7 +76,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// </param>
         internal SelectedSparseDoubleMatrix1D(int size, IDictionary<int, double> elements, int zero, int stride, int[] offsets, int offset)
         {
-            SetUp(size, zero, stride);
+            Setup(size, zero, stride);
 
             this.elements = elements;
             this.offsets = offsets;
@@ -191,9 +191,9 @@ namespace Cern.Colt.Matrix.Implementation
         /// <param name="n">
         /// The number of cells the matrix shall have.
         /// </param>
-        protected override void SetUp(int n)
+        protected override void Setup(int n)
         {
-            base.SetUp(n);
+            base.Setup(n);
             this._stride = 1;
             this.offset = 0;
         }

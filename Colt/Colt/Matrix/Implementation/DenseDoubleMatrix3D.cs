@@ -52,6 +52,7 @@ namespace Cern.Colt.Matrix.Implementation
     /// </summary>
     public class DenseDoubleMatrix3D : DoubleMatrix3D
     {
+
         /// <summary>
         /// The elements of this matrix.
         /// elements are stored in slice major, then row major, then column major, in order of significance, i.e.
@@ -60,70 +61,78 @@ namespace Cern.Colt.Matrix.Implementation
         /// with each row storead as 
         /// {row0 column0..m}, {row1 column0..m}, ..d, {rown column0..m}
         /// </summary>
-        protected double[] elements;
+        public double[] Elements { get; set; }
+
+        public override double this[int slice, int row, int column]
+        {
+            get { return Elements[SliceZero + slice * SliceStride + RowZero + row * RowStride + ColumnZero + column * ColumnStride]; }
+            set { Elements[SliceZero + slice * SliceStride + RowZero + row * RowStride + ColumnZero + column * ColumnStride] = value; }
+        }
+
         /// <summary>
         /// Constructs a matrix with a copy of the given values.
         /// <i>values</i> is required to have the form <i>values[slice][row][column]</i>
         /// and have exactly the same number of Rows in in every slice and exactly the same number of Columns in in every row.
         /// <p>
         /// The values are copiedd So subsequent changes in <i>values</i> are not reflected in the matrix, and vice-versa.
-        ///
-        /// @param values The values to be filled into the new matrix.
-        /// @thRows ArgumentException if <i>for any 1 &lt;= slice &lt; values.Length: values[slice].Length != values[slice-1].Length</i>.
-        /// @thRows ArgumentException if <i>for any 1 &lt;= row &lt; values.GetLength(1): values[slice][row].Length != values[slice][row-1].Length</i>.
         /// </summary>
+        /// <param name="values">The values to be filled into the new matrix.</param>
+        /// <exception cref="ArgumentException">if <i>for any 1 &lt;= slice &lt; values.Length: values[slice].Length != values[slice-1].Length</i>.</exception>
+        /// <exception cref="ArgumentException">if <i>for any 1 &lt;= row &lt; values.GetLength(1): values[slice][row].Length != values[slice][row-1].Length</i>.</exception>
         public DenseDoubleMatrix3D(double[][][] values) : this(values.Length, (values.Length == 0 ? 0 : values.GetLength(1)), (values.Length == 0 ? 0 : values.GetLength(1) == 0 ? 0 : values[0].GetLength(1)))
         {
-            assign(values);
+            Assign(values);
         }
+
         /// <summary>
         /// Constructs a matrix with a given number of Slices, Rows and Columns.
         /// All entries are initially <i>0</i>.
-        /// @param Slices the number of Slices the matrix shall have.
-        /// @param Rows the number of Rows the matrix shall have.
-        /// @param Columns the number of Columns the matrix shall have.
-        /// @thRows	ArgumentException if <i>(double)Slices*Columns*Rows > int.MaxValue</i>.
-        /// @thRows	ArgumentException if <i>Slices<0 || Rows<0 || Columns<0</i>.
         /// </summary>
+        /// <param name="Slices">the number of Slices the matrix shall have.</param>
+        /// <param name="Rows">the number of Rows the matrix shall have.</param>
+        /// <param name="Columns">the number of Columns the matrix shall have.</param>
+        /// <exception cref="ArgumentException">if <i>(double)Slices*Columns*Rows > int.MaxValue</i>.</exception>
+        /// <exception cref="ArgumentException">if <i>Slices &ly; 0 || Rows<0 || Columns<0</i>.</exception>
         public DenseDoubleMatrix3D(int Slices, int Rows, int Columns)
         {
             Setup(Slices, Rows, Columns);
-            this.elements = new double[Slices * Rows * Columns];
+            this.Elements = new double[Slices * Rows * Columns];
         }
+
         /// <summary>
         /// Constructs a view with the given parameters.
-        /// @param Slices the number of Slices the matrix shall have.
-        /// @param Rows the number of Rows the matrix shall have.
-        /// @param Columns the number of Columns the matrix shall have.
-        /// @param elements the cells.
-        /// @param sliceZero the position of the first element.
-        /// @param rowZero the position of the first element.
-        /// @param columnZero the position of the first element.
-        /// @param Slicestride the number of elements between two Slices, i.ed <i>index(k+1,i,j)-index(k,i,j)</i>.
-        /// @param Rowstride the number of elements between two Rows, i.ed <i>index(k,i+1,j)-index(k,i,j)</i>.
-        /// @param columnnStride the number of elements between two Columns, i.ed <i>index(k,i,j+1)-index(k,i,j)</i>.
-        /// @thRows	ArgumentException if <i>(double)Slices*Columns*Rows > int.MaxValue</i>.
-        /// @thRows	ArgumentException if <i>Slices<0 || Rows<0 || Columns<0</i>.
         /// </summary>
+        /// <param name="Slices">the number of Slices the matrix shall have.</param>
+        /// <param name="Rows">the number of Rows the matrix shall have.</param>
+        /// <param name="Columns">the number of Columns the matrix shall have.</param>
+        /// <param name="elements">the cells.</param>
+        /// <param name="sliceZero">the position of the first element.</param>
+        /// <param name="rowZero">the position of the first element.</param>
+        /// <param name="columnZero">the position of the first element.</param>
+        /// <param name="Slicestride">the number of elements between two Slices, i.ed <i>index(k+1,i,j)-index(k,i,j)</i>.</param>
+        /// <param name="Rowstride">the number of elements between two Rows, i.ed <i>index(k,i+1,j)-index(k,i,j)</i>.</param>
+        /// <param name="columnnStride">the number of elements between two Columns, i.ed <i>index(k,i,j+1)-index(k,i,j)</i>.</param>
+        /// <exception cref="ArgumentException">if <i>(double)Slices*Columns*Rows > int.MaxValue</i>.</exception>
+        /// <exception cref="ArgumentException">if <i>Slices &lt; 0 || Rows<0 || Columns<0</i>.</exception>
         protected DenseDoubleMatrix3D(int Slices, int Rows, int Columns, double[] elements, int sliceZero, int rowZero, int columnZero, int Slicestride, int Rowstride, int Columnstride)
         {
             Setup(Slices, Rows, Columns, sliceZero, rowZero, columnZero, Slicestride, Rowstride, Columnstride);
-            this.elements = elements;
+            this.Elements = elements;
             this.IsView = true;
         }
+
         /// <summary>
         /// Sets all cells to the state specified by <i>values</i>.
         /// <i>values</i> is required to have the form <i>values[slice][row][column]</i>
         /// and have exactly the same number of Slices, Rows and Columns as the receiver.
         /// <p>
         /// The values are copiedd So subsequent changes in <i>values</i> are not reflected in the matrix, and vice-versa.
-        ///
-        /// @param    values the values to be filled into the cells.
-        /// @return <i>this</i> (for convenience only).
-        /// @thRows ArgumentException if <i>values.Length != Slices() || for any 0 &lt;= slice &lt; Slices(): values[slice].Length != Rows()</i>.
-        /// @thRows ArgumentException if <i>for any 0 &lt;= column &lt; Columns(): values[slice][row].Length != Columns()</i>.
         /// </summary>
-        public DoubleMatrix3D assign(double[][][] values)
+        /// <param name="values">the values to be filled into the cells.</param>
+        /// <returns><i>this</i> (for convenience only).</returns>
+        /// <exception cref="ArgumentException">if <i>values.Length != Slices() || for any 0 &lt;= slice &lt; Slices(): values[slice].Length != Rows()</i>.</exception>
+        /// <exception cref="ArgumentException">if <i>for any 0 &lt;= column &lt; Columns(): values[slice][row].Length != Columns()</i>.</exception>
+        public new DoubleMatrix3D Assign(double[][][] values)
         {
             if (!this.IsView)
             {
@@ -137,7 +146,7 @@ namespace Cern.Colt.Matrix.Implementation
                     {
                         double[] currentRow = currentSlice[row];
                         if (currentRow.Length != Columns) throw new ArgumentException("Must have same number of Columns in every row: Columns=" + currentRow.Length + "Columns=" + Columns);
-                        Array.Copy(currentRow, 0, this.elements, i, Columns);
+                        Array.Copy(currentRow, 0, this.Elements, i, Columns);
                         i -= Columns;
                     }
                 }
@@ -148,16 +157,16 @@ namespace Cern.Colt.Matrix.Implementation
             }
             return this;
         }
+
         /// <summary>
         /// Replaces all cell values of the receiver with the values of another matrix.
         /// Both matrices must have the same number of Slices, Rows and Columns.
         /// If both matrices share the same cells (as is the case if they are views derived from the same matrix) and intersect in an ambiguous way, then replaces <i>as if</i> using an intermediate auxiliary deep copy of <i>other</i>.
-        ///
-        /// @param     source   the source matrix to copy from (may be identical to the receiver).
-        /// @return <i>this</i> (for convenience only).
-        /// @thRows	ArgumentException if <i>Slices() != source.Slices() || Rows() != source.Rows() || Columns() != source.Columns()</i>
         /// </summary>
-        public DoubleMatrix3D assign(DoubleMatrix3D source)
+        /// <param name="source">the source matrix to copy from (may be identical to the receiver).</param>
+        /// <returns><i>this</i> (for convenience only).</returns>
+        /// <exception cref="ArgumentException">if <i>Slices() != source.Slices() || Rows() != source.Rows() || Columns() != source.Columns()</i></exception>
+        public new DoubleMatrix3D Assign(DoubleMatrix3D source)
         {
             // overriden for performance only
             if (!(source is DenseDoubleMatrix3D))
@@ -179,11 +188,12 @@ namespace Cern.Colt.Matrix.Implementation
 
             if (!this.IsView && !other.IsView)
             { // quickest
-                Array.Copy(other.elements, 0, this.elements, 0, this.elements.Length);
+                Array.Copy(other.Elements, 0, this.Elements, 0, this.Elements.Length);
                 return this;
             }
             return base.Assign(other);
         }
+
         /// <summary>
         /// Returns <i>true</i> if both matrices share common cells.
         /// More formally, returns <i>true</i> if <i>other != null</i> and at least one of the following conditions is met
@@ -193,33 +203,34 @@ namespace Cern.Colt.Matrix.Implementation
         /// <li><i>this == other</i>
         /// </ul>
         /// </summary>
-        protected new Boolean haveSharedCellsRaw(DoubleMatrix3D other)
+        protected new Boolean HaveSharedCellsRaw(DoubleMatrix3D other)
         {
             if (other is SelectedDenseDoubleMatrix3D)
             {
                 SelectedDenseDoubleMatrix3D otherMatrix = (SelectedDenseDoubleMatrix3D)other;
-                return this.elements == otherMatrix.elements;
+                return this.Elements == otherMatrix.Elements;
             }
             else if (other is DenseDoubleMatrix3D)
             {
                 DenseDoubleMatrix3D otherMatrix = (DenseDoubleMatrix3D)other;
-                return this.elements == otherMatrix.elements;
+                return this.Elements == otherMatrix.Elements;
             }
             return false;
         }
+
         /// <summary>
         /// Returns the position of the given coordinate within the (virtual or non-virtual) internal 1-dimensional arrayd 
-        ///
-        /// @param     slice   the index of the slice-coordinate.
-        /// @param     row   the index of the row-coordinate.
-        /// @param     column   the index of the third-coordinate.
         /// </summary>
-        protected int index(int slice, int row, int column)
+        /// <param name="slice">the index of the slice-coordinate.</param>
+        /// <param name="row">the index of the row-coordinate.</param>
+        /// <param name="column">the index of the third-coordinate.</param>
+        protected new int Index(int slice, int row, int column)
         {
             //return _sliceOffset(_sliceRank(slice)) + _rowOffset(_rowRank(row)) + _columnOffset(_columnRank(column));
             //manually inlined:
             return SliceZero + slice * SliceStride + RowZero + row * RowStride + ColumnZero + column * ColumnStride;
         }
+
         /// <summary>
         /// 27 neighbor stencil transformation.For efficient finite difference operations.
         /// Applies a function to a moving<i>3 x 3 x 3</i> window.
@@ -229,16 +240,16 @@ namespace Cern.Colt.Matrix.Implementation
         /// &nbsp;&nbsp;&nbsp;A[k - 1, i - 1, j - 1], A[k - 1, i - 1, j], A[k - 1, i - 1, j + 1],
         /// &nbsp;&nbsp;&nbsp;A[k - 1, i, j - 1], A[k - 1, i, j], A[k - 1, i, j + 1],
         /// &nbsp;&nbsp;&nbsp;A[k - 1, i + 1, j - 1], A[k - 1, i + 1, j], A[k - 1, i + 1, j + 1],
-
+        ///
         /// &nbsp;&nbsp;&nbsp;A[k, i - 1, j - 1], A[k, i - 1, j], A[k, i - 1, j + 1],
         /// &nbsp;&nbsp;&nbsp;A[k, i, j - 1], A[k, i, j], A[k, i, j + 1],
         /// &nbsp;&nbsp;&nbsp;A[k, i + 1, j - 1], A[k, i + 1, j], A[k, i + 1, j + 1],
-
+        ///
         /// &nbsp;&nbsp;&nbsp;A[k + 1, i - 1, j - 1], A[k + 1, i - 1, j], A[k + 1, i - 1, j + 1],
         /// &nbsp;&nbsp;&nbsp;A[k + 1, i, j - 1], A[k + 1, i, j], A[k + 1, i, j + 1],
         /// &nbsp;&nbsp;&nbsp;A[k + 1, i + 1, j - 1], A[k + 1, i + 1, j], A[k + 1, i + 1, j + 1]
         /// &nbsp;&nbsp;&nbsp;)
-
+        ///
         /// x x x - &nbsp;&nbsp;&nbsp; - x x x &nbsp;&nbsp;&nbsp; - - - - 
         /// x o x - &nbsp;&nbsp;&nbsp; - x o x &nbsp;&nbsp;&nbsp; - - - - 
         /// x x x - &nbsp;&nbsp;&nbsp; - x x x..d - x x x 
@@ -253,17 +264,17 @@ namespace Cern.Colt.Matrix.Implementation
         /// <pre>
         /// double alpha = 0.25;
         ///         double beta = 0.75;
-
+        ///
         ///         cern.colt.function.Double27Function f = new cern.colt.function.Double27Function() {
         /// &nbsp;&nbsp;&nbsp;public double apply(
         /// &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;double a000, double a001, double a002,
         /// &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;double a010, double a011, double a012,
         /// &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;double a020, double a021, double a022,
-
+        ///
         /// &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;double a100, double a101, double a102,
         /// &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;double a110, double a111, double a112,
         /// &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;double a120, double a121, double a122,
-
+        ///
         /// &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;double a200, double a201, double a202,
         /// &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;double a210, double a211, double a212,
         /// &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;double a220, double a221, double a222) {
@@ -272,13 +283,13 @@ namespace Cern.Colt.Matrix.Implementation
         /// };
         /// A.zAssign27Neighbors(B, f);
         /// </pre>
-
-        /// @param B the matrix to hold the results.
-        /// @param function the function to be applied to the 27 cells.
-        /// @thRows NullReferenceException if <i>function==null</i>.
-        /// @thRows ArgumentException if <i>Rows() != B.Rows() || Columns() != B.Columns() || Slices() != B.Slices() </i>.
         /// </summary>
-        public new void zAssign27Neighbors(DoubleMatrix3D B, Cern.Colt.Function.Double27Function function)
+        /// <param name="B">the matrix to hold the results.</param>
+        /// <param name="function">the function to be applied to the 27 cells.</param>
+        /// <returns></returns>
+        /// <exception cref="NullReferenceException">if <i>function==null</i>.</exception>
+        /// <exception cref="ArgumentException">if <i>Rows() != B.Rows() || Columns() != B.Columns() || Slices() != B.Slices() </i>.</exception>
+        public new void ZAssign27Neighbors(DoubleMatrix3D B, Cern.Colt.Function.Double27Function function)
         {
             // overridden for performance only
             if (!(B is DenseDoubleMatrix3D))
@@ -298,14 +309,14 @@ namespace Cern.Colt.Matrix.Implementation
             int B_rs = BB.RowStride;
             int A_cs = ColumnStride;
             int B_cs = BB.ColumnStride;
-            double[] elems = this.elements;
-            double[] B_elems = BB.elements;
+            double[] elems = this.Elements;
+            double[] B_elems = BB.Elements;
             if (elems == null || B_elems == null) throw new NullReferenceException();
 
             for (int k = 1; k < Slices - 1; k++)
             {
-                int A_index = index(k, 1, 1);
-                int B_index = BB.index(k, 1, 1);
+                int A_index = Index(k, 1, 1);
+                int B_index = BB.Index(k, 1, 1);
 
                 for (int i = 1; i < r; i++)
                 {
@@ -416,18 +427,18 @@ namespace Cern.Colt.Matrix.Implementation
         /// <p>Provided with invalid parameters this method may return invalid objects without throwing any exception.
         /// <b>You should only use this method when you are absolutely sure that the coordinate is within bounds.</b>
         /// Precondition (unchecked): <i>slice&lt;0 || slice&gt;=Slices() || row&lt;0 || row&gt;=Rows() || column&lt;0 || column&gt;=column()</i>.
-        ///
-        /// @param     slice   the index of the slice-coordinate.
-        /// @param     row   the index of the row-coordinate.
-        /// @param     column   the index of the column-coordinate.
-        /// @return    the value at the specified coordinate.
         /// </summary>
-        public override double getQuick(int slice, int row, int column)
+        /// <param name="slice">the index of the slice-coordinate.</param>
+        /// <param name="row">the index of the row-coordinate.</param>
+        /// <param name="column">the index of the column-coordinate.</param>
+        /// <returns>the value at the specified coordinate.</returns>
+        [Obsolete("GetQuick(int slice, int row, int column) is deprecated, please use indexer instead.")]
+        public double GetQuick(int slice, int row, int column)
         {
             //if (debug) if (slice<0 || slice>=Slices || row<0 || row>=Rows || column<0 || column>=Columns) throw new IndexOutOfRangeException("slice:"+slice+", row:"+row+", column:"+column);
             //return elements[index(slice,row,column)];
             //manually inlined:
-            return elements[SliceZero + slice * SliceStride + RowZero + row * RowStride + ColumnZero + column * ColumnStride];
+            return Elements[SliceZero + slice * SliceStride + RowZero + row * RowStride + ColumnZero + column * ColumnStride];
         }
 
         /// <summary>
@@ -435,12 +446,11 @@ namespace Cern.Colt.Matrix.Implementation
         /// For example, if the receiver is an instance of type <i>DenseDoubleMatrix3D</i> the new matrix must also be of type <i>DenseDoubleMatrix3D</i>,
         /// if the receiver is an instance of type <i>SparseDoubleMatrix3D</i> the new matrix must also be of type <i>SparseDoubleMatrix3D</i>, etc.
         /// In general, the new matrix should have internal parametrization as similar as possible.
-        ///
-        /// @param Slices the number of Slices the matrix shall have.
-        /// @param Rows the number of Rows the matrix shall have.
-        /// @param Columns the number of Columns the matrix shall have.
-        /// @return  a new empty matrix of the same dynamic type.
         /// </summary>
+        /// <param name="Slices">the number of Slices the matrix shall have.</param>
+        /// <param name="Rows">the number of Rows the matrix shall have.</param>
+        /// <param name="Columns">the number of Columns the matrix shall have.</param>
+        /// <returns>a new empty matrix of the same dynamic type.</returns>
         public override DoubleMatrix3D Like(int Slices, int Rows, int Columns)
         {
             return new DenseDoubleMatrix3D(Slices, Rows, Columns);
@@ -452,49 +462,47 @@ namespace Cern.Colt.Matrix.Implementation
         /// <p>Provided with invalid parameters this method may access illegal indexes without throwing any exception.
         /// <b>You should only use this method when you are absolutely sure that the coordinate is within bounds.</b>
         /// Precondition (unchecked): <i>slice&lt;0 || slice&gt;=Slices() || row&lt;0 || row&gt;=Rows() || column&lt;0 || column&gt;=column()</i>.
-        ///
-        /// @param     slice   the index of the slice-coordinate.
-        /// @param     row   the index of the row-coordinate.
-        /// @param     column   the index of the column-coordinate.
-        /// @param    value the value to be filled into the specified cell.
         /// </summary>
-        public override void setQuick(int slice, int row, int column, double value)
+        /// <param name="slice">the index of the slice-coordinate.</param>
+        /// <param name="row">the index of the row-coordinate.</param>
+        /// <param name="column">the index of the column-coordinate.</param>
+        /// <returns>value the value to be filled into the specified cell.</returns>
+        [Obsolete("SetQuick(int slice, int row, int column, double value) is deprecated, please use indexer instead.")]
+        public void SetQuick(int slice, int row, int column, double value)
         {
             //if (debug) if (slice<0 || slice>=Slices || row<0 || row>=Rows || column<0 || column>=Columns) throw new IndexOutOfRangeException("slice:"+slice+", row:"+row+", column:"+column);
             //elements[index(slice,row,column)] = value;
             //manually inlined:
-            elements[SliceZero + slice * SliceStride + RowZero + row * RowStride + ColumnZero + column * ColumnStride] = value;
+            Elements[SliceZero + slice * SliceStride + RowZero + row * RowStride + ColumnZero + column * ColumnStride] = value;
         }
 
         /// <summary>
         /// Construct and returns a new 2-d matrix <i>of the corresponding dynamic type</i>, sharing the same cells.
         /// For example, if the receiver is an instance of type <i>DenseDoubleMatrix3D</i> the new matrix must also be of type <i>DenseDoubleMatrix2D</i>,
         /// if the receiver is an instance of type <i>SparseDoubleMatrix3D</i> the new matrix must also be of type <i>SparseDoubleMatrix2D</i>, etc.
-        ///
-        /// @param Rows the number of Rows the matrix shall have.
-        /// @param Columns the number of Columns the matrix shall have.
-        /// @param rowZero the position of the first element.
-        /// @param columnZero the position of the first element.
-        /// @param Rowstride the number of elements between two Rows, i.ed <i>index(i+1,j)-index(i,j)</i>.
-        /// @param Columnstride the number of elements between two Columns, i.ed <i>index(i,j+1)-index(i,j)</i>.
-        /// @return  a new matrix of the corresponding dynamic type.
         /// </summary>
+        /// <param name="Rows">the number of Rows the matrix shall have.</param>
+        /// <param name="Columns">the number of Columns the matrix shall have.</param>
+        /// <param name="rowZero">the position of the first element.</param>
+        /// <param name="columnZero">the position of the first element.</param>
+        /// <param name="Rowstride">the number of elements between two Rows, i.ed <i>index(i+1,j)-index(i,j)</i>.</param>
+        /// <param name="Columnstride">the number of elements between two Columns, i.ed <i>index(i,j+1)-index(i,j)</i>.</param>
+        /// <returns>a new matrix of the corresponding dynamic type.</returns>
         protected override DoubleMatrix2D Like2D(int Rows, int Columns, int rowZero, int columnZero, int Rowstride, int Columnstride)
         {
-            return new DenseDoubleMatrix2D(Rows, Columns, this.elements, rowZero, columnZero, Rowstride, Columnstride);
+            return new DenseDoubleMatrix2D(Rows, Columns, this.Elements, rowZero, columnZero, Rowstride, Columnstride);
         }
 
         /// <summary>
         /// Construct and returns a new selection view.
-        ///
-        /// @param sliceOffsets the offsets of the visible elements.
-        /// @param rowOffsets the offsets of the visible elements.
-        /// @param columnOffsets the offsets of the visible elements.
-        /// @return  a new view.
         /// </summary>
+        /// <param name="sliceOffsets">the offsets of the visible elements.</param>
+        /// <param name="rowOffsets">the offsets of the visible elements.</param>
+        /// <param name="columnOffsets">the offsets of the visible elements.</param>
+        /// <returns>a new view.</returns>
         protected override DoubleMatrix3D ViewSelectionLike(int[] sliceOffsets, int[] rowOffsets, int[] columnOffsets)
         {
-            return new SelectedDenseDoubleMatrix3D(this.elements, sliceOffsets, rowOffsets, columnOffsets, 0);
+            return new SelectedDenseDoubleMatrix3D(this.Elements, sliceOffsets, rowOffsets, columnOffsets, 0);
         }
         #endregion
 

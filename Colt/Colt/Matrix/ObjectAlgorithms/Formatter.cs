@@ -138,7 +138,7 @@
             for (int slice = 0; slice < matrix.slices(); slice++)
             {
                 if (slice != 0) buf.Append(sliceSeparator);
-                buf.Append(ToString(matrix.viewSlice(slice)));
+                buf.Append(ToString(matrix.ViewSlice(slice)));
             }
             this.printShape = oldPrintShape;
             if (printShape) buf.Insert(0, Shape(matrix) + "\n");
@@ -256,7 +256,7 @@
             for (int i = 0; i < matrix.slices(); i++)
             {
                 if (i != 0) buf.Append(sliceSeparator);
-                buf.Append(ToTitleString(matrix.viewSlice(i), rowNames, columnNames, rowAxisName, columnAxisName, title + "\n" + sliceAxisName + "=" + sliceNames[i]));
+                buf.Append(ToTitleString(matrix.ViewSlice(i), rowNames, columnNames, rowAxisName, columnAxisName, title + "\n" + sliceAxisName + "=" + sliceNames[i]));
             }
             return buf.ToString();
         }

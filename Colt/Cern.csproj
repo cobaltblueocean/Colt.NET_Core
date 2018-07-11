@@ -86,9 +86,15 @@
     <Compile Include="Colt\Matrix\Implementation\SelectedDenseDoubleMatrix1D.cs" />
     <Compile Include="Colt\Matrix\Implementation\SelectedDenseDoubleMatrix2D.cs" />
     <Compile Include="Colt\Matrix\Implementation\SelectedDenseDoubleMatrix3D.cs" />
+    <Compile Include="Colt\Matrix\Implementation\SelectedDenseObjectMatrix1D.cs" />
+    <Compile Include="Colt\Matrix\Implementation\SelectedDenseObjectMatrix2D.cs" />
+    <Compile Include="Colt\Matrix\Implementation\SelectedDenseObjectMatrix3D.cs" />
     <Compile Include="Colt\Matrix\Implementation\SelectedSparseDoubleMatrix1D.cs" />
     <Compile Include="Colt\Matrix\Implementation\SelectedSparseDoubleMatrix2D.cs" />
     <Compile Include="Colt\Matrix\Implementation\SelectedSparseDoubleMatrix3D.cs" />
+    <Compile Include="Colt\Matrix\Implementation\SelectedSparseObjectMatrix1D.cs" />
+    <Compile Include="Colt\Matrix\Implementation\SelectedSparseObjectMatrix2D.cs" />
+    <Compile Include="Colt\Matrix\Implementation\SelectedSparseObjectMatrix3D.cs" />
     <Compile Include="Colt\Matrix\Implementation\SparseDoubleMatrix1D.cs" />
     <Compile Include="Colt\Matrix\Implementation\SparseDoubleMatrix2D.cs" />
     <Compile Include="Colt\Matrix\Implementation\SparseDoubleMatrix3D.cs" />
@@ -111,8 +117,10 @@
     <Compile Include="Colt\Matrix\ObjectMatrix2D.cs" />
     <Compile Include="Colt\Matrix\ObjectMatrix3D.cs" />
     <Compile Include="Colt\PersistentObject.cs" />
+    <Compile Include="Colt\PrimeFinder.cs" />
     <Compile Include="Extensions\ArrayExtensions.cs" />
     <Compile Include="Extensions\DateTimeExtension.cs" />
+    <Compile Include="Extensions\DictionaryExtension.cs" />
     <Compile Include="Extensions\ListExtensions.cs" />
     <Compile Include="Extensions\PremitiveExtensions.cs" />
     <Compile Include="Hep\Aida\Bin\AbstractBin.cs" />

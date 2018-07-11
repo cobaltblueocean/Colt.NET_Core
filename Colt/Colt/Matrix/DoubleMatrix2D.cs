@@ -80,7 +80,7 @@ namespace Cern.Colt.Matrix
         /// </returns>
         public double Aggregate(DoubleDoubleFunction aggr, DoubleFunction f)
         {
-            if (Size() == 0) 
+            if (Size == 0) 
                 return double.NaN;
             double a = f(this[Rows - 1, Columns - 1]);
             int d = 1; // last cell already done
@@ -115,7 +115,7 @@ namespace Cern.Colt.Matrix
         public double Aggregate(DoubleMatrix2D other, DoubleDoubleFunction aggr, DoubleDoubleFunction f)
         {
             CheckShape(other);
-            if (Size() == 0) return double.NaN;
+            if (Size == 0) return double.NaN;
             double a = f(this[Rows - 1, Columns - 1], other[Rows - 1, Columns - 1]);
             int d = 1; // last cell already done
             for (int row = Rows; --row >= 0;)
@@ -213,7 +213,7 @@ namespace Cern.Colt.Matrix
         {
             if (other == this) return this;
             CheckShape(other);
-            if (haveSharedCells(other)) other = other.Copy();
+            if (HaveSharedCells(other)) other = other.Copy();
 
             for (int row = Rows; --row >= 0;)
                 for (int column = Columns; --column >= 0;)
@@ -305,6 +305,11 @@ namespace Cern.Colt.Matrix
             if (!(obj is DoubleMatrix2D)) return false;
 
             return Property.DEFAULT.Equals(this, (DoubleMatrix2D)obj);
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
         }
 
         /// <summary>
@@ -552,7 +557,7 @@ namespace Cern.Colt.Matrix
             int viewSize = Rows;
             int viewZero = Index(0, column);
             int viewStride = RowStride;
-            return like1D(viewSize, viewZero, viewStride);
+            return Like1D(viewSize, viewZero, viewStride);
         }
 
         /// <summary>
@@ -565,7 +570,7 @@ namespace Cern.Colt.Matrix
         /// </returns>
         public virtual DoubleMatrix2D ViewColumnFlip()
         {
-            return (DoubleMatrix2D)view().VColumnFlip();
+            return (DoubleMatrix2D)View().VColumnFlip();
         }
 
         /// <summary>
@@ -580,7 +585,7 @@ namespace Cern.Colt.Matrix
         /// </returns>
         public DoubleMatrix2D ViewDice()
         {
-            return (DoubleMatrix2D)view().VDice();
+            return (DoubleMatrix2D)View().VDice();
         }
 
         /// <summary>
@@ -606,7 +611,7 @@ namespace Cern.Colt.Matrix
         /// </exception>
         public DoubleMatrix2D ViewPart(int row, int column, int height, int width)
         {
-            return (DoubleMatrix2D)view().VPart(row, column, height, width);
+            return (DoubleMatrix2D)View().VPart(row, column, height, width);
         }
 
         /// <summary>
@@ -628,7 +633,7 @@ namespace Cern.Colt.Matrix
             int viewSize = Columns;
             int viewZero = Index(row, 0);
             int viewStride = ColumnStride;
-            return like1D(viewSize, viewZero, viewStride);
+            return Like1D(viewSize, viewZero, viewStride);
         }
 
         /// <summary>
@@ -641,7 +646,7 @@ namespace Cern.Colt.Matrix
         /// </returns>
         public DoubleMatrix2D ViewRowFlip()
         {
-            return (DoubleMatrix2D)view().VRowFlip();
+            return (DoubleMatrix2D)View().VRowFlip();
         }
 
         /// <summary>
@@ -684,7 +689,7 @@ namespace Cern.Colt.Matrix
                 rowOffsets[i] = RowOffset(RowRank(rowIndexes[i]));
             for (int i = columnIndexes.Length; --i >= 0;)
                 columnOffsets[i] = ColumnOffset(ColumnRank(columnIndexes[i]));
-            return viewSelectionLike(rowOffsets, columnOffsets);
+            return ViewSelectionLike(rowOffsets, columnOffsets);
         }
 
         /// <summary>
@@ -746,7 +751,7 @@ namespace Cern.Colt.Matrix
         /// </exception>
         public DoubleMatrix2D ViewStrides(int rStride, int cStride)
         {
-            return (DoubleMatrix2D)view().VStrides(rStride, cStride);
+            return (DoubleMatrix2D)View().VStrides(rStride, cStride);
         }
 
         /// <summary>
@@ -849,7 +854,7 @@ namespace Cern.Colt.Matrix
         {
             if (transposeA) return ViewDice().ZMult(y, z, alpha, beta, false);
             if (z == null) z = new DenseDoubleMatrix1D(Rows);
-            if (Columns != y._size || Rows > z._size)
+            if (Columns != y.Size || Rows > z.Size)
                 throw new ArgumentOutOfRangeException("Incompatible args: " + this + ", " + y + ", " + z);
 
             for (int i = Rows; --i >= 0;)
@@ -952,7 +957,7 @@ namespace Cern.Colt.Matrix
         /// </returns>
         public virtual double ZSum()
         {
-            if (Size() == 0) return 0;
+            if (Size == 0) return 0;
             return Aggregate(BinaryFunctions.Plus, UnaryFunctions.Identity);
         }
 
@@ -971,7 +976,7 @@ namespace Cern.Colt.Matrix
         /// <returns>
         /// A new matrix of the corresponding dynamic type.
         /// </returns>
-        protected internal abstract DoubleMatrix1D like1D(int size, int zero, int stride);
+        protected internal abstract DoubleMatrix1D Like1D(int size, int zero, int stride);
 
         /// <summary>
         /// Returns the content of this matrix if it is a wrapper; or <tt>this</tt> otherwise.
@@ -980,7 +985,7 @@ namespace Cern.Colt.Matrix
         /// <returns>
         /// The content of this matrix if it is a wrapper; or <tt>this</tt> otherwise.
         /// </returns>
-        protected DoubleMatrix2D getContent()
+        protected DoubleMatrix2D GetContent()
         {
             return this;
         }
@@ -994,11 +999,11 @@ namespace Cern.Colt.Matrix
         /// <returns>
         /// <tt>true</tt> if both matrices share at least one identical cell.
         /// </returns>
-        protected bool haveSharedCells(DoubleMatrix2D other)
+        protected bool HaveSharedCells(DoubleMatrix2D other)
         {
             if (other == null) return false;
             if (this == other) return true;
-            return getContent().haveSharedCellsRaw(other.getContent());
+            return GetContent().HaveSharedCellsRaw(other.GetContent());
         }
 
         /// <summary>
@@ -1010,7 +1015,7 @@ namespace Cern.Colt.Matrix
         /// <returns>
         /// <tt>true</tt> if both matrices share at least one identical cell.
         /// </returns>
-        protected virtual bool haveSharedCellsRaw(DoubleMatrix2D other)
+        protected virtual bool HaveSharedCellsRaw(DoubleMatrix2D other)
         {
             return false;
         }
@@ -1021,7 +1026,7 @@ namespace Cern.Colt.Matrix
         /// <returns>
         /// A new view equal to the receiver.
         /// </returns>
-        protected DoubleMatrix2D view()
+        protected DoubleMatrix2D View()
         {
             return (DoubleMatrix2D)Clone();
         }
@@ -1038,7 +1043,7 @@ namespace Cern.Colt.Matrix
         /// <returns>
         /// A new view.
         /// </returns>
-        protected abstract DoubleMatrix2D viewSelectionLike(int[] rowOffsets, int[] cOffsets);
+        protected abstract DoubleMatrix2D ViewSelectionLike(int[] rowOffsets, int[] cOffsets);
 
         public struct Element
         {

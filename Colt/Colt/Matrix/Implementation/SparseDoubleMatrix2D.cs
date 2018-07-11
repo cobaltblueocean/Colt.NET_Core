@@ -297,7 +297,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <returns>
         /// A new matrix of the corresponding dynamic type.
         /// </returns>
-        protected internal override DoubleMatrix1D like1D(int size, int offset, int stride)
+        protected internal override DoubleMatrix1D Like1D(int size, int offset, int stride)
         {
             return new SparseDoubleMatrix1D(size, this.elements, offset, stride);
         }
@@ -311,7 +311,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <returns>
         /// <tt>true</tt> if both matrices share at least one identical cell.
         /// </returns>
-        protected override bool haveSharedCellsRaw(DoubleMatrix2D other)
+        protected override bool HaveSharedCellsRaw(DoubleMatrix2D other)
         {
             if (other is SelectedSparseDoubleMatrix2D)
             {
@@ -359,7 +359,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <returns>
         /// A new view.
         /// </returns>
-        protected override DoubleMatrix2D viewSelectionLike(int[] rowOffsets, int[] columnOffsets)
+        protected override DoubleMatrix2D ViewSelectionLike(int[] rowOffsets, int[] columnOffsets)
         {
             return new SelectedSparseDoubleMatrix2D(this.elements, rowOffsets, columnOffsets, 0);
         }

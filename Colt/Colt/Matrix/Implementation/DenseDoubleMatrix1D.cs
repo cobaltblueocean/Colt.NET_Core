@@ -32,7 +32,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// </param>
         public DenseDoubleMatrix1D(double[] values)
         {
-            SetUp(values.Length);
+            Setup(values.Length);
             elements = new double[values.Length];
             Assign(values);
         }
@@ -49,7 +49,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// </exception>
         public DenseDoubleMatrix1D(int size)
         {
-            SetUp(size);
+            Setup(size);
             elements = new double[size];
         }
 
@@ -74,7 +74,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// </exception>
         internal DenseDoubleMatrix1D(int size, double[] elements, int zero, int stride)
         {
-            SetUp(size, zero, stride);
+            Setup(size, zero, stride);
             this.elements = elements;
             IsView = true;
         }
@@ -506,7 +506,7 @@ namespace Cern.Colt.Matrix.Implementation
             if (other is SelectedDenseDoubleMatrix1D)
             {
                 var otherMatrix = (SelectedDenseDoubleMatrix1D)other;
-                return elements == otherMatrix.elements;
+                return elements == otherMatrix.Elements;
             }
 
             if (other is DenseDoubleMatrix1D)

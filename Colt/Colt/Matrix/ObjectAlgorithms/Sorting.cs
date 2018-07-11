@@ -263,7 +263,7 @@ namespace Cern.Colt.Matrix.ObjectAlgorithms
             int[] sliceIndexes = new int[matrix.Slices]; // indexes to reorder instead of matrix itself
             for (int i = sliceIndexes.Length; --i >= 0;) sliceIndexes[i] = i;
 
-            ObjectMatrix1D sliceView = matrix.viewRow(row).viewColumn(column);
+            ObjectMatrix1D sliceView = matrix.ViewRow(row).viewColumn(column);
             IntComparator comp = new IntComparator((a, b) =>
             {
                 IComparable av = (IComparable)(sliceView[a]);
@@ -276,7 +276,7 @@ namespace Cern.Colt.Matrix.ObjectAlgorithms
 
             // view the matrix according to the reordered slice indexes
             // take all rows and columns in the original order
-            return matrix.viewSelection(sliceIndexes, null, null);
+            return matrix.ViewSelection(sliceIndexes, null, null);
         }
         /// <summary>
         /// Sorts the matrix slices according to the order induced by the specified comparator.
@@ -309,7 +309,7 @@ namespace Cern.Colt.Matrix.ObjectAlgorithms
             for (int i = sliceIndexes.Length; --i >= 0;) sliceIndexes[i] = i;
 
             ObjectMatrix2D[] views = new ObjectMatrix2D[matrix.Slices]; // precompute views for speed
-            for (int i = views.Length; --i >= 0;) views[i] = matrix.viewSlice(i);
+            for (int i = views.Length; --i >= 0;) views[i] = matrix.ViewSlice(i);
 
             IntComparator comp = new IntComparator((a, b) => { return c(views[a], views[b]); });
 
@@ -317,7 +317,7 @@ namespace Cern.Colt.Matrix.ObjectAlgorithms
 
             // view the matrix according to the reordered slice indexes
             // take all rows and columns in the original order
-            return matrix.viewSelection(sliceIndexes, null, null);
+            return matrix.ViewSelection(sliceIndexes, null, null);
         }
     }
 }

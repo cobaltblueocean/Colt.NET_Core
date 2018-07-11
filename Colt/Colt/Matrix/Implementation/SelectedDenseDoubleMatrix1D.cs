@@ -25,12 +25,12 @@ namespace Cern.Colt.Matrix.Implementation
         /// <summary>
         /// Gets the offsets of visible indexes of this matrix.
         /// </summary>
-        private readonly int[] offsets;
+        private readonly int[] Offsets;
 
         /// <summary>
         /// Gets the offset.
         /// </summary>
-        private int offset;
+        private int Offset;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SelectedDenseDoubleMatrix1D"/> class.
@@ -44,11 +44,11 @@ namespace Cern.Colt.Matrix.Implementation
         /// </param>
         internal SelectedDenseDoubleMatrix1D(double[] elements, int[] offsets)
         {
-            SetUp(offsets.Length, 0, 1);
+            Setup(offsets.Length, 0, 1);
 
-            this.elements = elements;
-            this.offsets = offsets;
-            this.offset = 0;
+            this.Elements = elements;
+            this.Offsets = offsets;
+            this.Offset = 0;
             IsView = true;
         }
 
@@ -76,18 +76,18 @@ namespace Cern.Colt.Matrix.Implementation
         /// </param>
         internal SelectedDenseDoubleMatrix1D(int size, double[] elements, int zero, int stride, int[] offsets, int offset)
         {
-            SetUp(size, zero, stride);
+            Setup(size, zero, stride);
 
-            this.elements = elements;
-            this.offsets = offsets;
-            this.offset = offset;
+            this.Elements = elements;
+            this.Offsets = offsets;
+            this.Offset = offset;
             IsView = true;
         }
 
         /// <summary>
         /// Gets the elements of this matrix.
         /// </summary>
-        internal double[] elements { get; private set; }
+        internal double[] Elements { get; private set; }
 
         /// <summary>
         /// Gets or sets the matrix cell value at coordinate <tt>index</tt>.
@@ -99,12 +99,12 @@ namespace Cern.Colt.Matrix.Implementation
         {
             get
             {
-                return elements[offset + offsets[_zero + (index * _stride)]];
+                return Elements[Offset + Offsets[Zero + (index * Stride)]];
             }
 
             set
             {
-                elements[offset + offsets[_zero + (index * _stride)]] = value;
+                Elements[Offset + Offsets[Zero + (index * Stride)]] = value;
             }
         }
 
@@ -153,7 +153,7 @@ namespace Cern.Colt.Matrix.Implementation
         {
             ////return this.offset + super.index(rank);
             // manually inlined:
-            return offset + offsets[_zero + (rank * _stride)];
+            return Offset + Offsets[Zero + (rank * Stride)];
         }
 
         /// <summary>
@@ -166,9 +166,9 @@ namespace Cern.Colt.Matrix.Implementation
         /// <returns>
         /// The position
         /// </returns>
-        protected override int _offset(int absRank)
+        protected override int GetOffset(int absRank)
         {
-            return offsets[absRank];
+            return Offsets[absRank];
         }
 
         /// <summary>
@@ -185,13 +185,13 @@ namespace Cern.Colt.Matrix.Implementation
             if (other is SelectedDenseDoubleMatrix1D)
             {
                 var otherMatrix = (SelectedDenseDoubleMatrix1D)other;
-                return this.elements == otherMatrix.elements;
+                return this.Elements == otherMatrix.Elements;
             }
 
             if (other is DenseDoubleMatrix1D)
             {
                 var otherMatrix = (DenseDoubleMatrix1D)other;
-                return this.elements == otherMatrix.elements;
+                return this.Elements == otherMatrix.elements;
             }
 
             return false;
@@ -206,11 +206,11 @@ namespace Cern.Colt.Matrix.Implementation
         /// <exception cref="ArgumentOutOfRangeException">
         /// If <tt>size &lt; 0</tt>.
         /// </exception>
-        protected override void SetUp(int n)
+        protected override void Setup(int n)
         {
-            base.SetUp(n);
-            this._stride = 1;
-            this.offset = 0;
+            base.Setup(n);
+            this.Stride = 1;
+            this.Offset = 0;
         }
 
         /// <summary>
@@ -224,7 +224,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// </returns>
         protected override DoubleMatrix1D ViewSelectionLike(int[] offs)
         {
-            return new SelectedDenseDoubleMatrix1D(this.elements, offs);
+            return new SelectedDenseDoubleMatrix1D(this.Elements, offs);
         }
     }
 }
