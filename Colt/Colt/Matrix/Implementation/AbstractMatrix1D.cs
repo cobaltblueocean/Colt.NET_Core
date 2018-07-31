@@ -28,6 +28,7 @@ namespace Cern.Colt.Matrix.Implementation
         private int _size;
 
         /// <summary>
+        /// 
         /// Gets or sets the number of indexes between any two elements, i.e. <tt>index(i+1) - index(i)</tt>.
         /// </summary>
         private int _stride;
@@ -48,7 +49,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// </exception>
         public void CheckSize(AbstractMatrix1D b)
         {
-            if (_size != b._size) throw new ArgumentOutOfRangeException("Incompatible sizes: " + this + " and " + b);
+            if (Size != b.Size) throw new ArgumentOutOfRangeException("Incompatible sizes: " + this + " and " + b);
         }
 
         /// <summary>
@@ -60,6 +61,7 @@ namespace Cern.Colt.Matrix.Implementation
         public override int Size
         {
             get { return _size; }
+            set { _size = value; }
         }
 
         /// <summary>
@@ -100,7 +102,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// </returns>
         protected internal virtual int Index(int rank)
         {
-            return GetOffset(GetRank(rank));
+            return Offset(GetRank(rank));
         }
 
         /// <summary>
@@ -114,7 +116,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// </exception>
         protected void CheckIndex(int index)
         {
-            if (index < 0 || index >= _size) throw new IndexOutOfRangeException("Attempted to access " + this + " at index=" + index);
+            if (index < 0 || index >= Size) throw new IndexOutOfRangeException("Attempted to access " + this + " at index=" + index);
         }
 
         /// <summary>
@@ -131,7 +133,7 @@ namespace Cern.Colt.Matrix.Implementation
             for (int i = indexes.Length; --i >= 0;)
             {
                 int index = indexes[i];
-                if (index < 0 || index >= _size) CheckIndex(index);
+                if (index < 0 || index >= Size) CheckIndex(index);
             }
         }
 
@@ -149,8 +151,8 @@ namespace Cern.Colt.Matrix.Implementation
         /// </exception>
         protected void CheckRange(int index, int width)
         {
-            if (index < 0 || index + width > _size)
-                throw new ArgumentException("index: " + index + ", width: " + width + ", size=" + _size);
+            if (index < 0 || index + width > Size)
+                throw new ArgumentException("index: " + index + ", width: " + width + ", size=" + Size);
         }
 
         /// <summary>
@@ -164,7 +166,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// </exception>
         protected void CheckSize(double[] b)
         {
-            if (_size != b.Length) throw new ArgumentOutOfRangeException("Incompatible sizes: " + this + " and " + b.Length);
+            if (Size != b.Length) throw new ArgumentOutOfRangeException("Incompatible sizes: " + this + " and " + b.Length);
         }
 
         /// <summary>
@@ -177,8 +179,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <returns>
         /// The position
         /// </returns>
-        [Obsolete("GetOffset(int absRank) is deprecated, please use Offsets[absRank] instead.")]
-        protected virtual int GetOffset(int absRank)
+        protected virtual int Offset(int absRank)
         {
             return absRank;
         }
@@ -194,7 +195,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// </returns>
         protected virtual int GetRank(int rank)
         {
-            return _zero + (rank * _stride);
+            return Zero + (rank * Stride);
         }
 
         /// <summary>
@@ -230,9 +231,9 @@ namespace Cern.Colt.Matrix.Implementation
         {
             if (sz < 0) throw new ArgumentOutOfRangeException("sz", "negative size");
 
-            this._size = sz;
-            this._zero = z;
-            this._stride = str;
+            this.Size = sz;
+            this.Zero = z;
+            this.Stride = str;
             IsView = false;
         }
 
@@ -245,10 +246,10 @@ namespace Cern.Colt.Matrix.Implementation
         /// </returns>
         protected AbstractMatrix1D VFlip()
         {
-            if (_size > 0)
+            if (Size > 0)
             {
-                this._zero += (this._size - 1) * this._stride;
-                this._stride = -this._stride;
+                this.Zero += (this.Size - 1) * this.Stride;
+                this.Stride = -this.Stride;
                 IsView = true;
             }
 
@@ -273,8 +274,8 @@ namespace Cern.Colt.Matrix.Implementation
         protected AbstractMatrix1D VPart(int index, int width)
         {
             CheckRange(index, width);
-            this._zero += this._stride * index;
-            this._size = width;
+            this.Zero += this.Stride * index;
+            this.Size = width;
             IsView = true;
             return this;
         }
@@ -293,9 +294,9 @@ namespace Cern.Colt.Matrix.Implementation
         /// </exception>
         protected AbstractMatrix1D VStrides(int str)
         {
-            if (_stride <= 0) throw new ArgumentOutOfRangeException("str", "illegal stride: " + _stride);
-            this._stride *= _stride;
-            if (this._size != 0) this._size = ((this._size - 1) / _stride) + 1;
+            if (Stride <= 0) throw new ArgumentOutOfRangeException("str", "illegal stride: " + Stride);
+            this.Stride *= Stride;
+            if (this.Size != 0) this.Size = ((this.Size - 1) / Stride) + 1;
             IsView = true;
             return this;
         }

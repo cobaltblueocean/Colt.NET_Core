@@ -9,7 +9,7 @@ namespace Cern.Hep.Aida.Bin
 {
     /// <summary>
     /// Abstract base class for all arbitrary-dimensional bins consumes <i>double</i> elements.
-    /// First see the <a href="package-summary.html">package summary</a> and javadoc <a href="package-tree.html">tree view</a> to get the broad picture.
+    ///
     /// <p>
     /// This class is fully thread safe (all public methods are synchronized).
     /// Thus, you can have one or more threads adding to the bin as well as one or more threads reading and viewing the statistics of the bin <i>while it is filled</i>.

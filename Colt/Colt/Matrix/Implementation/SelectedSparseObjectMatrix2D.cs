@@ -17,7 +17,7 @@ namespace Cern.Colt.Matrix.Implementation
 {
     /// <summary>
     /// Selection view on sparse 2-d matrices holding <i>Object</i> elements.
-    /// First see the <a href="package-summary.html">package summary</a> and javadoc <a href="package-tree.html">tree view</a> to get the broad picture.
+    ///
     /// <p>
     /// <b>Implementation:</b>
     /// <p>
@@ -57,14 +57,20 @@ namespace Cern.Colt.Matrix.Implementation
         /// <summary>
         /// The offsets of the visible cells of this matrix.
         /// </summary>
-        protected int[] rowOffsets;
-        protected int[] columnOffsets;
+        private int[] rowOffsets;
+        private int[] columnOffsets;
 
         /// <summary>
         /// The offset.
         /// </summary>
-        protected int offset;
+        private int offset;
 
+        /// <summary>
+        /// Gets or sets the matrix cell value at coordinate <i>[row,column]</i>.
+        /// </summary>
+        /// <param name="rowindex"></param>
+        /// <param name="colindex"></param>
+        /// <returns></returns>
         public override object this[int rowindex, int colindex]
         {
             get
@@ -90,22 +96,20 @@ namespace Cern.Colt.Matrix.Implementation
 
         /// <summary>
         /// Constructs a matrix view with the given parameters.
-        /// @param rows the number of rows the matrix shall have.
-        /// @param columns the number of columns the matrix shall have.
-        /// @param elements the cells.
-        /// @param rowZero the position of the first element.
-        /// @param columnZero the position of the first element.
-        /// @param rowStride the number of elements between two rows, i.ed <i>index(i+1,j)-index(i,j)</i>.
-        /// @param columnStride the number of elements between two columns, i.ed <i>index(i,j+1)-index(i,j)</i>.
-        /// @param  rowOffsets   The row offsets of the cells that shall be visible.
-        /// @param  columnOffsets   The column offsets of the cells that shall be visible.
-        /// @param  offset   
         /// </summary>
-        /// <param name=""></param>
-        /// <param name=""></param>
+        /// <param name="rows">the number of rows the matrix shall have.</param>
+        /// <param name="columns">the number of columns the matrix shall have.</param>
+        /// <param name="elements">the cells.</param>
+        /// <param name="rowZero">the position of the first element.</param>
+        /// <param name="columnZero">the position of the first element.</param>
+        /// <param name="rowStride">the number of elements between two rows, i.ed <i>index(i+1,j)-index(i,j)</i>.</param>
+        /// <param name="columnStride">the number of elements between two columns, i.ed <i>index(i,j+1)-index(i,j)</i>.</param>
+        /// <param name="rowOffsets">The row offsets of the cells that shall be visible.</param>
+        /// <param name="columnOffsets">The column offsets of the cells that shall be visible.</param>
+        /// <param name="offset"></param>
         /// <returns></returns>
         /// <exception cref=""></exception>
-        protected SelectedSparseObjectMatrix2D(int rows, int columns, IDictionary<int, Object> elements, int rowZero, int columnZero, int rowStride, int columnStride, int[] rowOffsets, int[] columnOffsets, int offset)
+        public SelectedSparseObjectMatrix2D(int rows, int columns, IDictionary<int, Object> elements, int rowZero, int columnZero, int rowStride, int columnStride, int[] rowOffsets, int[] columnOffsets, int offset)
         {
             // be sure parameters are valid, we do not check...
             Setup(rows, columns, rowZero, columnZero, rowStride, columnStride);
@@ -120,16 +124,12 @@ namespace Cern.Colt.Matrix.Implementation
 
         /// <summary>
         /// Constructs a matrix view with the given parameters.
-        /// @param elements the cells.
-        /// @param  rowOffsets   The row offsets of the cells that shall be visible.
-        /// @param  columnOffsets   The column offsets of the cells that shall be visible.
-        /// @param  offset   
         /// </summary>
-        /// <param name=""></param>
-        /// <param name=""></param>
-        /// <returns></returns>
-        /// <exception cref=""></exception>
-        protected SelectedSparseObjectMatrix2D(IDictionary<int, Object> elements, int[] rowOffsets, int[] columnOffsets, int offset) : this(rowOffsets.Length, columnOffsets.Length, elements, 0, 0, 1, 1, rowOffsets, columnOffsets, offset)
+        /// <param name="elements">the cells.</param>
+        /// <param name="rowOffsets">The row offsets of the cells that shall be visible.</param>
+        /// <param name="columnOffsets">The column offsets of the cells that shall be visible.</param>
+        /// <param name="offset"></param>
+        public SelectedSparseObjectMatrix2D(IDictionary<int, Object> elements, int[] rowOffsets, int[] columnOffsets, int offset) : this(rowOffsets.Length, columnOffsets.Length, elements, 0, 0, 1, 1, rowOffsets, columnOffsets, offset)
         {
 
         }
@@ -137,14 +137,9 @@ namespace Cern.Colt.Matrix.Implementation
         /// <summary>
         /// Returns the position of the given absolute rank within the (virtual or non-virtual) internal 1-dimensional arrayd 
         /// Default implementationd Override, if necessary.
-        /// 
-        /// @param  rank   the absolute rank of the element.
-        /// @return the position.
         /// </summary>
-        /// <param name=""></param>
-        /// <param name=""></param>
-        /// <returns></returns>
-        /// <exception cref=""></exception>
+        /// <param name="rank">the absolute rank of the element.</param>
+        /// <returns>the position.</returns>
         protected override int ColumnOffset(int absRank)
         {
             return columnOffsets[absRank];
@@ -153,14 +148,9 @@ namespace Cern.Colt.Matrix.Implementation
         /// <summary>
         /// Returns the position of the given absolute rank within the (virtual or non-virtual) internal 1-dimensional arrayd 
         /// Default implementationd Override, if necessary.
-        /// 
-        /// @param  rank   the absolute rank of the element.
-        /// @return the position.
         /// </summary>
-        /// <param name=""></param>
-        /// <param name=""></param>
-        /// <returns></returns>
-        /// <exception cref=""></exception>
+        /// <param name="rank">the absolute rank of the element.</param>
+        /// <returns>the position.</returns>
         protected override int RowOffset(int absRank)
         {
             return rowOffsets[absRank];
@@ -172,15 +162,10 @@ namespace Cern.Colt.Matrix.Implementation
         /// <p>Provided with invalid parameters this method may return invalid objects without throwing any exception.
         /// <b>You should only use this method when you are absolutely sure that the coordinate is within bounds.</b>
         /// Precondition (unchecked): <i>0 &lt;= column &lt; columns() && 0 &lt;= row &lt; rows()</i>.
-        /// 
-        /// @param     row   the index of the row-coordinate.
-        /// @param     column   the index of the column-coordinate.
-        /// @return    the value at the specified coordinate.
         /// </summary>
-        /// <param name=""></param>
-        /// <param name=""></param>
-        /// <returns></returns>
-        /// <exception cref=""></exception>
+        /// <param name="row">the index of the row-coordinate.</param>
+        /// <param name="column">the index of the column-coordinate.</param>
+        /// <returns>the value at the specified coordinate.</returns>
         [Obsolete("GetQuick(int row, int column) is deprecated, please use indexer instead.")]
         public Object GetQuick(int row, int column)
         {
@@ -196,10 +181,6 @@ namespace Cern.Colt.Matrix.Implementation
         /// <li><i>this == other</i>
         /// </ul>
         /// </summary>
-        /// <param name=""></param>
-        /// <param name=""></param>
-        /// <returns></returns>
-        /// <exception cref=""></exception>
         protected new Boolean HaveSharedCellsRaw(ObjectMatrix2D other)
         {
             if (other is SelectedSparseObjectMatrix2D)
@@ -217,14 +198,9 @@ namespace Cern.Colt.Matrix.Implementation
 
         /// <summary>
         /// Returns the position of the given coordinate within the (virtual or non-virtual) internal 1-dimensional arrayd 
-        /// 
-        /// @param     row   the index of the row-coordinate.
-        /// @param     column   the index of the column-coordinate.
         /// </summary>
-        /// <param name=""></param>
-        /// <param name=""></param>
-        /// <returns></returns>
-        /// <exception cref=""></exception>
+        /// <param name="row">the index of the row-coordinate.</param>
+        /// <param name="column">the index of the column-coordinate.</param>
         protected override int Index(int row, int column)
         {
             //return this.offset + base.index(row,column);
@@ -237,15 +213,10 @@ namespace Cern.Colt.Matrix.Implementation
         /// For example, if the receiver is an instance of type <i>DenseObjectMatrix2D</i> the new matrix must also be of type <i>DenseObjectMatrix2D</i>,
         /// if the receiver is an instance of type <i>SparseObjectMatrix2D</i> the new matrix must also be of type <i>SparseObjectMatrix2D</i>, etc.
         /// In general, the new matrix should have internal parametrization as similar as possible.
-        /// 
-        /// @param rows the number of rows the matrix shall have.
-        /// @param columns the number of columns the matrix shall have.
-        /// @return  a new empty matrix of the same dynamic type.
         /// </summary>
-        /// <param name=""></param>
-        /// <param name=""></param>
-        /// <returns></returns>
-        /// <exception cref=""></exception>
+        /// <param name="rows">the number of rows the matrix shall have.</param>
+        /// <param name="columns">the number of columns the matrix shall have.</param>
+        /// <returns>a new empty matrix of the same dynamic type.</returns>
         public override ObjectMatrix2D Like(int Rows, int Columns)
         {
             return new SparseObjectMatrix2D(Rows, Columns);
@@ -255,34 +226,23 @@ namespace Cern.Colt.Matrix.Implementation
         /// Construct and returns a new 1-d matrix <i>of the corresponding dynamic type</i>, entirelly independent of the receiver.
         /// For example, if the receiver is an instance of type <i>DenseObjectMatrix2D</i> the new matrix must be of type <i>DenseObjectMatrix1D</i>,
         /// if the receiver is an instance of type <i>SparseObjectMatrix2D</i> the new matrix must be of type <i>SparseObjectMatrix1D</i>, etc.
-        /// 
-        /// @param size the number of cells the matrix shall have.
-        /// @return  a new matrix of the corresponding dynamic type.
         /// </summary>
-        /// <param name=""></param>
-        /// <param name=""></param>
-        /// <returns></returns>
-        /// <exception cref=""></exception>
+        /// <param name="size">the number of cells the matrix shall have.</param>
+        /// <returns>a new matrix of the corresponding dynamic type.</returns>
         public override ObjectMatrix1D Like1D(int size)
         {
             return new SparseObjectMatrix1D(size);
         }
 
-
         /// <summary>
         /// Construct and returns a new 1-d matrix <i>of the corresponding dynamic type</i>, sharing the same cells.
         /// For example, if the receiver is an instance of type <i>DenseObjectMatrix2D</i> the new matrix must be of type <i>DenseObjectMatrix1D</i>,
         /// if the receiver is an instance of type <i>SparseObjectMatrix2D</i> the new matrix must be of type <i>SparseObjectMatrix1D</i>, etc.
-        /// 
-        /// @param size the number of cells the matrix shall have.
-        /// @param zero the index of the first element.
-        /// @param stride the number of indexes between any two elements, i.ed <i>index(i+1)-index(i)</i>.
-        /// @return  a new matrix of the corresponding dynamic type.
         /// </summary>
-        /// <param name=""></param>
-        /// <param name=""></param>
-        /// <returns></returns>
-        /// <exception cref=""></exception>
+        /// <param name="size">the number of cells the matrix shall have.</param>
+        /// <param name="zero">the index of the first element.</param>
+        /// <param name="stride">the number of indexes between any two elements, i.ed <i>index(i+1)-index(i)</i>.</param>
+        /// <returns>a new matrix of the corresponding dynamic type.</returns>
         protected override ObjectMatrix1D Like1D(int size, int zero, int stride)
         {
             // this method is never called since viewRow() and viewColumn are overridden properly.
@@ -295,15 +255,10 @@ namespace Cern.Colt.Matrix.Implementation
         /// <p>Provided with invalid parameters this method may access illegal indexes without throwing any exception.
         /// <b>You should only use this method when you are absolutely sure that the coordinate is within bounds.</b>
         /// Precondition (unchecked): <i>0 &lt;= column &lt; columns() && 0 &lt;= row &lt; rows()</i>.
-        /// 
-        /// @param     row   the index of the row-coordinate.
-        /// @param     column   the index of the column-coordinate.
-        /// @param    value the value to be filled into the specified cell.
         /// </summary>
-        /// <param name=""></param>
-        /// <param name=""></param>
-        /// <returns></returns>
-        /// <exception cref=""></exception>
+        /// <param name="row">the index of the row-coordinate.</param>
+        /// <param name="column">the index of the column-coordinate.</param>
+        /// <param name="value">the value to be filled into the specified cell.</param>
         [Obsolete("SetQuick(int row, int column, Object value) is deprecated, please use indexer instead.")]
         public void SetQuick(int row, int column, Object value)
         {
@@ -312,14 +267,10 @@ namespace Cern.Colt.Matrix.Implementation
 
         /// <summary>
         /// Sets up a matrix with a given number of rows and columns.
-        /// @param rows the number of rows the matrix shall have.
-        /// @param columns the number of columns the matrix shall have.
-        /// @throws	ArgumentException if <i>(Object)columns*rows > int.MaxValue</i>.
         /// </summary>
-        /// <param name=""></param>
-        /// <param name=""></param>
-        /// <returns></returns>
-        /// <exception cref=""></exception>
+        /// <param name="rows">the number of rows the matrix shall have.</param>
+        /// <param name="columns">the number of columns the matrix shall have.</param>
+        /// <exception cref="ArgumentException">if <i>(Object)columns*rows > int.MaxValue</i>.</exception>
         protected override void Setup(int rows, int columns)
         {
             base.Setup(rows, columns);
@@ -342,6 +293,7 @@ namespace Cern.Colt.Matrix.Implementation
             this.IsView = true;
             return this;
         }
+
         /// <summary>
         /// Constructs and returns a new <i>slice view</i> representing the rows of the given column.
         /// The returned view is backed by this matrix, so changes in the returned view are reflected in this matrix, and vice-versa.
@@ -358,15 +310,11 @@ namespace Cern.Colt.Matrix.Implementation
         ///              1, 4</td>
         ///           </tr>
         /// </table>
-        /// @param the column to fix.
-        /// @return a new slice view.
-        /// @throws ArgumentException if <i>column < 0 || column >= columns()</i>.
-        /// @see #viewRow(int)
         /// </summary>
-        /// <param name=""></param>
-        /// <param name=""></param>
-        /// <returns></returns>
-        /// <exception cref=""></exception>
+        /// <param name="column">the column to fix.</param>
+        /// <returns>a new slice view.</returns>
+        /// <exception cref="ArgumentException">if <i>column &lt; 0 || column >= columns()</i>.</exception>
+        /// <see cref="ViewRow(int)"/>
         public new ObjectMatrix1D ViewColumn(int column)
         {
             CheckColumn(column);
@@ -394,15 +342,11 @@ namespace Cern.Colt.Matrix.Implementation
         ///              1, 2, 3</td>
         ///           </tr>
         /// </table>
-        /// @param the row to fix.
-        /// @return a new slice view.
-        /// @throws IndexOutOfRangeException if <i>row < 0 || row >= rows()</i>.
-        /// @see #viewColumn(int)
         /// </summary>
-        /// <param name=""></param>
-        /// <param name=""></param>
-        /// <returns></returns>
-        /// <exception cref=""></exception>
+        /// <param name="row">the row to fix.</param>
+        /// <returns>a new slice view.</returns>
+        /// <exception cref="IndexOutOfRangeException">if <i>row &lt; 0 || row >= rows()</i>.</exception>
+        /// <see cref="ViewColumn(int)"/>
         public new ObjectMatrix1D ViewRow(int row)
         {
             CheckRow(row);
@@ -416,15 +360,10 @@ namespace Cern.Colt.Matrix.Implementation
 
         /// <summary>
         /// Construct and returns a new selection view.
-        /// 
-        /// @param rowOffsets the offsets of the visible elements.
-        /// @param columnOffsets the offsets of the visible elements.
-        /// @return  a new view.
         /// </summary>
-        /// <param name=""></param>
-        /// <param name=""></param>
-        /// <returns></returns>
-        /// <exception cref=""></exception>
+        /// <param name="rowOffsets">the offsets of the visible elements.</param>
+        /// <param name="columnOffsets">the offsets of the visible elements.</param>
+        /// <returns>a new view.</returns>
         protected override ObjectMatrix2D ViewSelectionLike(int[] rowOffsets, int[] columnOffsets)
         {
             return new SelectedSparseObjectMatrix2D(this.Elements, rowOffsets, columnOffsets, this.offset);

@@ -7,7 +7,7 @@ using Cern.Colt.Function;
 
 namespace Cern.Jet.Math
 {
-    public sealed class PlusMult
+    public class PlusMult
     {
 
         #region Local Variables

@@ -9,3 +9,5 @@ C:\Users\Mercury21\Documents\Source\Repos\colt\Colt.Tests\obj\Debug\Colt.Tests.d
 C:\Users\Mercury21\Documents\Source\Repos\colt\Colt.Tests\obj\Debug\Colt.Tests.pdb
 C:\Users\Mercury21\Documents\Source\Repos\colt\Colt.Tests\obj\Debug\Colt.Tests.csprojAssemblyReference.cache
 C:\Users\Mercury21\Documents\Source\Repos\colt\Colt.Tests\obj\Debug\Colt.Tests.csproj.CoreCompileInputs.cache
+C:\Users\Mercury21\Source\repos\Colt\Colt.Tests\obj\Debug\Colt.Tests.csprojAssemblyReference.cache
+C:\Users\Mercury21\Source\repos\Colt\Colt.Tests\obj\Debug\Colt.Tests.csproj.CoreCompileInputs.cache

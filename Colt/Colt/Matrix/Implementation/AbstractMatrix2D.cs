@@ -308,8 +308,8 @@ namespace Cern.Colt.Matrix.Implementation
         protected void Setup(int rows, int columns, int rZero, int cZero, int rStride, int cStride)
         {
             if (rows < 0 || columns < 0) throw new ArgumentException("negative size");
-            Rows = rows;
-            Columns = columns;
+            this.Rows = rows;
+            this.Columns = columns;
 
             this.RowZero = rZero;
             this.ColumnZero = cZero;

@@ -23,7 +23,7 @@ namespace Cern.Colt.Matrix.Implementation
     /// <summary>
     /// Sparse hashed 2-d matrix holding <tt>double</tt> elements.
     /// </summary>
-    public sealed class SparseDoubleMatrix2D : DoubleMatrix2D
+    public class SparseDoubleMatrix2D : DoubleMatrix2D
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="SparseDoubleMatrix2D"/> class with a copy of the given values.
@@ -316,7 +316,7 @@ namespace Cern.Colt.Matrix.Implementation
             if (other is SelectedSparseDoubleMatrix2D)
             {
                 var otherMatrix = (SelectedSparseDoubleMatrix2D)other;
-                return this.elements == otherMatrix.elements;
+                return this.elements == otherMatrix.Elements;
             }
 
             if (other is SparseDoubleMatrix2D)

@@ -20,7 +20,7 @@ namespace Cern.Colt.Matrix.Implementation
     /// <summary>
     /// Selection view on dense 1-d matrices holding <tt>double</tt> elements.
     /// </summary>
-    public sealed class SelectedDenseDoubleMatrix1D : DoubleMatrix1D
+    public class SelectedDenseDoubleMatrix1D : DoubleMatrix1D
     {
         /// <summary>
         /// Gets the offsets of visible indexes of this matrix.
@@ -166,7 +166,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <returns>
         /// The position
         /// </returns>
-        protected override int GetOffset(int absRank)
+        protected override int Offset(int absRank)
         {
             return Offsets[absRank];
         }
@@ -191,7 +191,7 @@ namespace Cern.Colt.Matrix.Implementation
             if (other is DenseDoubleMatrix1D)
             {
                 var otherMatrix = (DenseDoubleMatrix1D)other;
-                return this.Elements == otherMatrix.elements;
+                return this.Elements == otherMatrix.Elements;
             }
 
             return false;

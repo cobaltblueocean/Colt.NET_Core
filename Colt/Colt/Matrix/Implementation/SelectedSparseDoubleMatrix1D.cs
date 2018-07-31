@@ -20,7 +20,7 @@ namespace Cern.Colt.Matrix.Implementation
     /// <summary>
     /// Selection view on sparse 1-d matrices holding <tt>double</tt> elements.
     /// </summary>
-    public sealed class SelectedSparseDoubleMatrix1D : DoubleMatrix1D
+    public class SelectedSparseDoubleMatrix1D : DoubleMatrix1D
     {
         /// <summary>
         /// Gets the offsets of visible indexes of this matrix.
@@ -46,7 +46,7 @@ namespace Cern.Colt.Matrix.Implementation
         {
             Setup(offsets.Length, 0, 1);
 
-            this.elements = elements;
+            this.Elements = elements;
             this.offsets = offsets;
             this.offset = 0;
             this.IsView = true;
@@ -78,7 +78,7 @@ namespace Cern.Colt.Matrix.Implementation
         {
             Setup(size, zero, stride);
 
-            this.elements = elements;
+            this.Elements = elements;
             this.offsets = offsets;
             this.offset = offset;
             this.IsView = true;
@@ -87,7 +87,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <summary>
         /// Gets the elements of the matrix.
         /// </summary>
-        internal IDictionary<int, double> elements { get; private set; }
+        protected internal IDictionary<int, double> Elements { get; private set; }
 
         /// <summary>
         /// Gets or sets the matrix cell value at coordinate <tt>index</tt>.
@@ -99,16 +99,16 @@ namespace Cern.Colt.Matrix.Implementation
         {
             get
             {
-                return elements[offset + offsets[_zero + (index * _stride)]];
+                return Elements[offset + offsets[Zero + (index * Stride)]];
             }
 
             set
             {
-                int i = offset + offsets[_zero + (index * _stride)];
+                int i = offset + offsets[Zero + (index * Stride)];
                 if (value == 0)
-                    this.elements.Remove(i);
+                    this.Elements.Remove(i);
                 else
-                    this.elements.Add(i, value);
+                    this.Elements.Add(i, value);
             }
         }
 
@@ -156,7 +156,7 @@ namespace Cern.Colt.Matrix.Implementation
         protected internal override int Index(int rank)
         {
             // manually inlined:
-            return offset + offsets[_zero + (rank * _stride)];
+            return offset + offsets[Zero + (rank * Stride)];
         }
 
         /// <summary>
@@ -173,13 +173,13 @@ namespace Cern.Colt.Matrix.Implementation
             if (other is SelectedSparseDoubleMatrix1D)
             {
                 var otherMatrix = (SelectedSparseDoubleMatrix1D)other;
-                return this.elements == otherMatrix.elements;
+                return this.Elements == otherMatrix.Elements;
             }
 
             if (other is SparseDoubleMatrix1D)
             {
                 var otherMatrix = (SparseDoubleMatrix1D)other;
-                return this.elements == otherMatrix.elements;
+                return this.Elements == otherMatrix.elements;
             }
 
             return false;
@@ -194,7 +194,7 @@ namespace Cern.Colt.Matrix.Implementation
         protected override void Setup(int n)
         {
             base.Setup(n);
-            this._stride = 1;
+            this.Stride = 1;
             this.offset = 0;
         }
 
@@ -209,7 +209,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// </returns>
         protected override DoubleMatrix1D ViewSelectionLike(int[] off)
         {
-            return new SelectedSparseDoubleMatrix1D(this.elements, off);
+            return new SelectedSparseDoubleMatrix1D(this.Elements, off);
         }
     }
 }

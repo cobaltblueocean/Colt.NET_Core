@@ -22,6 +22,27 @@ namespace Cern.Colt.Matrix.Implementation
     /// </summary>
     public class SelectedDenseDoubleMatrix2D : DoubleMatrix2D
     {
+
+        /// <summary>
+        /// Gets the elements of this matrix.
+        /// </summary>
+        protected internal double[] Elements { get; private set; }
+
+        /// <summary>
+        /// Gets the row offsets of the visible cells of this matrix.
+        /// </summary>
+        protected int[] RowOffsets { get; private set; }
+
+        /// <summary>
+        /// Gets the column offsets of the visible cells of this matrix.
+        /// </summary>
+        protected int[] ColumnOffsets { get; private set; }
+
+        /// <summary>
+        /// Gets the offset.
+        /// </summary>
+        protected int Offset { get; private set; }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="SelectedDenseDoubleMatrix2D"/> class.
         /// Constructs a matrix view with the given parameters.
@@ -96,27 +117,6 @@ namespace Cern.Colt.Matrix.Implementation
 
             IsView = true;
         }
-
-        /// <summary>
-        /// Gets the elements of this matrix.
-        /// </summary>
-        protected internal double[] Elements { get; private set; }
-
-        /// <summary>
-        /// Gets the row offsets of the visible cells of this matrix.
-        /// </summary>
-        protected int[] RowOffsets { get; private set; }
-
-        /// <summary>
-        /// Gets the column offsets of the visible cells of this matrix.
-        /// </summary>
-        protected int[] ColumnOffsets { get; private set; }
-
-        /// <summary>
-        /// Gets the offset.
-        /// </summary>
-        protected int Offset { get; private set; }
-
         /// <summary>
         /// Gets or sets the matrix cell value at coordinate <tt>[row,column]</tt>.
         /// </summary>
@@ -287,7 +287,7 @@ namespace Cern.Colt.Matrix.Implementation
             if (other is DenseDoubleMatrix2D)
             {
                 var otherMatrix = (DenseDoubleMatrix2D)other;
-                return this.Elements == otherMatrix.elements;
+                return this.Elements == otherMatrix.Elements;
             }
 
             return false;

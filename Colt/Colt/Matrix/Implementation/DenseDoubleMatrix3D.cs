@@ -52,7 +52,7 @@ namespace Cern.Colt.Matrix.Implementation
     /// </summary>
     public class DenseDoubleMatrix3D : DoubleMatrix3D
     {
-
+        #region Local Variables
         /// <summary>
         /// The elements of this matrix.
         /// elements are stored in slice major, then row major, then column major, in order of significance, i.e.
@@ -63,11 +63,19 @@ namespace Cern.Colt.Matrix.Implementation
         /// </summary>
         public double[] Elements { get; set; }
 
+        #endregion
+
+        #region Property
+
         public override double this[int slice, int row, int column]
         {
             get { return Elements[SliceZero + slice * SliceStride + RowZero + row * RowStride + ColumnZero + column * ColumnStride]; }
             set { Elements[SliceZero + slice * SliceStride + RowZero + row * RowStride + ColumnZero + column * ColumnStride] = value; }
         }
+
+        #endregion
+
+        #region Constructor
 
         /// <summary>
         /// Constructs a matrix with a copy of the given values.
@@ -120,6 +128,97 @@ namespace Cern.Colt.Matrix.Implementation
             this.Elements = elements;
             this.IsView = true;
         }
+
+        #endregion
+
+        #region Implement Methods
+
+        /// <summary>
+        /// Returns the matrix cell value at coordinate <i>[slice,row,column]</i>.
+        ///
+        /// <p>Provided with invalid parameters this method may return invalid objects without throwing any exception.
+        /// <b>You should only use this method when you are absolutely sure that the coordinate is within bounds.</b>
+        /// Precondition (unchecked): <i>slice&lt;0 || slice&gt;=Slices() || row&lt;0 || row&gt;=Rows() || column&lt;0 || column&gt;=column()</i>.
+        /// </summary>
+        /// <param name="slice">the index of the slice-coordinate.</param>
+        /// <param name="row">the index of the row-coordinate.</param>
+        /// <param name="column">the index of the column-coordinate.</param>
+        /// <returns>the value at the specified coordinate.</returns>
+        [Obsolete("GetQuick(int slice, int row, int column) is deprecated, please use indexer instead.")]
+        public double GetQuick(int slice, int row, int column)
+        {
+            //if (debug) if (slice<0 || slice>=Slices || row<0 || row>=Rows || column<0 || column>=Columns) throw new IndexOutOfRangeException("slice:"+slice+", row:"+row+", column:"+column);
+            //return elements[index(slice,row,column)];
+            //manually inlined:
+            return Elements[SliceZero + slice * SliceStride + RowZero + row * RowStride + ColumnZero + column * ColumnStride];
+        }
+
+        /// <summary>
+        /// Construct and returns a new empty matrix <i>of the same dynamic type</i> as the receiver, having the specified number of Slices, Rows and Columns.
+        /// For example, if the receiver is an instance of type <i>DenseDoubleMatrix3D</i> the new matrix must also be of type <i>DenseDoubleMatrix3D</i>,
+        /// if the receiver is an instance of type <i>SparseDoubleMatrix3D</i> the new matrix must also be of type <i>SparseDoubleMatrix3D</i>, etc.
+        /// In general, the new matrix should have internal parametrization as similar as possible.
+        /// </summary>
+        /// <param name="Slices">the number of Slices the matrix shall have.</param>
+        /// <param name="Rows">the number of Rows the matrix shall have.</param>
+        /// <param name="Columns">the number of Columns the matrix shall have.</param>
+        /// <returns>a new empty matrix of the same dynamic type.</returns>
+        public override DoubleMatrix3D Like(int Slices, int Rows, int Columns)
+        {
+            return new DenseDoubleMatrix3D(Slices, Rows, Columns);
+        }
+
+        /// <summary>
+        /// Sets the matrix cell at coordinate <i>[slice,row,column]</i> to the specified value.
+        ///
+        /// <p>Provided with invalid parameters this method may access illegal indexes without throwing any exception.
+        /// <b>You should only use this method when you are absolutely sure that the coordinate is within bounds.</b>
+        /// Precondition (unchecked): <i>slice&lt;0 || slice&gt;=Slices() || row&lt;0 || row&gt;=Rows() || column&lt;0 || column&gt;=column()</i>.
+        /// </summary>
+        /// <param name="slice">the index of the slice-coordinate.</param>
+        /// <param name="row">the index of the row-coordinate.</param>
+        /// <param name="column">the index of the column-coordinate.</param>
+        /// <returns>value the value to be filled into the specified cell.</returns>
+        [Obsolete("SetQuick(int slice, int row, int column, double value) is deprecated, please use indexer instead.")]
+        public void SetQuick(int slice, int row, int column, double value)
+        {
+            //if (debug) if (slice<0 || slice>=Slices || row<0 || row>=Rows || column<0 || column>=Columns) throw new IndexOutOfRangeException("slice:"+slice+", row:"+row+", column:"+column);
+            //elements[index(slice,row,column)] = value;
+            //manually inlined:
+            Elements[SliceZero + slice * SliceStride + RowZero + row * RowStride + ColumnZero + column * ColumnStride] = value;
+        }
+
+        /// <summary>
+        /// Construct and returns a new 2-d matrix <i>of the corresponding dynamic type</i>, sharing the same cells.
+        /// For example, if the receiver is an instance of type <i>DenseDoubleMatrix3D</i> the new matrix must also be of type <i>DenseDoubleMatrix2D</i>,
+        /// if the receiver is an instance of type <i>SparseDoubleMatrix3D</i> the new matrix must also be of type <i>SparseDoubleMatrix2D</i>, etc.
+        /// </summary>
+        /// <param name="Rows">the number of Rows the matrix shall have.</param>
+        /// <param name="Columns">the number of Columns the matrix shall have.</param>
+        /// <param name="rowZero">the position of the first element.</param>
+        /// <param name="columnZero">the position of the first element.</param>
+        /// <param name="Rowstride">the number of elements between two Rows, i.ed <i>index(i+1,j)-index(i,j)</i>.</param>
+        /// <param name="Columnstride">the number of elements between two Columns, i.ed <i>index(i,j+1)-index(i,j)</i>.</param>
+        /// <returns>a new matrix of the corresponding dynamic type.</returns>
+        protected override DoubleMatrix2D Like2D(int Rows, int Columns, int rowZero, int columnZero, int Rowstride, int Columnstride)
+        {
+            return new DenseDoubleMatrix2D(Rows, Columns, this.Elements, rowZero, columnZero, Rowstride, Columnstride);
+        }
+
+        /// <summary>
+        /// Construct and returns a new selection view.
+        /// </summary>
+        /// <param name="sliceOffsets">the offsets of the visible elements.</param>
+        /// <param name="rowOffsets">the offsets of the visible elements.</param>
+        /// <param name="columnOffsets">the offsets of the visible elements.</param>
+        /// <returns>a new view.</returns>
+        protected override DoubleMatrix3D ViewSelectionLike(int[] sliceOffsets, int[] rowOffsets, int[] columnOffsets)
+        {
+            return new SelectedDenseDoubleMatrix3D(this.Elements, sliceOffsets, rowOffsets, columnOffsets, 0);
+        }
+        #endregion
+
+        #region Local Public Methods
 
         /// <summary>
         /// Sets all cells to the state specified by <i>values</i>.
@@ -192,43 +291,6 @@ namespace Cern.Colt.Matrix.Implementation
                 return this;
             }
             return base.Assign(other);
-        }
-
-        /// <summary>
-        /// Returns <i>true</i> if both matrices share common cells.
-        /// More formally, returns <i>true</i> if <i>other != null</i> and at least one of the following conditions is met
-        /// <ul>
-        /// <li>the receiver is a view of the other matrix
-        /// <li>the other matrix is a view of the receiver
-        /// <li><i>this == other</i>
-        /// </ul>
-        /// </summary>
-        protected new Boolean HaveSharedCellsRaw(DoubleMatrix3D other)
-        {
-            if (other is SelectedDenseDoubleMatrix3D)
-            {
-                SelectedDenseDoubleMatrix3D otherMatrix = (SelectedDenseDoubleMatrix3D)other;
-                return this.Elements == otherMatrix.Elements;
-            }
-            else if (other is DenseDoubleMatrix3D)
-            {
-                DenseDoubleMatrix3D otherMatrix = (DenseDoubleMatrix3D)other;
-                return this.Elements == otherMatrix.Elements;
-            }
-            return false;
-        }
-
-        /// <summary>
-        /// Returns the position of the given coordinate within the (virtual or non-virtual) internal 1-dimensional arrayd 
-        /// </summary>
-        /// <param name="slice">the index of the slice-coordinate.</param>
-        /// <param name="row">the index of the row-coordinate.</param>
-        /// <param name="column">the index of the third-coordinate.</param>
-        protected new int Index(int slice, int row, int column)
-        {
-            //return _sliceOffset(_sliceRank(slice)) + _rowOffset(_rowRank(row)) + _columnOffset(_columnRank(column));
-            //manually inlined:
-            return SliceZero + slice * SliceStride + RowZero + row * RowStride + ColumnZero + column * ColumnStride;
         }
 
         /// <summary>
@@ -406,111 +468,46 @@ namespace Cern.Colt.Matrix.Implementation
             }
         }
 
-
-        #region Local Variables
-
         #endregion
 
-        #region Property
-
-        #endregion
-
-        #region Constructor
-
-        #endregion
-
-        #region Implement Methods
+        #region Local Protected Methods
 
         /// <summary>
-        /// Returns the matrix cell value at coordinate <i>[slice,row,column]</i>.
-        ///
-        /// <p>Provided with invalid parameters this method may return invalid objects without throwing any exception.
-        /// <b>You should only use this method when you are absolutely sure that the coordinate is within bounds.</b>
-        /// Precondition (unchecked): <i>slice&lt;0 || slice&gt;=Slices() || row&lt;0 || row&gt;=Rows() || column&lt;0 || column&gt;=column()</i>.
+        /// Returns <i>true</i> if both matrices share common cells.
+        /// More formally, returns <i>true</i> if <i>other != null</i> and at least one of the following conditions is met
+        /// <ul>
+        /// <li>the receiver is a view of the other matrix
+        /// <li>the other matrix is a view of the receiver
+        /// <li><i>this == other</i>
+        /// </ul>
+        /// </summary>
+        protected new Boolean HaveSharedCellsRaw(DoubleMatrix3D other)
+        {
+            if (other is SelectedDenseDoubleMatrix3D)
+            {
+                SelectedDenseDoubleMatrix3D otherMatrix = (SelectedDenseDoubleMatrix3D)other;
+                return this.Elements == otherMatrix.Elements;
+            }
+            else if (other is DenseDoubleMatrix3D)
+            {
+                DenseDoubleMatrix3D otherMatrix = (DenseDoubleMatrix3D)other;
+                return this.Elements == otherMatrix.Elements;
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Returns the position of the given coordinate within the (virtual or non-virtual) internal 1-dimensional arrayd 
         /// </summary>
         /// <param name="slice">the index of the slice-coordinate.</param>
         /// <param name="row">the index of the row-coordinate.</param>
-        /// <param name="column">the index of the column-coordinate.</param>
-        /// <returns>the value at the specified coordinate.</returns>
-        [Obsolete("GetQuick(int slice, int row, int column) is deprecated, please use indexer instead.")]
-        public double GetQuick(int slice, int row, int column)
+        /// <param name="column">the index of the third-coordinate.</param>
+        protected new int Index(int slice, int row, int column)
         {
-            //if (debug) if (slice<0 || slice>=Slices || row<0 || row>=Rows || column<0 || column>=Columns) throw new IndexOutOfRangeException("slice:"+slice+", row:"+row+", column:"+column);
-            //return elements[index(slice,row,column)];
+            //return _sliceOffset(_sliceRank(slice)) + _rowOffset(_rowRank(row)) + _columnOffset(_columnRank(column));
             //manually inlined:
-            return Elements[SliceZero + slice * SliceStride + RowZero + row * RowStride + ColumnZero + column * ColumnStride];
+            return SliceZero + slice * SliceStride + RowZero + row * RowStride + ColumnZero + column * ColumnStride;
         }
-
-        /// <summary>
-        /// Construct and returns a new empty matrix <i>of the same dynamic type</i> as the receiver, having the specified number of Slices, Rows and Columns.
-        /// For example, if the receiver is an instance of type <i>DenseDoubleMatrix3D</i> the new matrix must also be of type <i>DenseDoubleMatrix3D</i>,
-        /// if the receiver is an instance of type <i>SparseDoubleMatrix3D</i> the new matrix must also be of type <i>SparseDoubleMatrix3D</i>, etc.
-        /// In general, the new matrix should have internal parametrization as similar as possible.
-        /// </summary>
-        /// <param name="Slices">the number of Slices the matrix shall have.</param>
-        /// <param name="Rows">the number of Rows the matrix shall have.</param>
-        /// <param name="Columns">the number of Columns the matrix shall have.</param>
-        /// <returns>a new empty matrix of the same dynamic type.</returns>
-        public override DoubleMatrix3D Like(int Slices, int Rows, int Columns)
-        {
-            return new DenseDoubleMatrix3D(Slices, Rows, Columns);
-        }
-
-        /// <summary>
-        /// Sets the matrix cell at coordinate <i>[slice,row,column]</i> to the specified value.
-        ///
-        /// <p>Provided with invalid parameters this method may access illegal indexes without throwing any exception.
-        /// <b>You should only use this method when you are absolutely sure that the coordinate is within bounds.</b>
-        /// Precondition (unchecked): <i>slice&lt;0 || slice&gt;=Slices() || row&lt;0 || row&gt;=Rows() || column&lt;0 || column&gt;=column()</i>.
-        /// </summary>
-        /// <param name="slice">the index of the slice-coordinate.</param>
-        /// <param name="row">the index of the row-coordinate.</param>
-        /// <param name="column">the index of the column-coordinate.</param>
-        /// <returns>value the value to be filled into the specified cell.</returns>
-        [Obsolete("SetQuick(int slice, int row, int column, double value) is deprecated, please use indexer instead.")]
-        public void SetQuick(int slice, int row, int column, double value)
-        {
-            //if (debug) if (slice<0 || slice>=Slices || row<0 || row>=Rows || column<0 || column>=Columns) throw new IndexOutOfRangeException("slice:"+slice+", row:"+row+", column:"+column);
-            //elements[index(slice,row,column)] = value;
-            //manually inlined:
-            Elements[SliceZero + slice * SliceStride + RowZero + row * RowStride + ColumnZero + column * ColumnStride] = value;
-        }
-
-        /// <summary>
-        /// Construct and returns a new 2-d matrix <i>of the corresponding dynamic type</i>, sharing the same cells.
-        /// For example, if the receiver is an instance of type <i>DenseDoubleMatrix3D</i> the new matrix must also be of type <i>DenseDoubleMatrix2D</i>,
-        /// if the receiver is an instance of type <i>SparseDoubleMatrix3D</i> the new matrix must also be of type <i>SparseDoubleMatrix2D</i>, etc.
-        /// </summary>
-        /// <param name="Rows">the number of Rows the matrix shall have.</param>
-        /// <param name="Columns">the number of Columns the matrix shall have.</param>
-        /// <param name="rowZero">the position of the first element.</param>
-        /// <param name="columnZero">the position of the first element.</param>
-        /// <param name="Rowstride">the number of elements between two Rows, i.ed <i>index(i+1,j)-index(i,j)</i>.</param>
-        /// <param name="Columnstride">the number of elements between two Columns, i.ed <i>index(i,j+1)-index(i,j)</i>.</param>
-        /// <returns>a new matrix of the corresponding dynamic type.</returns>
-        protected override DoubleMatrix2D Like2D(int Rows, int Columns, int rowZero, int columnZero, int Rowstride, int Columnstride)
-        {
-            return new DenseDoubleMatrix2D(Rows, Columns, this.Elements, rowZero, columnZero, Rowstride, Columnstride);
-        }
-
-        /// <summary>
-        /// Construct and returns a new selection view.
-        /// </summary>
-        /// <param name="sliceOffsets">the offsets of the visible elements.</param>
-        /// <param name="rowOffsets">the offsets of the visible elements.</param>
-        /// <param name="columnOffsets">the offsets of the visible elements.</param>
-        /// <returns>a new view.</returns>
-        protected override DoubleMatrix3D ViewSelectionLike(int[] sliceOffsets, int[] rowOffsets, int[] columnOffsets)
-        {
-            return new SelectedDenseDoubleMatrix3D(this.Elements, sliceOffsets, rowOffsets, columnOffsets, 0);
-        }
-        #endregion
-
-        #region Local Public Methods
-
-        #endregion
-
-        #region Local Private Methods
 
         #endregion
     }

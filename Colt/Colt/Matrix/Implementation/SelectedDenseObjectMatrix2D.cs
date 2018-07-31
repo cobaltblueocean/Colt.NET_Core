@@ -8,6 +8,11 @@ namespace Cern.Colt.Matrix.Implementation
 {
     public class SelectedDenseObjectMatrix2D: ObjectMatrix2D
     {
+        /// <summary>
+        /// The elements of this matrix.
+        /// </summary>
+        protected internal Object[] Elements { get; private set; }
+
         public override object this[int row, int column]
         {
             get;

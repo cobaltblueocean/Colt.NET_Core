@@ -16,41 +16,40 @@ using System.Threading.Tasks;
 namespace Cern.Colt.Matrix.Implementation
 {
     /// <summary>
-////Sparse hashed 1-d matrix (aka <i>vector</i>) holding <i>Object</i> elements.
-////First see the <a href="package-summary.html">package summary</a> and javadoc <a href="package-tree.html">tree view</a> to get the broad picture.
-////<p>
-////<b>Implementation:</b>
-////<p>
-////Note that this implementation is not synchronized.
-////Uses a {@link cern.colt.map.OpenIntObjectHashMap}, which is a compact and performant hashing technique.
-////<p>
-////<b>Memory requirements:</b>
-////<p>
-////Cells that
-////<ul>
-////<li>are never set to non-zero values do not use any memory.
-////<li>switch from zero to non-zero state do use memory.
-////<li>switch back from non-zero to zero state also do use memoryd However, their memory is automatically reclaimed from time to timed It can also manually be reclaimed by calling {@link #trimToSize()}.
-////</ul>
-////<p>
-////worst case: <i>memory [bytes] = (1/minLoadFactor) * nonZeros * 13</i>.
-////<br>best  case: <i>memory [bytes] = (1/maxLoadFactor) * nonZeros * 13</i>.
-////<br>Where <i>nonZeros = cardinality()</i> is the number of non-zero cells.
-////Thus, a 1000000 matrix with minLoadFactor=0.25 and maxLoadFactor=0.5 and 1000000 non-zero cells consumes between 25 MB and 50 MB.
-////The same 1000000 matrix with 1000 non-zero cells consumes between 25 and 50 KB.
-////<p>
-////<b>Time complexity:</b>
-////<p>
-////This class offers <i>expected</i> time complexity <i>O(1)</i> (i.ed constant time) for the basic operations
-////<i>get</i>, <i>getQuick</i>, <i>HashSet</i>, <i>setQuick</i> and <i>size</i>
-////assuming the hash function disperses the elements properly among the buckets.
-////Otherwise, pathological cases, although highly improbable, can occur, degrading performance to <i>O(N)</i> in the worst case.
-////As such this sparse class is expected to have no worse time complexity than its dense counterpart {@link DenseObjectMatrix1D}.
-////However, constant factors are considerably larger.
-        ///
-////@author wolfgang.hoschek@cern.ch
-////@version 1.0, 09/24/99
-/// </summary>
+    /// Sparse hashed 1-d matrix (aka <i>vector</i>) holding <see cref="Object"/> elements.
+    /// <p>
+    /// <b>Implementation:</b>
+    /// <p>
+    /// Note that this implementation is not synchronized.
+    /// Uses a <see cref="IDictionary{int, Object}"/>, which is a compact and performant hashing technique.
+    /// <p>
+    /// <b>Memory requirements:</b>
+    /// <p>
+    /// Cells that
+    /// <ul>
+    /// <li>are never set to non-zero values do not use any memory.
+    /// <li>switch from zero to non-zero state do use memory.
+    /// <li>switch back from non-zero to zero state also do use memoryd However, their memory is automatically reclaimed from time to timed It can also manually be reclaimed by calling {@link #trimToSize()}.
+    /// </ul>
+    /// <p>
+    /// worst case: <i>memory [bytes] = (1/minLoadFactor) * nonZeros * 13</i>.
+    /// <br>best  case: <i>memory [bytes] = (1/maxLoadFactor) * nonZeros * 13</i>.
+    /// <br>Where <i>nonZeros = cardinality()</i> is the number of non-zero cells.
+    /// Thus, a 1000000 matrix with minLoadFactor=0.25 and maxLoadFactor=0.5 and 1000000 non-zero cells consumes between 25 MB and 50 MB.
+    /// The same 1000000 matrix with 1000 non-zero cells consumes between 25 and 50 KB.
+    /// <p>
+    /// <b>Time complexity:</b>
+    /// <p>
+    /// This class offers <i>expected</i> time complexity <i>O(1)</i> (i.ed constant time) for the basic operations
+    /// <i>get</i>, <i>getQuick</i>, <i>HashSet</i>, <i>setQuick</i> and <i>size</i>
+    /// assuming the hash function disperses the elements properly among the buckets.
+    /// Otherwise, pathological cases, although highly improbable, can occur, degrading performance to <i>O(N)</i> in the worst case.
+    /// As such this sparse class is expected to have no worse time complexity than its dense counterpart <see cref="DenseObjectMatrix1D"/>.
+    /// However, constant factors are considerably larger.
+    ///
+    /// @author wolfgang.hoschek@cern.ch
+    /// @version 1.0, 09/24/99
+    /// </summary>
     public class SparseObjectMatrix1D : ObjectMatrix1D
     {
         /// <summary>
@@ -61,9 +60,15 @@ namespace Cern.Colt.Matrix.Implementation
         private double MinLoadFactor;
         private double MaxLoadFactor;
 
+        /// <summary>
+        /// Get or set the value of Element specified with the index
+        /// </summary>
+        /// <param name="index"></param>
+        /// <returns></returns>
         public override object this[int index]
         {
-            get {
+            get
+            {
                 //if (debug) if (index<0 || index>=size) checkIndex(index);
                 //return this.elements.Get(index(index)); 
                 // manually inlined:
@@ -85,51 +90,36 @@ namespace Cern.Colt.Matrix.Implementation
         /// <summary>
         /// Constructs a matrix with a copy of the given values.
         /// The values are copiedd So subsequent changes in <i>values</i> are not reflected in the matrix, and vice-versa.
-        /// 
-        /// @param values The values to be filled into the new matrix.
         /// </summary>
-        /// <param name=""></param>
-        /// <param name=""></param>
-        /// <returns></returns>
-        /// <exception cref=""></exception>
-        public SparseObjectMatrix1D(Object[] values):this(values.Length)
+        /// <param name="values">The values to be filled into the new matrix.</param>
+        public SparseObjectMatrix1D(Object[] values) : this(values.Length)
         {
-            
             Assign(values);
         }
 
         /// <summary>
         /// Constructs a matrix with a given number of cells.
         /// All entries are initially <i>null</i>.
-        /// @param size the number of cells the matrix shall have.
-        /// @throws ArgumentException if <i>size<0</i>.
         /// </summary>
-        /// <param name=""></param>
-        /// <param name=""></param>
-        /// <returns></returns>
-        /// <exception cref=""></exception>
-        public SparseObjectMatrix1D(int size):this(size, size / 1000, 0.2, 0.5)
+        /// <param name="size">the number of cells the matrix shall have.</param>
+        /// <exception cref="ArgumentException">if size &lt; 0.</exception>
+        public SparseObjectMatrix1D(int size) : this(size, size / 1000, 0.2, 0.5)
         {
-            
+
         }
 
         /// <summary>
         /// Constructs a matrix with a given number of parameters.
         /// All entries are initially <i>null</i>.
         /// For details related to memory usage see {@link cern.colt.map.OpenIntObjectHashMap}.
-        /// 
-        /// @param size the number of cells the matrix shall have.
-        /// @param initialCapacity   the initial capacity of the hash map.
-        ///                          If not known, set <i>initialCapacity=0</i> or smalld     
-        /// @param minLoadFactor        the minimum load factor of the hash map.
-        /// @param maxLoadFactor        the maximum load factor of the hash map.
-        /// @throws	ArgumentException if <i>initialCapacity < 0 || (minLoadFactor < 0.0 || minLoadFactor >= 1.0) || (maxLoadFactor <= 0.0 || maxLoadFactor >= 1.0) || (minLoadFactor >= maxLoadFactor)</i>.
-        /// @throws ArgumentException if <i>size<0</i>.
         /// </summary>
-        /// <param name=""></param>
-        /// <param name=""></param>
+        /// <param name="size">the number of cells the matrix shall have.</param>
+        /// <param name="initialCapacity">the initial capacity of the hash map.  If not known, set <i>initialCapacity=0</i> or smalld  </param>
+        /// <param name="minLoadFactor">the minimum load factor of the hash map.</param>
+        /// <param name="maxLoadFactor">the maximum load factor of the hash map.</param>
         /// <returns></returns>
-        /// <exception cref=""></exception>
+        /// <exception cref="ArgumentException">if <i>initialCapacity &lt; 0 || (minLoadFactor &lt; 0.0 || minLoadFactor >= 1.0) || (maxLoadFactor &lt;= 0.0 || maxLoadFactor >= 1.0) || (minLoadFactor >= maxLoadFactor)</i>.</exception>
+        /// <exception cref="ArgumentException">if <i>size &lt; 0</i>.</exception>
         public SparseObjectMatrix1D(int size, int initialCapacity, double minLoadFactor, double maxLoadFactor)
         {
             Setup(size);
@@ -139,23 +129,17 @@ namespace Cern.Colt.Matrix.Implementation
 
             var capacity = PrimeFinder.NextPrime(initialCapacity);
             this.Elements = new Dictionary<int, Object>(capacity);
-
         }
 
         /// <summary>
         /// Constructs a matrix view with a given number of parameters.
-        /// 
-        /// @param size the number of cells the matrix shall have.
-        /// @param elements the cells.
-        /// @param offset the index of the first element.
-        /// @param stride the number of indexes between any two elements, i.ed <i>index(i+1)-index(i)</i>.
-        /// @throws ArgumentException if <i>size<0</i>.
         /// </summary>
-        /// <param name=""></param>
-        /// <param name=""></param>
-        /// <returns></returns>
-        /// <exception cref=""></exception>
-        protected SparseObjectMatrix1D(int size, IDictionary<int, Object> elements, int offset, int stride)
+        /// <param name="size">the number of cells the matrix shall have.</param>
+        /// <param name="elements">the cells.</param>
+        /// <param name="offset">the index of the first element.</param>
+        /// <param name="stride">the number of indexes between any two elements, i.ed <i>index(i+1)-index(i)</i>.</param>
+        /// <exception cref="ArgumentException">if <i>size &lt; 0</i>.</exception>
+        public SparseObjectMatrix1D(int size, IDictionary<int, Object> elements, int offset, int stride)
         {
             Setup(size, offset, stride);
             this.Elements = elements;
@@ -163,8 +147,8 @@ namespace Cern.Colt.Matrix.Implementation
         }
 
         /// <summary>
-         /// Returns the number of cells having non-zero values.
-         /// </summary>
+        /// Returns the number of cells having non-zero values.
+        /// </summary>
         public new int Cardinality()
         {
             if (!this.IsView) return this.Elements.Count;
@@ -178,13 +162,8 @@ namespace Cern.Colt.Matrix.Implementation
         /// This method never need be called; it is for performance tuning only.
         /// Calling this method before tt>set()</i>ing a large number of non-zero values boosts performance,
         /// because the receiver will grow only once instead of potentially many times and hash collisions get less probable.
-        /// 
-        /// @param   minNonZeros   the desired minimum number of non-zero cells.
         /// </summary>
-        /// <param name=""></param>
-        /// <param name=""></param>
-        /// <returns></returns>
-        /// <exception cref=""></exception>
+        /// <param name="minNonZeros">the desired minimum number of non-zero cells.</param>
         public void EnsureCapacity(int minCapacity)
         {
             this.Elements.EnsureCapacity(minCapacity);
@@ -196,14 +175,9 @@ namespace Cern.Colt.Matrix.Implementation
         /// <p>Provided with invalid parameters this method may return invalid objects without throwing any exception.
         /// <b>You should only use this method when you are absolutely sure that the coordinate is within bounds.</b>
         /// Precondition (unchecked): <i>index&lt;0 || index&gt;=size()</i>.
-        /// 
-        /// @param     index   the index of the cell.
-        /// @return    the value of the specified cell.
         /// </summary>
-        /// <param name=""></param>
-        /// <param name=""></param>
-        /// <returns></returns>
-        /// <exception cref=""></exception>
+        /// <param name="index">the index of the cell.</param>
+        /// <returns>the value of the specified cell.</returns>
         [Obsolete("GetQuick(int index) is deprecated, please use indexer instead.")]
         public Object GetQuick(int index)
         {
@@ -211,15 +185,17 @@ namespace Cern.Colt.Matrix.Implementation
         }
 
         /// <summary>
-         /// Returns <i>true</i> if both matrices share at least one identical cell.
-         /// </summary>
+        /// Returns <i>true</i> if both matrices share at least one identical cell.
+        /// </summary>
         protected new Boolean HaveSharedCellsRaw(ObjectMatrix1D other)
         {
-            if (other is SelectedSparseObjectMatrix1D) {
+            if (other is SelectedSparseObjectMatrix1D)
+            {
                 SelectedSparseObjectMatrix1D otherMatrix = (SelectedSparseObjectMatrix1D)other;
                 return this.Elements == otherMatrix.Elements;
             }
-	else if (other is SparseObjectMatrix1D) {
+            else if (other is SparseObjectMatrix1D)
+            {
                 SparseObjectMatrix1D otherMatrix = (SparseObjectMatrix1D)other;
                 return this.Elements == otherMatrix.Elements;
             }
@@ -229,13 +205,8 @@ namespace Cern.Colt.Matrix.Implementation
         /// <summary>
         /// Returns the position of the element with the given relative rank within the (virtual or non-virtual) internal 1-dimensional array.
         /// You may want to override this method for performance.
-        /// 
-        /// @param     rank   the rank of the element.
         /// </summary>
-        /// <param name=""></param>
-        /// <param name=""></param>
-        /// <returns></returns>
-        /// <exception cref=""></exception>
+        /// <param name="rank">the rank of the element.</param>
         protected new int Index(int rank)
         {
             // overriden for manual inlining only
@@ -248,14 +219,9 @@ namespace Cern.Colt.Matrix.Implementation
         /// For example, if the receiver is an instance of type <i>DenseObjectMatrix1D</i> the new matrix must also be of type <i>DenseObjectMatrix1D</i>,
         /// if the receiver is an instance of type <i>SparseObjectMatrix1D</i> the new matrix must also be of type <i>SparseObjectMatrix1D</i>, etc.
         /// In general, the new matrix should have internal parametrization as similar as possible.
-        /// 
-        /// @param size the number of cell the matrix shall have.
-        /// @return  a new empty matrix of the same dynamic type.
         /// </summary>
-        /// <param name=""></param>
-        /// <param name=""></param>
-        /// <returns></returns>
-        /// <exception cref=""></exception>
+        /// <param name="size">the number of cell the matrix shall have.</param>
+        /// <returns>a new empty matrix of the same dynamic type.</returns>
         public override ObjectMatrix1D Like(int size)
         {
             return new SparseObjectMatrix1D(size);
@@ -263,17 +229,12 @@ namespace Cern.Colt.Matrix.Implementation
 
         /// <summary>
         /// Construct and returns a new 2-d matrix <i>of the corresponding dynamic type</i>, entirelly independent of the receiver.
-        /// For example, if the receiver is an instance of type <i>DenseObjectMatrix1D</i> the new matrix must be of type <i>DenseObjectMatrix2D</i>,
-        /// if the receiver is an instance of type <i>SparseObjectMatrix1D</i> the new matrix must be of type <i>SparseObjectMatrix2D</i>, etc.
-        /// 
-        /// @param rows the number of rows the matrix shall have.
-        /// @param columns the number of columns the matrix shall have.
-        /// @return  a new matrix of the corresponding dynamic type.
+        /// For example, if the receiver is an instance of type <see cref="DenseObjectMatrix1D"/> the new matrix must be of type <see cref="DenseObjectMatrix2D"/>,
+        /// if the receiver is an instance of type <see cref="SparseObjectMatrix1D"/> the new matrix must be of type <see cref="SparseObjectMatrix2D"/>, etc.
         /// </summary>
-        /// <param name=""></param>
-        /// <param name=""></param>
-        /// <returns></returns>
-        /// <exception cref=""></exception>
+        /// <param name="rows">the number of rows the matrix shall have.</param>
+        /// <param name="columns">the number of columns the matrix shall have.</param>
+        /// <returns>a new matrix of the corresponding dynamic type.</returns>
         public override ObjectMatrix2D Like2D(int rows, int columns)
         {
             return new SparseObjectMatrix2D(rows, columns);
@@ -285,14 +246,9 @@ namespace Cern.Colt.Matrix.Implementation
         /// <p>Provided with invalid parameters this method may access illegal indexes without throwing any exception.
         /// <b>You should only use this method when you are absolutely sure that the coordinate is within bounds.</b>
         /// Precondition (unchecked): <i>index&lt;0 || index&gt;=size()</i>.
-        /// 
-        /// @param     index   the index of the cell.
-        /// @param    value the value to be filled into the specified cell.
         /// </summary>
-        /// <param name=""></param>
-        /// <param name=""></param>
-        /// <returns></returns>
-        /// <exception cref=""></exception>
+        /// <param name="index">the index of the cell.</param>
+        /// <param name="value">the value to be filled into the specified cell.</param>
         [Obsolete("SetQuick(int index, Object value) is deprecated, please use indexer instead.")]
         public void SetQuick(int index, Object value)
         {
@@ -316,10 +272,6 @@ namespace Cern.Colt.Matrix.Implementation
         /// Such as sequence generates obsolete memory that is automatically reclaimed from time to time or can manually be reclaimed by calling <i>trimToSize()</i>.
         /// Putting zeros into cells already containing zeros does not generate obsolete memory since no memory was allocated to them in the first place.
         /// </summary>
-        /// <param name=""></param>
-        /// <param name=""></param>
-        /// <returns></returns>
-        /// <exception cref=""></exception>
         public void TrimToSize()
         {
             this.Elements.TrimExcess();
@@ -327,14 +279,9 @@ namespace Cern.Colt.Matrix.Implementation
 
         /// <summary>
         /// Construct and returns a new selection view.
-        /// 
-        /// @param offsets the offsets of the visible elements.
-        /// @return  a new view.
         /// </summary>
-        /// <param name=""></param>
-        /// <param name=""></param>
-        /// <returns></returns>
-        /// <exception cref=""></exception>
+        /// <param name="offsets">the offsets of the visible elements.</param>
+        /// <returns>a new view.</returns>
         protected override ObjectMatrix1D ViewSelectionLike(int[] offsets)
         {
             return new SelectedSparseObjectMatrix1D(this.Elements, offsets);

@@ -22,7 +22,7 @@ namespace Cern.Colt.Matrix.Implementation
     /// <summary>
     /// Dense 2-d matrix holding <tt>double</tt> elements.
     /// </summary>
-    public sealed class DenseDoubleMatrix2D : DoubleMatrix2D
+    public class DenseDoubleMatrix2D : DoubleMatrix2D
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="DenseDoubleMatrix2D"/> class with a copy of the given values.
@@ -40,7 +40,7 @@ namespace Cern.Colt.Matrix.Implementation
             int rows = values.Length;
             int columns = values.Length == 0 ? 0 : values[0].Length;
             Setup(rows, columns);
-            elements = new double[rows * columns];
+            Elements = new double[rows * columns];
             Assign(values);
         }
 
@@ -60,7 +60,7 @@ namespace Cern.Colt.Matrix.Implementation
         public DenseDoubleMatrix2D(int rows, int columns)
         {
             Setup(rows, columns);
-            elements = new double[rows * columns];
+            Elements = new double[rows * columns];
         }
 
         /// <summary>
@@ -91,7 +91,7 @@ namespace Cern.Colt.Matrix.Implementation
         internal DenseDoubleMatrix2D(int rows, int columns, double[] elements, int rowZero, int columnZero, int rowStride, int columnStride)
         {
             Setup(rows, columns, rowZero, columnZero, rowStride, columnStride);
-            this.elements = elements;
+            this.Elements = elements;
             IsView = true;
         }
 
@@ -103,7 +103,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// rowOf(index)==index/columns
         /// i.e. {row0 column0..m}, {row1 column0..m}, ..., {rown column0..m}
         /// </summary>
-        internal double[] elements { get; private set; }
+        internal double[] Elements { get; private set; }
 
         /// <summary>
         /// Gets or sets the matrix cell value at coordinate <tt>[row,column]</tt>.
@@ -119,13 +119,13 @@ namespace Cern.Colt.Matrix.Implementation
             get
             {
                 // manually inlined:
-                return elements[RowZero + (row * RowStride) + ColumnZero + (column * ColumnStride)];
+                return Elements[Index(row, column)];
             }
 
             set
             {
                 // manually inlined:
-                elements[RowZero + (row * RowStride) + ColumnZero + (column * ColumnStride)] = value;
+                Elements[Index(row, column)] = value;
             }
         }
 
@@ -152,7 +152,7 @@ namespace Cern.Colt.Matrix.Implementation
                 {
                     double[] currentRow = values[row];
                     if (currentRow.Length != Columns) throw new ArgumentOutOfRangeException("values", "Must have same number of columns in every row: columns=" + currentRow.Length + "columns()=" + Columns);
-                    Array.Copy(currentRow, 0, elements, i, Columns);
+                    Array.Copy(currentRow, 0, Elements, i, Columns);
                     i -= Columns;
                 }
             }
@@ -171,7 +171,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// </returns>
         public override DoubleMatrix2D Assign(double value)
         {
-            double[] elems = elements;
+            double[] elems = Elements;
             int index = this.Index(0, 0);
             int cs = ColumnStride;
             int rs = RowStride;
@@ -200,7 +200,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// </returns>
         public override DoubleMatrix2D Assign(DoubleFunction function)
         {
-            double[] elems = elements;
+            double[] elems = Elements;
             if (elems == null) throw new ApplicationException();
             int ind = Index(0, 0);
             int cs = ColumnStride;
@@ -246,7 +246,7 @@ namespace Cern.Colt.Matrix.Implementation
             if (!IsView && !other.IsView)
             {
                 // quickest
-                Array.Copy(other.elements, 0, elements, 0, elements.Length);
+                Array.Copy(other.Elements, 0, Elements, 0, Elements.Length);
                 return this;
             }
 
@@ -262,8 +262,8 @@ namespace Cern.Colt.Matrix.Implementation
                 other = (DenseDoubleMatrix2D)c;
             }
 
-            double[] elems = elements;
-            double[] otherElems = other.elements;
+            double[] elems = Elements;
+            double[] otherElems = other.Elements;
             if (elems == null || otherElems == null) throw new ApplicationException();
             int cs = ColumnStride;
             int ocs = other.ColumnStride;
@@ -312,8 +312,8 @@ namespace Cern.Colt.Matrix.Implementation
             var other = (DenseDoubleMatrix2D)y;
             CheckShape(y);
 
-            double[] elems = elements;
-            double[] otherElems = other.elements;
+            double[] elems = Elements;
+            double[] otherElems = other.Elements;
             if (elems == null || otherElems == null) throw new ApplicationException();
             int cs = ColumnStride;
             int ocs = ColumnStride;
@@ -372,6 +372,26 @@ namespace Cern.Colt.Matrix.Implementation
         }
 
         /// <summary>
+        ///  Returns the matrix cell value at coordinate <tt>index</tt>.
+        ///  
+        /// <p>Provided with invalid parameters this method may return invalid objects without throwing any exception.
+        /// <b>You should only use this method when you are absolutely sure that the coordinate is within bounds.</b>
+        /// Precondition (unchecked): <tt>index&lt;0 || index&gt;=size()</tt>.
+        /// </summary>
+        /// <param name="rows">
+        /// the row index of the cell.
+        /// </param>
+        /// <param name="columns">
+        /// the column index of the cell.
+        /// </param>
+        /// <param name="value">the value of the specified cell.</param>
+        [Obsolete("SetQuick(int index, double value) is deprecated, please use indexer instead.")]
+        public void SetQuick(int rows, int columns, double value)
+        {
+            this[rows, columns] = value;
+        }
+
+        /// <summary>
         /// 8 neighbor stencil transformation. For efficient finite difference operations.
         /// Applies a function to a moving <tt>3 x 3</tt> window.
         /// Does nothing if <tt>rows() &lt; 3 || columns() &lt; 3</tt>.
@@ -406,8 +426,8 @@ namespace Cern.Colt.Matrix.Implementation
             int b_rs = bb.RowStride;
             int a_cs = ColumnStride;
             int b_cs = bb.ColumnStride;
-            double[] elems = elements;
-            double[] b_elems = bb.elements;
+            double[] elems = Elements;
+            double[] b_elems = bb.Elements;
             if (elems == null || b_elems == null) throw new ApplicationException();
 
             int a_index = Index(1, 1);
@@ -485,18 +505,18 @@ namespace Cern.Colt.Matrix.Implementation
             if (z == null) z = new DenseDoubleMatrix1D(Rows);
             if (!(y is DenseDoubleMatrix1D) && z is DenseDoubleMatrix1D) return base.ZMult(y, z, alpha, beta, false);
 
-            if (Columns != y._size || Rows > z._size)
+            if (Columns != y.Size || Rows > z.Size)
                 throw new ArgumentException("Incompatible args: " + this + ", " + y + ", " + z);
 
             var yy = (DenseDoubleMatrix1D)y;
             var zz = (DenseDoubleMatrix1D)z;
-            double[] aElems = elements;
-            double[] yElems = yy.elements;
-            double[] zElems = zz.elements;
+            double[] aElems = Elements;
+            double[] yElems = yy.Elements;
+            double[] zElems = zz.Elements;
             if (aElems == null || yElems == null || zElems == null) throw new ApplicationException();
             int _as = ColumnStride;
-            int ys = yy._stride;
-            int zs = zz._stride;
+            int ys = yy.Stride;
+            int zs = zz.Stride;
 
             int indexA = Index(0, 0);
             int indexY = yy.Index(0);
@@ -601,9 +621,9 @@ namespace Cern.Colt.Matrix.Implementation
 
             var bb = (DenseDoubleMatrix2D)b;
             var cc = (DenseDoubleMatrix2D)c;
-            double[] aElems = elements;
-            double[] bElems = bb.elements;
-            double[] cElems = cc.elements;
+            double[] aElems = Elements;
+            double[] bElems = bb.Elements;
+            double[] cElems = cc.Elements;
             if (aElems == null || bElems == null || cElems == null) throw new ApplicationException();
 
             int cA = ColumnStride;
@@ -698,7 +718,7 @@ namespace Cern.Colt.Matrix.Implementation
         public override double ZSum()
         {
             double sum = 0;
-            double[] elems = elements;
+            double[] elems = Elements;
             if (elems == null) throw new ApplicationException();
             int index = this.Index(0, 0);
             int cs = ColumnStride;
@@ -734,7 +754,32 @@ namespace Cern.Colt.Matrix.Implementation
         /// </returns>
         protected internal override DoubleMatrix1D Like1D(int size, int zero, int stride)
         {
-            return new DenseDoubleMatrix1D(size, elements, zero, stride);
+            return new DenseDoubleMatrix1D(size, Elements, zero, stride);
+        }
+
+        /// <summary>
+        /// Returns the matrix cell value at coordinate <tt>index</tt>.
+        /// 
+        /// <p>Provided with invalid parameters this method may return invalid objects without throwing any exception.
+        /// <b>You should only use this method when you are absolutely sure that the coordinate is within bounds.</b>
+        /// Precondition (unchecked): <tt>index&lt;0 || index&gt;=size()</tt>.
+        /// </summary>
+        /// <param name="rows">
+        /// the row index of the cell.
+        /// </param>
+        /// <param name="columns">
+        /// the column index of the cell.
+        /// </param>
+        /// <returns>
+        /// the value of the specified cell.
+        /// </returns>
+        [Obsolete("GetQuick(int rows, int columns) is deprecated, please use indexer instead.")]
+        public double GetQuick(int rows, int columns)
+        {
+            //if (debug) if (index<0 || index>=size) checkIndex(index);
+            //return elements[index(index)];
+            // manually inlined:
+            return this[rows, columns];
         }
 
         /// <summary>
@@ -757,13 +802,13 @@ namespace Cern.Colt.Matrix.Implementation
             if (other is SelectedDenseDoubleMatrix2D)
             {
                 var otherMatrix = (SelectedDenseDoubleMatrix2D)other;
-                return elements == otherMatrix.Elements;
+                return Elements == otherMatrix.Elements;
             }
 
             if (other is DenseDoubleMatrix2D)
             {
                 var otherMatrix = (DenseDoubleMatrix2D)other;
-                return elements == otherMatrix.elements;
+                return Elements == otherMatrix.Elements;
             }
 
             return false;
@@ -802,7 +847,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// </returns>
         protected override DoubleMatrix2D ViewSelectionLike(int[] rowOffsets, int[] cOffsets)
         {
-            return new SelectedDenseDoubleMatrix2D(elements, rowOffsets, cOffsets, 0);
+            return new SelectedDenseDoubleMatrix2D(Elements, rowOffsets, cOffsets, 0);
         }
     }
 }

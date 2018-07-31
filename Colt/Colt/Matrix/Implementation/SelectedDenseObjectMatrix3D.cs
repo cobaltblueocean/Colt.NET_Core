@@ -9,7 +9,7 @@ namespace Cern.Colt.Matrix.Implementation
 
     /// <summary>
     /// Selection view on sparse 3-d matrices holding <i>Object</i> elements.
-    /// First see the <a href="package-summary.html">package summary</a> and javadoc <a href="package-tree.html">tree view</a> to get the broad picture.
+    ///
     /// <p>
     /// <b>Implementation:</b>
     /// <p>
@@ -44,7 +44,19 @@ namespace Cern.Colt.Matrix.Implementation
         /// <summary>
         /// The elements of this matrix.
         /// </summary>
-        protected internal IDictionary<int, Object> Elements { get; private set; }
+        protected internal Object[] Elements { get; private set; }
+
+        /// <summary>
+        /// The offsets of the visible cells of this matrix.
+        /// </summary>
+        protected int[] sliceOffsets;
+        protected int[] rowOffsets;
+        protected int[] columnOffsets;
+
+        /// <summary>
+        /// The offset.
+        /// </summary>
+        protected int offset;
 
         public override object this[int slice, int row, int column] {
             get
@@ -60,24 +72,9 @@ namespace Cern.Colt.Matrix.Implementation
                 //int index =	index(slice,row,column);
                 //manually inlined:
                 int index = offset + sliceOffsets[SliceZero + slice * SliceStride] + rowOffsets[RowZero + row * RowStride] + columnOffsets[ColumnZero + column * ColumnStride];
-                if (value == null)
-                    this.Elements.Remove(index);
-                else
-                    this.Elements[index] = value;
+                this.Elements[index] = value;
             }
         }
-
-        /// <summary>
-        /// The offsets of the visible cells of this matrix.
-        /// </summary>
-        protected int[] sliceOffsets;
-        protected int[] rowOffsets;
-        protected int[] columnOffsets;
-
-        /// <summary>
-        /// The offset.
-        /// </summary>
-        protected int offset;
 
 
     }

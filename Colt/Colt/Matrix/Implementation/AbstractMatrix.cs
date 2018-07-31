@@ -31,6 +31,6 @@ namespace Cern.Colt.Matrix.Implementation
         /// <returns>
         /// The number of cells.
         /// </returns>
-        public virtual int Size { get; }
+        public virtual int Size { get; set; }
     }
 }

@@ -62,17 +62,33 @@ namespace Cern.Colt.Matrix.Implementation
 */
         public class DenseObjectMatrix3D : ObjectMatrix3D
         {
-    /**
-	  * The elements of this matrix.
-	  * elements are stored in slice major, then row major, then column major, in order of significance, i.e.
-	  * index==slice*SliceStride+ row*RowStride + column*ColumnStride
-	  * i.ed {slice0 row0..m}, {slice1 row0..m}, ..d, {sliceN row0..m}
-	  * with each row storead as 
-	  * {row0 column0..m}, {row1 column0..m}, ..d, {rown column0..m}
-	  */
-    protected Object[] Elements;
+        /**
+          * The elements of this matrix.
+          * elements are stored in slice major, then row major, then column major, in order of significance, i.e.
+          * index==slice*SliceStride+ row*RowStride + column*ColumnStride
+          * i.ed {slice0 row0..m}, {slice1 row0..m}, ..d, {sliceN row0..m}
+          * with each row storead as 
+          * {row0 column0..m}, {row1 column0..m}, ..d, {rown column0..m}
+          */
+        protected internal Object[] Elements { get; private set; }
 
-        public override object this[int slice, int row, int colum] { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public override object this[int slice, int row, int column]
+        {
+            get
+            {
+                //if (debug) if (slice<0 || slice>=Slices || row<0 || row>=Rows || column<0 || column>=Columns) throw new IndexOutOfRangeException("slice:"+slice+", row:"+row+", column:"+column);
+                //return elements[index(slice,row,column)];
+                //manually inlined:
+                return Elements[Index(slice, row, column)];
+            }
+            set
+            {
+                //if (debug) if (slice<0 || slice>=Slices || row<0 || row>=Rows || column<0 || column>=Columns) throw new IndexOutOfRangeException("slice:"+slice+", row:"+row+", column:"+column);
+                //elements[index(slice,row,column)] = value;
+                //manually inlined:
+                Elements[Index(slice, row, column)] = value;
+            }
+        }
 
         /**
 * Constructs a matrix with a copy of the given values.
@@ -209,12 +225,10 @@ namespace Cern.Colt.Matrix.Implementation
          * @param     column   the index of the column-coordinate.
          * @return    the value at the specified coordinate.
          */
+        [Obsolete("GetQuick(int slice, int index, int column) is deprecated, please use indexer instead.")]
         public Object GetQuick(int slice, int row, int column)
         {
-            //if (debug) if (slice<0 || slice>=Slices || row<0 || row>=Rows || column<0 || column>=Columns) throw new IndexOutOfRangeException("slice:"+slice+", row:"+row+", column:"+column);
-            //return elements[index(slice,row,column)];
-            //manually inlined:
-            return Elements[SliceZero + slice * SliceStride + RowZero + row * RowStride + ColumnZero + column * ColumnStride];
+            return this[slice, row, column];
         }
 
         /**
@@ -299,12 +313,10 @@ namespace Cern.Colt.Matrix.Implementation
          * @param     column   the index of the column-coordinate.
          * @param    value the value to be filled into the specified cell.
          */
+        [Obsolete("SetQuick(int slice, int index, int column) is deprecated, please use indexer instead.")]
         public void SetQuick(int slice, int row, int column, Object value)
         {
-            //if (debug) if (slice<0 || slice>=Slices || row<0 || row>=Rows || column<0 || column>=Columns) throw new IndexOutOfRangeException("slice:"+slice+", row:"+row+", column:"+column);
-            //elements[index(slice,row,column)] = value;
-            //manually inlined:
-            Elements[SliceZero + slice * SliceStride + RowZero + row * RowStride + ColumnZero + column * ColumnStride] = value;
+            this[slice, row, column] = value;
         }
 
         /**

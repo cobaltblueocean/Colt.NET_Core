@@ -23,7 +23,7 @@ namespace Cern.Colt.Matrix.Implementation
     /// <summary>
     /// Sparse hashed 1-d matrix (aka <i>vector</i>) holding <tt>double</tt> elements.
     /// </summary>
-    public sealed class SparseDoubleMatrix1D : DoubleMatrix1D
+    public class SparseDoubleMatrix1D : DoubleMatrix1D
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="SparseDoubleMatrix1D"/> class with a copy of the given values.
@@ -271,7 +271,7 @@ namespace Cern.Colt.Matrix.Implementation
             if (other is SelectedSparseDoubleMatrix1D)
             {
                 var otherMatrix = (SelectedSparseDoubleMatrix1D)other;
-                return this.elements == otherMatrix.elements;
+                return this.elements == otherMatrix.Elements;
             }
 
             if (other is SparseDoubleMatrix1D)

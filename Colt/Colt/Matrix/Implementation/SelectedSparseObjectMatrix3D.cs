@@ -13,6 +13,13 @@ namespace Cern.Colt.Matrix.Implementation
         /// </summary>
         protected internal IDictionary<int, Object> Elements { get; private set; }
 
+        /// <summary>
+        /// Gets or sets the matrix cell at coordinate <i>[slice,row,column]</i> to the specified value.
+        /// </summary>
+        /// <param name="slice"></param>
+        /// <param name="row"></param>
+        /// <param name="column"></param>
+        /// <returns></returns>
         public override object this[int slice, int row, int column]
         {
             get
@@ -20,14 +27,14 @@ namespace Cern.Colt.Matrix.Implementation
                 //if (debug) if (slice<0 || slice>=slices || row<0 || row>=rows || column<0 || column>=columns) throw new IndexOutOfRangeException("slice:"+slice+", row:"+row+", column:"+column);
                 //return elements.Get(index(slice,row,column));
                 //manually inlined:
-                return Elements[offset + sliceOffsets[SliceZero + slice * SliceStride] + rowOffsets[RowZero + row * RowStride] + columnOffsets[ColumnZero + column * ColumnStride]];
+                return Elements[Index(slice, row, column)];
             }
             set
             {
                 //if (debug) if (slice<0 || slice>=slices || row<0 || row>=rows || column<0 || column>=columns) throw new IndexOutOfRangeException("slice:"+slice+", row:"+row+", column:"+column);
                 //int index =	index(slice,row,column);
                 //manually inlined:
-                int index = offset + sliceOffsets[SliceZero + slice * SliceStride] + rowOffsets[RowZero + row * RowStride] + columnOffsets[ColumnZero + column * ColumnStride];
+                int index = Index(slice, row, column);
                 if (value == null)
                     this.Elements.Remove(index);
                 else
@@ -38,26 +45,22 @@ namespace Cern.Colt.Matrix.Implementation
         /// <summary>
         /// The offsets of the visible cells of this matrix.
         /// </summary>
-        protected int[] sliceOffsets;
-        protected int[] rowOffsets;
-        protected int[] columnOffsets;
+        private int[] sliceOffsets;
+        private int[] rowOffsets;
+        private int[] columnOffsets;
 
         /// <summary>
         /// The offset.
         /// </summary>
-        protected int offset;
+        private int offset;
 
         /// <summary>
         /// Constructs a matrix view with the given parameters.
-        /// @param elements the cells.
-        /// @param  sliceOffsets   The slice offsets of the cells that shall be visible.
-        /// @param  rowOffsets   The row offsets of the cells that shall be visible.
-        /// @param  columnOffsets   The column offsets of the cells that shall be visible.
         /// </summary>
-        /// <param name="elements"></param>
-        /// <param name="sliceOffsets"></param>
-        /// <param name="rowOffsets"></param>
-        /// <param name="columnOffsets"></param>
+        /// <param name="elements">elements the cells.</param>
+        /// <param name="sliceOffsets">The slice offsets of the cells that shall be visible.</param>
+        /// <param name="rowOffsets">The row offsets of the cells that shall be visible.</param>
+        /// <param name="columnOffsets">The column offsets of the cells that shall be visible.</param>
         /// <param name="offset"></param>
         public SelectedSparseObjectMatrix3D(IDictionary<int, Object> elements, int[] sliceOffsets, int[] rowOffsets, int[] columnOffsets, int offset)
         {
@@ -81,14 +84,9 @@ namespace Cern.Colt.Matrix.Implementation
         /// <summary>
         /// Returns the position of the given absolute rank within the (virtual or non-virtual) internal 1-dimensional arrayd 
         /// Default implementationd Override, if necessary.
-        /// 
-        /// @param  rank   the absolute rank of the element.
-        /// @return the position.
         /// </summary>
-        /// <param name=""></param>
-        /// <param name=""></param>
-        /// <returns></returns>
-        /// <exception cref=""></exception>
+        /// <param name="rank">the absolute rank of the element.</param>
+        /// <returns>the position.</returns>
         protected new int ColumnOffset(int absRank)
         {
             return columnOffsets[absRank];
@@ -97,14 +95,9 @@ namespace Cern.Colt.Matrix.Implementation
         /// <summary>
         /// Returns the position of the given absolute rank within the (virtual or non-virtual) internal 1-dimensional arrayd 
         /// Default implementationd Override, if necessary.
-        /// 
-        /// @param  rank   the absolute rank of the element.
-        /// @return the position.
         /// </summary>
-        /// <param name=""></param>
-        /// <param name=""></param>
-        /// <returns></returns>
-        /// <exception cref=""></exception>
+        /// <param name="rank">the absolute rank of the element.</param>
+        /// <returns>the position.</returns>
         protected new int RowOffset(int absRank)
         {
             return rowOffsets[absRank];
@@ -113,14 +106,9 @@ namespace Cern.Colt.Matrix.Implementation
         /// <summary>
         /// Returns the position of the given absolute rank within the (virtual or non-virtual) internal 1-dimensional arrayd 
         /// Default implementationd Override, if necessary.
-        /// 
-        /// @param  rank   the absolute rank of the element.
-        /// @return the position.
         /// </summary>
-        /// <param name=""></param>
-        /// <param name=""></param>
-        /// <returns></returns>
-        /// <exception cref=""></exception>
+        /// <param name="rank">the absolute rank of the element.</param>
+        /// <returns>the position.</returns>
         protected new int SliceOffset(int absRank)
         {
             return sliceOffsets[absRank];
@@ -132,16 +120,11 @@ namespace Cern.Colt.Matrix.Implementation
         /// <p>Provided with invalid parameters this method may return invalid objects without throwing any exception.
         /// <b>You should only use this method when you are absolutely sure that the coordinate is within bounds.</b>
         /// Precondition (unchecked): <i>slice&lt;0 || slice&gt;=slices() || row&lt;0 || row&gt;=rows() || column&lt;0 || column&gt;=column()</i>.
-        /// 
-        /// @param     slice   the index of the slice-coordinate.
-        /// @param     row   the index of the row-coordinate.
-        /// @param     column   the index of the column-coordinate.
-        /// @return    the value at the specified coordinate.
         /// </summary>
-        /// <param name=""></param>
-        /// <param name=""></param>
-        /// <returns></returns>
-        /// <exception cref=""></exception>
+        /// <param name="slice">the index of the slice-coordinate.</param>
+        /// <param name="row">the index of the row-coordinate.</param>
+        /// <param name="column">the index of the column-coordinate.</param>
+        /// <returns>the value at the specified coordinate.</returns>
         [Obsolete("GetQuick(int slice, int row, int column) is deprecated, please use indexer instead.")]
         public Object GetQuick(int slice, int row, int column)
         {
@@ -157,11 +140,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <li><i>this == other</i>
         /// </ul>
         /// </summary>
-        /// <param name=""></param>
-        /// <param name=""></param>
-        /// <returns></returns>
-        /// <exception cref=""></exception>
-        protected Boolean haveSharedCellsRaw(ObjectMatrix3D other)
+        protected new Boolean HaveSharedCellsRaw(ObjectMatrix3D other)
         {
             if (other is SelectedSparseObjectMatrix3D)
             {
@@ -178,16 +157,12 @@ namespace Cern.Colt.Matrix.Implementation
 
         /// <summary>
         /// Returns the position of the given coordinate within the (virtual or non-virtual) internal 1-dimensional arrayd 
-        /// 
-        /// @param     slice   the index of the slice-coordinate.
-        /// @param     row   the index of the row-coordinate.
-        /// @param     column   the index of the third-coordinate.
         /// </summary>
-        /// <param name=""></param>
-        /// <param name=""></param>
+        /// <param name="slice">the index of the slice-coordinate.</param>
+        /// <param name="row">the index of the row-coordinate.</param>
+        /// <param name="column">the index of the third-coordinate.</param>
         /// <returns></returns>
-        /// <exception cref=""></exception>
-        protected int index(int slice, int row, int column)
+        protected new int Index(int slice, int row, int column)
         {
             //return this.offset + base.index(slice,row,column);
             //manually inlined:
@@ -199,16 +174,11 @@ namespace Cern.Colt.Matrix.Implementation
         /// For example, if the receiver is an instance of type <i>DenseObjectMatrix3D</i> the new matrix must also be of type <i>DenseObjectMatrix3D</i>,
         /// if the receiver is an instance of type <i>SparseObjectMatrix3D</i> the new matrix must also be of type <i>SparseObjectMatrix3D</i>, etc.
         /// In general, the new matrix should have internal parametrization as similar as possible.
-        /// 
-        /// @param slices the number of slices the matrix shall have.
-        /// @param rows the number of rows the matrix shall have.
-        /// @param columns the number of columns the matrix shall have.
-        /// @return  a new empty matrix of the same dynamic type.
         /// </summary>
-        /// <param name=""></param>
-        /// <param name=""></param>
-        /// <returns></returns>
-        /// <exception cref=""></exception>
+        /// <param name="slices">the number of slices the matrix shall have.</param>
+        /// <param name="rows">the number of rows the matrix shall have.</param>
+        /// <param name="columns">the number of columns the matrix shall have.</param>
+        /// <returns>a new empty matrix of the same dynamic type.</returns>
         public override ObjectMatrix3D Like(int slices, int rows, int columns)
         {
             return new SparseObjectMatrix3D(slices, rows, columns);
@@ -218,19 +188,14 @@ namespace Cern.Colt.Matrix.Implementation
         /// Construct and returns a new 2-d matrix <i>of the corresponding dynamic type</i>, sharing the same cells.
         /// For example, if the receiver is an instance of type <i>DenseObjectMatrix3D</i> the new matrix must also be of type <i>DenseObjectMatrix2D</i>,
         /// if the receiver is an instance of type <i>SparseObjectMatrix3D</i> the new matrix must also be of type <i>SparseObjectMatrix2D</i>, etc.
-        /// 
-        /// @param rows the number of rows the matrix shall have.
-        /// @param columns the number of columns the matrix shall have.
-        /// @param RowZero the position of the first element.
-        /// @param ColumnZero the position of the first element.
-        /// @param RowStride the number of elements between two rows, i.ed <i>index(i+1,j)-index(i,j)</i>.
-        /// @param ColumnStride the number of elements between two columns, i.ed <i>index(i,j+1)-index(i,j)</i>.
-        /// @return  a new matrix of the corresponding dynamic type.
         /// </summary>
-        /// <param name=""></param>
-        /// <param name=""></param>
-        /// <returns></returns>
-        /// <exception cref=""></exception>
+        /// <param name="rows">the number of rows the matrix shall have.</param>
+        /// <param name="columns">the number of columns the matrix shall have.</param>
+        /// <param name="RowZero">the position of the first element.</param>
+        /// <param name="ColumnZero">the position of the first element.</param>
+        /// <param name="RowStride">the number of elements between two rows, i.ed <i>index(i+1,j)-index(i,j)</i>.</param>
+        /// <param name="ColumnStride">the number of elements between two columns, i.ed <i>index(i,j+1)-index(i,j)</i>.</param>
+        /// <returns>a new matrix of the corresponding dynamic type.</returns>
         protected override ObjectMatrix2D Like2D(int rows, int columns, int RowZero, int ColumnZero, int RowStride, int ColumnStride)
         {
             // this method is never called since viewRow() and viewColumn are overridden properly.
@@ -243,32 +208,24 @@ namespace Cern.Colt.Matrix.Implementation
         /// <p>Provided with invalid parameters this method may access illegal indexes without throwing any exception.
         /// <b>You should only use this method when you are absolutely sure that the coordinate is within bounds.</b>
         /// Precondition (unchecked): <i>slice&lt;0 || slice&gt;=slices() || row&lt;0 || row&gt;=rows() || column&lt;0 || column&gt;=column()</i>.
-        /// 
-        /// @param     slice   the index of the slice-coordinate.
-        /// @param     row   the index of the row-coordinate.
-        /// @param     column   the index of the column-coordinate.
-        /// @param    value the value to be filled into the specified cell.
         /// </summary>
-        /// <param name=""></param>
-        /// <param name=""></param>
-        /// <returns></returns>
-        /// <exception cref=""></exception>
+        /// <param name="slice">the index of the slice-coordinate.</param>
+        /// <param name="row">the index of the row-coordinate.</param>
+        /// <param name="column">the index of the column-coordinate.</param>
+        /// <param name="value">the value to be filled into the specified cell.</param>
         [Obsolete("SetQuick(int slice, int row, int column, double value) is deprecated, please use indexer instead.")]
         public void SetQuick(int slice, int row, int column, Object value)
         {
+            this[slice, row, column] = value;
         }
 
         /// <summary>
         /// Sets up a matrix with a given number of slices and rows.
-        /// @param slices the number of slices the matrix shall have.
-        /// @param rows the number of rows the matrix shall have.
-        /// @param columns the number of columns the matrix shall have.
-        /// @throws	ArgumentException if <i>(Object)rows*slices > int.MaxValue</i>.
         /// </summary>
-        /// <param name=""></param>
-        /// <param name=""></param>
-        /// <returns></returns>
-        /// <exception cref=""></exception>
+        /// <param name="slices">the number of slices the matrix shall have.</param>
+        /// <param name="rows">the number of rows the matrix shall have.</param>
+        /// <param name="columns">the number of columns the matrix shall have.</param>
+        /// <exception cref="ArgumentException">if <i>(Object)rows * slices > int.MaxValue</i>.</exception>
         protected new void Setup(int slices, int rows, int columns)
         {
             base.Setup(slices, rows, columns);
@@ -280,12 +237,8 @@ namespace Cern.Colt.Matrix.Implementation
 
         /// <summary>
         /// Self modifying version of viewDice().
-        /// @throws ArgumentException if some of the parameters are equal or not in range 0..2.
         /// </summary>
-        /// <param name=""></param>
-        /// <param name=""></param>
-        /// <returns></returns>
-        /// <exception cref=""></exception>
+        /// <exception cref="ArgumentException">if some of the parameters are equal or not in range 0..2.</exception>
         protected new AbstractMatrix3D VDice(int axis0, int axis1, int axis2)
         {
             base.VDice(axis0, axis1, axis2);
@@ -302,6 +255,7 @@ namespace Cern.Colt.Matrix.Implementation
 
             return this;
         }
+
         /// <summary>
         /// Constructs and returns a new 2-dimensional <i>slice view</i> representing the slices and rows of the given column.
         /// The returned view is backed by this matrix, so changes in the returned view are reflected in this matrix, and vice-versa.
@@ -309,17 +263,12 @@ namespace Cern.Colt.Matrix.Implementation
         /// To obtain a slice view on subranges, construct a sub-ranging view (<i>view().part(..d)</i>), then apply this method to the sub-range view.
         /// To obtain 1-dimensional views, apply this method, then apply another slice view (methods <i>viewColumn</i>, <i>viewRow</i>) on the intermediate 2-dimensional view.
         /// To obtain 1-dimensional views on subranges, apply both steps.
-
-        /// @param column the index of the column to fix.
-        /// @return a new 2-dimensional slice view.
-        /// @throws IndexOutOfRangeException if <i>column < 0 || column >= columns()</i>.
-        /// @see #viewSlice(int)
-        /// @see #viewRow(int)
         /// </summary>
-        /// <param name=""></param>
-        /// <param name=""></param>
-        /// <returns></returns>
-        /// <exception cref=""></exception>
+        /// <param name="column">the index of the column to fix.</param>
+        /// <returns>a new 2-dimensional slice view.</returns>
+        /// <exception cref="IndexOutOfRangeException">if <i>column &lt; 0 || column >= columns()</i>.</exception>
+        /// <see cref="ViewSlice(int)"/>
+        /// <see cref="ViewRow(int)"/>
         public new ObjectMatrix2D ViewColumn(int column)
         {
             CheckColumn(column);
@@ -347,17 +296,12 @@ namespace Cern.Colt.Matrix.Implementation
         /// To obtain a slice view on subranges, construct a sub-ranging view (<i>view().part(..d)</i>), then apply this method to the sub-range view.
         /// To obtain 1-dimensional views, apply this method, then apply another slice view (methods <i>viewColumn</i>, <i>viewRow</i>) on the intermediate 2-dimensional view.
         /// To obtain 1-dimensional views on subranges, apply both steps.
-
-        /// @param row the index of the row to fix.
-        /// @return a new 2-dimensional slice view.
-        /// @throws IndexOutOfRangeException if <i>row < 0 || row >= row()</i>.
-        /// @see #viewSlice(int)
-        /// @see #viewColumn(int)
         /// </summary>
-        /// <param name=""></param>
-        /// <param name=""></param>
-        /// <returns></returns>
-        /// <exception cref=""></exception>
+        /// <param name="row">the index of the row to fix.</param>
+        /// <returns>a new 2-dimensional slice view.</returns>
+        /// <exception cref="IndexOutOfRangeException">if <i>row &lt; 0 || row >= row()</i>.</exception>
+        /// <see cref="ViewSlice(int)"/>
+        /// <see cref="ViewColumn(int)"/>
         public new ObjectMatrix2D ViewRow(int row)
         {
             CheckRow(row);
@@ -380,16 +324,11 @@ namespace Cern.Colt.Matrix.Implementation
 
         /// <summary>
         /// Construct and returns a new selection view.
-        /// 
-        /// @param sliceOffsets the offsets of the visible elements.
-        /// @param rowOffsets the offsets of the visible elements.
-        /// @param columnOffsets the offsets of the visible elements.
-        /// @return  a new view.
         /// </summary>
-        /// <param name=""></param>
-        /// <param name=""></param>
-        /// <returns></returns>
-        /// <exception cref=""></exception>
+        /// <param name="sliceOffsets">the offsets of the visible elements.</param>
+        /// <param name="rowOffsets">the offsets of the visible elements.</param>
+        /// <param name="columnOffsets">the offsets of the visible elements.</param>
+        /// <returns>a new view.</returns>
         protected override ObjectMatrix3D ViewSelectionLike(int[] sliceOffsets, int[] rowOffsets, int[] columnOffsets)
         {
             return new SelectedSparseObjectMatrix3D(this.Elements, sliceOffsets, rowOffsets, columnOffsets, this.offset);
@@ -402,17 +341,12 @@ namespace Cern.Colt.Matrix.Implementation
         /// To obtain a slice view on subranges, construct a sub-ranging view (<i>view().part(..d)</i>), then apply this method to the sub-range view.
         /// To obtain 1-dimensional views, apply this method, then apply another slice view (methods <i>viewColumn</i>, <i>viewRow</i>) on the intermediate 2-dimensional view.
         /// To obtain 1-dimensional views on subranges, apply both steps.
-
-        /// @param slice the index of the slice to fix.
-        /// @return a new 2-dimensional slice view.
-        /// @throws IndexOutOfRangeException if <i>slice < 0 || slice >= slices()</i>.
-        /// @see #viewRow(int)
-        /// @see #viewColumn(int)
         /// </summary>
-        /// <param name=""></param>
-        /// <param name=""></param>
-        /// <returns></returns>
-        /// <exception cref=""></exception>
+        /// <param name="slice">the index of the slice to fix.</param>
+        /// <returns>a new 2-dimensional slice view.</returns>
+        /// <exception cref="IndexOutOfRangeException">if <i>slice &lt; 0 || slice >= slices()</i>.</exception>
+        /// <see cref="ViewRow(int)"/>
+        /// <see cref="ViewColumn(int)"/>
         public new ObjectMatrix2D ViewSlice(int slice)
         {
             CheckSlice(slice);

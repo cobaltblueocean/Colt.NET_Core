@@ -22,7 +22,7 @@ namespace Cern.Colt.Matrix.Implementation
     /// <summary>
     /// Dense 1-d matrix (aka <i>vector</i>) holding <tt>double</tt> elements.
     /// </summary>
-    public sealed class DenseDoubleMatrix1D : DoubleMatrix1D
+    public class DenseDoubleMatrix1D : DoubleMatrix1D
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="DenseDoubleMatrix1D"/> class with a copy of the given values.
@@ -33,7 +33,7 @@ namespace Cern.Colt.Matrix.Implementation
         public DenseDoubleMatrix1D(double[] values)
         {
             Setup(values.Length);
-            elements = new double[values.Length];
+            Elements = new double[values.Length];
             Assign(values);
         }
 
@@ -50,7 +50,7 @@ namespace Cern.Colt.Matrix.Implementation
         public DenseDoubleMatrix1D(int size)
         {
             Setup(size);
-            elements = new double[size];
+            Elements = new double[size];
         }
 
         /// <summary>
@@ -72,17 +72,17 @@ namespace Cern.Colt.Matrix.Implementation
         /// <exception cref="ArgumentOutOfRangeException">
         /// If <tt>size &lt; 0</tt>.
         /// </exception>
-        internal DenseDoubleMatrix1D(int size, double[] elements, int zero, int stride)
+        public DenseDoubleMatrix1D(int size, double[] elements, int zero, int stride)
         {
             Setup(size, zero, stride);
-            this.elements = elements;
+            this.Elements = elements;
             IsView = true;
         }
 
         /// <summary>
         /// Gets the elements of this matrix.
         /// </summary>
-        internal double[] elements { get; private set; }
+        internal double[] Elements { get; private set; }
 
         /// <summary>
         /// Gets or sets the matrix cell value at coordinate <tt>index</tt>.
@@ -94,12 +94,12 @@ namespace Cern.Colt.Matrix.Implementation
         {
             get
             {
-                return elements[_zero + (index * _stride)];
+                return Elements[Index(index)];
             }
 
             set
             {
-                elements[_zero + (index * _stride)] = value;
+                Elements[Index(index)] = value;
             }
         }
 
@@ -123,9 +123,9 @@ namespace Cern.Colt.Matrix.Implementation
             }
             else
             {
-                if (values.Length != _size)
-                    throw new ArgumentOutOfRangeException("Must have same number of cells: length=" + values.Length + "size()=" + Size());
-                Array.Copy(values, 0, elements, 0, values.Length);
+                if (values.Length != Size)
+                    throw new ArgumentOutOfRangeException("Must have same number of cells: length = " + values.Length + ", Size = " + Size);
+                Array.Copy(values, 0, Elements, 0, values.Length);
             }
 
             return this;
@@ -143,9 +143,9 @@ namespace Cern.Colt.Matrix.Implementation
         public override DoubleMatrix1D Assign(double value)
         {
             int index = this.Index(0);
-            int s = _stride;
-            double[] elems = elements;
-            for (int i = _size; --i >= 0;)
+            int s = Stride;
+            double[] elems = Elements;
+            for (int i = Size; --i >= 0;)
             {
                 elems[index] = value;
                 index += s;
@@ -166,12 +166,12 @@ namespace Cern.Colt.Matrix.Implementation
         /// </returns>
         public override DoubleMatrix1D Assign(DoubleFunction function)
         {
-            int s = _stride;
+            int s = Stride;
             int i = Index(0);
-            double[] elems = elements;
+            double[] elems = Elements;
             if (elems == null) throw new ApplicationException();
 
-            for (int k = _size; --k >= 0;)
+            for (int k = Size; --k >= 0;)
             {
                 elems[i] = function(elems[i]);
                 i += s;
@@ -204,7 +204,7 @@ namespace Cern.Colt.Matrix.Implementation
             if (!IsView && !other.IsView)
             {
                 // quickest
-                Array.Copy(other.elements, 0, elements, 0, elements.Length);
+                Array.Copy(other.Elements, 0, Elements, 0, Elements.Length);
                 return this;
             }
 
@@ -220,15 +220,15 @@ namespace Cern.Colt.Matrix.Implementation
                 other = (DenseDoubleMatrix1D)c;
             }
 
-            double[] elems = elements;
-            double[] otherElems = other.elements;
-            if (elements == null || otherElems == null) throw new ArgumentException();
-            int s = _stride;
-            int ys = other._stride;
+            double[] elems = Elements;
+            double[] otherElems = other.Elements;
+            if (Elements == null || otherElems == null) throw new ArgumentException();
+            int s = Stride;
+            int ys = other.Stride;
 
             int index = this.Index(0);
             int otherIndex = other.Index(0);
-            for (int k = _size; --k >= 0;)
+            for (int k = Size; --k >= 0;)
             {
                 elems[index] = otherElems[otherIndex];
                 index += s;
@@ -263,17 +263,17 @@ namespace Cern.Colt.Matrix.Implementation
 
             var other = (DenseDoubleMatrix1D)y;
             CheckSize(y);
-            double[] elems = elements;
-            double[] otherElems = other.elements;
+            double[] elems = Elements;
+            double[] otherElems = other.Elements;
             if (elems == null || otherElems == null) throw new ApplicationException();
-            int s = _stride;
-            int ys = other._stride;
+            int s = Stride;
+            int ys = other.Stride;
 
             int index = this.Index(0);
             int otherIndex = other.Index(0);
 
             // specialized for speed
-            for (int k = _size; --k >= 0;)
+            for (int k = Size; --k >= 0;)
             {
                 elems[index] = function(elems[index], otherElems[otherIndex]);
                 index += s;
@@ -315,6 +315,21 @@ namespace Cern.Colt.Matrix.Implementation
         }
 
         /// <summary>
+        ///  Returns the matrix cell value at coordinate <tt>index</tt>.
+        ///  
+        /// <p>Provided with invalid parameters this method may return invalid objects without throwing any exception.
+        /// <b>You should only use this method when you are absolutely sure that the coordinate is within bounds.</b>
+        /// Precondition (unchecked): <tt>index&lt;0 || index&gt;=size()</tt>.
+        /// </summary>
+        /// <param name="index">the index of the cell.</param>
+        /// <param name="value">the value of the specified cell.</param>
+        [Obsolete("SetQuick(int index, double value) is deprecated, please use indexer instead.")]
+        public void SetQuick(int index, double value)
+        {
+            this[index] = value;
+        }
+
+        /// <summary>
         /// Swaps each element <tt>this[i]</tt> with <tt>other[i]</tt>.
         /// </summary>
         /// <param name="other">
@@ -333,15 +348,15 @@ namespace Cern.Colt.Matrix.Implementation
             if (y == this) return;
             CheckSize(y);
 
-            double[] elems = elements;
-            double[] otherElems = y.elements;
-            if (elements == null || otherElems == null) throw new ApplicationException();
-            int s = _stride;
-            int ys = y._stride;
+            double[] elems = Elements;
+            double[] otherElems = y.Elements;
+            if (Elements == null || otherElems == null) throw new ApplicationException();
+            int s = Stride;
+            int ys = y.Stride;
 
             int index = this.Index(0);
             int otherIndex = y.Index(0);
-            for (int k = _size; --k >= 0;)
+            for (int k = Size; --k >= 0;)
             {
                 double tmp = elems[index];
                 elems[index] = otherElems[otherIndex];
@@ -364,8 +379,8 @@ namespace Cern.Colt.Matrix.Implementation
         /// </exception>
         public override void ToArray(double[] values)
         {
-            if (values.Length < _size) throw new ArgumentOutOfRangeException("values", "values too small");
-            if (!IsView) Array.Copy(elements, 0, values, 0, elements.Length);
+            if (values.Length < Size) throw new ArgumentOutOfRangeException("values", "values too small");
+            if (!IsView) Array.Copy(Elements, 0, values, 0, Elements.Length);
             else base.ToArray(values);
         }
 
@@ -395,16 +410,16 @@ namespace Cern.Colt.Matrix.Implementation
 
             int tail = from + length;
             if (from < 0 || length < 0) return 0;
-            if (_size < tail) tail = _size;
-            if (y.Size() < tail) tail = y.Size();
+            if (Size < tail) tail = Size;
+            if (y.Size < tail) tail = y.Size;
             int min = tail - from;
 
             int i = Index(from);
             int j = yy.Index(from);
-            int s = _stride;
-            int ys = yy._stride;
-            double[] elems = elements;
-            double[] yElems = yy.elements;
+            int s = Stride;
+            int ys = yy.Stride;
+            double[] elems = Elements;
+            double[] yElems = yy.Elements;
             if (elems == null || yElems == null) throw new ApplicationException();
 
             double sum = 0;
@@ -438,11 +453,11 @@ namespace Cern.Colt.Matrix.Implementation
         public override double ZSum()
         {
             double sum = 0;
-            int s = _stride;
+            int s = Stride;
             int i = Index(0);
-            double[] elems = elements;
+            double[] elems = Elements;
             if (elems == null) throw new ApplicationException();
-            for (int k = _size; --k >= 0;)
+            for (int k = Size; --k >= 0;)
             {
                 sum += elems[i];
                 i += s;
@@ -464,7 +479,7 @@ namespace Cern.Colt.Matrix.Implementation
         protected internal override int Index(int rank)
         {
             // overriden for manual inlining only
-            return _zero + (rank * _stride);
+            return Zero + (rank * Stride);
         }
 
         /// <summary>
@@ -480,9 +495,9 @@ namespace Cern.Colt.Matrix.Implementation
         {
             int cardinality = 0;
             int index = this.Index(0);
-            int s = _stride;
-            double[] elems = elements;
-            int i = _size;
+            int s = Stride;
+            double[] elems = Elements;
+            int i = Size;
             while (--i >= 0 && cardinality < maxCardinality)
             {
                 if (elems[index] != 0) cardinality++;
@@ -490,6 +505,28 @@ namespace Cern.Colt.Matrix.Implementation
             }
 
             return cardinality;
+        }
+
+        /// <summary>
+        /// Returns the matrix cell value at coordinate <tt>index</tt>.
+        /// 
+        /// <p>Provided with invalid parameters this method may return invalid objects without throwing any exception.
+        /// <b>You should only use this method when you are absolutely sure that the coordinate is within bounds.</b>
+        /// Precondition (unchecked): <tt>index&lt;0 || index&gt;=size()</tt>.
+        /// </summary>
+        /// <param name="index">
+        /// the index of the cell.
+        /// </param>
+        /// <returns>
+        /// the value of the specified cell.
+        /// </returns>
+        [Obsolete("GetQuick(int index) is deprecated, please use indexer instead.")]
+        public double GetQuick(int index)
+        {
+            //if (debug) if (index<0 || index>=size) checkIndex(index);
+            //return elements[index(index)];
+            // manually inlined:
+            return this[index];
         }
 
         /// <summary>
@@ -506,13 +543,13 @@ namespace Cern.Colt.Matrix.Implementation
             if (other is SelectedDenseDoubleMatrix1D)
             {
                 var otherMatrix = (SelectedDenseDoubleMatrix1D)other;
-                return elements == otherMatrix.Elements;
+                return Elements == otherMatrix.Elements;
             }
 
             if (other is DenseDoubleMatrix1D)
             {
                 var otherMatrix = (DenseDoubleMatrix1D)other;
-                return elements == otherMatrix.elements;
+                return Elements == otherMatrix.Elements;
             }
 
             return false;
@@ -529,7 +566,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// </returns>
         protected override DoubleMatrix1D ViewSelectionLike(int[] offsets)
         {
-            return new SelectedDenseDoubleMatrix1D(elements, offsets);
+            return new SelectedDenseDoubleMatrix1D(Elements, offsets);
         }
     }
 }

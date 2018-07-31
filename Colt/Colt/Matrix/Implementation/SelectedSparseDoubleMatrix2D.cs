@@ -38,11 +38,11 @@ namespace Cern.Colt.Matrix.Implementation
         /// <param name="offset">
         /// The offset.
         /// </param>
-        protected internal SelectedSparseDoubleMatrix2D(IDictionary<int, double> elements, int[] rowOffsets, int[] columnOffsets, int offset)
+        public SelectedSparseDoubleMatrix2D(IDictionary<int, double> elements, int[] rowOffsets, int[] columnOffsets, int offset)
         {
             Setup(rowOffsets.Length, columnOffsets.Length, 0, 0, 1, 1);
 
-            this.elements = elements;
+            this.Elements = elements;
             this.rowOffsets = rowOffsets;
             this.columnOffsets = columnOffsets;
             this.offset = offset;
@@ -83,12 +83,12 @@ namespace Cern.Colt.Matrix.Implementation
         /// <param name="offset">
         /// The offset.
         /// </param>
-        protected SelectedSparseDoubleMatrix2D(int rows, int columns, IDictionary<int, double> elements, int rowZero, int columnZero, int rowStride, int columnStride, int[] rowOffsets, int[] columnOffsets, int offset)
+        public SelectedSparseDoubleMatrix2D(int rows, int columns, IDictionary<int, double> elements, int rowZero, int columnZero, int rowStride, int columnStride, int[] rowOffsets, int[] columnOffsets, int offset)
         {
             // be sure parameters are valid, we do not check...
             Setup(rows, columns, rowZero, columnZero, rowStride, columnStride);
 
-            this.elements = elements;
+            this.Elements = elements;
             this.rowOffsets = rowOffsets;
             this.columnOffsets = columnOffsets;
             this.offset = offset;
@@ -99,22 +99,18 @@ namespace Cern.Colt.Matrix.Implementation
         /// <summary>
         /// Gets the elements of the matrix.
         /// </summary>
-        protected internal IDictionary<int, double> elements { get; private set; }
+        protected internal IDictionary<int, double> Elements { get; private set; }
 
         /// <summary>
-        /// Gets row offsets of the visible cells of this matrix.
+        /// The offsets of the visible cells of this matrix.
         /// </summary>
-        protected int[] rowOffsets { get; private set; }
+        protected int[] rowOffsets;
+        protected int[] columnOffsets;
 
         /// <summary>
-        /// Gets column offsets of the visible cells of this matrix.
+        /// The offset.
         /// </summary>
-        protected int[] columnOffsets { get; private set; }
-
-        /// <summary>
-        /// Gets the offset.
-        /// </summary>
-        protected int offset { get; private set; }
+        protected int offset;
 
         /// <summary>
         /// Gets or sets the matrix cell value at coordinate <tt>[row,column]</tt>.
@@ -129,7 +125,7 @@ namespace Cern.Colt.Matrix.Implementation
         {
             get
             {
-                return elements[offset + rowOffsets[RowZero + (row * RowStride)] + columnOffsets[ColumnZero + (column * ColumnStride)]];
+                return Elements[offset + rowOffsets[RowZero + (row * RowStride)] + columnOffsets[ColumnZero + (column * ColumnStride)]];
             }
 
             set
@@ -137,9 +133,9 @@ namespace Cern.Colt.Matrix.Implementation
                 int index = offset + rowOffsets[RowZero + (row * RowStride)] + columnOffsets[ColumnZero + (column * ColumnStride)];
 
                 if (value == 0)
-                    this.elements.Remove(index);
+                    this.Elements.Remove(index);
                 else
-                    this.elements.Add(index, value);
+                    this.Elements.Add(index, value);
             }
         }
 
@@ -194,7 +190,7 @@ namespace Cern.Colt.Matrix.Implementation
             int viewStride = this.RowStride;
             int[] viewOffsets = this.rowOffsets;
             int viewOffset = this.offset + ColumnOffset(ColumnRank(column));
-            return new SelectedSparseDoubleMatrix1D(viewSize, this.elements, viewZero, viewStride, viewOffsets, viewOffset);
+            return new SelectedSparseDoubleMatrix1D(viewSize, this.Elements, viewZero, viewStride, viewOffsets, viewOffset);
         }
 
         /// <summary>
@@ -218,7 +214,7 @@ namespace Cern.Colt.Matrix.Implementation
             int viewStride = this.ColumnStride;
             int[] viewOffsets = this.columnOffsets;
             int viewOffset = this.offset + RowOffset(RowRank(row));
-            return new SelectedSparseDoubleMatrix1D(viewSize, this.elements, viewZero, viewStride, viewOffsets, viewOffset);
+            return new SelectedSparseDoubleMatrix1D(viewSize, this.Elements, viewZero, viewStride, viewOffsets, viewOffset);
         }
 
         /// <summary>
@@ -281,13 +277,13 @@ namespace Cern.Colt.Matrix.Implementation
             if (other is SelectedSparseDoubleMatrix2D)
             {
                 var otherMatrix = (SelectedSparseDoubleMatrix2D)other;
-                return this.elements == otherMatrix.elements;
+                return this.Elements == otherMatrix.Elements;
             }
 
             if (other is SparseDoubleMatrix2D)
             {
                 var otherMatrix = (SparseDoubleMatrix2D)other;
-                return this.elements == otherMatrix.elements;
+                return this.Elements == otherMatrix.elements;
             }
 
             return false;
@@ -366,7 +362,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// </returns>
         protected override DoubleMatrix2D ViewSelectionLike(int[] rOffsets, int[] cOffsets)
         {
-            return new SelectedSparseDoubleMatrix2D(this.elements, rOffsets, cOffsets, this.offset);
+            return new SelectedSparseDoubleMatrix2D(this.Elements, rOffsets, cOffsets, this.offset);
         }
     }
 }

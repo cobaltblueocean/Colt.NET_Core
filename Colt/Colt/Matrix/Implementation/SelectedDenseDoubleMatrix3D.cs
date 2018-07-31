@@ -68,7 +68,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// with each row storead as 
         /// {row0 column0..m}, {row1 column0..m}, ..d, {rown column0..m}
         /// </summary>
-        public double[] Elements { get; set; }
+        protected internal double[] Elements { get; private set; }
 
         /// <summary>
         /// The offsets of the visible cells of this matrix.

@@ -11,7 +11,7 @@ namespace Cern.Colt.Buffer
 
         #region Local Variables
         protected IObjectBufferConsumer target;
-        protected Object[] elements;
+        internal Object[] Elements { get; private set; }
 
         // vars cached for speed
         protected List<Object> list;
@@ -33,8 +33,8 @@ namespace Cern.Colt.Buffer
         {
             this.target = target;
             this.capacity = capacity;
-            this.elements = new Object[capacity];
-            this.list = new List<Object>(elements);
+            this.Elements = new Object[capacity];
+            this.list = new List<Object>(Elements);
             this.size = 0;
         }
         #endregion
@@ -62,7 +62,7 @@ namespace Cern.Colt.Buffer
         public void Add(object element)
         {
             if (this.size == this.capacity) Flush();
-            this.elements[size++] = element;
+            this.Elements[size++] = element;
         }
 
         /// <summary>
