@@ -385,7 +385,7 @@ namespace Cern.Colt.Matrix
         /// </returns>
         public DoubleMatrix2D Diagonal(DoubleMatrix1D vector)
         {
-            int size = vector.Size();
+            int size = vector.Size;
             DoubleMatrix2D diag = Make(size, size);
             for (int i = size; --i >= 0; )
                 diag[i, i] = vector[i];

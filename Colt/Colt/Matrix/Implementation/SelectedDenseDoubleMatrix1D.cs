@@ -30,7 +30,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <summary>
         /// Gets the offset.
         /// </summary>
-        private int Offset;
+        protected int Offset { get; private set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SelectedDenseDoubleMatrix1D"/> class.
@@ -166,7 +166,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <returns>
         /// The position
         /// </returns>
-        protected override int Offset(int absRank)
+        protected override int GetOffset(int absRank)
         {
             return Offsets[absRank];
         }
@@ -225,6 +225,11 @@ namespace Cern.Colt.Matrix.Implementation
         protected override DoubleMatrix1D ViewSelectionLike(int[] offs)
         {
             return new SelectedDenseDoubleMatrix1D(this.Elements, offs);
+        }
+
+        public override string ToString(int index)
+        {
+            return this[index].ToString();
         }
     }
 }

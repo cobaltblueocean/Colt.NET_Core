@@ -61,6 +61,7 @@
     <Compile Include="Colt\Function\BinaryFunctions.cs" />
     <Compile Include="Colt\Function\UnaryFunctions.cs" />
     <Compile Include="Colt\GenericPermuting.cs" />
+    <Compile Include="Colt\Matrix\DoubleAlgorithms\Statistics.cs" />
     <Compile Include="Colt\Matrix\DoubleFactory1D.cs" />
     <Compile Include="Colt\GenericSorting.cs" />
     <Compile Include="Colt\Matrix\DoubleAlgorithms\Formatter.cs" />
@@ -83,6 +84,8 @@
     <Compile Include="Colt\Matrix\Implementation\DenseObjectMatrix1D.cs" />
     <Compile Include="Colt\Matrix\Implementation\DenseObjectMatrix2D.cs" />
     <Compile Include="Colt\Matrix\Implementation\DenseObjectMatrix3D.cs" />
+    <Compile Include="Colt\Matrix\Implementation\Former.cs" />
+    <Compile Include="Colt\Matrix\Implementation\FormerFactory.cs" />
     <Compile Include="Colt\Matrix\Implementation\SelectedDenseDoubleMatrix1D.cs" />
     <Compile Include="Colt\Matrix\Implementation\SelectedDenseDoubleMatrix2D.cs" />
     <Compile Include="Colt\Matrix\Implementation\SelectedDenseDoubleMatrix3D.cs" />
@@ -106,6 +109,7 @@
     <Compile Include="Colt\Matrix\LinearAlgebra\LUDecomposition.cs" />
     <Compile Include="Colt\Matrix\LinearAlgebra\LUDecompositionQuick.cs" />
     <Compile Include="Colt\Matrix\LinearAlgebra\Property.cs" />
+    <Compile Include="Colt\Matrix\LinearAlgebra\QRDecomposition.cs" />
     <Compile Include="Colt\Matrix\LinearAlgebra\SingularValueDecomposition.cs" />
     <Compile Include="Colt\Matrix\ObjectAlgorithms\Formatter.cs" />
     <Compile Include="Colt\Matrix\ObjectAlgorithms\Partitioning.cs" />
@@ -125,6 +129,7 @@
     <Compile Include="Extensions\PremitiveExtensions.cs" />
     <Compile Include="Hep\Aida\Bin\AbstractBin.cs" />
     <Compile Include="Hep\Aida\Bin\AbstractBin1D.cs" />
+    <Compile Include="Hep\Aida\Bin\BinFunction1D.cs" />
     <Compile Include="Hep\Aida\Bin\DynamicBin1D.cs" />
     <Compile Include="Hep\Aida\Bin\MightyStaticBin1D.cs" />
     <Compile Include="Hep\Aida\Bin\QuantileBin1D.cs" />
@@ -134,7 +139,16 @@
     <Compile Include="Hep\Aida\IHistogram1D.cs" />
     <Compile Include="Hep\Aida\IHistogram2D.cs" />
     <Compile Include="Hep\Aida\IHistogram3D.cs" />
+    <Compile Include="Hep\Aida\Ref\AbstractHistogram1D.cs" />
+    <Compile Include="Hep\Aida\Ref\AbstractHistogram2D.cs" />
+    <Compile Include="Hep\Aida\Ref\AbstractHistogram3D.cs" />
     <Compile Include="Hep\Aida\Ref\Converter.cs" />
+    <Compile Include="Hep\Aida\Ref\FixedAxis.cs" />
+    <Compile Include="Hep\Aida\Ref\Histogram.cs" />
+    <Compile Include="Hep\Aida\Ref\Histogram1D.cs" />
+    <Compile Include="Hep\Aida\Ref\Histogram2D.cs" />
+    <Compile Include="Hep\Aida\Ref\Histogram3D.cs" />
+    <Compile Include="Hep\Aida\Ref\VariableAxis.cs" />
     <Compile Include="Jet\Math\Algebraic.cs" />
     <Compile Include="Jet\Math\Arithmetic.cs" />
     <Compile Include="Jet\Math\Bessel.cs" />

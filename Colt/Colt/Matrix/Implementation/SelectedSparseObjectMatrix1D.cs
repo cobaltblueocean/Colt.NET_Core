@@ -83,12 +83,12 @@ namespace Cern.Colt.Matrix.Implementation
         /// <summary>
         /// The offsets of visible indexes of this matrix.
         /// </summary>
-        private int[] offsets;
+        private int[] Offsets;
 
         /// <summary>
         /// The offset.
         /// </summary>
-        private int offset;
+        private int Offset;
 
         /// <summary>
         /// Constructs a matrix view with the given parameters.
@@ -104,8 +104,8 @@ namespace Cern.Colt.Matrix.Implementation
             Setup(size, zero, stride);
 
             this.Elements = elements;
-            this.offsets = offsets;
-            this.offset = offset;
+            this.Offsets = offsets;
+            this.Offset = offset;
             this.IsView = true;
         }
 
@@ -125,9 +125,9 @@ namespace Cern.Colt.Matrix.Implementation
         /// </summary>
         /// <param name="rank">the absolute rank of the element.</param>
         /// <returns>the position.</returns>
-        protected override int Offset(int absRank)
+        protected override int GetOffset(int absRank)
         {
-            return offsets[absRank];
+            return Offsets[absRank];
         }
 
         /// <summary>
@@ -172,7 +172,7 @@ namespace Cern.Colt.Matrix.Implementation
         {
             //return this.offset + base.index(rank);
             // manually inlined:
-            return offset + offsets[Zero + rank * Stride];
+            return Offset + Offsets[Zero + rank * Stride];
         }
 
         /// <summary>
@@ -224,7 +224,7 @@ namespace Cern.Colt.Matrix.Implementation
         {
             base.Setup(size);
             this.Stride = 1;
-            this.offset = 0;
+            this.Offset = 0;
         }
 
         /// <summary>
@@ -235,6 +235,11 @@ namespace Cern.Colt.Matrix.Implementation
         protected override ObjectMatrix1D ViewSelectionLike(int[] offsets)
         {
             return new SelectedSparseObjectMatrix1D(this.Elements, offsets);
+        }
+
+        public override string ToString(int index)
+        {
+            return this[index].ToString();
         }
     }
 }

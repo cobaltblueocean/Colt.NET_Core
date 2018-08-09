@@ -59,7 +59,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <param name="offset">
         /// The offset.
         /// </param>
-        protected internal SelectedDenseDoubleMatrix2D(double[] elements, int[] rowOffsets, int[] columnOffsets, int offset)
+        public SelectedDenseDoubleMatrix2D(double[] elements, int[] rowOffsets, int[] columnOffsets, int offset)
         {
             Setup(rowOffsets.Length, columnOffsets.Length, 0, 0, 1, 1);
 
@@ -117,6 +117,7 @@ namespace Cern.Colt.Matrix.Implementation
 
             IsView = true;
         }
+        
         /// <summary>
         /// Gets or sets the matrix cell value at coordinate <tt>[row,column]</tt>.
         /// </summary>
@@ -238,6 +239,22 @@ namespace Cern.Colt.Matrix.Implementation
         }
 
         /// <summary>
+        /// Returns the matrix cell value at coordinate <i>[slice,row,column]</i>.
+        /// 
+        /// <p>Provided with invalid parameters this method may return invalid objects without throwing any exception.
+        /// <b>You should only use this method when you are absolutely sure that the coordinate is within bounds.</b>
+        /// Precondition (unchecked):  row&lt;0 || row&gt;=rows() || column&lt;0 || column&gt;=column()</i>.
+        /// </summary>
+        /// <param name="row">the index of the row-coordinate.</param>
+        /// <param name="column">the index of the column-coordinate.</param>
+        /// <returns>the value at the specified coordinate.</returns>
+        [Obsolete("GetQuick(int row, int column) is deprecated, please use indexer instead.")]
+        public Double GetQuick(int row, int column)
+        {
+            return this[row, column];
+        }
+
+        /// <summary>
         /// Returns the position of the given absolute rank within the (virtual or non-virtual) internal 1-dimensional array. 
         /// Default implementation. Override, if necessary.
         /// </summary>
@@ -353,6 +370,22 @@ namespace Cern.Colt.Matrix.Implementation
         }
 
         /// <summary>
+        /// Sets the matrix cell at coordinate <i>[slice,row,column]</i> to the specified value.
+        /// 
+        /// <p>Provided with invalid parameters this method may access illegal indexes without throwing any exception.
+        /// <b>You should only use this method when you are absolutely sure that the coordinate is within bounds.</b>
+        /// Precondition (unchecked): row&lt;0 || row&gt;=rows() || column&lt;0 || column&gt;=column()</i>.
+        /// </summary>
+        /// <param name="row">the index of the row-coordinate.</param>
+        /// <param name="column">the index of the column-coordinate.</param>
+        /// <param name="value">the value to be filled into the specified cell.</param>
+        [Obsolete("SetQuick(int row, int column, double value) is deprecated, please use indexer instead.")]
+        public void SetQuick(int row, int column, double value)
+        {
+            this[row, column] = value;
+        }
+
+        /// <summary>
         /// Construct and returns a new selection view.
         /// </summary>
         /// <param name="rOffsets">
@@ -367,6 +400,11 @@ namespace Cern.Colt.Matrix.Implementation
         protected override DoubleMatrix2D ViewSelectionLike(int[] rOffsets, int[] cOffsets)
         {
             return new SelectedDenseDoubleMatrix2D(this.Elements, rOffsets, cOffsets, this.Offset);
+        }
+
+        public override string ToString(int row, int column)
+        {
+            return this[row, column].ToString();
         }
     }
 }

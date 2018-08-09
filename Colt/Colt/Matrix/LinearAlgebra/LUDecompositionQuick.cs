@@ -48,7 +48,7 @@ namespace Cern.Colt.Matrix.LinearAlgebra
         #region Property
         public DoubleMatrix2D L
         {
-            get { return lowerTriangular(_lu.Copy()); }
+            get { return LowerTriangular(_lu.Copy()); }
         }
 
         public DoubleMatrix2D LU
@@ -64,7 +64,7 @@ namespace Cern.Colt.Matrix.LinearAlgebra
 
         public DoubleMatrix2D U
         {
-            get { return upperTriangular(_lu.Copy()); }
+            get { return UpperTriangular(_lu.Copy()); }
         }
 
         public Boolean IsNonsingular
@@ -81,6 +81,21 @@ namespace Cern.Colt.Matrix.LinearAlgebra
         {
             get { return LU.Columns; }
         }
+
+        public double[] DoublePivot
+        {
+            get
+            {
+                int m = M;
+                double[] vals = new double[m];
+                for (int i = 0; i < m; i++)
+                {
+                    vals[i] = (double)piv[i];
+                }
+                return vals;
+            }
+        }
+
         #endregion
 
         #region Constructor
@@ -100,7 +115,7 @@ namespace Cern.Colt.Matrix.LinearAlgebra
         #endregion
 
         #region Local Public Methods
-        protected static Boolean isNonsingular(DoubleMatrix2D matrix)
+        protected static Boolean IsMatrixNonsingular(DoubleMatrix2D matrix)
         {
             int m = matrix.Rows;
             int n = matrix.Columns;
@@ -113,7 +128,7 @@ namespace Cern.Colt.Matrix.LinearAlgebra
             return true;
         }
 
-        public void decompose(DoubleMatrix2D A)
+        public void Decompose(DoubleMatrix2D A)
         {
             int CUT_OFF = 10;
             // setup
@@ -218,11 +233,11 @@ namespace Cern.Colt.Matrix.LinearAlgebra
             LU = LU;
         }
 
-        public void decompose(DoubleMatrix2D A, int semiBandwidth)
+        public void Decompose(DoubleMatrix2D A, int semiBandwidth)
         {
             if (!A.IsSquare || semiBandwidth < 0 || semiBandwidth > 2)
             {
-                decompose(A);
+                Decompose(A);
                 return;
             }
             // setup
@@ -257,7 +272,7 @@ namespace Cern.Colt.Matrix.LinearAlgebra
             LU = A;
         }
 
-        public double det()
+        public double Det()
         {
             int m = M;
             int n = N;
@@ -273,7 +288,7 @@ namespace Cern.Colt.Matrix.LinearAlgebra
             return det;
         }
 
-        public void solve(DoubleMatrix1D B)
+        public void Solve(DoubleMatrix1D B)
         {
             //algebra.property().checkRectangular(LU);
            
@@ -323,7 +338,7 @@ namespace Cern.Colt.Matrix.LinearAlgebra
             }
         }
 
-        public void solve(DoubleMatrix2D B)
+        public void Solve(DoubleMatrix2D B)
         {
             int CUT_OFF = 10;
             //algebra.property().checkRectangular(LU);
@@ -427,7 +442,7 @@ namespace Cern.Colt.Matrix.LinearAlgebra
             }
         }
 
-        public String ToString()
+        public override String ToString()
         {
             StringBuilder buf = new StringBuilder();
             String unknown = "Illegal operation or error: ";
@@ -441,7 +456,7 @@ namespace Cern.Colt.Matrix.LinearAlgebra
             catch (ArgumentException exc) { buf.Append(unknown + exc.Message); }
 
             buf.Append("\ndet = ");
-            try { buf.Append(this.det().ToString()); }
+            try { buf.Append(this.Det().ToString()); }
             catch (ArgumentException exc) { buf.Append(unknown + exc.Message); }
 
             buf.Append("\npivot = ");
@@ -458,28 +473,13 @@ namespace Cern.Colt.Matrix.LinearAlgebra
 
             buf.Append("\n\ninverse(A) = ");
             DoubleMatrix2D identity = Cern.Colt.Matrix.DoubleFactory2D.Dense.Identity(LU.Rows);
-            try { this.solve(identity); buf.Append(identity.ToString()); }
+            try { this.Solve(identity); buf.Append(identity.ToString()); }
             catch (ArgumentException exc) { buf.Append(unknown + exc.Message); }
 
             return buf.ToString();
         }
 
-        #endregion
-
-        #region Local Protected Methods
-
-        protected double[] getDoublePivot()
-        {
-            int m = M;
-            double[] vals = new double[m];
-            for (int i = 0; i < m; i++)
-            {
-                vals[i] = (double)piv[i];
-            }
-            return vals;
-        }
-
-        protected DoubleMatrix2D lowerTriangular(DoubleMatrix2D A)
+        public DoubleMatrix2D LowerTriangular(DoubleMatrix2D A)
         {
             int rows = A.Rows;
             int columns = A.Columns;
@@ -497,7 +497,7 @@ namespace Cern.Colt.Matrix.LinearAlgebra
             return A;
         }
 
-        protected DoubleMatrix2D upperTriangular(DoubleMatrix2D A)
+        public DoubleMatrix2D UpperTriangular(DoubleMatrix2D A)
         {
             int rows = A.Rows;
             int columns = A.Columns;
@@ -516,8 +516,12 @@ namespace Cern.Colt.Matrix.LinearAlgebra
 
         #endregion
 
+        #region Local Protected Methods
+
+        #endregion
+
         #region Local Private Methods
-        private double[] xgetDoublePivot()
+        private double[] XGetDoublePivot()
         {
             int m = M;
             double[] vals = new double[m];

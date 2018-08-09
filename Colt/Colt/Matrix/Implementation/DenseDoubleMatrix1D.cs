@@ -377,11 +377,11 @@ namespace Cern.Colt.Matrix.Implementation
         /// <exception cref="ArgumentOutOfRangeException">
         /// If <tt>values.length &lt; size()</tt>.
         /// </exception>
-        public override void ToArray(double[] values)
+        public override void ToArray(ref double[] values)
         {
             if (values.Length < Size) throw new ArgumentOutOfRangeException("values", "values too small");
             if (!IsView) Array.Copy(Elements, 0, values, 0, Elements.Length);
-            else base.ToArray(values);
+            else base.ToArray(ref values);
         }
 
         /// <summary>
@@ -567,6 +567,11 @@ namespace Cern.Colt.Matrix.Implementation
         protected override DoubleMatrix1D ViewSelectionLike(int[] offsets)
         {
             return new SelectedDenseDoubleMatrix1D(Elements, offsets);
+        }
+
+        public override string ToString(int index)
+        {
+            return this[index].ToString();
         }
     }
 }

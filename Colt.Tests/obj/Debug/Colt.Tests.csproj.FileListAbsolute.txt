@@ -11,3 +11,13 @@ C:\Users\Mercury21\Documents\Source\Repos\colt\Colt.Tests\obj\Debug\Colt.Tests.c
 C:\Users\Mercury21\Documents\Source\Repos\colt\Colt.Tests\obj\Debug\Colt.Tests.csproj.CoreCompileInputs.cache
 C:\Users\Mercury21\Source\repos\Colt\Colt.Tests\obj\Debug\Colt.Tests.csprojAssemblyReference.cache
 C:\Users\Mercury21\Source\repos\Colt\Colt.Tests\obj\Debug\Colt.Tests.csproj.CoreCompileInputs.cache
+C:\Users\Mercury21\Source\repos\Colt\Colt.Tests\bin\Debug\Colt.Tests.dll
+C:\Users\Mercury21\Source\repos\Colt\Colt.Tests\bin\Debug\Colt.Tests.pdb
+C:\Users\Mercury21\Source\repos\Colt\Colt.Tests\bin\Debug\Cern.dll
+C:\Users\Mercury21\Source\repos\Colt\Colt.Tests\bin\Debug\nunit.framework.dll
+C:\Users\Mercury21\Source\repos\Colt\Colt.Tests\bin\Debug\Cern.pdb
+C:\Users\Mercury21\Source\repos\Colt\Colt.Tests\bin\Debug\nunit.framework.pdb
+C:\Users\Mercury21\Source\repos\Colt\Colt.Tests\bin\Debug\nunit.framework.xml
+C:\Users\Mercury21\Source\repos\Colt\Colt.Tests\obj\Debug\Colt.Tests.csproj.CopyComplete
+C:\Users\Mercury21\Source\repos\Colt\Colt.Tests\obj\Debug\Colt.Tests.dll
+C:\Users\Mercury21\Source\repos\Colt\Colt.Tests\obj\Debug\Colt.Tests.pdb

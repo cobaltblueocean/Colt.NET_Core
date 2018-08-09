@@ -448,7 +448,7 @@ namespace Cern.Colt.Matrix
         public Object[] ToArray()
         {
             Object[] values = new Object[Size];
-            ToArray(values);
+            ToArray(ref values);
             return values;
         }
 
@@ -460,7 +460,7 @@ namespace Cern.Colt.Matrix
         /// <i>for (int i= 0; i &lt; Size; i++) values[i] = get(i);</i>
         /// </summary>
         /// <exception cref="ArgumentException">if <i>values.Length<Size</i>.</exception>
-        public void ToArray(Object[] values)
+        public void ToArray(ref Object[] values)
         {
             if (values.Length < Size) throw new ArgumentException("values too small");
             for (int i = Size; --i >= 0;)

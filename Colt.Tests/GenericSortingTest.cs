@@ -12,7 +12,10 @@ namespace Colt.Tests
 {
     using System;
 
-    using Matrix.Implementation;
+    using Cern.Colt;
+    using Cern.Colt.Matrix;
+    using Cern.Colt.Matrix.Implementation;
+    using Cern.Colt.Matrix.DoubleAlgorithms;
 
     using NUnit.Framework;
 
@@ -140,8 +143,8 @@ namespace Colt.Tests
                 var p2 = a2.ViewPart(from, from, size - to, size - to);
 
                 const int Column = 0;
-                var s1 = Matrix.DoubleAlgorithms.Sorting.QuickSort.Sort(p1, Column);
-                var s2 = Matrix.DoubleAlgorithms.Sorting.MergeSort.Sort(p2, Column);
+                var s1 = Cern.Colt.Matrix.DoubleAlgorithms.Sorting.QuickSort.Sort(p1, Column);
+                var s2 = Cern.Colt.Matrix.DoubleAlgorithms.Sorting.MergeSort.Sort(p2, Column);
 
                 var v1 = s1.ViewColumn(Column);
                 var sv1 = v1.ToString();

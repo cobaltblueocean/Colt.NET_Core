@@ -77,40 +77,40 @@ namespace Cern.Hep.Aida
         /// <summary>
         ///  Returns the mean of the histogram, as calculated on filling-time projected on the X axis.
         /// </summary>
-        double MeanX();
+        double MeanX { get; }
 
         /// <summary>
         ///  Returns the mean of the histogram, as calculated on filling-time projected on the Y axis.
         /// </summary>
-        double MeanY();
+        double MeanY { get; }
 
         /// <summary> 
         /// Indexes of the in-range bins containing the smallest and largest binHeight(), respectively.
         /// </summary>
         /// <returns><tt>{minBinX,minBinY, maxBinX,maxBinY}</tt>.</returns>
-        int[] MinMaxBins();
+        int[] MinMaxBins { get; }
 
         /// <summary>
         /// Create a projection parallel to the X axis.
         /// Equivalent to <tt>sliceX(UNDERFLOW,OVERFLOW)</tt>.
         /// </summary>
-        IHistogram1D ProjectionX();
+        IHistogram1D ProjectionX { get; }
 
         /// <summary>
         /// Create a projection parallel to the Y axis.
         /// Equivalent to <tt>sliceY(UNDERFLOW,OVERFLOW)</tt>.
         /// </summary>
-        IHistogram1D ProjectionY();
+        IHistogram1D ProjectionY { get; }
 
         /// <summary>
         /// Returns the rms of the histogram as calculated on filling-time projected on the X axis.
         /// </summary>
-        double RmsX();
+        double RmsX { get; }
 
         /// <summary>
         /// Returns the rms of the histogram as calculated on filling-time projected on the Y axis.
         /// </summary>
-        double RmsY();
+        double RmsY { get; }
 
         /// <summary>
         /// Slice parallel to the Y axis at bin indexY and one bin wide.
@@ -147,11 +147,11 @@ namespace Cern.Hep.Aida
         /// <summary>
         /// Return the X axis.
         /// </summary>
-        IAxis XAxis();
+        IAxis XAxis { get; }
 
         /// <summary>
         /// Return the Y axis.
         /// </summary>
-        IAxis YAxis();
+        IAxis YAxis { get; }
     }
 }

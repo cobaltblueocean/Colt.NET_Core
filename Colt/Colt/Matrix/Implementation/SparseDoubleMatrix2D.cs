@@ -39,7 +39,7 @@ namespace Cern.Colt.Matrix.Implementation
             var rows = values.Length;
             var columns = values.Length == 0 ? 0 : values[0].Length;
             Setup(rows, columns);
-            this.elements = new Dictionary<int, double>(rows * (columns / 1000));
+            this.Elements = new Dictionary<int, double>(rows * (columns / 1000));
             Assign(values);
         }
 
@@ -59,7 +59,7 @@ namespace Cern.Colt.Matrix.Implementation
         public SparseDoubleMatrix2D(int rows, int columns)
         {
             Setup(rows, columns);
-            this.elements = new Dictionary<int, double>(rows * (columns / 1000));
+            this.Elements = new Dictionary<int, double>(rows * (columns / 1000));
         }
 
         /// <summary>
@@ -93,14 +93,14 @@ namespace Cern.Colt.Matrix.Implementation
         internal SparseDoubleMatrix2D(int rows, int columns, IDictionary<int, double> elements, int rowZero, int columnZero, int rowStride, int columnStride)
         {
             Setup(rows, columns, rowZero, columnZero, rowStride, columnStride);
-            this.elements = elements;
+            this.Elements = elements;
             this.IsView = true;
         }
 
         /// <summary>
         /// Gets he elements of the matrix.
         /// </summary>
-        internal IDictionary<int, double> elements { get; private set; }
+        internal IDictionary<int, double> Elements { get; private set; }
 
         /// <summary>
         /// Gets or sets the matrix cell at coordinate <tt>[row,column]</tt> to the specified value.
@@ -116,7 +116,7 @@ namespace Cern.Colt.Matrix.Implementation
             get
             {
                 int index = RowZero + (row * RowStride) + ColumnZero + (column * ColumnStride);
-                return elements.ContainsKey(index) ? elements[index] : 0;
+                return Elements.ContainsKey(index) ? Elements[index] : 0;
             }
 
             set
@@ -124,9 +124,9 @@ namespace Cern.Colt.Matrix.Implementation
                 int index = RowZero + (row * RowStride) + ColumnZero + (column * ColumnStride);
 
                 if (value == 0)
-                    this.elements.Remove(index);
+                    this.Elements.Remove(index);
                 else
-                    this.elements[index] = value;
+                    this.Elements[index] = value;
             }
         }
 
@@ -142,7 +142,7 @@ namespace Cern.Colt.Matrix.Implementation
         public override DoubleMatrix2D Assign(double value)
         {
             // overriden for performance only
-            if (!IsView && value == 0) this.elements.Clear();
+            if (!IsView && value == 0) this.Elements.Clear();
             else base.Assign(value);
             return this;
         }
@@ -173,7 +173,7 @@ namespace Cern.Colt.Matrix.Implementation
 
             if (!this.IsView && !other.IsView)
             { // quickest
-                this.elements = new Dictionary<int, double>(other.elements);
+                this.Elements = new Dictionary<int, double>(other.Elements);
                 return this;
             }
 
@@ -211,7 +211,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// </returns>
         public override int Cardinality()
         {
-            return IsView ? base.Cardinality() : this.elements.Count;
+            return IsView ? base.Cardinality() : this.Elements.Count;
         }
 
         /// <summary>
@@ -228,12 +228,12 @@ namespace Cern.Colt.Matrix.Implementation
             if (IsView) base.ForEachNonZero(function);
             else
             {
-                foreach (var e in elements)
+                foreach (var e in Elements)
                 {
                     int i = e.Key / Columns;
                     int j = e.Key & Columns;
                     double r = function(i, j, e.Value);
-                    if (r != e.Value) elements[e.Key] = e.Value;
+                    if (r != e.Value) Elements[e.Key] = e.Value;
                 }
             }
 
@@ -279,7 +279,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// </returns>
         public override IEnumerable<Element> NonZeroElements()
         {
-            foreach (var e in elements) yield return new Element { Row = e.Key / Columns, Column = e.Key & Columns, Value = e.Value };
+            foreach (var e in Elements) yield return new Element { Row = e.Key / Columns, Column = e.Key & Columns, Value = e.Value };
         }
 
         /// <summary>
@@ -299,7 +299,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// </returns>
         protected internal override DoubleMatrix1D Like1D(int size, int offset, int stride)
         {
-            return new SparseDoubleMatrix1D(size, this.elements, offset, stride);
+            return new SparseDoubleMatrix1D(size, this.Elements, offset, stride);
         }
 
         /// <summary>
@@ -316,13 +316,13 @@ namespace Cern.Colt.Matrix.Implementation
             if (other is SelectedSparseDoubleMatrix2D)
             {
                 var otherMatrix = (SelectedSparseDoubleMatrix2D)other;
-                return this.elements == otherMatrix.Elements;
+                return this.Elements == otherMatrix.Elements;
             }
 
             if (other is SparseDoubleMatrix2D)
             {
                 var otherMatrix = (SparseDoubleMatrix2D)other;
-                return this.elements == otherMatrix.elements;
+                return this.Elements == otherMatrix.Elements;
             }
 
             return false;
@@ -361,7 +361,12 @@ namespace Cern.Colt.Matrix.Implementation
         /// </returns>
         protected override DoubleMatrix2D ViewSelectionLike(int[] rowOffsets, int[] columnOffsets)
         {
-            return new SelectedSparseDoubleMatrix2D(this.elements, rowOffsets, columnOffsets, 0);
+            return new SelectedSparseDoubleMatrix2D(this.Elements, rowOffsets, columnOffsets, 0);
+        }
+
+        public override string ToString(int row, int column)
+        {
+            return this[row, column].ToString();
         }
     }
 }

@@ -31,7 +31,7 @@ namespace Cern.Hep.Aida
         /// The number of bins (excluding underflow and overflow) on the axis.
         /// </summary>
         /// <returns></returns>
-        int Bins();
+        int Bins { get; }
 
         /// <summary>
         /// Upper edge of the specified bin.
@@ -58,12 +58,12 @@ namespace Cern.Hep.Aida
         /// Lower axis edge.
         /// </summary>
         /// <returns></returns>
-        double LowerEdge();
+        double LowerEdge { get; }
 
         /// <summary>
         /// Upper axis edge.
         /// </summary>
         /// <returns></returns>
-        double UpperEdge();
+        double UpperEdge { get; }
     }
 }

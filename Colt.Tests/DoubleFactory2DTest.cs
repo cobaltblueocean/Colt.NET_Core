@@ -10,11 +10,11 @@
 
 namespace Colt.Tests
 {
-    using Matrix;
-    using Matrix.LinearAlgebra;
+    using Cern.Colt.Matrix;
+    using Cern.Colt.Matrix.LinearAlgebra;
 
     using NUnit.Framework;
-    using Colt.Matrix.Implementation;
+    using Cern.Colt.Matrix.Implementation;
 
     /// <summary>
     /// Unit test for <see cref="DoubleFactory2D"/>.

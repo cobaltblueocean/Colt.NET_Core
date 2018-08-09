@@ -9,13 +9,13 @@
 
 namespace Colt.Tests
 {
-    using Colt.Matrix;
-    using Colt.Matrix.Implementation;
+    using Cern.Colt.Matrix;
+    using Cern.Colt.Matrix.Implementation;
 
-    using Matrix.LinearAlgebra;
+    using Cern.Colt.Matrix.LinearAlgebra;
 
     using NUnit.Framework;
-    using Colt.Function;
+    using Cern.Colt.Function;
 
     /// <summary>
     /// Test for 2-d matrix of doubles.
@@ -31,7 +31,7 @@ namespace Colt.Tests
         {
             var a = DoubleFactory2D.Dense.Ascending(5, 4);
             DoubleMatrix1D d = a.ViewColumn(0);
-            Assert.AreEqual(5, d.Size());
+            Assert.AreEqual(5, d.Size);
             Assert.AreEqual(1, d[0]);
             Assert.AreEqual(5, d[1]);
             Assert.AreEqual(9, d[2]);

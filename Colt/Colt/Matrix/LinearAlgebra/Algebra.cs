@@ -30,7 +30,7 @@
         {
             return x.ZDotProduct(y);
         }
-        
+
         /// <summary>
         /// Linear algebraic matrix-vector multiplication; <tt>z = A * y</tt>.
         /// </summary>
@@ -41,7 +41,7 @@
         /// The vector y.
         /// </param>
         /// <returns>
-        /// <tt>z</tt>; a new vector with <tt>z.size()==A.rows()</tt>.
+        /// <tt>z</tt>; a new vector with <tt>z.Size==A.rows()</tt>.
         /// </returns>
         public static DoubleMatrix1D Mult(DoubleMatrix2D a, DoubleMatrix1D y)
         {
@@ -77,8 +77,8 @@
         /// <returns>A (for convenience only).</returns>
         public static DoubleMatrix2D MultOuter(DoubleMatrix1D x, DoubleMatrix1D y, DoubleMatrix2D A)
         {
-            int rows = x.Size();
-            int columns = y.Size();
+            int rows = x.Size;
+            int columns = y.Size;
             if (A == null) A = x.Like2D(rows, columns);
             if (A.Rows != rows || A.Columns != columns) throw new ArgumentException();
 
@@ -99,7 +99,7 @@
         /// </returns>
         public static double Norm1(DoubleMatrix1D x)
         {
-            if (x.Size() == 0) return 0;
+            if (x.Size == 0) return 0;
             return x.Aggregate(BinaryFunctions.Plus, Math.Abs);
         }
 
@@ -146,12 +146,12 @@
         public static double NormInfinity(DoubleMatrix1D x)
         {
             // fix for bug reported by T.J.Hunt@open.ac.uk
-            if (x.Size() == 0) return 0;
+            if (x.Size == 0) return 0;
             return x.Aggregate(Math.Max, Math.Abs);
-            //	if (x.size()==0) return 0;
+            //	if (x.Size==0) return 0;
             //	return x.aggregate(cern.Cern.Jet.math.Functions.plus,cern.Cern.Jet.math.Functions.abs);
             //	double max = 0;
-            //	for (int i = x.size(); --i >= 0; ) {
+            //	for (int i = x.Size; --i >= 0; ) {
             //		max = Math.max(max, x.getQuick(i));
             //	}
             //	return max;
@@ -205,6 +205,26 @@
         }
 
         /// <summary>
+        /// Modifies the matrix to be a lower trapezoidal matrix.
+
+        /// </summary>
+        /// <param name="A"></param>
+        /// <returns><tt>A</tt> (for convenience only).</returns>
+        public static DoubleMatrix2D TrapezoidalLower(DoubleMatrix2D A)
+        {
+            int rows = A.Rows;
+            int columns = A.Columns;
+            for (int r = rows; --r >= 0;)
+            {
+                for (int c = columns; --c >= 0;)
+                {
+                    if (r < c) A[r, c] = 0;
+                }
+            }
+            return A;
+        }
+
+        /// <summary>
         /// Returns sqrt(a^2 + b^2) without under/overflow.
         /// </summary>
         /// <param name="a">
@@ -216,7 +236,7 @@
         /// <returns>
         /// Sqrt(a^2 + b^2) without under/overflow.
         /// </returns>
-        internal static double hypot(double a, double b)
+        internal static double Hypot(double a, double b)
         {
             double r;
             if (Math.Abs(a) > Math.Abs(b))
@@ -235,6 +255,18 @@
             }
 
             return r;
+        }
+
+        /// <summary>
+        /// Returns sqrt(a^2 + b^2) without under/overflow.
+        /// </summary>
+        /// <returns></returns>
+        public static Cern.Colt.Function.DoubleDoubleFunction HypotFunction()
+        {
+            return new Cern.Colt.Function.DoubleDoubleFunction((a, b) =>
+            {
+                return Hypot(a, b);
+            });
         }
 
         /// <summary>
@@ -261,7 +293,7 @@
         public static DoubleMatrix1D Permute(DoubleMatrix1D A, int[] indexes, double[] work)
         {
             // check validity
-            int size = A.Size();
+            int size = A.Size;
             if (indexes.Length != size) throw new IndexOutOfRangeException("invalid permutation");
 
             /*
@@ -277,7 +309,7 @@
             }
             else
             {
-                A.ToArray(work);
+                A.ToArray(ref work);
             }
             for (int i = size; --i >= 0;) A[i] = work[indexes[i]];
             return A;
@@ -320,16 +352,16 @@
         }
     );
 
-    cern.Cern.Colt.GenericPermuting.permute(indexes, swapper, work, null);
-	return A;
-}
+            Cern.Colt.GenericPermuting.permute(indexes, swapper, work, null);
+            return A;
+        }
 
-public static DoubleMatrix2D Solve(DoubleMatrix2D A, DoubleMatrix2D B)
+        public static DoubleMatrix2D Solve(DoubleMatrix2D A, DoubleMatrix2D B)
         {
             LUDecomposition lu = new LUDecomposition(A);
             QRDecomposition qr = new QRDecomposition(B);
 
-            return (A.Rows == A.Columns ? (lu(A).solve(B)) : (qr(A).solve(B)));
+            return (A.Rows == A.Columns ? (lu.Solve(B)) : (qr.Solve(B)));
         }
 
     }

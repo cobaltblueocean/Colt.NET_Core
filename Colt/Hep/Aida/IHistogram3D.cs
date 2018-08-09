@@ -56,57 +56,57 @@ namespace Cern.Hep.Aida
         /// <summary>
         ///  Returns the mean of the histogram, as calculated on filling-time projected on the X axis.
         /// </summary> 
-        double MeanX();
-        
+        double MeanX { get; }
+
         /// <summary>
         ///  Returns the mean of the histogram, as calculated on filling-time projected on the Y axis.
         /// </summary> 
-        double MeanY();
-        
+        double MeanY { get; }
+
         /// <summary>
         ///  Returns the mean of the histogram, as calculated on filling-time projected on the Z axis.
         /// </summary> 
-        double MeanZ();
-        
+        double MeanZ { get; }
+
         /// <summary> 
         /// Indexes of the in-range bins containing the smallest and largest binHeight(), respectively.
         /// </summary> 
         /// <returns><tt>{minBinX,minBinY,minBinZ, maxBinX,maxBinY,maxBinZ}</tt>.</returns>
-        int[] MinMaxBins();
-        
+        int[] MinMaxBins { get; }
+
         /// <summary>
         /// Create a projection parallel to the XY plane.
         /// Equivalent to <tt>sliceXY(UNDERFLOW,OVERFLOW)</tt>.
         /// </summary>
-        IHistogram2D ProjectionXY();
-        
+        IHistogram2D ProjectionXY { get; }
+
         /// <summary>
         /// Create a projection parallel to the XZ plane.
         /// Equivalent to <tt>sliceXZ(UNDERFLOW,OVERFLOW)</tt>.
         /// </summary>
-        IHistogram2D ProjectionXZ();
-        
+        IHistogram2D ProjectionXZ { get; }
+
         /// <summary>
         /// Create a projection parallel to the YZ plane.
         /// Equivalent to <tt>sliceYZ(UNDERFLOW,OVERFLOW)</tt>.
         /// </summary>
-        IHistogram2D ProjectionYZ();
-        
+        IHistogram2D ProjectionYZ { get; }
+
         /// <summary>
         /// Returns the rms of the histogram as calculated on filling-time projected on the X axis.
         /// </summary>
-        double RmsX();
-        
+        double RmsX { get; }
+
         /// <summary>
         /// Returns the rms of the histogram as calculated on filling-time projected on the Y axis.
         /// </summary>
-        double RmsY();
-        
+        double RmsY { get; }
+
         /// <summary>
         /// Returns the rms of the histogram as calculated on filling-time projected on the Z axis.
         /// </summary>
-        double RmsZ();
-        
+        double RmsZ { get; }
+
         /// <summary>
         /// Create a slice parallel to the XY plane at bin indexZ and one bin wide.
         /// Equivalent to <tt>sliceXY(indexZ,indexZ)</tt>.
@@ -149,17 +149,17 @@ namespace Cern.Hep.Aida
         /// <summary>
         /// Return the X axis.
         /// </summary>
-        IAxis XAxis();
-        
+        IAxis XAxis { get; }
+
         /// <summary>
         /// Return the Y axis.
         /// </summary>
-        IAxis YAxis();
-        
+        IAxis YAxis { get; }
+
         /// <summary>
         /// Return the Z axis.
         /// </summary>
-        IAxis ZAxis();
+        IAxis ZAxis { get; }
 
     }
 }

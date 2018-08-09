@@ -54,24 +54,24 @@ namespace Cern.Hep.Aida
         /// Returns the mean of the whole histogram as calculated on filling-time.
         /// </summary>
         /// <returns></returns>
-        double Mean();
+        double Mean { get; }
 
         /// <summary>
         /// Indexes of the in-range bins containing the smallest and largest binHeight(), respectively.
         /// </summary>
         /// <returns><i>{minBin,maxBin}</i>.</returns>
-        int[] MinMaxBins();
+        int[] MinMaxBins { get; }
 
         /// <summary>
         /// Returns the rms of the whole histogram as calculated on filling-time.
         /// </summary>
         /// <returns></returns>
-        double Rms();
+        double Rms { get; }
 
         /// <summary>
         /// Returns the X Axis.
         /// </summary>
         /// <returns></returns>
-        IAxis XAxis();
+        IAxis XAxis { get; }
     }
 }

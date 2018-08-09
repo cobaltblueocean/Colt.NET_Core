@@ -50,7 +50,7 @@ namespace Cern.Colt.Matrix.Implementation
         public SparseDoubleMatrix1D(int size)
         {
             Setup(size);
-            this.elements = new Dictionary<int, double>();
+            this.Elements = new Dictionary<int, double>();
         }
 
         /// <summary>
@@ -74,14 +74,14 @@ namespace Cern.Colt.Matrix.Implementation
         internal SparseDoubleMatrix1D(int size, IDictionary<int, double> elements, int offset, int stride)
         {
             Setup(size, offset, stride);
-            this.elements = elements;
+            this.Elements = elements;
             IsView = true;
         }
 
         /// <summary>
         /// Gets the elements of the matrix.
         /// </summary>
-        internal IDictionary<int, double> elements { get; private set; }
+        internal IDictionary<int, double> Elements { get; private set; }
 
         /// <summary>
         /// Get or sets the matrix cell value at coordinate <tt>index</tt>.
@@ -94,16 +94,16 @@ namespace Cern.Colt.Matrix.Implementation
             get
             {
                 int i = Zero + (index * Stride);
-                return elements.ContainsKey(i) ? elements[i] : 0;
+                return Elements.ContainsKey(i) ? Elements[i] : 0;
             }
 
             set
             {
                 int i = Zero + (index * Stride);
                 if (value == 0)
-                    this.elements.Remove(i);
+                    this.Elements.Remove(i);
                 else
-                    this.elements[i] = value;
+                    this.Elements[i] = value;
             }
         }
 
@@ -123,7 +123,7 @@ namespace Cern.Colt.Matrix.Implementation
         {
             double result = double.NaN;
             bool first = true;
-            foreach (var e in elements.Values)
+            foreach (var e in Elements.Values)
             {
                 if (first)
                 {
@@ -151,7 +151,7 @@ namespace Cern.Colt.Matrix.Implementation
         public override DoubleMatrix1D Assign(double value)
         {
             // overriden for performance only
-            if (!IsView && value == 0) this.elements.Clear();
+            if (!IsView && value == 0) this.Elements.Clear();
             else base.Assign(value);
             return this;
         }
@@ -168,10 +168,10 @@ namespace Cern.Colt.Matrix.Implementation
         /// </returns>
         public override DoubleMatrix1D Assign(DoubleFunction function)
         {
-            var indices = new int[elements.Count];
-            elements.Keys.CopyTo(indices, 0);
+            var indices = new int[Elements.Count];
+            Elements.Keys.CopyTo(indices, 0);
             foreach (var i in indices)
-                elements[i] = function(elements[i]);
+                Elements[i] = function(Elements[i]);
             return this;
         }
 
@@ -183,7 +183,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// </returns>
         public override int Cardinality()
         {
-            return IsView ? base.Cardinality() : elements.Count;
+            return IsView ? base.Cardinality() : Elements.Count;
         }
 
         /// <summary>
@@ -203,7 +203,7 @@ namespace Cern.Colt.Matrix.Implementation
             bool fillValueList = valueList != null;
             if (fillIndexList) indexList.Clear();
             if (fillValueList) valueList.Clear();
-            foreach (var e in elements)
+            foreach (var e in Elements)
             {
                 if (fillIndexList) indexList.Add(e.Key);
                 if (fillValueList) valueList.Add(e.Value);
@@ -271,13 +271,13 @@ namespace Cern.Colt.Matrix.Implementation
             if (other is SelectedSparseDoubleMatrix1D)
             {
                 var otherMatrix = (SelectedSparseDoubleMatrix1D)other;
-                return this.elements == otherMatrix.Elements;
+                return this.Elements == otherMatrix.Elements;
             }
 
             if (other is SparseDoubleMatrix1D)
             {
                 var otherMatrix = (SparseDoubleMatrix1D)other;
-                return this.elements == otherMatrix.elements;
+                return this.Elements == otherMatrix.Elements;
             }
 
             return false;
@@ -294,7 +294,12 @@ namespace Cern.Colt.Matrix.Implementation
         /// </returns>
         protected override DoubleMatrix1D ViewSelectionLike(int[] offsets)
         {
-            return new SelectedSparseDoubleMatrix1D(this.elements, offsets);
+            return new SelectedSparseDoubleMatrix1D(this.Elements, offsets);
+        }
+
+        public override string ToString(int index)
+        {
+            return this[index].ToString();
         }
     }
 }

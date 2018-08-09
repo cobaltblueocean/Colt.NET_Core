@@ -460,6 +460,35 @@ namespace Cern.Jet.Math
             }
 
             /// <summary>
+            /// Constructs the function <i>g( h(a,b) )</i>.
+            /// </summary>
+            /// <param name="g">a unary function.</param>
+            /// <param name="h">a binary function.</param>
+            /// <returns>the unary function <i>g( h(a,b) )</i>.</returns>
+            public static DoubleDoubleFunction Chain(DoubleFunction g, DoubleDoubleFunction h)
+            {
+                return new DoubleDoubleFunction((a, b) => 
+                {
+                    return g(h(a, b)); 
+                });
+            }
+
+            /// <summary>
+            /// Constructs the function <i>g( h(a) )</i>.
+            /// </summary>
+            /// <param name="g">a unary function.</param>
+            /// <param name="h">a unary function.</param>
+            /// <returns>the unary function <i>g( h(a) )</i>.</returns>
+            public static DoubleFunction Chain(DoubleFunction g, DoubleFunction h)
+            {
+                return new DoubleFunction((a) =>
+                {
+
+                    return g(h(a));
+                });
+            }
+
+            /// <summary>
             /// Constructs a function that returns <i>a - b*constant</i>.
             /// <i>a</i> and <i>b</i> are variables, <i>constant</i> is fixed.
             /// </summary>

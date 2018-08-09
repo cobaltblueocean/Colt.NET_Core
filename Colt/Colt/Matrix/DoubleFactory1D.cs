@@ -60,9 +60,9 @@ namespace Cern.Colt.Matrix
         public DoubleMatrix1D AppendColumns(DoubleMatrix1D a, DoubleMatrix1D b)
         {
             // concatenate
-            DoubleMatrix1D matrix = Make(a.Size() + b.Size());
-            matrix.ViewPart(0, a.Size()).Assign(a);
-            matrix.ViewPart(a.Size(), b.Size()).Assign(b);
+            DoubleMatrix1D matrix = Make(a.Size + b.Size);
+            matrix.ViewPart(0, a.Size).Assign(a);
+            matrix.ViewPart(a.Size, b.Size).Assign(b);
             return matrix;
         }
 
@@ -130,14 +130,14 @@ namespace Cern.Colt.Matrix
             if (parts.Length == 0) return Make(0);
 
             int size = 0;
-            for (int i = 0; i < parts.Length; i++) size += parts[i].Size();
+            for (int i = 0; i < parts.Length; i++) size += parts[i].Size;
 
             DoubleMatrix1D vector = Make(size);
             size = 0;
             for (int i = 0; i < parts.Length; i++)
             {
-                vector.ViewPart(size, parts[i].Size()).Assign(parts[i]);
-                size += parts[i].Size();
+                vector.ViewPart(size, parts[i].Size).Assign(parts[i]);
+                size += parts[i].Size;
             }
 
             return vector;
@@ -222,7 +222,7 @@ namespace Cern.Colt.Matrix
         /// </returns>
         public DoubleMatrix1D Repeat(DoubleMatrix1D a, int repeat)
         {
-            int size = a.Size();
+            int size = a.Size;
             DoubleMatrix1D matrix = Make(repeat * size);
             for (int i = repeat; --i >= 0; )
                 matrix.ViewPart(size * i, size).Assign(a);
@@ -242,7 +242,7 @@ namespace Cern.Colt.Matrix
         /// </returns>
         public List<double> ToList(DoubleMatrix1D values)
         {
-            int size = values.Size();
+            int size = values.Size;
             var list = new List<double>(size);
             for (int i = size; --i >= 0; ) list.Add(values[i]);
             return list;

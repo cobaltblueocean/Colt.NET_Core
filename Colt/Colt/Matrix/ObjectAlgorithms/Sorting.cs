@@ -263,7 +263,7 @@ namespace Cern.Colt.Matrix.ObjectAlgorithms
             int[] sliceIndexes = new int[matrix.Slices]; // indexes to reorder instead of matrix itself
             for (int i = sliceIndexes.Length; --i >= 0;) sliceIndexes[i] = i;
 
-            ObjectMatrix1D sliceView = matrix.ViewRow(row).viewColumn(column);
+            ObjectMatrix1D sliceView = matrix.ViewRow(row).ViewColumn(column);
             IntComparator comp = new IntComparator((a, b) =>
             {
                 IComparable av = (IComparable)(sliceView[a]);

@@ -210,7 +210,7 @@
                     {
                         //if (!(A.getQuick(slice,row,column) == value)) return false;
                         //if (System.Math.Abs(value - A.getQuick(slice,row,column)) > epsilon) return false;
-                        double x = A.getQuick(slice, row, column);
+                        double x = A[slice, row, column];
                         double diff = System.Math.Abs(value - x);
                         if ((diff != diff) && ((value != value && x != x) || value == x)) diff = 0;
                         if (!(diff <= epsilon)) return false;
@@ -248,8 +248,8 @@
                     {
                         //if (!(A.getQuick(slice,row,column) == B.getQuick(slice,row,column))) return false;
                         //if (System.Math.Abs(A.getQuick(slice,row,column) - B.getQuick(slice,row,column)) > epsilon) return false;
-                        double x = A.getQuick(slice, row, column);
-                        double value = B.getQuick(slice, row, column);
+                        double x = A[slice, row, column];
+                        double value = B[slice, row, column];
                         double diff = System.Math.Abs(value - x);
                         if ((diff != diff) && ((value != value && x != x) || value == x)) diff = 0;
                         if (!(diff <= epsilon)) return false;

@@ -89,14 +89,14 @@ namespace Cern.Colt.Matrix.Implementation
                 //if (debug) if (slice<0 || slice>=slices || row<0 || row>=rows || column<0 || column>=columns) throw new IndexOutOfRangeException("slice:"+slice+", row:"+row+", column:"+column);
                 //return elements.Get(index(slice,row,column));
                 //manually inlined:
-                return Elements[offset + sliceOffsets[SliceZero + slice * SliceStride] + rowOffsets[RowZero + row * RowStride] + columnOffsets[ColumnZero + column * ColumnStride]];
+                return Elements[Offset + SliceOffsets[SliceZero + slice * SliceStride] + RowOffsets[RowZero + row * RowStride] + ColumnOffsets[ColumnZero + column * ColumnStride]];
             }
             set
             {
                 //if (debug) if (slice<0 || slice>=slices || row<0 || row>=rows || column<0 || column>=columns) throw new IndexOutOfRangeException("slice:"+slice+", row:"+row+", column:"+column);
                 //int index =	index(slice,row,column);
                 //manually inlined:
-                int index = offset + sliceOffsets[SliceZero + slice * SliceStride] + rowOffsets[RowZero + row * RowStride] + columnOffsets[ColumnZero + column * ColumnStride];
+                int index = Offset + SliceOffsets[SliceZero + slice * SliceStride] + RowOffsets[RowZero + row * RowStride] + ColumnOffsets[ColumnZero + column * ColumnStride];
                 if (value == null)
                     this.Elements.Remove(index);
                 else
@@ -107,9 +107,9 @@ namespace Cern.Colt.Matrix.Implementation
         /// <summary>
         /// The offsets of the visible cells of this matrix.
         /// </summary>
-        protected int[] sliceOffsets;
-        protected int[] rowOffsets;
-        protected int[] columnOffsets;
+        protected int[] SliceOffsets;
+        protected int[] RowOffsets;
+        protected int[] ColumnOffsets;
 
         private double MinLoadFactor;
         private double MaxLoadFactor;
@@ -117,7 +117,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <summary>
         /// The offset.
         /// </summary>
-        protected int offset;
+        protected int Offset;
 
         /// <summary>
         /// Constructs a matrix with a copy of the given values.
@@ -350,6 +350,11 @@ namespace Cern.Colt.Matrix.Implementation
         protected override ObjectMatrix3D ViewSelectionLike(int[] sliceOffsets, int[] rowOffsets, int[] columnOffsets)
         {
             return new SelectedSparseObjectMatrix3D(this.Elements, sliceOffsets, rowOffsets, columnOffsets, 0);
+        }
+
+        public override string ToString(int slice, int row, int column)
+        {
+            return this[slice, row, column].ToString();
         }
     }
 }

@@ -57,14 +57,14 @@ namespace Cern.Colt.Matrix.Implementation
         /// <summary>
         /// The offsets of the visible cells of this matrix.
         /// </summary>
-        protected int[] sliceOffsets;
-        protected int[] rowOffsets;
-        protected int[] columnOffsets;
+        protected int[] SliceOffsets;
+        protected int[] RowOffsets;
+        protected int[] ColumnOffsets;
 
         /// <summary>
         /// The offset.
         /// </summary>
-        protected int offset;
+        protected int Offset;
 
         /// <summary>
         /// Get or set value coordinate with the indexes
@@ -112,11 +112,11 @@ namespace Cern.Colt.Matrix.Implementation
 
             this.Elements = elements;
 
-            this.sliceOffsets = sliceOffsets;
-            this.rowOffsets = rowOffsets;
-            this.columnOffsets = columnOffsets;
+            this.SliceOffsets = sliceOffsets;
+            this.RowOffsets = rowOffsets;
+            this.ColumnOffsets = columnOffsets;
 
-            this.offset = offset;
+            this.Offset = offset;
 
             this.IsView = true;
         }
@@ -129,7 +129,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <returns>the position.</returns>
         protected new int ColumnOffset(int absRank)
         {
-            return columnOffsets[absRank];
+            return ColumnOffsets[absRank];
         }
 
         /// <summary>
@@ -140,7 +140,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <returns>the position.</returns>
         protected new int RowOffset(int absRank)
         {
-            return rowOffsets[absRank];
+            return RowOffsets[absRank];
         }
 
         /// <summary>
@@ -151,7 +151,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <returns>the position.</returns>
         protected new int SliceOffset(int absRank)
         {
-            return sliceOffsets[absRank];
+            return SliceOffsets[absRank];
         }
 
         /// <summary>
@@ -205,7 +205,7 @@ namespace Cern.Colt.Matrix.Implementation
         {
             //return this.offset + base.index(slice,row,column);
             //manually inlined:
-            return this.offset + sliceOffsets[SliceZero + slice * SliceStride] + rowOffsets[RowZero + row * RowStride] + columnOffsets[ColumnZero + column * ColumnStride];
+            return this.Offset + SliceOffsets[SliceZero + slice * SliceStride] + RowOffsets[RowZero + row * RowStride] + ColumnOffsets[ColumnZero + column * ColumnStride];
         }
 
         /// <summary>
@@ -271,7 +271,7 @@ namespace Cern.Colt.Matrix.Implementation
             this.SliceStride = 1;
             this.RowStride = 1;
             this.ColumnStride = 1;
-            this.offset = 0;
+            this.Offset = 0;
         }
 
         /// <summary>
@@ -284,13 +284,13 @@ namespace Cern.Colt.Matrix.Implementation
 
             // swap offsets
             int[][] offsets = new int[3][];
-            offsets[0] = this.sliceOffsets;
-            offsets[1] = this.rowOffsets;
-            offsets[2] = this.columnOffsets;
+            offsets[0] = this.SliceOffsets;
+            offsets[1] = this.RowOffsets;
+            offsets[2] = this.ColumnOffsets;
 
-            this.sliceOffsets = offsets[axis0];
-            this.rowOffsets = offsets[axis1];
-            this.columnOffsets = offsets[axis2];
+            this.SliceOffsets = offsets[axis0];
+            this.RowOffsets = offsets[axis1];
+            this.ColumnOffsets = offsets[axis2];
 
             return this;
         }
@@ -317,13 +317,13 @@ namespace Cern.Colt.Matrix.Implementation
 
             int viewRowZero = SliceZero;
             int viewColumnZero = RowZero;
-            int viewOffset = this.offset + ColumnOffset(ColumnRank(column));
+            int viewOffset = this.Offset + ColumnOffset(ColumnRank(column));
 
             int viewRowStride = this.SliceStride;
             int viewColumnStride = this.RowStride;
 
-            int[] viewRowOffsets = this.sliceOffsets;
-            int[] viewColumnOffsets = this.rowOffsets;
+            int[] viewRowOffsets = this.SliceOffsets;
+            int[] viewColumnOffsets = this.RowOffsets;
 
             return new SelectedSparseDoubleMatrix2D(viewRows, viewColumns, this.Elements, viewRowZero, viewColumnZero, viewRowStride, viewColumnStride, viewRowOffsets, viewColumnOffsets, viewOffset);
         }
@@ -350,13 +350,13 @@ namespace Cern.Colt.Matrix.Implementation
 
             int viewRowZero = SliceZero;
             int viewColumnZero = ColumnZero;
-            int viewOffset = this.offset + RowOffset(RowRank(row));
+            int viewOffset = this.Offset + RowOffset(RowRank(row));
 
             int viewRowStride = this.SliceStride;
             int viewColumnStride = this.ColumnStride;
 
-            int[] viewRowOffsets = this.sliceOffsets;
-            int[] viewColumnOffsets = this.columnOffsets;
+            int[] viewRowOffsets = this.SliceOffsets;
+            int[] viewColumnOffsets = this.ColumnOffsets;
 
             return new SelectedSparseDoubleMatrix2D(viewRows, viewColumns, this.Elements, viewRowZero, viewColumnZero, viewRowStride, viewColumnStride, viewRowOffsets, viewColumnOffsets, viewOffset);
         }
@@ -395,15 +395,20 @@ namespace Cern.Colt.Matrix.Implementation
 
             int viewRowZero = RowZero;
             int viewColumnZero = ColumnZero;
-            int viewOffset = this.offset + SliceOffset(SliceRank(slice));
+            int viewOffset = this.Offset + SliceOffset(SliceRank(slice));
 
             int viewRowStride = this.RowStride;
             int viewColumnStride = this.ColumnStride;
 
-            int[] viewRowOffsets = this.rowOffsets;
-            int[] viewColumnOffsets = this.columnOffsets;
+            int[] viewRowOffsets = this.RowOffsets;
+            int[] viewColumnOffsets = this.ColumnOffsets;
 
             return new SelectedSparseDoubleMatrix2D(viewRows, viewColumns, this.Elements, viewRowZero, viewColumnZero, viewRowStride, viewColumnStride, viewRowOffsets, viewColumnOffsets, viewOffset);
+        }
+
+        public override string ToString(int slice, int row, int column)
+        {
+            return this[slice, row, column].ToString();
         }
     }
 }

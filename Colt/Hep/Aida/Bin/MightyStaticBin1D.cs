@@ -267,8 +267,8 @@ namespace Cern.Hep.Aida.Bin
             int maxOrder = System.Math.Min(k, GetMaxOrderForSumOfPowers());
             List<Double> sumOfPows = new List<Double>(maxOrder + 1);
             sumOfPows.Add(Size);
-            sumOfPows.Add(Sum());
-            sumOfPows.Add(SumOfSquares());
+            sumOfPows.Add(Sum);
+            sumOfPows.Add(SumOfSquares);
             for (int i = 3; i <= maxOrder; i++) sumOfPows.Add(GetSumOfPowers(i));
 
             return Descriptive.Moment(k, c, Size, sumOfPows.ToArray());
@@ -306,8 +306,8 @@ namespace Cern.Hep.Aida.Bin
             //checkOrder(k);	
             if (k == -1) return SumOfInversions;
             if (k == 0) return Size;
-            if (k == 1) return Sum();
-            if (k == 2) return SumOfSquares();
+            if (k == 1) return Sum;
+            if (k == 2) return SumOfSquares;
 
             return this.SumOfPowers[k - 3];
         }

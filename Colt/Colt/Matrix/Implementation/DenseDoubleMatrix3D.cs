@@ -509,6 +509,11 @@ namespace Cern.Colt.Matrix.Implementation
             return SliceZero + slice * SliceStride + RowZero + row * RowStride + ColumnZero + column * ColumnStride;
         }
 
+        public override string ToString(int slice, int row, int column)
+        {
+            return this[slice, row, column].ToString();
+        }
+
         #endregion
     }
 }

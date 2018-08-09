@@ -417,12 +417,12 @@ namespace Cern.Colt.Matrix.Implementation
         /// <returns>
         /// A string representations of all cells.
         /// </returns>
-        protected string[] FormatRow(DoubleMatrix1D vector)
+        protected string[] FormatRow(AbstractMatrix1D vector) 
         {
             int s = vector.Size;
             var strings = new string[s];
             for (int i = 0; i < s; i++)
-                strings[i] = vector[i].ToString();
+                strings[i] = vector.ToString(i);
             return strings;
         }
 

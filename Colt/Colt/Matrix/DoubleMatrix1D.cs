@@ -131,6 +131,7 @@ namespace Cern.Colt.Matrix
             return a;
         }
 
+
         /// <summary>
         /// Sets all cells to the state specified by <tt>values</tt>.
         /// <tt>values</tt> is required to have the same number of cells as the receiver.
@@ -566,7 +567,7 @@ namespace Cern.Colt.Matrix
         public virtual double[] ToArray()
         {
             var values = new double[Size];
-            ToArray(values);
+            ToArray(ref values);
             return values;
         }
 
@@ -580,7 +581,7 @@ namespace Cern.Colt.Matrix
         /// <exception cref="ArgumentOutOfRangeException">
         /// If <tt>values.length &lt; size()</tt>.
         /// </exception>
-        public virtual void ToArray(double[] values)
+        public virtual void ToArray(ref double[] values)
         {
             if (values.Length < Size) throw new ArgumentOutOfRangeException("values", "values too small");
             for (int i = Size; --i >= 0;)

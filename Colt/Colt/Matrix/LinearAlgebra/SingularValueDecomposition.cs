@@ -10,7 +10,7 @@
 // </copyright>
 // <summary>
 //   For an <tt>m x n</tt> matrix <tt>A</tt> with <tt>m &gt;= n</tt>, the singular value decomposition is an <tt>m x n</tt> orthogonal matrix <tt>U</tt>, an <tt>n x n</tt> diagonal matrix <tt>S</tt>, and an <tt>n x n</tt> orthogonal matrix <tt>V</tt> so that <tt>A = U*S*V'</tt>.
-//   <para> The singular values, <tt>sigma[k] = S[k][k]</tt>, are ordered so that <tt>sigma[0] &gt;= sigma[1] &gt;= ... &gt;= sigma[n-1]</tt>.</para>
+//   <para> The singular values, <tt>sigma[k] = S[k][k]</tt>, are ordered so that <tt>sigma[0] &gt;= sigma[1] &gt;= .. &gt;= sigma[n-1]</tt>.</para>
 //   <para> The singular value decomposition always exists, so the constructor will never fail.  The matrix condition number and the effective numerical rank can be computed from this decomposition.</para>
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
@@ -26,7 +26,7 @@ namespace Cern.Colt.Matrix.LinearAlgebra
 
     /// <summary>
     /// For an <tt>m x n</tt> matrix <tt>A</tt> with <tt>m >= n</tt>, the singular value decomposition is an <tt>m x n</tt> orthogonal matrix <tt>U</tt>, an <tt>n x n</tt> diagonal matrix <tt>S</tt>, and an <tt>n x n</tt> orthogonal matrix <tt>V</tt> so that <tt>A = U*S*V'</tt>.///
-    /// <para> The singular values, <tt>sigma[k] = S[k][k]</tt>, are ordered so that <tt>sigma[0] >= sigma[1] >= ... >= sigma[n-1]</tt>.</para>
+    /// <para> The singular values, <tt>sigma[k] = S[k][k]</tt>, are ordered so that <tt>sigma[0] >= sigma[1] >= .. >= sigma[n-1]</tt>.</para>
     /// <para> The singular value decomposition always exists, so the constructor will never fail.  The matrix condition number and the effective numerical rank can be computed from this decomposition.</para>
     /// </summary>
     public class SingularValueDecomposition
@@ -67,7 +67,7 @@ namespace Cern.Colt.Matrix.LinearAlgebra
         /// </exception>
         public SingularValueDecomposition(DoubleMatrix1D arg)
         {
-            batchSVD(DoubleFactory2D.Dense.Make(arg.ToArray(), arg.Size()), true, true, true);
+            batchSVD(DoubleFactory2D.Dense.Make(arg.ToArray(), arg.Size), true, true, true);
         }
 
         /// <summary>
@@ -156,7 +156,7 @@ namespace Cern.Colt.Matrix.LinearAlgebra
         /// </returns>
         public DoubleMatrix1D Encode(DoubleMatrix1D d)
         {
-            return _u.ZMult(d.Size() < _m ? DoubleFactory1D.Sparse.AppendColumns(d, DoubleFactory1D.Sparse.Make(_m - d.Size())) : d, null, 1, 0, true);
+            return _u.ZMult(d.Size < _m ? DoubleFactory1D.Sparse.AppendColumns(d, DoubleFactory1D.Sparse.Make(_m - d.Size)) : d, null, 1, 0, true);
         }
 
         /// <summary>
@@ -361,18 +361,18 @@ namespace Cern.Colt.Matrix.LinearAlgebra
         /// </param>
         public void Update(DoubleMatrix1D c, bool wantV)
         {
-            int nRows = c.Size() - _m;
+            int nRows = c.Size - _m;
             if (nRows > 0)
             {
                 _u = DoubleFactory2D.Dense.AppendRows(_u, new SparseDoubleMatrix2D(nRows, _n));
-                _m = c.Size();
+                _m = c.Size;
             }
             else if (nRows < 0)
             {
                 c = DoubleFactory1D.Sparse.AppendColumns(c, DoubleFactory1D.Sparse.Make(-nRows));
             }
 
-            var d = DoubleFactory2D.Dense.Make(c.ToArray(), c.Size());
+            var d = DoubleFactory2D.Dense.Make(c.ToArray(), c.Size);
 
             // l = U'd is the eigencoding of d
             var l = _u.ViewDice().ZMult(d, null);
@@ -466,7 +466,7 @@ namespace Cern.Colt.Matrix.LinearAlgebra
                     // Compute 2-norm of k-th column without under/overflow.
                     _s[k] = 0;
                     for (int i = k; i < _m; i++)
-                        _s[k] = Algebra.hypot(_s[k], a[i][k]);
+                        _s[k] = Algebra.Hypot(_s[k], a[i][k]);
                     if (_s[k] != 0.0)
                     {
                         if (a[k][k] < 0.0)
@@ -511,7 +511,7 @@ namespace Cern.Colt.Matrix.LinearAlgebra
                     // Compute 2-norm without under/overflow.
                     e[k] = 0;
                     for (int i = k + 1; i < _n; i++)
-                        e[k] = Algebra.hypot(e[k], e[i]);
+                        e[k] = Algebra.Hypot(e[k], e[i]);
                     if (e[k] != 0.0)
                     {
                         if (e[k + 1] < 0.0)
@@ -634,7 +634,7 @@ namespace Cern.Colt.Matrix.LinearAlgebra
                 // kase = 1     if s(p) and e[k-1] are negligible and k<p
                 // kase = 2     if s(k) is negligible and k<p
                 // kase = 3     if e[k-1] is negligible, k<p, and
-                //              s(k), ..., s(p) are not negligible (qr step).
+                //              s(k), .., s(p) are not negligible (qr step).
                 // kase = 4     if e(p-1) is negligible (convergence).
                 for (k = p - 2; k >= -1; k--)
                 {
@@ -694,7 +694,7 @@ namespace Cern.Colt.Matrix.LinearAlgebra
                             e[p - 2] = 0.0;
                             for (int j = p - 2; j >= k; j--)
                             {
-                                double t = Algebra.hypot(_s[j], f);
+                                double t = Algebra.Hypot(_s[j], f);
                                 double cs = _s[j] / t;
                                 double sn = f / t;
                                 _s[j] = t;
@@ -725,7 +725,7 @@ namespace Cern.Colt.Matrix.LinearAlgebra
                             e[k - 1] = 0.0;
                             for (int j = k; j < p; j++)
                             {
-                                double t = Algebra.hypot(_s[j], f);
+                                double t = Algebra.Hypot(_s[j], f);
                                 double cs = _s[j] / t;
                                 double sn = f / t;
                                 _s[j] = t;
@@ -777,7 +777,7 @@ namespace Cern.Colt.Matrix.LinearAlgebra
                             // Chase zeros.
                             for (int j = k; j < p - 1; j++)
                             {
-                                double t = Algebra.hypot(f, g);
+                                double t = Algebra.Hypot(f, g);
                                 double cs = f / t;
                                 double sn = g / t;
                                 if (j != k)
@@ -796,7 +796,7 @@ namespace Cern.Colt.Matrix.LinearAlgebra
                                     }
                                 }
 
-                                t = Algebra.hypot(f, g);
+                                t = Algebra.Hypot(f, g);
                                 cs = f / t;
                                 sn = g / t;
                                 _s[j] = t;

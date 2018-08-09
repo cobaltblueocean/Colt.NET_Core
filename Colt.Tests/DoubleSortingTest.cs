@@ -12,8 +12,8 @@ namespace Colt.Tests
 {
     using System;
 
-    using Matrix;
-    using Matrix.Implementation;
+    using Cern.Colt.Matrix;
+    using Cern.Colt.Matrix.Implementation;
 
     using NUnit.Framework;
 
@@ -29,7 +29,7 @@ namespace Colt.Tests
         [Test]
         public void Zdemo1()
         {
-            var sort = Matrix.DoubleAlgorithms.Sorting.QuickSort;
+            var sort = Cern.Colt.Matrix.DoubleAlgorithms.Sorting.QuickSort;
             DoubleMatrix2D matrix = DoubleFactory2D.Dense.Descending(4, 3);
             var sorted = sort.Sort(
                 matrix,
@@ -50,7 +50,7 @@ namespace Colt.Tests
         [Test]
         public void Zdemo3()
         {
-            var sort = Matrix.DoubleAlgorithms.Sorting.QuickSort;
+            var sort = Cern.Colt.Matrix.DoubleAlgorithms.Sorting.QuickSort;
             double[] values = { 0.5, 1.5, 2.5, 3.5 };
             DoubleMatrix1D matrix = new DenseDoubleMatrix1D(values);
             DoubleMatrix1D sorted = sort.Sort(

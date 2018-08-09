@@ -47,7 +47,7 @@ namespace Cern.Colt.Matrix.DoubleAlgorithms
         /// </returns>
         public DoubleMatrix1D Sort(DoubleMatrix1D vector)
         {
-            var indexes = new int[vector.Size()]; // row indexes to reorder instead of matrix itself
+            var indexes = new int[vector.Size]; // row indexes to reorder instead of matrix itself
             for (int i = indexes.Length; --i >= 0;)
                 indexes[i] = i;
 
@@ -80,7 +80,7 @@ namespace Cern.Colt.Matrix.DoubleAlgorithms
         /// </returns>
         public DoubleMatrix1D Sort(DoubleMatrix1D vector, DoubleComparator c)
         {
-            var indexes = new int[vector.Size()]; // row indexes to reorder instead of matrix itself
+            var indexes = new int[vector.Size]; // row indexes to reorder instead of matrix itself
             for (int i = indexes.Length; --i >= 0;) indexes[i] = i;
 
             RunSort(indexes, 0, indexes.Length, (a, b) => c(vector[a], vector[b]));

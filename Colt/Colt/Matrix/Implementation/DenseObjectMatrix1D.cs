@@ -45,18 +45,43 @@ namespace Cern.Colt.Matrix.Implementation
         /// </summary>
         protected internal Object[] Elements { get; private set; }
 
+        /// <summary>
+        /// Gets or sets the matrix cell at coordinate <i>index</i> to the specified value.
+        /// 
+        /// <p>Provided with invalid parameters this method may return invalid objects without throwing any exception.
+        /// <b>You should only use this method when you are absolutely sure that the coordinate is within bounds.</b>
+        /// Precondition (unchecked): <i>index&lt;0 || index&gt;=size()</i>.
+        /// </summary>
+        /// <param name="index">the index of the cell.</param>
+        /// <returns>the value of the specified cell.</returns>
         public override object this[int index]
         {
-            get => throw new NotImplementedException();
-            set => throw new NotImplementedException();
+            get
+            {
+                //if (debug) if (index<0 || index>=size) checkIndex(index);
+                //return elements[index(index)];
+                // manually inlined:
+                // return Elements[Zero + index * Stride];
+                return Elements[Index(index)];
+            }
+            set
+            {
+                //if (debug) if (index<0 || index>=size) checkIndex(index);
+                //elements[index(index)] = value;
+                // manually inlined:
+                // Elements[Zero + index * Stride] = value;
+                Elements[Index(index)] = value;
+
+            }
         }
 
         /// <summary>
         /// Constructs a matrix with a copy of the given values.
         /// The values are copiedd So subsequent changes in <i>values</i> are not reflected in the matrix, and vice-versa.
-        ///
-        /// @param values The values to be filled into the new matrix.
         /// </summary>
+        /// <param name="values">The values to be filled into the new matrix.</param>
+        /// <returns></returns>
+        /// <exception cref=""></exception>
         public DenseObjectMatrix1D(Object[] values) : this(values.Length)
         {
 
@@ -66,9 +91,10 @@ namespace Cern.Colt.Matrix.Implementation
         /// <summary>
         /// Constructs a matrix with a given number of cells.
         /// All entries are initially <i>0</i>.
-        /// @param size the number of cells the matrix shall have.
-        /// @throws ArgumentException if <i>size<0</i>.
         /// </summary>
+        /// <param name="size">the number of cells the matrix shall have.</param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentException">if size :lt; 0.</exception>
         public DenseObjectMatrix1D(int size)
         {
             Setup(size);
@@ -77,12 +103,12 @@ namespace Cern.Colt.Matrix.Implementation
 
         /// <summary>
         /// Constructs a matrix view with the given parameters.
-        /// @param size the number of cells the matrix shall have.
-        /// @param elements the cells.
-        /// @param zero the index of the first element.
-        /// @param stride the number of indexes between any two elements, i.ed <i>index(i+1)-index(i)</i>.
-        /// @throws ArgumentException if <i>size<0</i>.
         /// </summary>
+        /// <param name="size">the number of cells the matrix shall have.</param>
+        /// <param name="elements">the cells.</param>
+        /// <param name="zero">the index of the first element.</param>
+        /// <param name="stride">the number of indexes between any two elements, i.ed <i>index(i+1)-index(i)</i>.</param>
+        /// <exception cref="ArgumentException">if size :lt; 0.</exception>
         public DenseObjectMatrix1D(int size, Object[] elements, int zero, int stride)
         {
             Setup(size, zero, stride);
@@ -95,11 +121,10 @@ namespace Cern.Colt.Matrix.Implementation
         /// <i>values</i> is required to have the same number of cells as the receiver.
         /// <p>
         /// The values are copiedd So subsequent changes in <i>values</i> are not reflected in the matrix, and vice-versa.
-        ///
-        /// @param    values the values to be filled into the cells.
-        /// @return <i>this</i> (for convenience only).
-        /// @throws ArgumentException if <i>values.Length != size()</i>.
         /// </summary>
+        /// <param name="values">the values to be filled into the cells.</param>
+        /// <returns><i>this</i> (for convenience only).</returns>
+        /// <exception cref="ArgumentException">if <i>values.Length != size()</i>.</exception>
         public new ObjectMatrix1D Assign(Object[] values)
         {
             if (!IsView)
@@ -122,16 +147,15 @@ namespace Cern.Colt.Matrix.Implementation
         /// <pre>
         /// // change each cell to its sine
         /// matrix =   0.5      1.5      2.5       3.5 
-        /// matrix.assign(cern.jet.math.Functions.sin);
+        /// matrix.assign(Cern.Jet.Math.Functions.sin);
         /// -->
         /// matrix ==  0.479426 0.997495 0.598472 -0.350783
         /// </pre>
         /// For further examples, see the <a href="package-summary.html#FunctionObjects">package doc</a>.
-        ///
-        /// @param function a function object taking as argument the current cell's value.
-        /// @return <i>this</i> (for convenience only).
-        /// @see cern.jet.math.Functions
         /// </summary>
+        /// <param name="function">a function object taking as argument the current cell's value.</param>
+        /// <returns><i>this</i> (for convenience only).</returns>
+        /// <see cref="Cern.Jet.Math.Functions"></see>
         public new ObjectMatrix1D Assign(Cern.Colt.Function.ObjectFunction<Object> function)
         {
             int s = Stride;
@@ -152,11 +176,10 @@ namespace Cern.Colt.Matrix.Implementation
         /// Replaces all cell values of the receiver with the values of another matrix.
         /// Both matrices must have the same size.
         /// If both matrices share the same cells (as is the case if they are views derived from the same matrix) and intersect in an ambiguous way, then replaces <i>as if</i> using an intermediate auxiliary deep copy of <i>other</i>.
-        ///
-        /// @param     source   the source matrix to copy from (may be identical to the receiver).
-        /// @return <i>this</i> (for convenience only).
-        /// @throws	ArgumentException if <i>size() != other.Count</i>.
         /// </summary>
+        /// <param name="source">the source matrix to copy from (may be identical to the receiver).</param>
+        /// <returns><i>this</i> (for convenience only).</returns>
+        /// <exception cref="ArgumentException">if <i>size() != other.Count</i>.</exception>
         public new ObjectMatrix1D Assign(ObjectMatrix1D source)
         {
             // overriden for performance only
@@ -208,7 +231,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// // assign x[i] = x[i]<sup>y[i]</sup>
         /// m1 = 0 1 2 3;
         /// m2 = 0 2 4 6;
-        /// m1.assign(m2, cern.jet.math.Functions.pow);
+        /// m1.assign(m2, Cern.Jet.Math.Functions.pow);
         /// -->
         /// m1 == 1 1 16 729
         ///
@@ -220,14 +243,12 @@ namespace Cern.Colt.Matrix.Implementation
         /// );
         /// </pre>
         /// For further examples, see the <a href="package-summary.html#FunctionObjects">package doc</a>.
-        ///
-        /// @param y the secondary matrix to operate on.
-        /// @param function a function object taking as first argument the current cell's value of <i>this</i>,
-        /// and as second argument the current cell's value of <i>y</i>,
-        /// @return <i>this</i> (for convenience only).
-        /// @throws	ArgumentException if <i>size() != y.Count</i>.
-        /// @see cern.jet.math.Functions
         /// </summary>
+        /// <param name="y">the secondary matrix to operate on.</param>
+        /// <param name="function">a function object taking as first argument the current cell's value of <i>this</i>, and as second argument the current cell's value of <i>y</i>,</param>
+        /// <returns><i>this</i> (for convenience only).</returns>
+        /// <exception cref="ArgumentException">if <i>size() != y.Count</i>.</exception>
+        /// <see cref="Cern.Jet.Math.Functions"/>
         public new ObjectMatrix1D Assign(ObjectMatrix1D y, Cern.Colt.Function.ObjectObjectFunction<Object> function)
         {
             // overriden for performance only
@@ -262,17 +283,13 @@ namespace Cern.Colt.Matrix.Implementation
         /// <p>Provided with invalid parameters this method may return invalid objects without throwing any exception.
         /// <b>You should only use this method when you are absolutely sure that the coordinate is within bounds.</b>
         /// Precondition (unchecked): <i>index&lt;0 || index&gt;=size()</i>.
-        ///
-        /// @param     index   the index of the cell.
-        /// @return    the value of the specified cell.
         /// </summary>
+        /// <param name="index">the index of the cell.</param>
+        /// <returns>the value of the specified cell.</returns>
         [Obsolete("GetQuick(int index) is deprecated, please use indexer instead.")]
         public Object GetQuick(int index)
         {
-            //if (debug) if (index<0 || index>=size) checkIndex(index);
-            //return elements[index(index)];
-            // manually inlined:
-            return Elements[Zero + index * Stride];
+            return this[index];
         }
 
         /// <summary>
@@ -296,9 +313,8 @@ namespace Cern.Colt.Matrix.Implementation
         /// <summary>
         /// Returns the position of the element with the given relative rank within the (virtual or non-virtual) internal 1-dimensional array.
         /// You may want to override this method for performance.
-        ///
-        /// @param     rank   the rank of the element.
         /// </summary>
+        /// <param name="rank">the rank of the element.</param>
         protected internal override int Index(int rank)
         {
             // overriden for manual inlining only
@@ -311,10 +327,9 @@ namespace Cern.Colt.Matrix.Implementation
         /// For example, if the receiver is an instance of type <i>DenseObjectMatrix1D</i> the new matrix must also be of type <i>DenseObjectMatrix1D</i>,
         /// if the receiver is an instance of type <i>SparseObjectMatrix1D</i> the new matrix must also be of type <i>SparseObjectMatrix1D</i>, etc.
         /// In general, the new matrix should have internal parametrization as similar as possible.
-        ///
-        /// @param size the number of cell the matrix shall have.
-        /// @return  a new empty matrix of the same dynamic type.
         /// </summary>
+        /// <param name="size">the number of cell the matrix shall have.</param>
+        /// <returns>a new empty matrix of the same dynamic type.</returns>
         public override ObjectMatrix1D Like(int size)
         {
             return new DenseObjectMatrix1D(size);
@@ -324,11 +339,10 @@ namespace Cern.Colt.Matrix.Implementation
         /// Construct and returns a new 2-d matrix <i>of the corresponding dynamic type</i>, entirelly independent of the receiver.
         /// For example, if the receiver is an instance of type <i>DenseObjectMatrix1D</i> the new matrix must be of type <i>DenseObjectMatrix2D</i>,
         /// if the receiver is an instance of type <i>SparseObjectMatrix1D</i> the new matrix must be of type <i>SparseObjectMatrix2D</i>, etc.
-        ///
-        /// @param rows the number of rows the matrix shall have.
-        /// @param columns the number of columns the matrix shall have.
-        /// @return  a new matrix of the corresponding dynamic type.
         /// </summary>
+        /// <param name="rows">the number of rows the matrix shall have.</param>
+        /// <param name="columns">the number of columns the matrix shall have.</param>
+        /// <returns>a new matrix of the corresponding dynamic type.</returns>
         public override ObjectMatrix2D Like2D(int rows, int columns)
         {
             return new DenseObjectMatrix2D(rows, columns);
@@ -340,23 +354,21 @@ namespace Cern.Colt.Matrix.Implementation
         /// <p>Provided with invalid parameters this method may access illegal indexes without throwing any exception.
         /// <b>You should only use this method when you are absolutely sure that the coordinate is within bounds.</b>
         /// Precondition (unchecked): <i>index&lt;0 || index&gt;=size()</i>.
-        ///
-        /// @param     index   the index of the cell.
-        /// @param    value the value to be filled into the specified cell.
         /// </summary>
+        /// <param name="index">the index of the cell.</param>
+        /// <param name="value">the value to be filled into the specified cell.</param>
         [Obsolete("SetQuick(int index, Object value) is deprecated, please use indexer instead.")]
         public void SetQuick(int index, Object value)
         {
-            //if (debug) if (index<0 || index>=size) checkIndex(index);
-            //elements[index(index)] = value;
-            // manually inlined:
-            Elements[Zero + index * Stride] = value;
+            this[index] = value;
         }
 
         /// <summary>
         /// Swaps each element <i>this[i]</i> with <i>other[i]</i>.
-        /// @throws ArgumentException if <i>size() != other.Count</i>.
         /// </summary>
+        /// <param name=""></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentException">if <i>size() != other.Count</i>.</exception>
         public new void Swap(ObjectMatrix1D other)
         {
             // overriden for performance only
@@ -392,26 +404,29 @@ namespace Cern.Colt.Matrix.Implementation
         /// The values are copiedd So subsequent changes in <i>values</i> are not reflected in the matrix, and vice-versa.
         /// After this call returns the array <i>values</i> has the form 
         /// <br>
-        /// <i>for (int i=0; i < size(); i++) values[i] = get(i);</i>
-        ///
-        /// @throws ArgumentException if <i>values.Length < size()</i>.
+        /// <i>for (int i=0; i &lt; size(); i++) values[i] = get(i);</i>
         /// </summary>
-        public new void ToArray(Object[] values)
+        /// <exception cref="ArgumentException">if <i>values.Length &lt; size()</i>.</exception>
+        public new void ToArray(ref Object[] values)
         {
             if (values.Length < Size) throw new ArgumentException("values too small");
             if (!this.IsView) Array.Copy(this.Elements, 0, values, 0, this.Elements.Length);
-            else base.ToArray(values);
+            else base.ToArray(ref values);
         }
 
         /// <summary>
         /// Construct and returns a new selection view.
-        ///
-        /// @param offsets the offsets of the visible elements.
-        /// @return  a new view.
         /// </summary>
+        /// <param name="offsets">the offsets of the visible elements.</param>
+        /// <returns>a new view.</returns>
         protected override ObjectMatrix1D ViewSelectionLike(int[] offsets)
         {
             return new SelectedDenseObjectMatrix1D(this.Elements, offsets);
+        }
+
+        public override string ToString(int index)
+        {
+            return this[index].ToString();
         }
     }
 }

@@ -618,69 +618,69 @@ namespace Cern.Hep.Aida.Bin
 
         #region Local Public Methods
         [MethodImpl(MethodImplOptions.Synchronized)]
-        public void addAllOfFromTo(List<Double> list, int from, int to)
+        public new void AddAllOfFromTo(List<Double> list, int from, int to)
         {
             base.AddAllOfFromTo(list, from, to);
             if (this.finder != null) this.finder.AddAllOfFromTo(list, from, to);
         }
 
         [MethodImpl(MethodImplOptions.Synchronized)]
-        public void clear()
+        public override void Clear()
         {
             base.Clear();
             if (this.finder != null) this.finder.Clear();
         }
 
         [MethodImpl(MethodImplOptions.Synchronized)]
-        public Object clone()
+        public new Object Clone()
         {
             QuantileBin1D clone = (QuantileBin1D)base.Clone();
             if (this.finder != null) clone.finder = (IDoubleQuantileFinder)clone.finder.Clone();
             return clone;
         }
 
-        public String compareWith(AbstractBin1D other)
+        public new String CompareWith(AbstractBin1D other)
         {
             StringBuilder buf = new StringBuilder(base.CompareWith(other));
             if (other is QuantileBin1D) {
                 QuantileBin1D q = (QuantileBin1D)other;
-                buf.Append("25%, 50% and 75% Quantiles: " + RelError(quantile(0.25), q.quantile(0.25)) + ", " + RelError(quantile(0.5), q.quantile(0.5)) + ", " + RelError(quantile(0.75), q.quantile(0.75)));
-                buf.Append("\nquantileInverse(mean): " + RelError(quantileInverse(Mean()), q.quantileInverse(q.Mean())) + " %");
+                buf.Append("25%, 50% and 75% Quantiles: " + RelError(Quantile(0.25), q.Quantile(0.25)) + ", " + RelError(Quantile(0.5), q.Quantile(0.5)) + ", " + RelError(Quantile(0.75), q.Quantile(0.75)));
+                buf.Append("\nquantileInverse(mean): " + RelError(QuantileInverse(Mean()), q.QuantileInverse(q.Mean())) + " %");
                 buf.Append("\n");
             }
             return buf.ToString();
         }
 
-        public double median()
+        public double Median()
         {
-            return quantile(0.5);
+            return Quantile(0.5);
         }
 
         [MethodImpl(MethodImplOptions.Synchronized)]
-        public double quantile(double phi)
+        public double Quantile(double phi)
         {
-            return quantiles(new List<Double>(new double[] { phi }))[0];
+            return Quantiles(new List<Double>(new double[] { phi }))[0];
         }
 
         [MethodImpl(MethodImplOptions.Synchronized)]
-        public double quantileInverse(double element)
+        public double QuantileInverse(double element)
         {
             return finder.Phi(element);
         }
 
         [MethodImpl(MethodImplOptions.Synchronized)]
-        public List<Double> quantiles(List<Double> phis)
+        public List<Double> Quantiles(List<Double> phis)
         {
             return finder.QuantileElements(phis);
         }
 
-        public int sizeOfRange(double minElement, double maxElement)
+        public int SizeOfRange(double minElement, double maxElement)
         {
-            return (int)System.Math.Round(Size * (quantileInverse(maxElement) - quantileInverse(minElement)));
+            return (int)System.Math.Round(Size * (QuantileInverse(maxElement) - QuantileInverse(minElement)));
         }
 
         [MethodImpl(MethodImplOptions.Synchronized)]
-        public MightyStaticBin1D[] splitApproximately(List<Double> percentages, int k)
+        public MightyStaticBin1D[] SplitApproximately(List<Double> percentages, int k)
         {
             /*
                percentages = [p0, p1, p2, ..d, p(size-2), p(size-1)]
@@ -723,7 +723,7 @@ namespace Cern.Hep.Aida.Bin
             }
 
             // compute quantile elements;
-            double[] quantiles = quantiles(new List<Double>(subBins)).ToArray();
+            double[] quantiles = Quantiles(new List<Double>(subBins)).ToArray();
 
             // collect summary statistics for each bin.
             // one bin's statistics are the integrated statistics of its subintervals.
@@ -811,17 +811,17 @@ namespace Cern.Hep.Aida.Bin
         }
 
         [MethodImpl(MethodImplOptions.Synchronized)]
-        public MightyStaticBin1D[] splitApproximately(Hep.Aida.IAxis axis, int k)
+        public MightyStaticBin1D[] SplitApproximately(Hep.Aida.IAxis axis, int k)
         {
-            List<Double> percentages = new List<Double>(new Hep.Aida.Ref.Converter().edges(axis));
+            List<Double> percentages = new List<Double>(new Hep.Aida.Ref.Converter().Edges(axis));
             percentages.Insert(0, Double.NegativeInfinity);
             percentages.Add(Double.PositiveInfinity);
             for (int i = percentages.Count; --i >= 0;)
             {
-                percentages[i] = quantileInverse(percentages[i]);
+                percentages[i] = QuantileInverse(percentages[i]);
             }
 
-            return splitApproximately(percentages, k);
+            return SplitApproximately(percentages, k);
         }
         /**
          * Returns a String representation of the receiver.
@@ -830,9 +830,9 @@ namespace Cern.Hep.Aida.Bin
         public override String ToString()
         {
             StringBuilder buf = new StringBuilder(base.ToString());
-            buf.Append("25%, 50%, 75% Quantiles: " + quantile(0.25) + ", " + quantile(0.5) + ", " + quantile(0.75));
+            buf.Append("25%, 50%, 75% Quantiles: " + Quantile(0.25) + ", " + Quantile(0.5) + ", " + Quantile(0.75));
             //buf.Append("10%, 25%, 50%, 75%, 90% Quantiles: "+quantile(0.1) + ", "+ quantile(0.25) + ", "+ quantile(0.5) + ", " + quantile(0.75) + ", " + quantile(0.9));
-            buf.Append("\nquantileInverse(median): " + quantileInverse(median()));
+            buf.Append("\nquantileInverse(median): " + QuantileInverse(Median()));
             buf.Append("\n");
             return buf.ToString();
         }

@@ -63,6 +63,12 @@ namespace Cern.Colt.Matrix.Implementation
         /// </summary>
         internal Object[] Elements { get; private set; }
 
+        /// <summary>
+        /// Gets or sets the matrix cell value at coordinate <i>[row,column]</i>.
+        /// </summary>
+        /// <param name="row">the index of the row-coordinate.</param>
+        /// <param name="column">the index of the column-coordinate.</param>
+        /// <returns>the value at the specified coordinate.</returns>
         public override object this[int row, int column]
         {
             get
@@ -87,10 +93,9 @@ namespace Cern.Colt.Matrix.Implementation
         /// and have exactly the same number of columns in every row.
         /// <p>
         /// The values are copiedd So subsequent changes in <i>values</i> are not reflected in the matrix, and vice-versa.
-        ///
-        /// @param values The values to be filled into the new matrix.
-        /// @throws ArgumentException if <i>for any 1 &lt;= row &lt; values.Length: values[row].Length != values[row-1].Length</i>.
         /// </summary>
+        /// <param name="values">The values to be filled into the new matrix.</param>
+        /// <exception cref="ArgumentException">if <i>for any 1 &lt;= row &lt; values.Length: values[row].Length != values[row-1].Length</i>.</exception>
         public DenseObjectMatrix2D(Object[][] values) : this(values.Length, values.Length == 0 ? 0 : values.GetLength(1))
         {
             Assign(values);
@@ -99,10 +104,11 @@ namespace Cern.Colt.Matrix.Implementation
         /// <summary>
         /// Constructs a matrix with a given number of rows and columns.
         /// All entries are initially <i>0</i>.
-        /// @param rows the number of rows the matrix shall have.
-        /// @param columns the number of columns the matrix shall have.
-        /// @throws	ArgumentException if <i>rows<0 || columns<0 || (Object)columns*rows > int.MaxValue</i>.
         /// </summary>
+        /// <param name="rows">the number of rows the matrix shall have.</param>
+        /// <param name="columns">the number of columns the matrix shall have.</param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentException">if <i>rows &lt; 0 || columns &lt; 0 || (Object)columns * rows > int.MaxValue</i>.</exception>
         public DenseObjectMatrix2D(int rows, int columns)
         {
             Setup(rows, columns);
@@ -111,15 +117,15 @@ namespace Cern.Colt.Matrix.Implementation
 
         /// <summary>
         /// Constructs a view with the given parameters.
-        /// @param rows the number of rows the matrix shall have.
-        /// @param columns the number of columns the matrix shall have.
-        /// @param elements the cells.
-        /// @param rowZero the position of the first element.
-        /// @param columnZero the position of the first element.
-        /// @param rowStride the number of elements between two rows, i.ed <i>index(i+1,j)-index(i,j)</i>.
-        /// @param columnStride the number of elements between two columns, i.ed <i>index(i,j+1)-index(i,j)</i>.
-        /// @throws	ArgumentException if <i>rows<0 || columns<0 || (Object)columns*rows > int.MaxValue</i> or flip's are illegal.
         /// </summary>
+        /// <param name="rows">the number of rows the matrix shall have.</param>
+        /// <param name="columns">the number of columns the matrix shall have.</param>
+        /// <param name="elements">the cells.</param>
+        /// <param name="rowZero">the position of the first element.</param>
+        /// <param name="columnZero">the position of the first element.</param>
+        /// <param name="rowStride">the number of elements between two rows, i.ed <i>index(i+1,j)-index(i,j)</i>.</param>
+        /// <param name="columnStride">the number of elements between two columns, i.ed <i>index(i,j+1)-index(i,j)</i>.</param>
+        /// <exception cref="ArgumentException">if <i>rows &lt; 0 || columns &lt; 0 || (Object)columns * rows > int.MaxValue</i> or flip's are illegal.</exception>
         public DenseObjectMatrix2D(int rows, int columns, Object[] elements, int rowZero, int columnZero, int rowStride, int columnStride)
         {
             Setup(rows, columns, rowZero, columnZero, rowStride, columnStride);
@@ -133,11 +139,10 @@ namespace Cern.Colt.Matrix.Implementation
         /// and have exactly the same number of rows and columns as the receiver.
         /// <p>
         /// The values are copiedd So subsequent changes in <i>values</i> are not reflected in the matrix, and vice-versa.
-        ///
-        /// @param    values the values to be filled into the cells.
-        /// @return <i>this</i> (for convenience only).
-        /// @throws ArgumentException if <i>values.Length != rows() || for any 0 &lt;= row &lt; rows(): values[row].Length != columns()</i>.
         /// </summary>
+        /// <param name="values">the values to be filled into the cells.</param>
+        /// <returns><i>this</i> (for convenience only).</returns>
+        /// <exception cref="ArgumentException">if <i>values.Length != rows() || for any 0 &lt;= row &lt; rows(): values[row].Length != columns()</i>.</exception>
         public new ObjectMatrix2D Assign(Object[][] values)
         {
             if (!this.IsView)
@@ -169,18 +174,18 @@ namespace Cern.Colt.Matrix.Implementation
         /// 2.5 3.5
         ///
         /// // change each cell to its sine
-        /// matrix.assign(cern.jet.math.Functions.sin);
+        /// matrix.assign(Cern.Jet.Math.Functions.sin);
         /// -->
         /// 2 x 2 matrix
         /// 0.479426  0.997495 
         /// 0.598472 -0.350783
         /// </pre>
         /// For further examples, see the <a href="package-summary.html#FunctionObjects">package doc</a>.
-        ///
-        /// @param function a function object taking as argument the current cell's value.
-        /// @return <i>this</i> (for convenience only).
-        /// @see cern.jet.math.Functions
         /// </summary>
+        /// <param name="function">a function object taking as argument the current cell's value.</param>
+        /// <param name=""><i>this</i> (for convenience only).</param>
+        /// <returns></returns>
+        /// <see cref="Cern.Jet.Math.Functions"></see>
         public new ObjectMatrix2D Assign(Cern.Colt.Function.ObjectFunction<Object> function)
         {
             Object[] elems = this.Elements;
@@ -206,11 +211,10 @@ namespace Cern.Colt.Matrix.Implementation
         /// Replaces all cell values of the receiver with the values of another matrix.
         /// Both matrices must have the same number of rows and columns.
         /// If both matrices share the same cells (as is the case if they are views derived from the same matrix) and intersect in an ambiguous way, then replaces <i>as if</i> using an intermediate auxiliary deep copy of <i>other</i>.
-        ///
-        /// @param     source   the source matrix to copy from (may be identical to the receiver).
-        /// @return <i>this</i> (for convenience only).
-        /// @throws	ArgumentException if <i>columns() != source.columns() || rows() != source.rows()</i>
         /// </summary>
+        /// <param name="source">the source matrix to copy from (may be identical to the receiver).</param>
+        /// <returns><i>this</i> (for convenience only).</returns>
+        /// <exception cref="ArgumentException">if <i>columns() != source.columns() || rows() != source.rows()</i></exception>
         public new ObjectMatrix2D Assign(ObjectMatrix2D source)
         {
             // overriden for performance only
@@ -276,21 +280,19 @@ namespace Cern.Colt.Matrix.Implementation
         /// 0 2 
         /// 4 6
         ///
-        /// m1.assign(m2, cern.jet.math.Functions.pow);
+        /// m1.assign(m2, Cern.Jet.Math.Functions.pow);
         /// -->
         /// m1 == 2 x 2 matrix
         ///          1   1 
         /// 16 729
         /// </pre>
         /// For further examples, see the <a href="package-summary.html#FunctionObjects">package doc</a>.
-        ///
-        /// @param y the secondary matrix to operate on.
-        /// @param function a function object taking as first argument the current cell's value of <i>this</i>,
-        /// and as second argument the current cell's value of <i>y</i>,
-        /// @return <i>this</i> (for convenience only).
-        /// @throws	ArgumentException if <i>columns() != other.columns() || rows() != other.rows()</i>
-        /// @see cern.jet.math.Functions
         /// </summary>
+        /// <param name="y">the secondary matrix to operate on.</param>
+        /// <param name="function">a function object taking as first argument the current cell's value of <i>this</i>, and as second argument the current cell's value of <i>y</i>,</param>
+        /// <returns><i>this</i> (for convenience only).</returns>
+        /// <exception cref="ArgumentException">if <i>columns() != other.columns() || rows() != other.rows()</i></exception>
+        /// <see cref="Cern.Jet.Math.Functions"/>
         public new ObjectMatrix2D Assign(ObjectMatrix2D y, Cern.Colt.Function.ObjectObjectFunction<Object> function)
         {
             // overriden for performance only
@@ -333,11 +335,10 @@ namespace Cern.Colt.Matrix.Implementation
         /// <p>Provided with invalid parameters this method may return invalid objects without throwing any exception.
         /// <b>You should only use this method when you are absolutely sure that the coordinate is within bounds.</b>
         /// Precondition (unchecked): <i>0 &lt;= column &lt; columns() && 0 &lt;= row &lt; rows()</i>.
-        ///
-        /// @param     row   the index of the row-coordinate.
-        /// @param     column   the index of the column-coordinate.
-        /// @return    the value at the specified coordinate.
         /// </summary>
+        /// <param name="row">the index of the row-coordinate.</param>
+        /// <param name="column">the index of the column-coordinate.</param>
+        /// <returns>the value at the specified coordinate.</returns>
         [Obsolete("GetQuick(int index, int column) is deprecated, please use indexer instead.")]
         public Object GetQuick(int row, int column)
         {
@@ -370,10 +371,9 @@ namespace Cern.Colt.Matrix.Implementation
 
         /// <summary>
         /// Returns the position of the given coordinate within the (virtual or non-virtual) internal 1-dimensional arrayd 
-        ///
-        /// @param     row   the index of the row-coordinate.
-        /// @param     column   the index of the column-coordinate.
         /// </summary>
+        /// <param name="row">the index of the row-coordinate.</param>
+        /// <param name="column">the index of the column-coordinate.</param>
         protected new int Index(int row, int column)
         {
             // return base.index(row,column);
@@ -386,11 +386,10 @@ namespace Cern.Colt.Matrix.Implementation
         /// For example, if the receiver is an instance of type <i>DenseObjectMatrix2D</i> the new matrix must also be of type <i>DenseObjectMatrix2D</i>,
         /// if the receiver is an instance of type <i>SparseObjectMatrix2D</i> the new matrix must also be of type <i>SparseObjectMatrix2D</i>, etc.
         /// In general, the new matrix should have internal parametrization as similar as possible.
-        ///
-        /// @param rows the number of rows the matrix shall have.
-        /// @param columns the number of columns the matrix shall have.
-        /// @return  a new empty matrix of the same dynamic type.
         /// </summary>
+        /// <param name="rows">the number of rows the matrix shall have.</param>
+        /// <param name="columns">the number of columns the matrix shall have.</param>
+        /// <returns>a new empty matrix of the same dynamic type.</returns>
         public override ObjectMatrix2D Like(int Rows, int Columns)
         {
             return new DenseObjectMatrix2D(base.Rows, base.Columns);
@@ -400,10 +399,9 @@ namespace Cern.Colt.Matrix.Implementation
         /// Construct and returns a new 1-d matrix <i>of the corresponding dynamic type</i>, entirelly independent of the receiver.
         /// For example, if the receiver is an instance of type <i>DenseObjectMatrix2D</i> the new matrix must be of type <i>DenseObjectMatrix1D</i>,
         /// if the receiver is an instance of type <i>SparseObjectMatrix2D</i> the new matrix must be of type <i>SparseObjectMatrix1D</i>, etc.
-        ///
-        /// @param size the number of cells the matrix shall have.
-        /// @return  a new matrix of the corresponding dynamic type.
         /// </summary>
+        /// <param name="size">the number of cells the matrix shall have.</param>
+        /// <returns>a new matrix of the corresponding dynamic type.</returns>
         public override ObjectMatrix1D Like1D(int size)
         {
             return new DenseObjectMatrix1D(size);
@@ -413,12 +411,11 @@ namespace Cern.Colt.Matrix.Implementation
         /// Construct and returns a new 1-d matrix <i>of the corresponding dynamic type</i>, sharing the same cells.
         /// For example, if the receiver is an instance of type <i>DenseObjectMatrix2D</i> the new matrix must be of type <i>DenseObjectMatrix1D</i>,
         /// if the receiver is an instance of type <i>SparseObjectMatrix2D</i> the new matrix must be of type <i>SparseObjectMatrix1D</i>, etc.
-        ///
-        /// @param size the number of cells the matrix shall have.
-        /// @param zero the index of the first element.
-        /// @param stride the number of indexes between any two elements, i.ed <i>index(i+1)-index(i)</i>.
-        /// @return  a new matrix of the corresponding dynamic type.
         /// </summary>
+        /// <param name="size">the number of cells the matrix shall have.</param>
+        /// <param name="zero">the index of the first element.</param>
+        /// <param name="stride">the number of indexes between any two elements, i.ed <i>index(i+1)-index(i)</i>.</param>
+        /// <returns>a new matrix of the corresponding dynamic type.</returns>
         protected override ObjectMatrix1D Like1D(int size, int zero, int stride)
         {
             return new DenseObjectMatrix1D(size, this.Elements, zero, stride);
@@ -430,11 +427,10 @@ namespace Cern.Colt.Matrix.Implementation
         /// <p>Provided with invalid parameters this method may access illegal indexes without throwing any exception.
         /// <b>You should only use this method when you are absolutely sure that the coordinate is within bounds.</b>
         /// Precondition (unchecked): <i>0 &lt;= column &lt; columns() && 0 &lt;= row &lt; rows()</i>.
-        ///
-        /// @param     row   the index of the row-coordinate.
-        /// @param     column   the index of the column-coordinate.
-        /// @param    value the value to be filled into the specified cell.
         /// </summary>
+        /// <param name="row">the index of the row-coordinate.</param>
+        /// <param name="column">the index of the column-coordinate.</param>
+        /// <param name="value">the value to be filled into the specified cell.</param>
         [Obsolete("SetQuick(int index, int column, Object value) is deprecated, please use indexer instead.")]
         public void SetQuick(int row, int column, Object value)
         {
@@ -443,14 +439,18 @@ namespace Cern.Colt.Matrix.Implementation
 
         /// <summary>
         /// Construct and returns a new selection view.
-        ///
-        /// @param rowOffsets the offsets of the visible elements.
-        /// @param columnOffsets the offsets of the visible elements.
-        /// @return  a new view.
         /// </summary>
+        /// <param name="rowOffsets">the offsets of the visible elements.</param>
+        /// <param name="columnOffsets">the offsets of the visible elements.</param>
+        /// <returns>a new view.</returns>
         protected override ObjectMatrix2D ViewSelectionLike(int[] rowOffsets, int[] columnOffsets)
         {
             return new SelectedDenseObjectMatrix2D(this.Elements, rowOffsets, columnOffsets, 0);
+        }
+
+        public override string ToString(int row, int column)
+        {
+            return this[row, column].ToString();
         }
     }
 }

@@ -286,5 +286,10 @@ namespace Cern.Colt.Matrix.Implementation
         {
             return new SelectedSparseObjectMatrix1D(this.Elements, offsets);
         }
+
+        public override string ToString(int index)
+        {
+            return this[index].ToString();
+        }
     }
 }

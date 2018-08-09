@@ -54,12 +54,6 @@ namespace Cern.Colt.Matrix.Implementation
 
         #region Property
 
-        public override double this[int slice, int row, int column]
-        {
-            get { return Elements[Offset + SliceOffsets[SliceZero + slice * SliceStride] + RowOffsets[RowZero + row * RowStride] + ColumnOffsets[ColumnZero + column * ColumnStride]]; }
-            set { Elements[Offset + SliceOffsets[SliceZero + slice * SliceStride] + RowOffsets[RowZero + row * RowStride] + ColumnOffsets[ColumnZero + column * ColumnStride]] = value; }
-        }
-
         /// <summary>
         /// The elements of this matrix.
         /// elements are stored in slice major, then row major, then column major, in order of significance, i.e.
@@ -69,6 +63,27 @@ namespace Cern.Colt.Matrix.Implementation
         /// {row0 column0..m}, {row1 column0..m}, ..d, {rown column0..m}
         /// </summary>
         protected internal double[] Elements { get; private set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="slice"></param>
+        /// <param name="row"></param>
+        /// <param name="column"></param>
+        /// <returns></returns>
+        public override double this[int slice, int row, int column]
+        {
+            get
+            {
+                //return Elements[Offset + SliceOffsets[SliceZero + slice * SliceStride] + RowOffsets[RowZero + row * RowStride] + ColumnOffsets[ColumnZero + column * ColumnStride]];
+                return Elements[Index(slice, row, column)];
+            }
+            set
+            {
+                //Elements[Offset + SliceOffsets[SliceZero + slice * SliceStride] + RowOffsets[RowZero + row * RowStride] + ColumnOffsets[ColumnZero + column * ColumnStride]] = value;
+                Elements[Index(slice, row, column)] = value;
+            }
+        }
 
         /// <summary>
         /// The offsets of the visible cells of this matrix.
@@ -168,6 +183,23 @@ namespace Cern.Colt.Matrix.Implementation
         public new int ColumnOffset(int absRank)
         {
             return ColumnOffsets[absRank];
+        }
+
+        /// <summary>
+        /// Returns the matrix cell value at coordinate <i>[slice,row,column]</i>.
+        /// 
+        /// <p>Provided with invalid parameters this method may return invalid objects without throwing any exception.
+        /// <b>You should only use this method when you are absolutely sure that the coordinate is within bounds.</b>
+        /// Precondition (unchecked): <i>slice&lt;0 || slice&gt;=slices() || row&lt;0 || row&gt;=rows() || column&lt;0 || column&gt;=column()</i>.
+        /// </summary>
+        /// <param name="slice">the index of the slice-coordinate.</param>
+        /// <param name="row">the index of the row-coordinate.</param>
+        /// <param name="column">the index of the column-coordinate.</param>
+        /// <returns>the value at the specified coordinate.</returns>
+        [Obsolete("GetQuick(int slice, int row, int column) is deprecated, please use indexer instead.")]
+        public Double GetQuick(int slice, int row, int column)
+        {
+            return this[slice, row, column];
         }
 
         /// <summary>
@@ -291,6 +323,28 @@ namespace Cern.Colt.Matrix.Implementation
             int[] viewColumnOffsets = this.ColumnOffsets;
 
             return new SelectedDenseDoubleMatrix2D(viewRows, viewColumns, this.Elements, viewRowZero, viewColumnZero, viewRowStride, viewColumnStride, viewRowOffsets, viewColumnOffsets, viewOffset);
+        }
+
+        /// <summary>
+        /// Sets the matrix cell at coordinate <i>[slice,row,column]</i> to the specified value.
+        /// 
+        /// <p>Provided with invalid parameters this method may access illegal indexes without throwing any exception.
+        /// <b>You should only use this method when you are absolutely sure that the coordinate is within bounds.</b>
+        /// Precondition (unchecked): <i>slice&lt;0 || slice&gt;=slices() || row&lt;0 || row&gt;=rows() || column&lt;0 || column&gt;=column()</i>.
+        /// </summary>
+        /// <param name="slice">the index of the slice-coordinate.</param>
+        /// <param name="row">the index of the row-coordinate.</param>
+        /// <param name="column">the index of the column-coordinate.</param>
+        /// <param name="value">the value to be filled into the specified cell.</param>
+        [Obsolete("SetQuick(int slice, int row, int column, double value) is deprecated, please use indexer instead.")]
+        public void SetQuick(int slice, int row, int column, double value)
+        {
+            this[slice, row, column] = value;
+        }
+
+        public override string ToString(int slice, int row, int column)
+        {
+            return this[slice, row, column].ToString();
         }
 
         #endregion

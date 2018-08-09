@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="SingularValueDecompositionTest.cs" company="Università Politecnica delle Marche">
+// <copyright file="SingularValueDecompositionTest.cs" company="UniversitEPolitecnica delle Marche">
 //   Mauro Mazzieri, 2010.
 // </copyright>
 // <summary>
@@ -11,10 +11,10 @@ namespace Colt.Tests
 {
     using System;
 
-    using Colt.Function;
-    using Colt.Matrix;
-    using Colt.Matrix.Implementation;
-    using Colt.Matrix.LinearAlgebra;
+    using Cern.Colt.Function;
+    using Cern.Colt.Matrix;
+    using Cern.Colt.Matrix.Implementation;
+    using Cern.Colt.Matrix.LinearAlgebra;
 
     using NUnit.Framework;
 

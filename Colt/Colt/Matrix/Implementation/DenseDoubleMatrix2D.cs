@@ -849,5 +849,10 @@ namespace Cern.Colt.Matrix.Implementation
         {
             return new SelectedDenseDoubleMatrix2D(Elements, rowOffsets, cOffsets, 0);
         }
+
+        public override string ToString(int row, int column)
+        {
+            return this[row, column].ToString();
+        }
     }
 }

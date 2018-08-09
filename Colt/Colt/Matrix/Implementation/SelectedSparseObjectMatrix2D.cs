@@ -57,13 +57,13 @@ namespace Cern.Colt.Matrix.Implementation
         /// <summary>
         /// The offsets of the visible cells of this matrix.
         /// </summary>
-        private int[] rowOffsets;
-        private int[] columnOffsets;
+        private int[] RowOffsets;
+        private int[] ColumnOffsets;
 
         /// <summary>
         /// The offset.
         /// </summary>
-        private int offset;
+        private int Offset;
 
         /// <summary>
         /// Gets or sets the matrix cell value at coordinate <i>[row,column]</i>.
@@ -78,14 +78,14 @@ namespace Cern.Colt.Matrix.Implementation
                 //if (debug) if (column<0 || column>=columns || row<0 || row>=rows) throw new IndexOutOfRangeException("row:"+row+", column:"+column);
                 //return elements.Get(index(row,column));
                 //manually inlined:
-                return Elements[offset + rowOffsets[RowZero + rowindex * RowStride] + columnOffsets[ColumnZero + colindex * ColumnStride]];
+                return Elements[Offset + RowOffsets[RowZero + rowindex * RowStride] + ColumnOffsets[ColumnZero + colindex * ColumnStride]];
             }
             set
             {
                 //if (debug) if (column<0 || column>=columns || row<0 || row>=rows) throw new IndexOutOfRangeException("row:"+row+", column:"+column);
                 //int index =	index(row,column);
                 //manually inlined:
-                int index = offset + rowOffsets[RowZero + rowindex * RowStride] + columnOffsets[ColumnZero + colindex * ColumnStride];
+                int index = Offset + RowOffsets[RowZero + rowindex * RowStride] + ColumnOffsets[ColumnZero + colindex * ColumnStride];
 
                 if (value == null)
                     this.Elements.Remove(index);
@@ -115,9 +115,9 @@ namespace Cern.Colt.Matrix.Implementation
             Setup(rows, columns, rowZero, columnZero, rowStride, columnStride);
 
             this.Elements = elements;
-            this.rowOffsets = rowOffsets;
-            this.columnOffsets = columnOffsets;
-            this.offset = offset;
+            this.RowOffsets = rowOffsets;
+            this.ColumnOffsets = columnOffsets;
+            this.Offset = offset;
 
             this.IsView = true;
         }
@@ -142,7 +142,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <returns>the position.</returns>
         protected override int ColumnOffset(int absRank)
         {
-            return columnOffsets[absRank];
+            return ColumnOffsets[absRank];
         }
 
         /// <summary>
@@ -153,7 +153,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <returns>the position.</returns>
         protected override int RowOffset(int absRank)
         {
-            return rowOffsets[absRank];
+            return RowOffsets[absRank];
         }
 
         /// <summary>
@@ -205,7 +205,7 @@ namespace Cern.Colt.Matrix.Implementation
         {
             //return this.offset + base.index(row,column);
             //manually inlined:
-            return this.offset + rowOffsets[RowZero + row * RowStride] + columnOffsets[ColumnZero + column * ColumnStride];
+            return this.Offset + RowOffsets[RowZero + row * RowStride] + ColumnOffsets[ColumnZero + column * ColumnStride];
         }
 
         /// <summary>
@@ -276,7 +276,7 @@ namespace Cern.Colt.Matrix.Implementation
             base.Setup(rows, columns);
             this.RowStride = 1;
             this.ColumnStride = 1;
-            this.offset = 0;
+            this.Offset = 0;
         }
 
         /// <summary>
@@ -286,7 +286,7 @@ namespace Cern.Colt.Matrix.Implementation
         {
             base.VDice();
             // swap
-            int[] tmp = rowOffsets; rowOffsets = columnOffsets; columnOffsets = tmp;
+            int[] tmp = RowOffsets; RowOffsets = ColumnOffsets; ColumnOffsets = tmp;
 
             // flips stay unaffected
 
@@ -321,8 +321,8 @@ namespace Cern.Colt.Matrix.Implementation
             int viewSize = this.Rows;
             int viewZero = this.RowZero;
             int viewStride = this.RowStride;
-            int[] viewOffsets = this.rowOffsets;
-            int viewOffset = this.offset + ColumnOffset(ColumnRank(column));
+            int[] viewOffsets = this.RowOffsets;
+            int viewOffset = this.Offset + ColumnOffset(ColumnRank(column));
             return new SelectedSparseObjectMatrix1D(viewSize, this.Elements, viewZero, viewStride, viewOffsets, viewOffset);
         }
 
@@ -353,8 +353,8 @@ namespace Cern.Colt.Matrix.Implementation
             int viewSize = this.Columns;
             int viewZero = ColumnZero;
             int viewStride = this.ColumnStride;
-            int[] viewOffsets = this.columnOffsets;
-            int viewOffset = this.offset + RowOffset(RowRank(row));
+            int[] viewOffsets = this.ColumnOffsets;
+            int viewOffset = this.Offset + RowOffset(RowRank(row));
             return new SelectedSparseObjectMatrix1D(viewSize, this.Elements, viewZero, viewStride, viewOffsets, viewOffset);
         }
 
@@ -366,7 +366,12 @@ namespace Cern.Colt.Matrix.Implementation
         /// <returns>a new view.</returns>
         protected override ObjectMatrix2D ViewSelectionLike(int[] rowOffsets, int[] columnOffsets)
         {
-            return new SelectedSparseObjectMatrix2D(this.Elements, rowOffsets, columnOffsets, this.offset);
+            return new SelectedSparseObjectMatrix2D(this.Elements, rowOffsets, columnOffsets, this.Offset);
+        }
+
+        public override string ToString(int row, int column)
+        {
+            return this[row, column].ToString();
         }
     }
 }

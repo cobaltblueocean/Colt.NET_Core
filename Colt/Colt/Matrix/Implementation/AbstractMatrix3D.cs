@@ -425,5 +425,15 @@ namespace Cern.Colt.Matrix.Implementation
             this.IsView = true;
             return this;
         }
+
+        /// <summary>
+        /// Return String type converted value of coordinated index
+        /// </summary>
+        /// <param name="slice"></param>
+        /// <param name="row"></param>
+        /// <param name="column"></param>
+        /// <returns></returns>
+        public abstract String ToString(int slice, int row, int column);
+
     }
 }

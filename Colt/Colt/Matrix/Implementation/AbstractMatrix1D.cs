@@ -23,11 +23,6 @@ namespace Cern.Colt.Matrix.Implementation
     public abstract class AbstractMatrix1D : AbstractMatrix
     {
         /// <summary>
-        /// Gets or sets the number of cells this matrix (view) has.
-        /// </summary>
-        private int _size;
-
-        /// <summary>
         /// 
         /// Gets or sets the number of indexes between any two elements, i.e. <tt>index(i+1) - index(i)</tt>.
         /// </summary>
@@ -53,15 +48,15 @@ namespace Cern.Colt.Matrix.Implementation
         }
 
         /// <summary>
-        /// Returns the number of cells.
+        /// Gets or sets the number of cells this matrix (view) has.
         /// </summary>
         /// <returns>
         /// The number of cells.
         /// </returns>
         public override int Size
         {
-            get { return _size; }
-            set { _size = value; }
+            get { return Size; }
+            set { Size = value; }
         }
 
         /// <summary>
@@ -102,7 +97,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// </returns>
         protected internal virtual int Index(int rank)
         {
-            return Offset(GetRank(rank));
+            return GetOffset(GetRank(rank));
         }
 
         /// <summary>
@@ -179,7 +174,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <returns>
         /// The position
         /// </returns>
-        protected virtual int Offset(int absRank)
+        protected virtual int GetOffset(int absRank)
         {
             return absRank;
         }
@@ -300,5 +295,12 @@ namespace Cern.Colt.Matrix.Implementation
             IsView = true;
             return this;
         }
+
+        /// <summary>
+        /// Return String type converted value of coordinated index
+        /// </summary>
+        /// <param name="index"></param>
+        /// <returns></returns>
+        public abstract String ToString(int index);
     }
 }
