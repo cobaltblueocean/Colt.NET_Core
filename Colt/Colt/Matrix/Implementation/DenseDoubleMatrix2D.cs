@@ -386,7 +386,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// </param>
         /// <param name="value">the value of the specified cell.</param>
         [Obsolete("SetQuick(int index, double value) is deprecated, please use indexer instead.")]
-        public void SetQuick(int rows, int columns, double value)
+        public override void SetQuick(int rows, int columns, double value)
         {
             this[rows, columns] = value;
         }
@@ -752,7 +752,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <returns>
         /// A new matrix of the corresponding dynamic type.
         /// </returns>
-        protected internal override DoubleMatrix1D Like1D(int size, int zero, int stride)
+        public override DoubleMatrix1D Like1D(int size, int zero, int stride)
         {
             return new DenseDoubleMatrix1D(size, Elements, zero, stride);
         }
@@ -774,7 +774,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// the value of the specified cell.
         /// </returns>
         [Obsolete("GetQuick(int rows, int columns) is deprecated, please use indexer instead.")]
-        public double GetQuick(int rows, int columns)
+        public override double GetQuick(int rows, int columns)
         {
             //if (debug) if (index<0 || index>=size) checkIndex(index);
             //return elements[index(index)];

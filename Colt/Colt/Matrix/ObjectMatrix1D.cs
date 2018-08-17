@@ -8,6 +8,7 @@
 //   Ported from Java to C# by Kei Nakai, 2018.
 // </copyright>
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -26,7 +27,7 @@ namespace Cern.Colt.Matrix
     /// <returns>a flag to inform the object calling the procedure.</returns>
     public delegate Boolean ObjectMatrix1DProcedure(ObjectMatrix1D element);
 
-    public abstract class ObjectMatrix1D : AbstractMatrix1D
+    public abstract class ObjectMatrix1D : AbstractMatrix1D, IEnumerable<Object>
     {
 
         #region Local Variables
@@ -349,8 +350,8 @@ namespace Cern.Colt.Matrix
         /// <param name="index">the index of the cell.</param>
         /// <returns>the value of the specified cell.</returns>
         /// <exception cref="IndexOutOfRangeException">if <i>index&lt;0 || index&gt;=Size</i>.</exception>
-        [Obsolete("Get(int index) is deprecated, please use indexer instead.")]
-        public Object Get(int index)
+        [Obsolete("GetQuick(int index) is deprecated, please use indexer instead.")]
+        public virtual Object GetQuick(int index)
         {
             if (index < 0 || index >= Size) CheckIndex(index);
             return this[index];
@@ -414,8 +415,8 @@ namespace Cern.Colt.Matrix
         /// <param name="index">the index of the cell.</param>
         /// <param name="value">the value to be filled into the specified cell.</param>
         /// <exception cref="IndexOutOfRangeException">if <i>index &lt; 0 || index &gt;= Size</i>.</exception>
-        [Obsolete("Set(int index, Object value) is deprecated, please use indexer instead.")]
-        public void Set(int index, Object value)
+        [Obsolete("SetQuick(int index, Object value) is deprecated, please use indexer instead.")]
+        public virtual void SetQuick(int index, Object value)
         {
             if (index < 0 || index >= Size) CheckIndex(index);
             this[index] = value;
@@ -676,6 +677,22 @@ namespace Cern.Colt.Matrix
                 if (!procedure(this[i])) return false;
             }
             return true;
+        }
+
+        /// <summary>
+        /// Enumerates vector elements.
+        /// </summary>
+        /// <returns>
+        /// Vector elements, in index order.
+        /// </returns>
+        public virtual IEnumerator<Object> GetEnumerator()
+        {
+            for (int i = 0; i < Size; i++) yield return this[i];
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
         }
 
         #endregion

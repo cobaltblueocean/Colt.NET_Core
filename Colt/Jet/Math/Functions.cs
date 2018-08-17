@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Cern.Colt.Function;
@@ -39,6 +40,30 @@ namespace Cern.Jet.Math
     public class Functions
     {
         public static Functions functions = new Functions();
+
+        public static Boolean EvaluateDoubleFunctionEquality(DoubleFunction a, DoubleFunction b)
+        {
+            String FullNameA = a.Method.DeclaringType.FullName;
+            String FullNameB = b.Method.DeclaringType.FullName;
+
+            return FullNameA.Equals(FullNameB);
+        }
+
+        public static Boolean EvaluateDoubleDoubleFunctionEquality(DoubleDoubleFunction a, DoubleDoubleFunction b)
+        {
+            String FullNameA = a.Method.DeclaringType.FullName;
+            String FullNameB = b.Method.DeclaringType.FullName;
+
+            return FullNameA.Equals(FullNameB);
+        }
+
+        public static Boolean EvaluateFunctionEquality(MethodInfo a, MethodInfo b)
+        {
+            String FullNameA = a.DeclaringType.FullName;
+            String FullNameB = b.DeclaringType.FullName;
+
+            return FullNameA.Equals(FullNameB);
+        }
 
         #region Constructors
 

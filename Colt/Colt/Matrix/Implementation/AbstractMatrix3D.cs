@@ -434,6 +434,5 @@ namespace Cern.Colt.Matrix.Implementation
         /// <param name="column"></param>
         /// <returns></returns>
         public abstract String ToString(int slice, int row, int column);
-
     }
 }

@@ -8,6 +8,7 @@
 //   Ported from Java to C# by Kei Nakai, 2018.
 // </copyright>
 using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -50,38 +51,47 @@ namespace Colt.Tests
         {
             try
             {
-                PrintWriter out = new PrintWriter(new FileWriter(filename));
-			out.println("<?xml version=\"1.0\" encoding=\"ISO-8859-1\" ?>");
-			out.println("<!DOCTYPE plotML SYSTEM \"plotML.dtd\">");
-			out.println("<plotML>");
-			out.println("<plot>");
-			out.println("<dataArea>");
-			out.println("<data1d>");
-			out.println("<bins1d title=\"" + h.title() + "\">");
-                for (int i = 0; i < h.xAxis().bins(); i++)
+                using (StreamWriter writer = new StreamWriter(filename))
                 {
-				out.println(h.binEntries(i) + "," + h.binError(i));
+                    writer.WriteLine("<?xml version=\"1.0\" encoding=\"ISO-8859-1\" ?>");
+                    writer.WriteLine("<!DOCTYPE plotML SYSTEM \"plotML.dtd\">");
+                    writer.WriteLine("<plotML>");
+                    writer.WriteLine("<plot>");
+                    writer.WriteLine("<dataArea>");
+                    writer.WriteLine("<data1d>");
+                    writer.WriteLine("<bins1d title=\"" + h.Title + "\">");
+                    for (int i = 0; i < h.XAxis.Bins; i++)
+                    {
+                        writer.WriteLine(h.BinEntries(i) + "," + h.BinError(i));
+                    }
+                    writer.WriteLine("</bins1d>");
+                    writer.Write("<binnedDataAxisAttributes type=\"double\" axis=\"x0\"");
+                    writer.Write(" min=\"" + h.XAxis.LowerEdge + "\"");
+                    writer.Write(" max=\"" + h.XAxis.UpperEdge + "\"");
+                    writer.Write(" numberOfBins=\"" + h.XAxis.Bins + "\"");
+                    writer.WriteLine("/>");
+                    writer.WriteLine("<statistics>");
+                    writer.WriteLine("<statistic name=\"Entries\" value=\"" + h.Entries + "\"/>");
+                    writer.WriteLine("<statistic name=\"Underflow\" value=\"" + h.BinEntries(HistogramType.UNDERFLOW.ToInt()) + "\"/>");
+                    writer.WriteLine("<statistic name=\"Overflow\" value=\"" + h.BinEntries(HistogramType.OVERFLOW.ToInt()) + "\"/>");
+                    if (!Double.IsNaN(h.Mean)) writer.WriteLine("<statistic name=\"Mean\" value=\"" + h.Mean + "\"/>");
+                    if (!Double.IsNaN(h.Rms)) writer.WriteLine("<statistic name=\"RMS\" value=\"" + h.Rms + "\"/>");
+                    writer.WriteLine("</statistics>");
+                    writer.WriteLine("</data1d>");
+                    writer.WriteLine("</dataArea>");
+                    writer.WriteLine("</plot>");
+                    writer.WriteLine("</plotML>");
+                    writer.Close();
                 }
-			out.println("</bins1d>");
-			out.print("<binnedDataAxisAttributes type=\"double\" axis=\"x0\"");
-			  out.print(" min=\"" + h.xAxis().lowerEdge() + "\"");
-			  out.print(" max=\"" + h.xAxis().upperEdge() + "\"");
-			  out.print(" numberOfBins=\"" + h.xAxis().bins() + "\"");
-			  out.println("/>");
-			out.println("<statistics>");
-			out.println("<statistic name=\"Entries\" value=\"" + h.entries() + "\"/>");
-			out.println("<statistic name=\"Underflow\" value=\"" + h.binEntries(h.UNDERFLOW) + "\"/>");
-			out.println("<statistic name=\"Overflow\" value=\"" + h.binEntries(h.OVERFLOW) + "\"/>");
-                if (!Double.IsNaN(h.mean())) out.println("<statistic name=\"Mean\" value=\"" + h.mean() + "\"/>");
-                if (!Double.IsNaN(h.rms())) out.println("<statistic name=\"RMS\" value=\"" + h.rms() + "\"/>");
-			out.println("</statistics>");
-			out.println("</data1d>");
-			out.println("</dataArea>");
-			out.println("</plot>");
-			out.println("</plotML>");
-			out.close();
+
             }
-            catch (IOException x) { x.printStackTrace(); }
+            catch (IOException x)
+            {
+                using (StreamWriter writer = new StreamWriter(filename))
+                {
+                    writer.Write(x.StackTrace);
+                }
+            }
         }
 
         [Test]
@@ -89,44 +99,50 @@ namespace Colt.Tests
         {
             try
             {
-                PrintWriter out = new PrintWriter(new FileWriter(filename));
-			out.println("<?xml version=\"1.0\" encoding=\"ISO-8859-1\" ?>");
-			out.println("<!DOCTYPE plotML SYSTEM \"plotML.dtd\">");
-			out.println("<plotML>");
-			out.println("<plot>");
-			out.println("<dataArea>");
-			out.println("<data2d type=\"xxx\">");
-			out.println("<bins2d title=\"" + h.title() + "\" xSize=\"" + h.xAxis().bins() + "\" ySize=\"" + h.yAxis().bins() + "\">");
-                for (int i = 0; i < h.xAxis().bins(); i++)
-                    for (int j = 0; j < h.yAxis().bins(); j++)
+                StreamWriter writer = new StreamWriter(filename);
+                writer.WriteLine("<?xml version=\"1.0\" encoding=\"ISO-8859-1\" ?>");
+                writer.WriteLine("<!DOCTYPE plotML SYSTEM \"plotML.dtd\">");
+                writer.WriteLine("<plotML>");
+                writer.WriteLine("<plot>");
+                writer.WriteLine("<dataArea>");
+                writer.WriteLine("<data2d type=\"xxx\">");
+                writer.WriteLine("<bins2d title=\"" + h.Title + "\" xSize=\"" + h.XAxis.Bins + "\" ySize=\"" + h.YAxis.Bins + "\">");
+                for (int i = 0; i < h.XAxis.Bins; i++)
+                    for (int j = 0; j < h.YAxis.Bins; j++)
                     {
-				out.println(h.binEntries(i, j) + "," + h.binError(i, j));
+                        writer.WriteLine(h.BinEntries(i, j) + "," + h.BinError(i, j));
                     }
-			out.println("</bins2d>");
-			out.print("<binnedDataAxisAttributes type=\"double\" axis=\"x0\"");
-			  out.print(" min=\"" + h.xAxis().lowerEdge() + "\"");
-			  out.print(" max=\"" + h.xAxis().upperEdge() + "\"");
-			  out.print(" numberOfBins=\"" + h.xAxis().bins() + "\"");
-			  out.println("/>");
-			out.print("<binnedDataAxisAttributes type=\"double\" axis=\"y0\"");
-			  out.print(" min=\"" + h.yAxis().lowerEdge() + "\"");
-			  out.print(" max=\"" + h.yAxis().upperEdge() + "\"");
-			  out.print(" numberOfBins=\"" + h.yAxis().bins() + "\"");
-			  out.println("/>");
-			//out.println("<statistics>");
-			//out.println("<statistic name=\"Entries\" value=\""+h.entries()+"\"/>");
-			//out.println("<statistic name=\"MeanX\" value=\""+h.meanX()+"\"/>");
-			//out.println("<statistic name=\"RmsX\" value=\""+h.rmsX()+"\"/>");
-			//out.println("<statistic name=\"MeanY\" value=\""+h.meanY()+"\"/>");
-			//out.println("<statistic name=\"RmsY\" value=\""+h.rmsY()+"\"/>");
-			//out.println("</statistics>");
-			out.println("</data2d>");
-			out.println("</dataArea>");
-			out.println("</plot>");
-			out.println("</plotML>");
-			out.close();
+                writer.WriteLine("</bins2d>");
+                writer.Write("<binnedDataAxisAttributes type=\"double\" axis=\"x0\"");
+                writer.Write(" min=\"" + h.XAxis.LowerEdge + "\"");
+                writer.Write(" max=\"" + h.XAxis.UpperEdge + "\"");
+                writer.Write(" numberOfBins=\"" + h.XAxis.Bins + "\"");
+                writer.WriteLine("/>");
+                writer.Write("<binnedDataAxisAttributes type=\"double\" axis=\"y0\"");
+                writer.Write(" min=\"" + h.YAxis.LowerEdge + "\"");
+                writer.Write(" max=\"" + h.YAxis.UpperEdge + "\"");
+                writer.Write(" numberOfBins=\"" + h.YAxis.Bins + "\"");
+                writer.WriteLine("/>");
+                //writer.WriteLine("<statistics>");
+                //writer.WriteLine("<statistic name=\"Entries\" value=\""+h.entries()+"\"/>");
+                //writer.WriteLine("<statistic name=\"MeanX\" value=\""+h.meanX()+"\"/>");
+                //writer.WriteLine("<statistic name=\"RmsX\" value=\""+h.rmsX()+"\"/>");
+                //writer.WriteLine("<statistic name=\"MeanY\" value=\""+h.meanY()+"\"/>");
+                //writer.WriteLine("<statistic name=\"RmsY\" value=\""+h.rmsY()+"\"/>");
+                //writer.WriteLine("</statistics>");
+                writer.WriteLine("</data2d>");
+                writer.WriteLine("</dataArea>");
+                writer.WriteLine("</plot>");
+                writer.WriteLine("</plotML>");
+                writer.Close();
             }
-            catch (IOException x) { x.printStackTrace(); }
+            catch (IOException x)
+            {
+                using (StreamWriter writer = new StreamWriter(filename))
+                {
+                    writer.Write(x.StackTrace);
+                }
+            }
         }
     }
 }

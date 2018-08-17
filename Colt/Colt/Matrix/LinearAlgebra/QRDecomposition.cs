@@ -52,7 +52,7 @@ namespace Cern.Colt.Matrix.LinearAlgebra
         /// <exception cref="ArgumentException">if <i>A.Rows &lt; A.Columns</i>.</exception>
         public QRDecomposition(DoubleMatrix2D A)
         {
-            Property.CheckRectangular(A);
+            Property.DEFAULT.CheckRectangular(A);
 
             Functions F = Functions.functions;
             // Initialize.

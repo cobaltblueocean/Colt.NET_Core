@@ -8,6 +8,7 @@
 //   Ported from Java to C# by Kei Nakai, 2018.
 // </copyright>
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -37,7 +38,7 @@ namespace Cern.Colt.Matrix
     /// <p>
     /// <b>Note</b> that this implementation is not synchronized.
     /// </summary>
-    public abstract class ObjectMatrix2D : AbstractMatrix2D
+    public abstract class ObjectMatrix2D : AbstractMatrix2D, IEnumerable<Object>
     {
 
         #region Local Variables
@@ -438,8 +439,8 @@ namespace Cern.Colt.Matrix
         /// <param name="column">the index of the column-coordinate.</param>
         /// <returns>the value of the specified cell.</returns>
         /// <exception cref="IndexOutOfRangeException">if <i>column&lt;0 || column&gt;=Columns || row&lt;0 || row&gt;=Rows</i></exception>
-        [Obsolete("Get(int index, int column) is deprecated, please use indexer instead.")]
-        public Object Get(int row, int column)
+        [Obsolete("GetQuick(int index, int column) is deprecated, please use indexer instead.")]
+        public virtual Object GetQuick(int row, int column)
         {
             if (column < 0 || column >= Columns || row < 0 || row >= Rows) throw new IndexOutOfRangeException("row:" + row + ", column:" + column);
             return this[row, column];
@@ -523,8 +524,8 @@ namespace Cern.Colt.Matrix
         /// <param name="column">the index of the column-coordinate.</param>
         /// <param name="value">the value to be filled into the specified cell.</param>
         /// <exception cref="IndexOutOfRangeException">if <i>column&lt;0 || column&gt;=Columns || row&lt;0 || row&gt;=Rows</i></exception>
-        [Obsolete("Set(int index, int column, Object value) is deprecated, please use indexer instead.")]
-        public void Set(int row, int column, Object value)
+        [Obsolete("SetQuick(int index, int column, Object value) is deprecated, please use indexer instead.")]
+        public virtual void SetQuick(int row, int column, Object value)
         {
             if (column < 0 || column >= Columns || row < 0 || row >= Rows) throw new IndexOutOfRangeException("row:" + row + ", column:" + column);
             this[row, column] = value;
@@ -935,6 +936,22 @@ namespace Cern.Colt.Matrix
         protected ObjectMatrix2D View()
         {
             return (ObjectMatrix2D)Clone();
+        }
+
+        public IEnumerator<Object> GetEnumerator()
+        {
+            for (int i = 0; i < Rows; i++)
+            {
+                for (int j = 0; j < Columns; j++)
+                {
+                    yield return this[i, j];
+                }
+            }
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
         }
 
         #endregion

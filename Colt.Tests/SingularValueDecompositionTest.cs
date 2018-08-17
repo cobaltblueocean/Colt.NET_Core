@@ -66,13 +66,13 @@ namespace Colt.Tests
         {
             var svd = new SingularValueDecomposition(_a, true, true, true);
             ////svd.Reduce(2);
-            var scales = svd.GetSingularValues();
+            var scales = svd.SingularValues;
             Assert.LessOrEqual(Math.Abs(scales[0] - 3.34), 0.01);
             Assert.LessOrEqual(Math.Abs(scales[1] - 2.54), 0.01);
-            var terms = svd.GetU();
+            var terms = svd.U;
             Assert.LessOrEqual(Math.Abs(terms[0, 0] - 0.22), 0.01);
             Assert.LessOrEqual(Math.Abs(terms[1, 1] + 0.07), 0.01);
-            var docs = svd.GetV();
+            var docs = svd.V;
             Assert.LessOrEqual(Math.Abs(docs[0, 0] - 0.20), 0.01);
             Assert.LessOrEqual(Math.Abs(docs[1, 1] - 0.17), 0.01);
         }
@@ -86,9 +86,9 @@ namespace Colt.Tests
             // first row
             var m = DoubleFactory2D.Dense.Make(_a.ViewColumn(0).ToArray(), _a.Rows);
             var initialSVD = new SingularValueDecomposition(m);
-            var u = initialSVD.GetU();
-            var s = initialSVD.GetS();
-            var v = initialSVD.GetV();
+            var u = initialSVD.U;
+            var s = initialSVD.S;
+            var v = initialSVD.V;
 
             // second row
             var d = DoubleFactory2D.Dense.Make(_a.ViewColumn(1).ToArray(), _a.Rows);
@@ -104,13 +104,13 @@ namespace Colt.Tests
                 DoubleFactory2D.Dense.Compose(
                     new[] { new[] { s, l }, new[] { null, DoubleFactory2D.Dense.Make(1, 1, k) } });
             var svdq = new SingularValueDecomposition(q);
-            var u2 = DoubleFactory2D.Dense.AppendColumns(u, j1).ZMult(svdq.GetU(), null);
-            var s2 = svdq.GetS();
+            var u2 = DoubleFactory2D.Dense.AppendColumns(u, j1).ZMult(svdq.U, null);
+            var s2 = svdq.S;
             var v2 = DoubleFactory2D.Dense.ComposeDiagonal(v, DoubleFactory2D.Dense.Identity(1)).ZMult(
-                svdq.GetV(), null);
+                svdq.V, null);
 
             var svd = new SingularValueDecomposition(_a.ViewPart(0, 0, _a.Rows, 2));
-            Assert.AreEqual(svd.GetS(), s2);
+            Assert.AreEqual(svd.S, s2);
         }
 
         /// <summary>
@@ -127,16 +127,16 @@ namespace Colt.Tests
                 var d = m.ViewColumn(0);
                 var incSvd = new SingularValueDecomposition(d);
                 var svd = new SingularValueDecomposition(m.ViewPart(0, 0, m.Rows, 1));
-                var s1 = svd.GetSingularValues();
-                var s2 = incSvd.GetSingularValues();
+                var s1 = svd.SingularValues;
+                var s2 = incSvd.SingularValues;
                 for (int j = 0; j < s1.Length; j++) Assert.LessOrEqual(Math.Abs(s1[j] - s2[j]), Tolerance);
                 for (int i = 1; i < m.Columns; i++)
                 {
                     svd = new SingularValueDecomposition(m.ViewPart(0, 0, m.Rows, 1 + i));
                     d = m.ViewColumn(i);
                     incSvd.Update(d, false);
-                    s1 = svd.GetSingularValues();
-                    s2 = incSvd.GetSingularValues();
+                    s1 = svd.SingularValues;
+                    s2 = incSvd.SingularValues;
                     for (int j = 0; j < s1.Length; j++) Assert.LessOrEqual(Math.Abs(s1[j] - s2[j]), Tolerance);
                 }
             }

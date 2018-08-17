@@ -16,6 +16,7 @@
 namespace Cern.Colt.Matrix
 {
     using System;
+    using System.Collections;
     using System.Collections.Generic;
     using DoubleAlgorithms;
     using Function;
@@ -49,7 +50,7 @@ namespace Cern.Colt.Matrix
     /// <summary>
     /// Abstract base class for 2-d matrices holding <tt>double</tt> elements.
     /// </summary>
-    public abstract class DoubleMatrix2D : AbstractMatrix2D
+    public abstract class DoubleMatrix2D : AbstractMatrix2D, IEnumerable<double>
     {
         /// <summary>
         /// Gets or sets the matrix cell value at coordinate <tt>[row,column]</tt>.
@@ -355,7 +356,8 @@ namespace Cern.Colt.Matrix
         /// <exception cref="IndexOutOfRangeException">
         /// If <tt>column&lt;0 || column&gt;=columns() || row&lt;0 || row&gt;=rows()</tt>
         /// </exception>
-        public double Get(int row, int column)
+        [Obsolete("GetQuick(int row, int column) is deprecated, please use indexer instead.")]
+        public virtual double GetQuick(int row, int column)
         {
             if (column < 0 || column >= Columns || row < 0 || row >= Rows) throw new IndexOutOfRangeException("row:" + row + ", column:" + column);
             return this[row, column];
@@ -495,7 +497,8 @@ namespace Cern.Colt.Matrix
         /// <exception cref="IndexOutOfRangeException">
         /// If <tt>column&lt;0 || column&gt;=columns() || row&lt;0 || row&gt;=rows()</tt>
         /// </exception>
-        public void Set(int row, int column, double value)
+        [Obsolete("SetQuick(int row, int column, double value) is deprecated, please use indexer instead.")]
+        public virtual void SetQuick(int row, int column, double value)
         {
             if (column < 0 || column >= Columns || row < 0 || row >= Rows) throw new IndexOutOfRangeException("row:" + row + ", column:" + column);
             this[row, column] = value;
@@ -976,7 +979,7 @@ namespace Cern.Colt.Matrix
         /// <returns>
         /// A new matrix of the corresponding dynamic type.
         /// </returns>
-        protected internal abstract DoubleMatrix1D Like1D(int size, int zero, int stride);
+        public abstract DoubleMatrix1D Like1D(int size, int zero, int stride);
 
         /// <summary>
         /// Returns the content of this matrix if it is a wrapper; or <tt>this</tt> otherwise.
@@ -1044,6 +1047,22 @@ namespace Cern.Colt.Matrix
         /// A new view.
         /// </returns>
         protected abstract DoubleMatrix2D ViewSelectionLike(int[] rowOffsets, int[] cOffsets);
+
+        public virtual IEnumerator<double> GetEnumerator()
+        {
+            for(int i = 0; i< Rows; i++)
+            {
+                for (int j = 0; j< Columns; j++)
+                {
+                    yield return this[i, j];
+                }
+            }
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
 
         public struct Element
         {

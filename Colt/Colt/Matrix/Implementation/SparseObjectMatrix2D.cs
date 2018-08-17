@@ -211,7 +211,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <param name="column">the index of the column-coordinate.</param>
         /// <returns>the value at the specified coordinate.</returns>
         [Obsolete("GetQuick(int index, int column) is deprecated, please use indexer instead.")]
-        public Object GetQuick(int row, int column)
+        public override Object GetQuick(int row, int column)
         {
             return this[row, column];
         }
@@ -304,7 +304,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <param name="column">the index of the column-coordinate.</param>
         /// <param name="value">the value to be filled into the specified cell.</param>
         [Obsolete("SetQuick(int index, int column, Object value) is deprecated, please use indexer instead.")]
-        public void SetQuick(int row, int column, Object value)
+        public override void SetQuick(int row, int column, Object value)
         {
             this[row, column] = value;
         }

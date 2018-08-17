@@ -232,7 +232,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <returns>
         /// A new matrix of the corresponding dynamic type.
         /// </returns>
-        protected internal override DoubleMatrix1D Like1D(int size, int zero, int stride)
+        public override DoubleMatrix1D Like1D(int size, int zero, int stride)
         {
             throw new ApplicationException(); // this method is never called since viewRow() and viewColumn are overridden properly.
         }

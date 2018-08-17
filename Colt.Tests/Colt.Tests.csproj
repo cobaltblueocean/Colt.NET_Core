@@ -75,6 +75,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AidaRefTest1.cs" />
+    <Compile Include="AidaRefTest2.cs" />
     <Compile Include="DoubleFactory2DTest.cs" />
     <Compile Include="DoubleMatrix2DTest.cs" />
     <Compile Include="DoubleSortingTest.cs" />

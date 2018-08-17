@@ -297,7 +297,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <returns>
         /// A new matrix of the corresponding dynamic type.
         /// </returns>
-        protected internal override DoubleMatrix1D Like1D(int size, int offset, int stride)
+        public override DoubleMatrix1D Like1D(int size, int offset, int stride)
         {
             return new SparseDoubleMatrix1D(size, this.Elements, offset, stride);
         }

@@ -166,7 +166,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <param name="column">the index of the column-coordinate.</param>
         /// <returns>the value at the specified coordinate.</returns>
         [Obsolete("GetQuick(int slice, int row, int column) is deprecated, please use indexer instead.")]
-        public double GetQuick(int slice, int row, int column)
+        public override Double GetQuick(int slice, int row, int column)
         {
             return this[slice, row, column];
         }
@@ -253,7 +253,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <param name="column">the index of the column-coordinate.</param>
         /// <param name="value">the value to be filled into the specified cell.</param>
         [Obsolete("SetQuick(int slice, int row, int column, double value) is deprecated, please use indexer instead.")]
-        public void SetQuick(int slice, int row, int column, double value)
+        public override void SetQuick(int slice, int row, int column, double value)
         {
             this[slice, row, column] = value;
         }

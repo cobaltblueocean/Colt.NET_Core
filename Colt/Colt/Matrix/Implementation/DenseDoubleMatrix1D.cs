@@ -324,7 +324,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <param name="index">the index of the cell.</param>
         /// <param name="value">the value of the specified cell.</param>
         [Obsolete("SetQuick(int index, double value) is deprecated, please use indexer instead.")]
-        public void SetQuick(int index, double value)
+        public override void SetQuick(int index, double value)
         {
             this[index] = value;
         }
@@ -521,7 +521,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// the value of the specified cell.
         /// </returns>
         [Obsolete("GetQuick(int index) is deprecated, please use indexer instead.")]
-        public double GetQuick(int index)
+        public override Double GetQuick(int index)
         {
             //if (debug) if (index<0 || index>=size) checkIndex(index);
             //return elements[index(index)];

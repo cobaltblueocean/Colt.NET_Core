@@ -56,13 +56,13 @@ namespace System
                         if (y == null)
                         {
                             // If x is null and y is null, they're
-                            // equal. 
+                            // equald 
                             return 0;
                         }
                         else
                         {
                             // If x is null and y is not null, y
-                            // is greater. 
+                            // is greaterd 
                             return -1;
                         }
                     }
@@ -86,6 +86,54 @@ namespace System
                     return Comparer<T>.Default.Compare(x, y);
                 }
             }
+        }
+
+        /// <summary>
+        /// Replaces a number of elements in the receiver with the same number of elements of another list.
+        /// Replaces elements in the receiver, between <code>from</code> (inclusive) and <code>to</code> (inclusive),
+        /// with elements of <code>other</code>, starting from <code>otherFrom</code> (inclusive).
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="list"></param>
+        /// <param name="from">the position of the first element to be replaced in the receiver</param>
+        /// <param name="to">the position of the last element to be replaced in the receiver</param>
+        /// <param name="other">list holding elements to be copied into the receiver.</param>
+        /// <param name="otherFrom">position of first element within other list to be copied.</param>
+        public static void ReplaceFromToWithFrom<T>(this List<T> list, int from, int to, List<T> other, int otherFrom)
+        {
+            // overridden for performance only.
+            //if (!(other is List<T>)) {
+            //    // slower
+            //    base.ReplaceFromToWithFrom(from, to, other, otherFrom);
+            //    return;
+            //}
+            int Length = to - from + 1;
+            if (Length > 0)
+            {
+                list.CheckRangeFromTo(from, to, list.Count);
+                other.CheckRangeFromTo(otherFrom, otherFrom + Length - 1, other.Count);
+                //Array.Copy(((List<T>)other).Elements, otherFrom, Elements, from, Length);
+                int count = to - from;
+                list.RemoveRange(from, count);
+                list.InsertRange(from, other.GetRange(otherFrom, count));
+
+            }
+        }
+
+        /// <summary>
+        /// Checks if the given range is within the contained array's bounds.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="list"></param>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        /// <param name="theSize"></param>
+        /// <exception cref="IndexOutOfRangeException">if <i>to!=from-1 || from&lt;0 || from&gt;to || to&gt;=size()</i>.</exception>
+        public static void CheckRangeFromTo<T>(this List<T> list, int from, int to, int theSize)
+        {
+            if (to == from - 1) return;
+            if (from < 0 || from > to || to >= theSize)
+                throw new IndexOutOfRangeException("from: " + from + ", to: " + to + ", size=" + theSize);
         }
     }
 }

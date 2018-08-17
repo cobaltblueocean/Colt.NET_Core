@@ -59,7 +59,7 @@ namespace Cern.Colt.Matrix.DoubleAlgorithms
                 {
                     double av = vector[a];
                     double bv = vector[b];
-                    if (av != av || bv != bv) return CompareNaN(av, bv); // swap NaNs to the end
+                    if (Double.IsNaN(av) || Double.IsNaN(bv)) return CompareNaN(av, bv); // swap NaNs to the end
                     return av < bv ? -1 : (av == bv ? 0 : 1);
                 });
 
@@ -125,7 +125,7 @@ namespace Cern.Colt.Matrix.DoubleAlgorithms
                 {
                     double a = aggregates[x];
                     double b = aggregates[y];
-                    if (a != a || b != b) return CompareNaN(a, b); // swap NaNs to the end
+                    if (Double.IsNaN(a) || Double.IsNaN(b)) return CompareNaN(a, b); // swap NaNs to the end
                     return a < b ? -1 : (a == b) ? 0 : 1;
                 },
                 (x, y) =>
@@ -173,7 +173,7 @@ namespace Cern.Colt.Matrix.DoubleAlgorithms
                 {
                     double av = col[a];
                     double bv = col[b];
-                    if (av != av || bv != bv) return CompareNaN(av, bv); // swap NaNs to the end
+                    if (Double.IsNaN(av) || Double.IsNaN(bv)) return CompareNaN(av, bv); // swap NaNs to the end
                     return av < bv ? -1 : (av == bv ? 0 : 1);
                 });
 
@@ -222,7 +222,7 @@ namespace Cern.Colt.Matrix.DoubleAlgorithms
             {
                 double av = sliceView[a];
                 double bv = sliceView[b];
-                if (av != av || bv != bv) return CompareNaN(av, bv); // swap NaNs to the end
+                if (Double.IsNaN(av) || Double.IsNaN(bv)) return CompareNaN(av, bv); // swap NaNs to the end
                 return av < bv ? -1 : (av == bv ? 0 : 1);
             }
                 );
@@ -277,9 +277,9 @@ namespace Cern.Colt.Matrix.DoubleAlgorithms
         /// </returns>
         private static int CompareNaN(double a, double b)
         {
-            if (a != a)
+            if (Double.IsNaN(a))
             {
-                if (b != b) return 0; // NaN equals NaN
+                if (Double.IsNaN(b)) return 0; // NaN equals NaN
                 return 1; // e.gd NaN > 5
             }
 

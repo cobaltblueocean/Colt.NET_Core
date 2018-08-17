@@ -145,7 +145,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <param name="column">the index of the column-coordinate.</param>
         /// <returns>the value at the specified coordinate.</returns>
         [Obsolete("GetQuick(int slice, int row, int column) is deprecated, please use indexer instead.")]
-        public double GetQuick(int slice, int row, int column)
+        public override Double GetQuick(int slice, int row, int column)
         {
             //if (debug) if (slice<0 || slice>=Slices || row<0 || row>=Rows || column<0 || column>=Columns) throw new IndexOutOfRangeException("slice:"+slice+", row:"+row+", column:"+column);
             //return elements[index(slice,row,column)];
@@ -180,7 +180,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <param name="column">the index of the column-coordinate.</param>
         /// <returns>value the value to be filled into the specified cell.</returns>
         [Obsolete("SetQuick(int slice, int row, int column, double value) is deprecated, please use indexer instead.")]
-        public void SetQuick(int slice, int row, int column, double value)
+        public override void SetQuick(int slice, int row, int column, double value)
         {
             //if (debug) if (slice<0 || slice>=Slices || row<0 || row>=Rows || column<0 || column>=Columns) throw new IndexOutOfRangeException("slice:"+slice+", row:"+row+", column:"+column);
             //elements[index(slice,row,column)] = value;

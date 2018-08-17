@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 namespace Cern.Colt.Matrix
 {
     using System;
+    using System.Collections;
     using System.Collections.Generic;
     using DoubleAlgorithms;
     using Function;
@@ -14,9 +15,35 @@ namespace Cern.Colt.Matrix
     using LinearAlgebra;
 
     /// <summary>
+    /// A condition or procedure : takes a single argument and returns a boolean value.
+    /// </summary>
+    /// <param name="element">
+    /// The element passed to the procedure.
+    /// </param>
+    /// <returns>
+    /// A flag to inform the object calling the procedure.
+    /// </returns>
+    public delegate bool DoubleMatrix3DProcedure(DoubleMatrix3D element);
+
+    /// <summary>
+    /// A binary function of two 1-d matrices returning a single value.
+    /// </summary>
+    /// <param name="x">
+    /// The x.
+    /// </param>
+    /// <param name="y">
+    /// The y.
+    /// </param>
+    /// <returns>
+    /// The dinstance.
+    /// </returns>
+    public delegate double DoubleMatrix3DDinstance(DoubleMatrix3D x, DoubleMatrix3D y);
+
+
+    /// <summary>
     /// Abstract base class for 3-d matrices holding <i>double</i> elements.
     /// </summary>
-    public abstract class DoubleMatrix3D : AbstractMatrix3D
+    public abstract class DoubleMatrix3D : AbstractMatrix3D, IEnumerable<double>
     {
         #region Local Variables
 
@@ -470,6 +497,29 @@ namespace Cern.Colt.Matrix
         {
             return Like(Slices, Rows, Columns);
         }
+
+        /// <summary>
+        /// Sets the matrix cell at coordinate <tt>[row,column]</tt> to the specified value.
+        /// </summary>
+        /// <param name="row">
+        /// The index of the row-coordinate.
+        /// </param>
+        /// <param name="column">
+        /// The index of the column-coordinate.
+        /// </param>
+        /// <param name="value">
+        /// The value to be filled into the specified cell.
+        /// </param>
+        /// <exception cref="IndexOutOfRangeException">
+        /// If <tt>column&lt;0 || column&gt;=columns() || row&lt;0 || row&gt;=rows()</tt>
+        /// </exception>
+        [Obsolete("SetQuick(int slice, int row, int column, double value) is deprecated, please use indexer instead.")]
+        public virtual void SetQuick(int slice, int row, int column, double value)
+        {
+            if (slice < 0 || slice >= Slices || column < 0 || column >= Columns || row < 0 || row >= Rows) throw new IndexOutOfRangeException("slice:" + slice + ", row:" + row + ", column:" + column);
+            this[slice, row, column] = value;
+        }
+
 
         /// <summary>
         /// Constructs and returns a 2-dimensional array containing the cell values.
@@ -939,6 +989,28 @@ namespace Cern.Colt.Matrix
         }
 
         /// <summary>
+        /// Returns the matrix cell value at coordinate <tt>[row,column]</tt>.
+        /// </summary>
+        /// <param name="row">
+        /// The index of the row-coordinate.
+        /// </param>
+        /// <param name="column">
+        /// The index of the column-coordinate.
+        /// </param>
+        /// <returns>
+        /// The value of the specified cell.
+        /// </returns>
+        /// <exception cref="IndexOutOfRangeException">
+        /// If <tt>column&lt;0 || column&gt;=columns() || row&lt;0 || row&gt;=rows()</tt>
+        /// </exception>
+        [Obsolete("GetQuick(int slice, int row, int column) is deprecated, please use indexer instead.")]
+        public virtual double GetQuick(int slice, int row, int column)
+        {
+            if (slice < 0 || slice >= Slices || column < 0 || column >= Columns || row < 0 || row >= Rows) throw new IndexOutOfRangeException("slice:" + slice + ", row:" + row + ", column:" + column);
+            return this[slice, row, column];
+        }
+
+        /// <summary>
         /// Returns <i>true</i> if both matrices share at least one identical cell.
         /// </summary>
         protected Boolean HaveSharedCells(DoubleMatrix3D other)
@@ -1037,6 +1109,26 @@ namespace Cern.Colt.Matrix
                 }
             }
             return true;
+        }
+
+
+        public virtual IEnumerator<double> GetEnumerator()
+        {
+            for (int i = 0; i < Slices; i++)
+            {
+                for (int j = 0; j < Rows; j++)
+                {
+                    for (int k= 0; k< Columns; k++)
+                    {
+                        yield return this[i, j, k];
+                    }
+                }
+            }
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
         }
         #endregion
     }

@@ -448,5 +448,14 @@ namespace Cern.Colt.Matrix.Implementation
         /// <returns></returns>
         public abstract String ToString(int row, int column);
 
+        /// <summary>
+        /// Returns a string representation of the receiver's shape.
+        /// </summary>
+        /// <returns></returns>
+        public String ToStringShort()
+        {
+            return AbstractFormatter.Shape(this);
+        }
+
     }
 }

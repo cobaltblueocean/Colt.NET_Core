@@ -43,6 +43,7 @@
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -54,6 +55,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Colt\Bitvector\BitMatrix.cs" />
+    <Compile Include="Colt\Bitvector\BitVector.cs" />
+    <Compile Include="Colt\Bitvector\QuickBitVector.cs" />
     <Compile Include="Colt\Buffer\DoubleBuffer.cs" />
     <Compile Include="Colt\Buffer\IDoubleBufferConsumer.cs" />
     <Compile Include="Colt\Buffer\IObjectBufferConsumer.cs" />
@@ -78,6 +82,7 @@
     <Compile Include="Colt\Matrix\Implementation\AbstractMatrix1D.cs" />
     <Compile Include="Colt\Matrix\Implementation\AbstractMatrix2D.cs" />
     <Compile Include="Colt\Matrix\Implementation\AbstractMatrix3D.cs" />
+    <Compile Include="Colt\Matrix\Implementation\DelegateDoubleMatrix1D.cs" />
     <Compile Include="Colt\Matrix\Implementation\DenseDoubleMatrix1D.cs" />
     <Compile Include="Colt\Matrix\Implementation\DenseDoubleMatrix2D.cs" />
     <Compile Include="Colt\Matrix\Implementation\DenseDoubleMatrix3D.cs" />
@@ -86,6 +91,8 @@
     <Compile Include="Colt\Matrix\Implementation\DenseObjectMatrix3D.cs" />
     <Compile Include="Colt\Matrix\Implementation\Former.cs" />
     <Compile Include="Colt\Matrix\Implementation\FormerFactory.cs" />
+    <Compile Include="Colt\Matrix\Implementation\RCDoubleMatrix2D.cs" />
+    <Compile Include="Colt\Matrix\Implementation\RCMDoubleMatrix2D.cs" />
     <Compile Include="Colt\Matrix\Implementation\SelectedDenseDoubleMatrix1D.cs" />
     <Compile Include="Colt\Matrix\Implementation\SelectedDenseDoubleMatrix2D.cs" />
     <Compile Include="Colt\Matrix\Implementation\SelectedDenseDoubleMatrix3D.cs" />
@@ -104,13 +111,23 @@
     <Compile Include="Colt\Matrix\Implementation\SparseObjectMatrix1D.cs" />
     <Compile Include="Colt\Matrix\Implementation\SparseObjectMatrix2D.cs" />
     <Compile Include="Colt\Matrix\Implementation\SparseObjectMatrix3D.cs" />
+    <Compile Include="Colt\Matrix\Implementation\TridiagonalDoubleMatrix2D.cs" />
+    <Compile Include="Colt\Matrix\Implementation\WrapperDoubleMatrix1D.cs" />
+    <Compile Include="Colt\Matrix\Implementation\WrapperDoubleMatrix2.cs" />
     <Compile Include="Colt\Matrix\LinearAlgebra\Algebra.cs" />
+    <Compile Include="Colt\Matrix\LinearAlgebra\CholeskyDecomposition.cs" />
+    <Compile Include="Colt\Matrix\LinearAlgebra\EigenvalueDecomposition.cs" />
+    <Compile Include="Colt\Matrix\LinearAlgebra\IBlas.cs" />
     <Compile Include="Colt\Matrix\LinearAlgebra\Diagonal.cs" />
     <Compile Include="Colt\Matrix\LinearAlgebra\LUDecomposition.cs" />
     <Compile Include="Colt\Matrix\LinearAlgebra\LUDecompositionQuick.cs" />
+    <Compile Include="Colt\Matrix\LinearAlgebra\Matrix2DMatrix2DFunction.cs" />
     <Compile Include="Colt\Matrix\LinearAlgebra\Property.cs" />
     <Compile Include="Colt\Matrix\LinearAlgebra\QRDecomposition.cs" />
+    <Compile Include="Colt\Matrix\LinearAlgebra\SeqBlas.cs" />
     <Compile Include="Colt\Matrix\LinearAlgebra\SingularValueDecomposition.cs" />
+    <Compile Include="Colt\Matrix\LinearAlgebra\Smp.cs" />
+    <Compile Include="Colt\Matrix\LinearAlgebra\SmpBlas.cs" />
     <Compile Include="Colt\Matrix\ObjectAlgorithms\Formatter.cs" />
     <Compile Include="Colt\Matrix\ObjectAlgorithms\Partitioning.cs" />
     <Compile Include="Colt\Matrix\ObjectAlgorithms\Sorting.cs" />
@@ -122,6 +139,7 @@
     <Compile Include="Colt\Matrix\ObjectMatrix3D.cs" />
     <Compile Include="Colt\PersistentObject.cs" />
     <Compile Include="Colt\PrimeFinder.cs" />
+    <Compile Include="Colt\TaskRunnerGroup.cs" />
     <Compile Include="Extensions\ArrayExtensions.cs" />
     <Compile Include="Extensions\DateTimeExtension.cs" />
     <Compile Include="Extensions\DictionaryExtension.cs" />
@@ -148,6 +166,7 @@
     <Compile Include="Hep\Aida\Ref\Histogram1D.cs" />
     <Compile Include="Hep\Aida\Ref\Histogram2D.cs" />
     <Compile Include="Hep\Aida\Ref\Histogram3D.cs" />
+    <Compile Include="Hep\Aida\Ref\Utility.cs" />
     <Compile Include="Hep\Aida\Ref\VariableAxis.cs" />
     <Compile Include="Jet\Math\Algebraic.cs" />
     <Compile Include="Jet\Math\Arithmetic.cs" />

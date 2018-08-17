@@ -233,7 +233,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <returns>
         /// A new matrix of the corresponding dynamic type.
         /// </returns>
-        protected internal override DoubleMatrix1D Like1D(int size, int zero, int stride)
+        public override DoubleMatrix1D Like1D(int size, int zero, int stride)
         {
             throw new ApplicationException(); // this method is never called since viewRow() and viewColumn are overridden properly.
         }
@@ -249,7 +249,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <param name="column">the index of the column-coordinate.</param>
         /// <returns>the value at the specified coordinate.</returns>
         [Obsolete("GetQuick(int row, int column) is deprecated, please use indexer instead.")]
-        public Double GetQuick(int row, int column)
+        public override Double GetQuick(int row, int column)
         {
             return this[row, column];
         }
@@ -380,7 +380,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <param name="column">the index of the column-coordinate.</param>
         /// <param name="value">the value to be filled into the specified cell.</param>
         [Obsolete("SetQuick(int row, int column, double value) is deprecated, please use indexer instead.")]
-        public void SetQuick(int row, int column, double value)
+        public override void SetQuick(int row, int column, double value)
         {
             this[row, column] = value;
         }

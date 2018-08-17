@@ -31,6 +31,8 @@ namespace Cern.Colt.Matrix.LinearAlgebra
     /// </summary>
     public class SingularValueDecomposition
     {
+
+        #region Local Variables
         /// <summary>
         /// Array for internal storage of U
         /// </summary>
@@ -55,7 +57,100 @@ namespace Cern.Colt.Matrix.LinearAlgebra
         /// Column dimension.
         /// </summary>
         private int _n;
+        #endregion
 
+        #region Property
+        /// <summary>
+        /// Returns the diagonal matrix of singular values.
+        /// </summary>
+        /// <returns>
+        /// S
+        /// </returns>
+        public DoubleMatrix2D S
+        {
+            get
+            {
+                return DoubleFactory2D.Sparse.Diagonal(DoubleFactory1D.Dense.Make(_s));
+            }
+        }
+
+        /// <summary>
+        /// Returns the diagonal of <tt>S</tt>, which is a one-dimensional array of singular values.
+        /// </summary>
+        /// <returns>
+        /// Diagonal of <tt>S</tt>.
+        /// </returns>
+        public double[] SingularValues
+        {
+            get
+            {
+                return _s;
+            }
+        }
+
+        /// <summary>
+        /// Returns the left singular vectors <tt>U</tt>.
+        /// </summary>
+        /// <returns>
+        /// <tt>U</tt>
+        /// </returns>
+        public DoubleMatrix2D U
+        {
+            get
+            {
+                return _u.ViewPart(0, 0, _m, Math.Min(_m + 1, _n));
+            }
+        }
+
+        /// <summary>
+        /// Returns the right singular vectors <tt>V</tt>.
+        /// </summary>
+        /// <returns>
+        /// <tt>V</tt>
+        /// </returns>
+        public DoubleMatrix2D V
+        {
+            get
+            {
+                return _v;
+            }
+        }
+
+        /// <summary>
+        /// Returns the two norm, which is <tt>max(S)</tt>.
+        /// </summary>
+        /// <returns>
+        /// The two norm.
+        /// </returns>
+        public double Norm2
+        {
+            get
+            {
+                return _s[0];
+            }
+        }
+
+        /// <summary>
+        /// Returns the effective numerical matrix rank, which is the number of nonnegligible singular values.
+        /// </summary>
+        /// <returns>
+        /// The effective numerical matrix rank.
+        /// </returns>
+        public int Rank
+        {
+            get {
+                double eps = Math.Pow(2.0, -52.0);
+                double tol = Math.Max(_m, _n) * _s[0] * eps;
+                int r = 0;
+                for (int i = 0; i < _s.Length; i++)
+                    if (_s[i] > tol)
+                        r++;
+                return r;
+            }
+        }
+        #endregion
+
+        #region Constructor
         /// <summary>
         /// Initializes a new instance of the <see cref="SingularValueDecomposition"/> class with a vector (the first column).
         /// </summary>
@@ -67,7 +162,7 @@ namespace Cern.Colt.Matrix.LinearAlgebra
         /// </exception>
         public SingularValueDecomposition(DoubleMatrix1D arg)
         {
-            batchSVD(DoubleFactory2D.Dense.Make(arg.ToArray(), arg.Size), true, true, true);
+            BatchSVD(DoubleFactory2D.Dense.Make(arg.ToArray(), arg.Size), true, true, true);
         }
 
         /// <summary>
@@ -82,7 +177,7 @@ namespace Cern.Colt.Matrix.LinearAlgebra
         /// </exception>
         public SingularValueDecomposition(DoubleMatrix2D arg)
         {
-            batchSVD(arg, true, true, true);
+            BatchSVD(arg, true, true, true);
         }
 
         /// <summary>
@@ -131,9 +226,11 @@ namespace Cern.Colt.Matrix.LinearAlgebra
         /// </exception>
         public SingularValueDecomposition(DoubleMatrix2D arg, bool wantU, bool wantV, bool order)
         {
-            batchSVD(arg, wantU, wantV, order);
+            BatchSVD(arg, wantU, wantV, order);
         }
+        #endregion
 
+        #region Local Public Methods
         /// <summary>
         /// Returns the two norm condition number, which is <tt>max(S) / min(S)</tt>.
         /// </summary>
@@ -160,84 +257,12 @@ namespace Cern.Colt.Matrix.LinearAlgebra
         }
 
         /// <summary>
-        /// Returns the diagonal matrix of singular values.
-        /// </summary>
-        /// <returns>
-        /// S
-        /// </returns>
-        public DoubleMatrix2D GetS()
-        {
-            return DoubleFactory2D.Sparse.Diagonal(DoubleFactory1D.Dense.Make(_s));
-        }
-
-        /// <summary>
-        /// Returns the diagonal of <tt>S</tt>, which is a one-dimensional array of singular values.
-        /// </summary>
-        /// <returns>
-        /// Diagonal of <tt>S</tt>.
-        /// </returns>
-        public double[] GetSingularValues()
-        {
-            return _s;
-        }
-
-        /// <summary>
-        /// Returns the left singular vectors <tt>U</tt>.
-        /// </summary>
-        /// <returns>
-        /// <tt>U</tt>
-        /// </returns>
-        public DoubleMatrix2D GetU()
-        {
-            return _u.ViewPart(0, 0, _m, Math.Min(_m + 1, _n));
-        }
-
-        /// <summary>
-        /// Returns the right singular vectors <tt>V</tt>.
-        /// </summary>
-        /// <returns>
-        /// <tt>V</tt>
-        /// </returns>
-        public DoubleMatrix2D GetV()
-        {
-            return _v;
-        }
-
-        /// <summary>
-        /// Returns the two norm, which is <tt>max(S)</tt>.
-        /// </summary>
-        /// <returns>
-        /// The two norm.
-        /// </returns>
-        public double Norm2()
-        {
-            return _s[0];
-        }
-
-        /// <summary>
-        /// Returns the effective numerical matrix rank, which is the number of nonnegligible singular values.
-        /// </summary>
-        /// <returns>
-        /// The effective numerical matrix rank.
-        /// </returns>
-        public int Rank()
-        {
-            double eps = Math.Pow(2.0, -52.0);
-            double tol = Math.Max(_m, _n) * _s[0] * eps;
-            int r = 0;
-            for (int i = 0; i < _s.Length; i++)
-                if (_s[i] > tol)
-                    r++;
-            return r;
-        }
-
-        /// <summary>
         /// Reduce the SVD according to the numerical rank of A.
         /// Discard negligible singular values and corresponding columns of U and V.
         /// </summary>
         public void Reduce()
         {
-            Reduce(Rank());
+            Reduce(Rank);
         }
 
         /// <summary>
@@ -289,7 +314,7 @@ namespace Cern.Colt.Matrix.LinearAlgebra
             buf.Append("\nrank = ");
             try
             {
-                buf.Append(Rank().ToString());
+                buf.Append(Rank.ToString());
             }
             catch (ArgumentException exc)
             {
@@ -299,7 +324,7 @@ namespace Cern.Colt.Matrix.LinearAlgebra
             buf.Append("\nnorm2 = ");
             try
             {
-                buf.Append(Norm2().ToString());
+                buf.Append(Norm2.ToString());
             }
             catch (ArgumentException exc)
             {
@@ -309,7 +334,7 @@ namespace Cern.Colt.Matrix.LinearAlgebra
             buf.Append("\n\nU = ");
             try
             {
-                buf.Append(GetU().ToString());
+                buf.Append(U.ToString());
             }
             catch (ArgumentException exc)
             {
@@ -319,7 +344,7 @@ namespace Cern.Colt.Matrix.LinearAlgebra
             buf.Append("\n\nS = ");
             try
             {
-                buf.Append(GetS().ToString());
+                buf.Append(S.ToString());
             }
             catch (ArgumentException exc)
             {
@@ -329,7 +354,7 @@ namespace Cern.Colt.Matrix.LinearAlgebra
             buf.Append("\n\nV = ");
             try
             {
-                buf.Append(GetV().ToString());
+                buf.Append(V.ToString());
             }
             catch (ArgumentException exc)
             {
@@ -402,16 +427,18 @@ namespace Cern.Colt.Matrix.LinearAlgebra
             // Q = [ S, l; 0, ||h||]
             var q =
                 DoubleFactory2D.Sparse.Compose(
-                    new[] { new[] { GetS(), l }, new[] { null, DoubleFactory2D.Dense.Make(1, 1, k) } });
+                    new[] { new[] { S, l }, new[] { null, DoubleFactory2D.Dense.Make(1, 1, k) } });
 
             var svdq = new SingularValueDecomposition(q, true, wantV, true);
-            _u = DoubleFactory2D.Dense.AppendColumns(_u, j).ZMult(svdq.GetU(), null);
-            _s = svdq.GetSingularValues();
+            _u = DoubleFactory2D.Dense.AppendColumns(_u, j).ZMult(svdq.U, null);
+            _s = svdq.SingularValues;
             if (wantV)
                 _v = DoubleFactory2D.Dense.ComposeDiagonal(_v, DoubleFactory2D.Dense.Identity(1)).ZMult(
-                    svdq.GetV(), null);
+                    svdq.V, null);
         }
+        #endregion
 
+        #region Local Private Methods
         /// <summary>
         /// Batch decomposition of the given matrix.
         /// The decomposed matrices can be retrieved via instance methods.
@@ -435,9 +462,9 @@ namespace Cern.Colt.Matrix.LinearAlgebra
         /// </code>
         /// .
         /// </exception>
-        private void batchSVD(DoubleMatrix2D arg, bool wantU, bool wantV, bool order)
+        private void BatchSVD(DoubleMatrix2D arg, bool wantU, bool wantV, bool order)
         {
-            Property.CheckRectangular(arg);
+            Property.DEFAULT.CheckRectangular(arg);
 
             // Derived from LINPACK code.
             // Initialize.
@@ -877,5 +904,6 @@ namespace Cern.Colt.Matrix.LinearAlgebra
                 }
             }
         }
+        #endregion
     }
 }

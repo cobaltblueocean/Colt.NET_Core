@@ -411,7 +411,8 @@ namespace Cern.Colt.Matrix
         /// <exception cref="IndexOutOfRangeException">
         /// If <tt>index&lt;0 || index&gt;=size()</tt>.
         /// </exception>
-        public double Get(int index)
+        [Obsolete("GetQuick(int index) is deprecated, please use indexer instead.")]
+        public virtual double GetQuick(int index)
         {
             if (index < 0 || index >= Size) CheckIndex(index);
             return this[index];
@@ -531,7 +532,8 @@ namespace Cern.Colt.Matrix
         /// <exception cref="IndexOutOfRangeException">
         /// If <tt>index&lt;0 || index&gt;=size()</tt>.
         /// </exception>
-        public void Set(int index, double value)
+        [Obsolete("SetQuick(int index, double value) is deprecated, please use indexer instead.")]
+        public virtual void SetQuick(int index, double value)
         {
             if (index < 0 || index >= Size) CheckIndex(index);
             this[index] = value;

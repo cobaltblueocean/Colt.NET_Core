@@ -8,6 +8,7 @@
 //   Ported from Java to C# by Kei Nakai, 2018.
 // </copyright>
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -26,7 +27,7 @@ namespace Cern.Colt.Matrix
     /// <returns>a flag to inform the object calling the procedure.</returns>
     public delegate Boolean ObjectMatrix3DProcedure(ObjectMatrix3D element);
 
-    public abstract class ObjectMatrix3D : AbstractMatrix3D
+    public abstract class ObjectMatrix3D : AbstractMatrix3D, IEnumerable<Object>
     {
 
         #region Local Variables
@@ -468,8 +469,8 @@ namespace Cern.Colt.Matrix
         /// <param name="column">the index of the column-coordinate.</param>
         /// <returns>the value of the specified cell.</returns>
         /// <exception cref="IndexOutOfRangeException">if <i>slice&lt;0 || slice&gt;=Slices || row&lt;0 || row&gt;=Rows || column&lt;0 || column&gt;=column()</i>.</exception>
-        [Obsolete("Get(int slice, int index, int column) is deprecated, please use indexer instead.")]
-        public Object Get(int slice, int row, int column)
+        [Obsolete("GetQuick(int slice, int index, int column) is deprecated, please use indexer instead.")]
+        public virtual Object GetQuick(int slice, int row, int column)
         {
             if (slice < 0 || slice >= Slices || row < 0 || row >= Rows || column < 0 || column >= Columns) throw new IndexOutOfRangeException("slice:" + slice + ", row:" + row + ", column:" + column);
             return this[slice, row, column];
@@ -538,8 +539,8 @@ namespace Cern.Colt.Matrix
         /// <param name="column">the index of the column-coordinate.</param>
         /// <param name="value">the value to be filled into the specified cell.</param>
         /// <exception cref="IndexOutOfRangeException">if <i>row&lt;0 || row&gt;=Rows || slice&lt;0 || slice&gt;=Slices || column&lt;0 || column&gt;=column()</i>.</exception>
-        [Obsolete("Get(int slice, int index, int column) is deprecated, please use indexer instead.")]
-        public void Set(int slice, int row, int column, Object value)
+        [Obsolete("SetQuick(int slice, int index, int column) is deprecated, please use indexer instead.")]
+        public virtual void SetQuick(int slice, int row, int column, Object value)
         {
             if (slice < 0 || slice >= Slices || row < 0 || row >= Rows || column < 0 || column >= Columns) throw new IndexOutOfRangeException("slice:" + slice + ", row:" + row + ", column:" + column);
             this[slice, row, column] = value;
@@ -976,6 +977,26 @@ namespace Cern.Colt.Matrix
                 }
             }
             return true;
+        }
+
+        public IEnumerator<Object> GetEnumerator()
+        {
+            for (int i = 0; i < Slices; i++)
+            {
+                for (int j = 0; j < Rows; j++)
+                {
+                    for (int k = 0; k < Columns; k++)
+                    {
+                        yield return this[i, j, k];
+                    }
+                }
+            }
+
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
         }
 
         #endregion
