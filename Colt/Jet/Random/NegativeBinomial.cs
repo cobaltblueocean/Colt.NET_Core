@@ -45,7 +45,7 @@ namespace Cern.Jet.Random
         protected Poisson poisson;
 
         // The uniform random number generated shared by all <b>static</b> methodsd 
-        protected static NegativeBinomial shared = new NegativeBinomial(1, 0.5, makeDefaultGenerator());
+        protected static NegativeBinomial shared = new NegativeBinomial(1, 0.5, MakeDefaultGenerator());
         /**
          * Constructs a Negative Binomial distribution.
          * Example: n=1, p=0.5.
@@ -65,7 +65,7 @@ namespace Cern.Jet.Random
          */
         public double cdf(int k)
         {
-            return Probability.negativeBinomial(k, n, p);
+            return Probability.NegativeBinomial(k, n, p);
         }
         /**
          * Returns a deep copy of the receiver; the copy will produce identical sequences.
@@ -75,11 +75,11 @@ namespace Cern.Jet.Random
          */
         public Object clone()
         {
-            NegativeBinomial copy = (NegativeBinomial)base.clone();
-            if (this.poisson != null) copy.poisson = (Poisson)this.poisson.clone();
-            copy.poisson.setRandomGenerator(copy.getRandomGenerator());
-            if (this.gamma != null) copy.gamma = (Gamma)this.gamma.clone();
-            copy.gamma.setRandomGenerator(copy.getRandomGenerator());
+            NegativeBinomial copy = (NegativeBinomial)base.Clone();
+            if (this.poisson != null) copy.poisson = (Poisson)this.poisson.Clone();
+            copy.poisson.RandomGenerator = copy.RandomGenerator;
+            if (this.gamma != null) copy.gamma = (Gamma)this.gamma.Clone();
+            copy.gamma.RandomGenerator = copy.RandomGenerator;
             return copy;
         }
         /**
@@ -124,8 +124,8 @@ namespace Cern.Jet.Random
 
             double x = p / (1.0 - p);
             double p1 = p;
-            double y = x * this.gamma.nextDouble(n, 1.0);
-            return this.poisson.nextInt(y);
+            double y = x * this.gamma.NextDouble(n, 1.0);
+            return this.poisson.NextInt(y);
         }
         /**
          * Returns the probability distribution function.
@@ -133,7 +133,7 @@ namespace Cern.Jet.Random
         public double pdf(int k)
         {
             if (k > n) throw new ArgumentException();
-            return cern.jet.math.Arithmetic.binomial(n, k) * System.Math.Pow(p, k) * System.Math.Pow(1.0 - p, n - k);
+            return Cern.Jet.Math.Arithmetic.Binomial(n, k) * System.Math.Pow(p, k) * System.Math.Pow(1.0 - p, n - k);
         }
         /**
          * Sets the parameters number of trials and the probability of success.

@@ -21,3 +21,5 @@ C:\Users\Mercury21\Source\repos\Colt\Colt.Tests\bin\Debug\nunit.framework.xml
 C:\Users\Mercury21\Source\repos\Colt\Colt.Tests\obj\Debug\Colt.Tests.csproj.CopyComplete
 C:\Users\Mercury21\Source\repos\Colt\Colt.Tests\obj\Debug\Colt.Tests.dll
 C:\Users\Mercury21\Source\repos\Colt\Colt.Tests\obj\Debug\Colt.Tests.pdb
+C:\Users\KEIN\Source\BitBucket\Repos\Colt\Colt.Tests\obj\Debug\Colt.Tests.csprojAssemblyReference.cache
+C:\Users\KEIN\Source\BitBucket\Repos\Colt\Colt.Tests\obj\Debug\Colt.Tests.csproj.CoreCompileInputs.cache

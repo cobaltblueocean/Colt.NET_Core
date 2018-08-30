@@ -6,3 +6,9 @@ C:\Users\Mercury21\Source\repos\Colt\Colt\bin\Debug\Cern.pdb
 C:\Users\Mercury21\Source\repos\Colt\Colt\obj\Debug\Cern.dll
 C:\Users\Mercury21\Source\repos\Colt\Colt\obj\Debug\Cern.pdb
 C:\Users\Mercury21\Source\repos\Colt\Colt\obj\Debug\Cern.csprojAssemblyReference.cache
+C:\Users\KEIN\Source\BitBucket\Repos\Colt\Colt\obj\Debug\Cern.csprojAssemblyReference.cache
+C:\Users\KEIN\Source\BitBucket\Repos\Colt\Colt\obj\Debug\Cern.csproj.CoreCompileInputs.cache
+C:\Users\KEIN\Source\BitBucket\Repos\Colt\Colt\obj\Debug\Cern.dll
+C:\Users\KEIN\Source\BitBucket\Repos\Colt\Colt\obj\Debug\Cern.pdb
+C:\Users\KEIN\Source\BitBucket\Repos\Colt\Colt\bin\Debug\Cern.dll
+C:\Users\KEIN\Source\BitBucket\Repos\Colt\Colt\bin\Debug\Cern.pdb

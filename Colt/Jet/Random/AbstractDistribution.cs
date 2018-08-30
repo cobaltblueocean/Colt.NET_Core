@@ -48,7 +48,7 @@ namespace Cern.Jet.Random
         /// <summary>
         /// the uniform random generator internally used.
         /// </summary>
-        protected RandomEngine RandomGenerator
+        public RandomEngine RandomGenerator
         {
             get { return randomGenerator; }
             set { randomGenerator = value; }
