@@ -37,6 +37,415 @@
         #endregion
 
         #region Local Public Methods
+
+        /// <summary>
+        /// Searches a specified range of the specified array of elements according
+        /// to the order induced by the specified comparator.
+        /// </summary>
+        /// <param name="a">
+        /// The array to be sorted.
+        /// </param>
+        /// <param name="value"></param>
+        /// <param name="fromIndex">
+        /// The index of the first element (inclusive) to be sorted.
+        /// </param>
+        /// <param name="toIndex">
+        /// The index of the last element (exclusive) to be sorted.
+        /// </param>
+        /// <returns></returns>
+        public static int BinarySearchFromTo(int[] a, int value, int fromIndex, int toIndex)
+        {
+            return Array.BinarySearch(a, fromIndex, (toIndex - fromIndex), value);
+        }
+
+        /// <summary>
+        /// Searches a specified range of the specified array of elements according
+        /// to the order induced by the specified comparator.
+        /// </summary>
+        /// <param name="a">
+        /// The array to be sorted.
+        /// </param>
+        /// <param name="value"></param>
+        /// <param name="fromIndex">
+        /// The index of the first element (inclusive) to be sorted.
+        /// </param>
+        /// <param name="toIndex">
+        /// The index of the last element (exclusive) to be sorted.
+        /// </param>
+        /// <param name="c">
+        /// The comparator to determine the order of the array.
+        /// </param>
+        /// <exception cref="ArgumentException">
+        /// If <i>fromIndex &gt; toIndex</i>
+        /// </exception>
+        /// <exception cref="IndexOutOfRangeException">
+        /// If <i>fromIndex &lt; 0</i> or <i>toIndex &gt; a.Length</i>
+        /// </exception>
+        /// <returns></returns>
+        public static int BinarySearchFromTo(int[] a, int value, int fromIndex, int toIndex, IntComparator comp)
+        {
+            var c = new IntComparatorWrapper();
+            c.comparator = comp;
+            return Array.BinarySearch(a, fromIndex, (toIndex - fromIndex), value, c);
+        }
+
+        /// <summary>
+        /// Searches a specified range of the specified array of elements according
+        /// to the order induced by the specified comparator.
+        /// </summary>
+        /// <param name="a">
+        /// The array to be sorted.
+        /// </param>
+        /// <param name="value"></param>
+        /// <param name="fromIndex">
+        /// The index of the first element (inclusive) to be sorted.
+        /// </param>
+        /// <param name="toIndex">
+        /// The index of the last element (exclusive) to be sorted.
+        /// </param>
+        /// <returns></returns>
+        public static int BinarySearchFromTo(byte[] a, byte value, int fromIndex, int toIndex)
+        {
+            return Array.BinarySearch(a, fromIndex, (toIndex - fromIndex), value);
+        }
+
+        /// <summary>
+        /// Searches a specified range of the specified array of elements according
+        /// to the order induced by the specified comparator.
+        /// </summary>
+        /// <param name="a">
+        /// The array to be sorted.
+        /// </param>
+        /// <param name="value"></param>
+        /// <param name="fromIndex">
+        /// The index of the first element (inclusive) to be sorted.
+        /// </param>
+        /// <param name="toIndex">
+        /// The index of the last element (exclusive) to be sorted.
+        /// </param>
+        /// <param name="c">
+        /// The comparator to determine the order of the array.
+        /// </param>
+        /// <exception cref="ArgumentException">
+        /// If <i>fromIndex &gt; toIndex</i>
+        /// </exception>
+        /// <exception cref="IndexOutOfRangeException">
+        /// If <i>fromIndex &lt; 0</i> or <i>toIndex &gt; a.Length</i>
+        /// </exception>
+        /// <returns></returns>
+        public static int BinarySearchFromTo(byte[] a, byte value, int fromIndex, int toIndex, ByteComparator comp)
+        {
+            var c = new ByteComparatorWrapper();
+            c.comparator = comp;
+            return Array.BinarySearch(a, fromIndex, (toIndex - fromIndex), value, c);
+        }
+
+        /// <summary>
+        /// Searches a specified range of the specified array of elements according
+        /// to the order induced by the specified comparator.
+        /// </summary>
+        /// <param name="a">
+        /// The array to be sorted.
+        /// </param>
+        /// <param name="value"></param>
+        /// <param name="fromIndex">
+        /// The index of the first element (inclusive) to be sorted.
+        /// </param>
+        /// <param name="toIndex">
+        /// The index of the last element (exclusive) to be sorted.
+        /// </param>
+        /// <returns></returns>
+        public static int BinarySearchFromTo(char[] a, char value, int fromIndex, int toIndex)
+        {
+            return Array.BinarySearch(a, fromIndex, (toIndex - fromIndex), value);
+        }
+
+        /// <summary>
+        /// Searches a specified range of the specified array of elements according
+        /// to the order induced by the specified comparator.
+        /// </summary>
+        /// <param name="a">
+        /// The array to be sorted.
+        /// </param>
+        /// <param name="value"></param>
+        /// <param name="fromIndex">
+        /// The index of the first element (inclusive) to be sorted.
+        /// </param>
+        /// <param name="toIndex">
+        /// The index of the last element (exclusive) to be sorted.
+        /// </param>
+        /// <param name="c">
+        /// The comparator to determine the order of the array.
+        /// </param>
+        /// <exception cref="ArgumentException">
+        /// If <i>fromIndex &gt; toIndex</i>
+        /// </exception>
+        /// <exception cref="IndexOutOfRangeException">
+        /// If <i>fromIndex &lt; 0</i> or <i>toIndex &gt; a.Length</i>
+        /// </exception>
+        /// <returns></returns>
+        public static int BinarySearchFromTo(char[] a, char value, int fromIndex, int toIndex, CharComparator comp)
+        {
+            var c = new CharComparatorWrapper();
+            c.comparator = comp;
+            return Array.BinarySearch(a, fromIndex, (toIndex - fromIndex), value, c);
+        }
+
+        /// <summary>
+        /// Searches a specified range of the specified array of elements according
+        /// to the order induced by the specified comparator.
+        /// </summary>
+        /// <param name="a">
+        /// The array to be sorted.
+        /// </param>
+        /// <param name="value"></param>
+        /// <param name="fromIndex">
+        /// The index of the first element (inclusive) to be sorted.
+        /// </param>
+        /// <param name="toIndex">
+        /// The index of the last element (exclusive) to be sorted.
+        /// </param>
+        /// <returns></returns>
+        public static int BinarySearchFromTo(float[] a, float value, int fromIndex, int toIndex)
+        {
+            return Array.BinarySearch(a, fromIndex, (toIndex - fromIndex), value);
+        }
+
+        /// <summary>
+        /// Searches a specified range of the specified array of elements according
+        /// to the order induced by the specified comparator.
+        /// </summary>
+        /// <param name="a">
+        /// The array to be sorted.
+        /// </param>
+        /// <param name="value"></param>
+        /// <param name="fromIndex">
+        /// The index of the first element (inclusive) to be sorted.
+        /// </param>
+        /// <param name="toIndex">
+        /// The index of the last element (exclusive) to be sorted.
+        /// </param>
+        /// <param name="c">
+        /// The comparator to determine the order of the array.
+        /// </param>
+        /// <exception cref="ArgumentException">
+        /// If <i>fromIndex &gt; toIndex</i>
+        /// </exception>
+        /// <exception cref="IndexOutOfRangeException">
+        /// If <i>fromIndex &lt; 0</i> or <i>toIndex &gt; a.Length</i>
+        /// </exception>
+        /// <returns></returns>
+        public static int BinarySearchFromTo(float[] a, float value, int fromIndex, int toIndex, FloatComparator comp)
+        {
+            var c = new FloatComparatorWrapper();
+            c.comparator = comp;
+            return Array.BinarySearch(a, fromIndex, (toIndex - fromIndex), value, c);
+        }
+
+        /// <summary>
+        /// Searches a specified range of the specified array of elements according
+        /// to the order induced by the specified comparator.
+        /// </summary>
+        /// <param name="a">
+        /// The array to be sorted.
+        /// </param>
+        /// <param name="value"></param>
+        /// <param name="fromIndex">
+        /// The index of the first element (inclusive) to be sorted.
+        /// </param>
+        /// <param name="toIndex">
+        /// The index of the last element (exclusive) to be sorted.
+        /// </param>
+        /// <returns></returns>
+        public static int BinarySearchFromTo(double[] a, double value, int fromIndex, int toIndex)
+        {
+            return Array.BinarySearch(a, fromIndex, (toIndex - fromIndex), value);
+        }
+
+        /// <summary>
+        /// Searches a specified range of the specified array of elements according
+        /// to the order induced by the specified comparator.
+        /// </summary>
+        /// <param name="a">
+        /// The array to be sorted.
+        /// </param>
+        /// <param name="value"></param>
+        /// <param name="fromIndex">
+        /// The index of the first element (inclusive) to be sorted.
+        /// </param>
+        /// <param name="toIndex">
+        /// The index of the last element (exclusive) to be sorted.
+        /// </param>
+        /// <param name="c">
+        /// The comparator to determine the order of the array.
+        /// </param>
+        /// <exception cref="ArgumentException">
+        /// If <i>fromIndex &gt; toIndex</i>
+        /// </exception>
+        /// <exception cref="IndexOutOfRangeException">
+        /// If <i>fromIndex &lt; 0</i> or <i>toIndex &gt; a.Length</i>
+        /// </exception>
+        /// <returns></returns>
+        public static int BinarySearchFromTo(double[] a, double value, int fromIndex, int toIndex, DoubleComparator comp)
+        {
+            var c = new DoubleComparatorWrapper();
+            c.comparator = comp;
+            return Array.BinarySearch(a, fromIndex, (toIndex - fromIndex), value, c);
+        }
+
+        /// <summary>
+        /// Searches a specified range of the specified array of elements according
+        /// to the order induced by the specified comparator.
+        /// </summary>
+        /// <param name="a">
+        /// The array to be sorted.
+        /// </param>
+        /// <param name="value"></param>
+        /// <param name="fromIndex">
+        /// The index of the first element (inclusive) to be sorted.
+        /// </param>
+        /// <param name="toIndex">
+        /// The index of the last element (exclusive) to be sorted.
+        /// </param>
+        /// <returns></returns>
+        public static int BinarySearchFromTo(long[] a, long value, int fromIndex, int toIndex)
+        {
+            return Array.BinarySearch(a, fromIndex, (toIndex - fromIndex), value);
+        }
+
+        /// <summary>
+        /// Searches a specified range of the specified array of elements according
+        /// to the order induced by the specified comparator.
+        /// </summary>
+        /// <param name="a">
+        /// The array to be sorted.
+        /// </param>
+        /// <param name="value"></param>
+        /// <param name="fromIndex">
+        /// The index of the first element (inclusive) to be sorted.
+        /// </param>
+        /// <param name="toIndex">
+        /// The index of the last element (exclusive) to be sorted.
+        /// </param>
+        /// <param name="c">
+        /// The comparator to determine the order of the array.
+        /// </param>
+        /// <exception cref="ArgumentException">
+        /// If <i>fromIndex &gt; toIndex</i>
+        /// </exception>
+        /// <exception cref="IndexOutOfRangeException">
+        /// If <i>fromIndex &lt; 0</i> or <i>toIndex &gt; a.Length</i>
+        /// </exception>
+        /// <returns></returns>
+        public static int BinarySearchFromTo(long[] a, long value, int fromIndex, int toIndex, LongComparator comp)
+        {
+            var c = new LongComparatorWrapper();
+            c.comparator = comp;
+            return Array.BinarySearch(a, fromIndex, (toIndex - fromIndex), value, c);
+        }
+
+        /// <summary>
+        /// Searches a specified range of the specified array of elements according
+        /// to the order induced by the specified comparator.
+        /// </summary>
+        /// <param name="a">
+        /// The array to be sorted.
+        /// </param>
+        /// <param name="value"></param>
+        /// <param name="fromIndex">
+        /// The index of the first element (inclusive) to be sorted.
+        /// </param>
+        /// <param name="toIndex">
+        /// The index of the last element (exclusive) to be sorted.
+        /// </param>
+        /// <returns></returns>
+        public static int BinarySearchFromTo(short[] a, short value, int fromIndex, int toIndex)
+        {
+            return Array.BinarySearch(a, fromIndex, (toIndex - fromIndex), value);
+        }
+
+        /// <summary>
+        /// Searches a specified range of the specified array of elements according
+        /// to the order induced by the specified comparator.
+        /// </summary>
+        /// <param name="a">
+        /// The array to be sorted.
+        /// </param>
+        /// <param name="value"></param>
+        /// <param name="fromIndex">
+        /// The index of the first element (inclusive) to be sorted.
+        /// </param>
+        /// <param name="toIndex">
+        /// The index of the last element (exclusive) to be sorted.
+        /// </param>
+        /// <param name="c">
+        /// The comparator to determine the order of the array.
+        /// </param>
+        /// <exception cref="ArgumentException">
+        /// If <i>fromIndex &gt; toIndex</i>
+        /// </exception>
+        /// <exception cref="IndexOutOfRangeException">
+        /// If <i>fromIndex &lt; 0</i> or <i>toIndex &gt; a.Length</i>
+        /// </exception>
+        /// <returns></returns>
+        public static int BinarySearchFromTo(short[] a, short value, int fromIndex, int toIndex, ShortComparator comp)
+        {
+            var c = new ShortComparatorWrapper();
+            c.comparator = comp;
+            return Array.BinarySearch(a, fromIndex, (toIndex - fromIndex), value, c);
+        }
+
+        /// <summary>
+        /// Searches a specified range of the specified array of elements according
+        /// to the order induced by the specified comparator.
+        /// </summary>
+        /// <param name="a">
+        /// The array to be sorted.
+        /// </param>
+        /// <param name="value"></param>
+        /// <param name="fromIndex">
+        /// The index of the first element (inclusive) to be sorted.
+        /// </param>
+        /// <param name="toIndex">
+        /// The index of the last element (exclusive) to be sorted.
+        /// </param>
+        /// <returns></returns>
+        public static int BinarySearchFromTo(Object[] a, Object value, int fromIndex, int toIndex)
+        {
+            return Array.BinarySearch(a, fromIndex, (toIndex - fromIndex), value);
+        }
+
+        /// <summary>
+        /// Searches a specified range of the specified array of elements according
+        /// to the order induced by the specified comparator.
+        /// </summary>
+        /// <param name="a">
+        /// The array to be sorted.
+        /// </param>
+        /// <param name="value"></param>
+        /// <param name="fromIndex">
+        /// The index of the first element (inclusive) to be sorted.
+        /// </param>
+        /// <param name="toIndex">
+        /// The index of the last element (exclusive) to be sorted.
+        /// </param>
+        /// <param name="c">
+        /// The comparator to determine the order of the array.
+        /// </param>
+        /// <exception cref="ArgumentException">
+        /// If <i>fromIndex &gt; toIndex</i>
+        /// </exception>
+        /// <exception cref="IndexOutOfRangeException">
+        /// If <i>fromIndex &lt; 0</i> or <i>toIndex &gt; a.Length</i>
+        /// </exception>
+        /// <returns></returns>
+        public static int BinarySearchFromTo<T>(T[] a, T value, int fromIndex, int toIndex, ObjectComparator<T> comp)
+        {
+            var c = new ObjectComparatorWrapper<T>();
+            c.comparator = comp;
+            return Array.BinarySearch(a, fromIndex, (toIndex - fromIndex), value, c);
+        }
+
         /// <summary>
         /// Sorts the specified range of the specified array of elements according
         /// to the order induced by the specified comparator.
@@ -1437,6 +1846,110 @@
         }
 
         #endregion
+
+        private class ByteComparatorWrapper : IComparer<byte>
+        {
+            public ByteComparator comparator;
+
+            public int Compare(byte x, byte y)
+            {
+                if (comparator != null)
+                    return comparator(x, y);
+                else
+                    return -1;
+            }
+        }
+
+        private class CharComparatorWrapper : IComparer<char>
+        {
+            public CharComparator comparator;
+
+            public int Compare(char x, char y)
+            {
+                if (comparator != null)
+                    return comparator(x, y);
+                else
+                    return -1;
+            }
+        }
+
+        private class DoubleComparatorWrapper : IComparer<double>
+        {
+            public DoubleComparator comparator;
+
+            public int Compare(double x, double y)
+            {
+                if (comparator != null)
+                    return comparator(x, y);
+                else
+                    return -1;
+            }
+        }
+
+        private class FloatComparatorWrapper : IComparer<float>
+        {
+            public FloatComparator comparator;
+
+            public int Compare(float x, float y)
+            {
+                if (comparator != null)
+                    return comparator(x, y);
+                else
+                    return -1;
+            }
+        }
+
+        private class IntComparatorWrapper : IComparer<int>
+        {
+            public IntComparator comparator;
+
+            public int Compare(int x, int y)
+            {
+                if (comparator != null)
+                    return comparator(x, y);
+                else
+                    return -1;
+            }
+        }
+
+        private class LongComparatorWrapper : IComparer<long>
+        {
+            public LongComparator comparator;
+
+            public int Compare(long x, long y)
+            {
+                if (comparator != null)
+                    return comparator(x, y);
+                else
+                    return -1;
+            }
+        }
+
+        private class ShortComparatorWrapper : IComparer<short>
+        {
+            public ShortComparator comparator;
+
+            public int Compare(short x, short y)
+            {
+                if (comparator != null)
+                    return comparator(x, y);
+                else
+                    return -1;
+            }
+        }
+
+        private class ObjectComparatorWrapper<T> : IComparer<T>
+        {
+            public ObjectComparator<T> comparator;
+
+            public int Compare(T x, T y)
+            {
+                if (comparator != null)
+                    return comparator(x, y);
+                else
+                    return -1;
+            }
+        }
 
     }
 }

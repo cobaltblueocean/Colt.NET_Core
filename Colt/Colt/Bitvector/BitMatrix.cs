@@ -70,7 +70,7 @@ namespace Cern.Colt.Bitvector
             }
             set
             {
-
+                QuickBitVector.Put(_bits, row * _columns + column, value);
             }
         }
 
@@ -449,7 +449,7 @@ namespace Cern.Colt.Bitvector
         /// <param name="value">the value of the bit to be copied into the specified coordinate.</param>
         public void PutQuick(int column, int row, Boolean value)
         {
-            QuickBitVector.Put(_bits, row * _columns + column, value);
+            this[column, row] = value;
         }
 
         /// <summary>
