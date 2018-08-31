@@ -59,10 +59,10 @@ For more results see the <a href="./doc-files/performanceLog.html">performance l
                     int k = 1;
                     types = new String[] { args[k++] };
                     cpus = int.Parse(args[k++]);
-                    minSecs = new Double(args[k++]).doubleValue();
-                    densities = new double[] { new Double(args[k++]).doubleValue() };
-                    transposeA = new Boolean(args[k++]).BooleanValue();
-                    transposeB = new Boolean(args[k++]).BooleanValue();
+                    minSecs = Double.Parse(args[k++]);
+                    densities = new double[] { Double.Parse(args[k++]) };
+                    transposeA =  Boolean.Parse(args[k++]);
+                    transposeB =  Boolean.Parse(args[k++]);
 
                     sizes = new int[args.Length - k];
                     for (int i = 0; k < args.Length; k++, i++) sizes[i] = int.Parse(args[k]);
