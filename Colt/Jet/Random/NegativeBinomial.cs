@@ -46,34 +46,38 @@ namespace Cern.Jet.Random
 
         // The uniform random number generated shared by all <b>static</b> methodsd 
         protected static NegativeBinomial shared = new NegativeBinomial(1, 0.5, MakeDefaultGenerator());
-        /**
-         * Constructs a Negative Binomial distribution.
-         * Example: n=1, p=0.5.
-         * @param n the number of trials.
-         * @param p the probability of success.
-         * @param randomGenerator a uniform random number generator.
-         */
+
+        /// <summary>
+        /// Constructs a Negative Binomial distribution.
+        /// Example: n=1, p=0.5.
+        /// </summary>
+        /// <param name="n">the number of trials.</param>
+        /// <param name="p">the probability of success.</param>
+        /// <param name="randomGenerator">a uniform random number generator.</param>
         public NegativeBinomial(int n, double p, RandomEngine randomGenerator)
         {
             RandomGenerator = randomGenerator;
-            setNandP(n, p);
+            SetNandP(n, p);
             this.gamma = new Gamma(n, 1.0, randomGenerator);
             this.poisson = new Poisson(0.0, randomGenerator);
         }
-        /**
-         * Returns the cumulative distribution function.
-         */
-        public double cdf(int k)
+
+        /// <summary>
+        /// Returns the cumulative distribution function.
+        /// </summary>
+        /// <param name="k"></param>
+        /// <returns></returns>
+        public double CumulativeDistributionFunction(int k)
         {
             return Probability.NegativeBinomial(k, n, p);
         }
-        /**
-         * Returns a deep copy of the receiver; the copy will produce identical sequences.
-         * After this call has returned, the copy and the receiver have equal but separate state.
-         *
-         * @return a copy of the receiver.
-         */
-        public Object clone()
+
+        /// <summary>
+        /// Returns a deep copy of the receiver; the copy will produce identical sequences.
+        /// After this call has returned, the copy and the receiver have equal but separate state.
+        /// </summary>
+        /// <returns>a copy of the receiver.</returns>
+        public Object Clone()
         {
             NegativeBinomial copy = (NegativeBinomial)base.Clone();
             if (this.poisson != null) copy.poisson = (Poisson)this.poisson.Clone();
@@ -82,21 +86,23 @@ namespace Cern.Jet.Random
             copy.gamma.RandomGenerator = copy.RandomGenerator;
             return copy;
         }
-        /**
-         * Returns a random number from the distribution.
-         */
+
         /// <summary>
-        /// 
+        /// Returns a random number from the distribution.
         /// </summary>
         /// <returns></returns>
         public override int NextInt()
         {
-            return nextInt(n, p);
+            return NextInt(n, p);
         }
-        /**
-         * Returns a random number from the distribution; bypasses the internal state.
-         */
-        public int nextInt(int n, double p)
+
+        /// <summary>
+        /// Returns a random number from the distribution; bypasses the internal state.
+        /// </summary>
+        /// <param name="n"></param>
+        /// <param name="p"></param>
+        /// <returns></returns>
+        public int NextInt(int n, double p)
         {
             /******************************************************************
              *                                                                *
@@ -127,47 +133,56 @@ namespace Cern.Jet.Random
             double y = x * this.gamma.NextDouble(n, 1.0);
             return this.poisson.NextInt(y);
         }
-        /**
-         * Returns the probability distribution function.
-         */
-        public double pdf(int k)
+
+        /// <summary>
+        /// Returns the probability distribution function.
+        /// </summary>
+        /// <param name="k"></param>
+        /// <returns></returns>
+        public double ProbabilityDistributionFunction(int k)
         {
             if (k > n) throw new ArgumentException();
             return Cern.Jet.Math.Arithmetic.Binomial(n, k) * System.Math.Pow(p, k) * System.Math.Pow(1.0 - p, n - k);
         }
-        /**
-         * Sets the parameters number of trials and the probability of success.
-         * @param n the number of trials
-         * @param p the probability of success.
-         */
-        public void setNandP(int n, double p)
+
+        /// <summary>
+        /// Sets the parameters number of trials and the probability of success.
+        /// </summary>
+        /// <param name="n">the number of trials</param>
+        /// <param name="p">the probability of success.</param>
+        public void SetNandP(int n, double p)
         {
             this.n = n;
             this.p = p;
         }
-        /**
-         * Returns a random number from the distribution with the given parameters n and p.
-         * @param n the number of trials
-         * @param p the probability of success.
-         */
+
+        /// <summary>
+        /// Returns a random number from the distribution with the given parameters n and p.
+        /// </summary>
+        /// <param name="n">the number of trials</param>
+        /// <param name="p">the probability of success.</param>
+        /// <returns></returns>
         [MethodImpl(MethodImplOptions.Synchronized)]
-        public static int staticNextInt(int n, double p)
+        public static int StaticNextInt(int n, double p)
         {
-                return shared.nextInt(n, p);
+                return shared.NextInt(n, p);
         }
-        /**
-         * Returns a String representation of the receiver.
-         */
+
+        /// <summary>
+        /// Returns a String representation of the receiver.
+        /// </summary>
+        /// <returns></returns>
         public override String ToString()
         {
             return this.GetType().Name + "(" + n + "," + p + ")";
         }
-        /**
-         * Sets the uniform random number generated shared by all <b>static</b> methods.
-         * @param randomGenerator the new uniform random number generator to be shared.
-         */
+
+        /// <summary>
+        /// Sets the uniform random number generated shared by all <b>static</b> methods.
+        /// </summary>
+        /// <param name="randomGenerator">the new uniform random number generator to be shared.</param>
         [MethodImpl(MethodImplOptions.Synchronized)]
-        private static void xstaticSetRandomGenerator(RandomEngine randomGenerator)
+        private static void xStaticSetRandomGenerator(RandomEngine randomGenerator)
         {
                 shared.RandomGenerator = randomGenerator;
         }

@@ -46,7 +46,6 @@ namespace Colt.Tests
             writeAsXML(h2.ProjectionY, "projectionY.xml");
         }
 
-        [Test]
         private static void writeAsXML(IHistogram1D h, String filename)
         {
             try
@@ -94,7 +93,6 @@ namespace Colt.Tests
             }
         }
 
-        [Test]
         private static void writeAsXML(IHistogram2D h, String filename)
         {
             try

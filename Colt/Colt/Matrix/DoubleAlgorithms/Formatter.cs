@@ -359,8 +359,8 @@ namespace Cern.Colt.Matrix.DoubleAlgorithms
             DoubleMatrix2D rowStats = matrix.Like(matrix.Rows, aggr.Length); // hold row aggregations
             DoubleMatrix2D colStats = matrix.Like(aggr.Length, matrix.Columns); // hold column aggregations
 
-            Cern.Colt.Matrix.DoubleAlgorithms.Statistics.aggregate(matrix, aggr, colStats); // aggregate an entire column at a time
-            Cern.Colt.Matrix.DoubleAlgorithms.Statistics.aggregate(matrix.ViewDice(), aggr, rowStats.ViewDice()); // aggregate an entire row at a time
+            Cern.Colt.Matrix.DoubleAlgorithms.Statistics.Aggregate(matrix, aggr, colStats); // aggregate an entire column at a time
+            Cern.Colt.Matrix.DoubleAlgorithms.Statistics.Aggregate(matrix.ViewDice(), aggr, rowStats.ViewDice()); // aggregate an entire row at a time
 
             // turn into strings
             // tmp holds "matrix" plus "colStats" below (needed so that numbers in a columns can be decimal point aligned)

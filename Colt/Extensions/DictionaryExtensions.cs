@@ -7,7 +7,7 @@ using Cern.Colt;
 
 namespace System.Collections.Generic
 {
-    public static class DictionaryExtension
+    public static class DictionaryExtensions
     {
         /// <summary>
         /// Ensures that the receiver can hold at least the specified number of elements without needing to allocate new internal memory.

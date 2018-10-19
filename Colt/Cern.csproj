@@ -44,6 +44,8 @@
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Management" />
+    <Reference Include="System.Runtime.InteropServices.RuntimeInformation, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -62,9 +64,13 @@
     <Compile Include="Colt\Buffer\IDoubleBufferConsumer.cs" />
     <Compile Include="Colt\Buffer\IObjectBufferConsumer.cs" />
     <Compile Include="Colt\Buffer\ObjectBuffer.cs" />
+    <Compile Include="Colt\Exception\UnsupportedPlatformException.cs" />
+    <Compile Include="Colt\Utility\PushbackReader.cs" />
+    <Compile Include="Colt\Utility\Karnel.cs" />
     <Compile Include="Colt\Matrix\DoubleAlgorithms\Partitioning.cs" />
     <Compile Include="Colt\Matrix\DoubleAlgorithms\Stencil.cs" />
     <Compile Include="Colt\Matrix\DoubleAlgorithms\Transform.cs" />
+    <Compile Include="Colt\Utility\OSInfo.cs" />
     <Compile Include="Colt\Partitioning.cs" />
     <Compile Include="Colt\Function\BinaryFunctions.cs" />
     <Compile Include="Colt\Function\UnaryFunctions.cs" />
@@ -144,9 +150,13 @@
     <Compile Include="Colt\PersistentObject.cs" />
     <Compile Include="Colt\PrimeFinder.cs" />
     <Compile Include="Colt\TaskRunnerGroup.cs" />
+    <Compile Include="Colt\Utility\StreamTokenizer.cs" />
+    <Compile Include="Colt\Utility\Timer.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Extensions\ArrayExtensions.cs" />
-    <Compile Include="Extensions\DateTimeExtension.cs" />
-    <Compile Include="Extensions\DictionaryExtension.cs" />
+    <Compile Include="Extensions\DateTimeExtensions.cs" />
+    <Compile Include="Extensions\DictionaryExtensions.cs" />
     <Compile Include="Extensions\ListExtensions.cs" />
     <Compile Include="Extensions\PremitiveExtensions.cs" />
     <Compile Include="Hep\Aida\Bin\AbstractBin.cs" />

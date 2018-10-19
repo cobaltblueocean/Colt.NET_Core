@@ -37,6 +37,11 @@ namespace Cern.Colt.Matrix
         public static readonly DoubleFactory2D Sparse = new DoubleFactory2D();
 
         /// <summary>
+        /// A factory producing sparse hash matrices.
+        /// </summary>
+        public static readonly DoubleFactory2D RowCompressed = new DoubleFactory2D();
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="DoubleFactory2D"/> class.
         /// Makes this class non instantiable, but still let's others inherit from it.
         /// </summary>
@@ -490,6 +495,7 @@ namespace Cern.Colt.Matrix
         public DoubleMatrix2D Make(int rows, int columns)
         {
             if (this == Sparse) return new SparseDoubleMatrix2D(rows, columns);
+            if (this == RowCompressed) return new RCDoubleMatrix2D(rows, columns);
             return new DenseDoubleMatrix2D(rows, columns);
         }
 
