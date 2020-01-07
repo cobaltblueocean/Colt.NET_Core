@@ -136,7 +136,7 @@ namespace Cern.Hep.Aida.Ref
             double[] sliceHeights = new double[sliceBins];
             double[] sliceErrors = new double[sliceBins];
 
-            //for (int i=xAxis.under; i<=xAxis.over; i++)
+            //for (int i=yAxis.under; i<=yAxis.over; i++)
             for (int i = 0; i < sliceBins; i++)
             {
                 for (int j = indexY1; j <= indexY2; j++)

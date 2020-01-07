@@ -87,7 +87,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <param name="values">The values to be filled into the new matrix.</param>
         /// <exception cref="ArgumentException">if <i>for any 1 &lt;= slice &lt; values.Length: values[slice].Length != values[slice-1].Length</i>.</exception>
         /// <exception cref="ArgumentException">if <i>for any 1 &lt;= row &lt; values.GetLength(1): values[slice][row].Length != values[slice][row-1].Length</i>.</exception>
-        public DenseDoubleMatrix3D(double[][][] values) : this(values.Length, (values.Length == 0 ? 0 : values.GetLength(1)), (values.Length == 0 ? 0 : values.GetLength(1) == 0 ? 0 : values[0].GetLength(1)))
+        public DenseDoubleMatrix3D(double[][][] values) : this(values.Length, (values.Length == 0 ? 0 : values[0].Length), (values.Length == 0 ? 0 : values[0].Length == 0 ? 0 : values[0][0].Length))
         {
             Assign(values);
         }

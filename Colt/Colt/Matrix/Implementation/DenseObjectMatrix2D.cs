@@ -96,7 +96,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// </summary>
         /// <param name="values">The values to be filled into the new matrix.</param>
         /// <exception cref="ArgumentException">if <i>for any 1 &lt;= row &lt; values.Length: values[row].Length != values[row-1].Length</i>.</exception>
-        public DenseObjectMatrix2D(Object[][] values) : this(values.Length, values.Length == 0 ? 0 : values.GetLength(1))
+        public DenseObjectMatrix2D(Object[][] values) : this(values.Length, values.Length == 0 ? 0 : values[0].Length)
         {
             Assign(values);
         }
@@ -390,9 +390,9 @@ namespace Cern.Colt.Matrix.Implementation
         /// <param name="rows">the number of rows the matrix shall have.</param>
         /// <param name="columns">the number of columns the matrix shall have.</param>
         /// <returns>a new empty matrix of the same dynamic type.</returns>
-        public override ObjectMatrix2D Like(int Rows, int Columns)
+        public override ObjectMatrix2D Like(int rows, int columns)
         {
-            return new DenseObjectMatrix2D(base.Rows, base.Columns);
+            return new DenseObjectMatrix2D(rows, columns);
         }
 
         /// <summary>

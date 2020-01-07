@@ -89,7 +89,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <summary>
         /// The default format string for formatting a single cell value; currently <tt>"%G"</tt>.
         /// </summary>
-        protected string formatString = "%G";
+        protected string formatString = "G";  //"%G"
 
         /// <summary>
         /// The default minimum number of characters a column may have; currently <tt>1</tt>.
@@ -115,6 +115,8 @@ namespace Cern.Colt.Matrix.Implementation
         /// Tells whether String representations are to be preceded with summary of the shape; currently <tt>true</tt>.
         /// </summary>
         protected bool printShape = true;
+
+        protected static FormerFactory factory = new FormerFactory();
 
         /// <summary>
         /// for efficient String manipulations
@@ -398,6 +400,11 @@ namespace Cern.Colt.Matrix.Implementation
         }
 
         /// <summary>
+        /// Converts a given cell to a String; no alignment considered.
+        /// </summary>
+        protected abstract String Form(AbstractMatrix1D matrix, int index, Former formatter);
+
+        /// <summary>
         /// Returns a string representations of all cells; no alignment considered.
         /// </summary>
         /// <param name="matrix">
@@ -419,10 +426,14 @@ namespace Cern.Colt.Matrix.Implementation
         /// </returns>
         protected string[] FormatRow(AbstractMatrix1D vector) 
         {
+            Former formatter = null;
+            formatter = factory.Create(formatString);
             int s = vector.Size;
-            var strings = new string[s];
+            String[] strings = new String[s];
             for (int i = 0; i < s; i++)
-                strings[i] = vector.ToString(i);
+            {
+                strings[i] = Form(vector, i, formatter);
+            }
             return strings;
         }
 

@@ -8,27 +8,12 @@
 //   Ported from Java to C# by Kei Nakai, 2018.
 // </copyright>
 using System;
-
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Timers;
 using System.Diagnostics;
-using System.Management;
-using Microsoft.Win32;
-using Microsoft.VisualBasic.Devices;
 
 namespace Colt.Tests
 {
-    public class BenchmarkKernel
+    public static class BenchmarkKernel
     {
-        private int counter;
-
-        /**
- * Benchmark constructor comment.
- */
-        protected BenchmarkKernel() { }
         /**
          * Executes procedure repeatadly until more than minSeconds have elapsed.
          */
@@ -81,10 +66,16 @@ namespace Colt.Tests
 
             return (float)elapsed / 1000.0f / iter;
         }
+
+        public static String SystemInfo()
+        {
+            return "test";
+        }
+
         /**
          * Returns a String with the system's properties (vendor, version, operating system, etcd)
          */
-        public static String SystemInfo()
+        public static String SystemInfo2()
         {
             String[] properties = {
                 ".NET Framework Description",
@@ -98,53 +89,55 @@ namespace Colt.Tests
                 "Environment Platform"
             };
 
-            // build string matrix
-            var matrix = new Cern.Colt.Matrix.Implementation.DenseObjectMatrix2D(properties.Length, 2);
-            matrix.ViewColumn(0).Assign(properties);
+            //// build string matrix
+            //var matrix = new Cern.Colt.Matrix.Implementation.DenseObjectMatrix2D(properties.Length, 2);
+            //matrix.ViewColumn(0).Assign(properties);
 
-            // retrieve property values
-            for (int i = 0; i < properties.Length; i++)
-            {
-                String value = "";
+            //// retrieve property values
+            //for (int i = 0; i < properties.Length; i++)
+            //{
+            //    String value = "";
 
-                switch (properties[i])
-                {
-                    case ".NET Framework Description":
-                        value = Cern.Colt.Karnel.FrameworkDescription;
-                        break;
-                    case ".NET Framework Version":
-                        value = Cern.Colt.Karnel.FrameworkVersion;
-                        break;
-                    case "OS Name":
-                        value = Cern.Colt.Karnel.OSDescription;
-                        break;
-                    case "OS Version":
-                        value = Cern.Colt.Karnel.OSVersionString;
-                        break;
-                    case "OS Architecture":
-                        value = Cern.Colt.Karnel.OSArchitecture.ToString();
-                        break;
-                    case "Bits":
-                        value = Cern.Colt.Karnel.OSBits.ToString();
-                        break;
-                    case "Runtime Architecture":
-                        value = Cern.Colt.Karnel.RuntimeArchitecture.ToString();
-                        break;
-                    case "Manufacture":
-                        value = Cern.Colt.Karnel.Manufacture;
-                        break;
-                    case "Environment Platform":
-                        value = Cern.Colt.Karnel.EnvironmentPlatform.ToString();
-                        break;
-                }
-                if (value == null) value = "?"; // prop not available
-                matrix[i, 1] = value;
-            }
+            //    //switch (properties[i])
+            //    //{
+            //    //    //case ".NET Framework Description":
+            //    //    //    value = Cern.Colt.Karnel.FrameworkDescription;
+            //    //    //    break;
+            //    //    //case ".NET Framework Version":
+            //    //    //    value = Cern.Colt.Karnel.FrameworkVersion;
+            //    //    //    break;
+            //    //    //case "OS Name":
+            //    //    //    value = Cern.Colt.Karnel.OSDescription;
+            //    //    //    break;
+            //    //    //case "OS Version":
+            //    //    //    value = Cern.Colt.Karnel.OSVersionString;
+            //    //    //    break;
+            //    //    //case "OS Architecture":
+            //    //    //    value = Cern.Colt.Karnel.OSArchitecture.ToString();
+            //    //    //    break;
+            //    //    //case "Bits":
+            //    //    //    value = Cern.Colt.Karnel.OSBits.ToString();
+            //    //    //    break;
+            //    //    //case "Runtime Architecture":
+            //    //    //    value = Cern.Colt.Karnel.RuntimeArchitecture.ToString();
+            //    //    //    break;
+            //    //    //case "Manufacture":
+            //    //    //    value = Cern.Colt.Karnel.Manufacture;
+            //    //    //    break;
+            //    //    //case "Environment Platform":
+            //    //    //    value = Cern.Colt.Karnel.EnvironmentPlatform.ToString();
+            //    //    //    break;
+            //    //}
+            //    if (value == null) value = "?"; // prop not available
+            //    matrix[i, 1] = value;
+            //}
 
-            // format matrix
-            var formatter = new Cern.Colt.Matrix.ObjectAlgorithms.Formatter();
-            formatter.SetPrintShape(false);
-            return formatter.ToString(matrix);
+            //// format matrix
+            //var formatter = new Cern.Colt.Matrix.ObjectAlgorithms.Formatter();
+            //formatter.SetPrintShape(false);
+            //return formatter.ToString(matrix);
+
+            return properties.ToString();
         }
     }
 }

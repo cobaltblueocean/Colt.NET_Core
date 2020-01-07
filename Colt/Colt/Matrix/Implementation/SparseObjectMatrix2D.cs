@@ -152,7 +152,7 @@ namespace Cern.Colt.Matrix.Implementation
         public SparseObjectMatrix2D(int rows, int columns, int initialCapacity, double minLoadFactor, double maxLoadFactor)
         {
             Setup(rows, columns);
-            this.MaxLoadFactor = minLoadFactor;
+            this.MinLoadFactor = minLoadFactor;
             this.MaxLoadFactor = maxLoadFactor;
 
             var capacity = PrimeFinder.NextPrime(initialCapacity);

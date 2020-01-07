@@ -444,7 +444,7 @@ namespace Cern.Jet.Random
         /// <returns></returns>
         public override String ToString()
         {
-            String interpolation = null;
+            //String interpolation = null;
             return this.GetType().Name + "(" + ((_cdf != null) ? _cdf.Length : 0) + ")";
         }
     }

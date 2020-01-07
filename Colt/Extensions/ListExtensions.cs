@@ -43,10 +43,22 @@ namespace System
 
         public static List<T> Copy<T>(this List<T> list)
         {
+            if (list == null) return new List<T>();
+
             T[] buf = new T[list.Count];
             list.CopyTo(buf);
 
-            return new List<T>(buf);
+            return buf.ToList();
+        }
+
+        public static String[] ToStringArray<T>(this List<T> list)
+        {
+            return Array.ConvertAll<T, string>(list.ToArray(), ConvertObjectToString);
+        }
+
+        static string ConvertObjectToString<T>(T obj)
+        {
+            return obj?.ToString() ?? string.Empty;
         }
 
         public static int BinarySearchFromTo<T>(this List<T> list, T item, int from, int to)
@@ -57,6 +69,23 @@ namespace System
 
             int count = to - from;
             return list.BinarySearch(from, count, item, dc);
+        }
+
+        public static void AddAllOfFromTo<T>(this List<T> list, List<T> items, int from, int to)
+        {
+            var count = to - from;
+            T[] array = new T[count];
+            items.CopyTo(0, array, from, count);
+
+            list.AddRange(items);
+        }
+
+        public static Boolean RemoveAll<T>(this List<T> list, List<T> items)
+        {
+            var change = list.Any(x => items.Contains(x));
+            if (change)
+                list = list.Except(items).ToList();
+            return change;
         }
 
         private class DefaultComparer<T> : IComparer<T>

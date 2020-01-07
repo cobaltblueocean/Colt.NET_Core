@@ -59,6 +59,32 @@ namespace Cern.Colt.Matrix.ObjectAlgorithms
         }
 
         /// <summary>
+        /// Converts a given cell to a String; no alignment considered.
+        /// </summary>
+        /// <param name="matrix"></param>
+        /// <param name="index"></param>
+        /// <param name="formatter"></param>
+        /// <returns></returns>
+        protected override string Form(AbstractMatrix1D matrix, int index, Former formatter)
+        {
+            return this.Form((ObjectMatrix1D)matrix, index, formatter);
+        }
+
+        /// <summary>
+        /// Converts a given cell to a String; no alignment considered.
+        /// </summary>
+        /// <param name="matrix"></param>
+        /// <param name="index"></param>
+        /// <param name="formatter"></param>
+        /// <returns></returns>
+        protected String Form(ObjectMatrix1D matrix, int index, Former formatter)
+        {
+            Object value = matrix[index];
+            if (value == null) return "";
+            return value.ValueOf();
+        }
+
+        /// <summary>
         /// Returns a string representations of all cells; no alignment considered.
         /// </summary>
         /// <param name="matrix"></param>

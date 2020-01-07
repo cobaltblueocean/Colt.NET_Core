@@ -15,13 +15,13 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Reflection;
 using Cern.Colt;
+using NUnit.Framework;
+using Cern.Colt.Matrix;
+using Cern.Colt.Matrix.Implementation;
+using F = Cern.Hep.Aida.Bin.BinFunctions1D;
 
 namespace Colt.Tests
 {
-    using NUnit.Framework;
-    using Cern.Colt.Matrix;
-    using Cern.Colt.Matrix.Implementation;
-    using F = Cern.Hep.Aida.Bin.BinFunctions1D;
 
     /// <summary>
     /// Configurable matrix benchmark.
@@ -39,14 +39,142 @@ namespace Colt.Tests
     public class BenchmarkMatrix
     {
         private static StreamWriter writer;
+        private static String path = NUnit.Framework.TestContext.CurrentContext.TestDirectory + "\\TestResult\\BenchmarkMatrix\\";
 
-        /**
-         * Benchmark constructor comment.
-         */
-        protected BenchmarkMatrix() { }
-        /**
-         * Not yet documented.
-         */
+        /// <summary>
+        /// Runs the matrix benchmark operations defined in args or in the file specified by args0.
+        /// To get detailed help on usage type java cern.colt.matrix.bench.BenchmarkMatrix -help
+        /// <summary>
+        [Test]
+        public void MatrixBenchmarkTest()
+        {
+            if (!Directory.Exists(path))
+                Directory.CreateDirectory(path);
+
+            String[] args = Array.ConvertAll(commands().Split(','), p => p.Trim());
+
+            String filename = path + "MatrixBenchmarkTest.txt";
+
+            writer = new StreamWriter(filename);
+
+            int n = args.Length;
+            if (n == 0 || (n <= 1 && args[0].Equals("-help")))
+            { // overall help
+                writer.WriteLine(usage());
+                return;
+            }
+            if (args[0].Equals("-help"))
+            { // help on specific command
+                if (commands().IndexOf(args[1]) < 0)
+                {
+                    writer.WriteLine(args[1] + ": no such command available.\n" + usage());
+                }
+                else
+                {
+                    writer.WriteLine(usage(args[1]));
+                }
+                return;
+            }
+
+            writer.WriteLine("Colt Matrix benchmark running on\n");
+            writer.WriteLine(BenchmarkKernel.SystemInfo2() + "\n");
+
+
+            string assemblyVersion = Assembly.Load("Cern").GetName().Version.ToString();
+
+            writer.WriteLine("Colt Version is " + assemblyVersion + "\n");
+
+            Timer timer = new Timer();
+            timer.Start();
+            if (!args[0].Equals("-file"))
+            { // interactive mode, commands supplied via java class args
+                writer.WriteLine("\n\nExecuting command = " + new List<Object>(args) + " ..");
+                handle(args);
+            }
+            else
+            { // batch mode, read commands from file
+              /* 
+              parse command file in args[0]
+              one command per line (including parameters)
+              for example:
+              // dgemm dense 2 2.0 false true 0.999 10 30 50 100 250 500 1000
+              dgemm dense 2 2.5 false true 0.999 10 50 
+              dgemm sparse 2 2.5 false true 0.001 500 1000  
+              */
+                StreamReader reader = null;
+                try
+                {
+                    reader = new StreamReader(args[1]);
+                }
+                catch (IOException exc) { throw new SystemException(exc.Message); }
+
+                StreamTokenizer stream = new StreamTokenizer(reader);
+                //stream.eolIsSignificant(true);
+                //stream.SlashSlashComments(true); // allow // comments
+                //stream.SlashStarComments(true);  // allow /* comments */
+                try
+                {
+                    var words = new List<Object>();
+                    int token;
+                    while ((token = stream.nextToken()) != StreamTokenizer.TT_EOF)
+                    { // while not end of file
+                        if (token == StreamTokenizer.TT_EOL)
+                        { // execute a command line at a time
+                          //writer.WriteLine(words);
+                            if (words.Count > 0)
+                            { // ignore emty lines
+                                String[] parameters = new String[words.Count];
+                                for (int i = 0; i < words.Count; i++) parameters[i] = (String)words[i];
+
+                                // execute command
+                                writer.WriteLine("\n\nExecuting command = " + words + " ..");
+                                handle(parameters);
+                            }
+                            words.Clear();
+                        }
+                        else
+                        {
+                            String word;
+                            var formatter = new Cern.Colt.Matrix.Implementation.FormerFactory().Create("%G");
+                            // ok: 2.0 -> 2   wrong: 2.0 -> 2.0 (kills int.Parse())
+                            if (token == StreamTokenizer.TT_NUMBER)
+                                word = formatter.form(stream.Nval);
+                            else
+                                word = stream.Sval;
+                            if (word != null) words.Add(word);
+                        }
+                    }
+                    reader.Close();
+
+                    writer.WriteLine("\nCommand file name used: " + args[1] + "\nTo reproduce and compare results, here it's contents:");
+                    try
+                    {
+                        reader = new StreamReader(args[1]);
+                    }
+                    catch (IOException exc) { throw new SystemException(exc.Message); }
+
+                    /*InputStream input = new DataInputStream(new BufferedInputStream(new FileInputStream(args[1])));
+                    BufferedReader d
+                                   = new BufferedReader(new InputStreamReader(in));
+                                   */
+                    String line;
+                    while ((line = reader.ReadLine()) != null)
+                    { // while not end of file
+                        writer.WriteLine(line);
+                    }
+                    reader.Close();
+
+                }
+                catch (IOException exc) { throw new SystemException(exc.Message); }
+            }
+
+            writer.WriteLine("\nProgram execution took a total of " + timer.Minutes() + " minutes.");
+            writer.WriteLine("Good bye.");
+        }
+
+        /// <summary>
+        /// Not yet documented.
+        /// <summary>
         protected static void bench_dgemm(String[] args)
         {
             String[] types;
@@ -56,7 +184,7 @@ namespace Colt.Tests
             Boolean transposeB;
             double[] densities;
             int[] sizes;
-            string filename = "bench_dgemm.xml";
+            string filename = path + "bench_dgemm.xml";
 
 
             try
@@ -92,9 +220,10 @@ namespace Colt.Tests
             title = title + " dgemm(" + parameters + ")";
             run(minSecs, title, fun, types, sizes, densities);
         }
-        /**
-         * Not yet documented.
-         */
+
+        /// <summary>
+        /// Not yet documented.
+        /// <summary>
         protected static void bench_dgemv(String[] args)
         {
             String[] types;
@@ -103,7 +232,7 @@ namespace Colt.Tests
             Boolean transposeA;
             double[] densities;
             int[] sizes;
-            string filename = "bench_dgemv.xml";
+            string filename = path + "bench_dgemv.xml";
 
             try
             { // parse
@@ -137,9 +266,9 @@ namespace Colt.Tests
             title = title + " dgemv(" + parameters + ")";
             run(minSecs, title, fun, types, sizes, densities);
         }
-        /**
-         * Not yet documented.
-         */
+        /// <summary>
+        /// Not yet documented.
+        /// <summary>
         protected static void bench_pow(String[] args)
         {
             String[] types;
@@ -148,7 +277,7 @@ namespace Colt.Tests
             double[] densities;
             int exponent;
             int[] sizes;
-            string filename = "bench_pow.xml";
+            string filename = path + "bench_pow.xml";
 
             try
             { // parse
@@ -182,9 +311,9 @@ namespace Colt.Tests
             title = title + " pow(" + parameters + ")";
             run(minSecs, title, fun, types, sizes, densities);
         }
-        /**
-         * Not yet documented.
-         */
+        /// <summary>
+        /// Not yet documented.
+        /// <summary>
         protected static void benchGeneric(Double2DProcedure fun, String[] args)
         {
             String[] types;
@@ -192,7 +321,7 @@ namespace Colt.Tests
             double minSecs;
             double[] densities;
             int[] sizes;
-            string filename = "benchGeneric.xml";
+            string filename = path + "benchGeneric.xml";
 
             try
             { // parse
@@ -222,169 +351,169 @@ namespace Colt.Tests
             String title = fun.ToString();
             run(minSecs, title, fun, types, sizes, densities);
         }
-        /**
-         * 
-         */
+        /// <summary>
+        /// 
+        /// <summary>
         protected static String commands()
         {
             return "dgemm, dgemv, pow, assign, assignGetSet, assignGetSetQuick, assignLog, assignPlusMult, elementwiseMult, elementwiseMultB, SOR5, SOR8, LUDecompose, LUSolve";
         }
 
         #region Test Class Constructors
-        /**
-         * Linear algebrax matrix-matrix multiply.
-         */
+        /// <summary>
+        /// Linear algebrax matrix-matrix multiply.
+        /// <summary>
         protected static Double2DProcedure fun_dgemm(Boolean transposeA, Boolean transposeB)
         {
             return new fun_dgemm_Double2DProcedure();
         }
 
-        /**
-         * Linear algebrax matrix-matrix multiply.
-         */
+        /// <summary>
+        /// Linear algebrax matrix-matrix multiply.
+        /// <summary>
         protected static Double2DProcedure fun_dgemv(Boolean transposeA)
         {
             return new fun_dgemv_Double2DProcedure();
         }
 
-        /**
-         * 2D assign with get,set
-         */
+        /// <summary>
+        /// 2D assign with get,set
+        /// <summary>
         protected static Double2DProcedure fun_pow(int k)
         {
             return new fun_pow_Double2DProcedure(k);
         }
 
-        /**
-         * 2D assign with A.Assign(B)
-         */
+        /// <summary>
+        /// 2D assign with A.Assign(B)
+        /// <summary>
         protected static Double2DProcedure funAssign()
         {
             return new funAssign_Double2DProcedure();
         }
 
-        /**
-         * 2D assign with get,set
-         */
+        /// <summary>
+        /// 2D assign with get,set
+        /// <summary>
         protected static Double2DProcedure funAssignGetSet()
         {
             return new funAssignGetSet_Double2DProcedure();
 
         }
-        /**
-         * 2D assign with getQuick,setQuick
-         */
+        /// <summary>
+        /// 2D assign with getQuick,setQuick
+        /// <summary>
         protected static Double2DProcedure funAssignGetSetQuick()
         {
             return new funAssignGetSetQuick_Double2DProcedure();
 
 
         }
-        /**
-         * 2D assign with A.Assign(B)
-         */
+        /// <summary>
+        /// 2D assign with A.Assign(B)
+        /// <summary>
         protected static Double2DProcedure funAssignLog()
         {
             return new funAssignLog_Double2DProcedure();
 
 
         }
-        /**
-         * 2D assign with A.Assign(B)
-         */
+        /// <summary>
+        /// 2D assign with A.Assign(B)
+        /// <summary>
         protected static Double2DProcedure funAssignPlusMult()
         {
             return new funAssignPlusMult_Double2DProcedure();
         }
-        /**
-         * Linear algebrax matrix-matrix multiply.
-         */
+        /// <summary>
+        /// Linear algebrax matrix-matrix multiply.
+        /// <summary>
         protected static Double2DProcedure funCorrelation()
         {
             return new funCorrelation_Double2DProcedure();
         }
-        /**
-         * Element-by-element matrix-matrix multiply.
-         */
+        /// <summary>
+        /// Element-by-element matrix-matrix multiply.
+        /// <summary>
         protected static Double2DProcedure funElementwiseMult()
         {
             return new funElementwiseMult_Double2DProcedure();
         }
-        /**
-         * Element-by-element matrix-matrix multiply.
-         */
+        /// <summary>
+        /// Element-by-element matrix-matrix multiply.
+        /// <summary>
         protected static Double2DProcedure funElementwiseMultB()
         {
             return new funElementwiseMultB_Double2DProcedure();
         }
-        /**
-         * 2D assign with get,set
-         */
+        /// <summary>
+        /// 2D assign with get,set
+        /// <summary>
         protected static Double2DProcedure funGetQuick()
         {
             return new funGetQuick_Double2DProcedure();
         }
-        /**
-         * 2D assign with getQuick,setQuick
-         */
+        /// <summary>
+        /// 2D assign with getQuick,setQuick
+        /// <summary>
         protected static Double2DProcedure funLUDecompose()
         {
             return new funLUDecompose_Double2DProcedure();
         }
-        /**
-         * 2D assign with getQuick,setQuick
-         */
+        /// <summary>
+        /// 2D assign with getQuick,setQuick
+        /// <summary>
         protected static Double2DProcedure funLUSolve()
         {
             return new funLUSolve_Double2DProcedure();
         }
-        /**
-         * Linear algebrax matrix-matrix multiply.
-         */
+        /// <summary>
+        /// Linear algebrax matrix-matrix multiply.
+        /// <summary>
         protected static Double2DProcedure funMatMultLarge()
         {
             return new funMatMultLarge_Double2DProcedure();
         }
-        /**
-         * Linear algebrax matrix-vector multiply.
-         */
+        /// <summary>
+        /// Linear algebrax matrix-vector multiply.
+        /// <summary>
         protected static Double2DProcedure funMatVectorMult()
         {
             return new funMatVectorMult_Double2DProcedure();
         }
-        /**
-         * 2D assign with get,set
-         */
+        /// <summary>
+        /// 2D assign with get,set
+        /// <summary>
         protected static Double2DProcedure funSetQuick()
         {
             return new funSetQuick_Double2DProcedure();
         }
-        /**
-         * 
-         */
+        /// <summary>
+        /// 
+        /// <summary>
         protected static Double2DProcedure funSOR5()
         {
             return new funSOR5_Double2DProcedure();
         }
-        /**
-         * 
-         */
+        /// <summary>
+        /// 
+        /// <summary>
         protected static Double2DProcedure funSOR8()
         {
             return new funSOR8_Double2DProcedure();
         }
-        /**
-         * 
-         */
+        /// <summary>
+        /// 
+        /// <summary>
         protected static Double2DProcedure funSort()
         {
             return new funSort_Double2DProcedure();
         }
         #endregion
 
-        /**
-         * Not yet documented.
-         */
+        /// <summary>
+        /// Not yet documented.
+        /// <summary>
         protected static DoubleFactory2D getFactory(String type)
         {
             DoubleFactory2D factory;
@@ -394,9 +523,9 @@ namespace Colt.Tests
             String s = "type=" + type + " is unknownd Use one of {dense,sparse,rowCompressed}";
             throw new ArgumentException(s);
         }
-        /**
-         * Not yet documented.
-         */
+        /// <summary>
+        /// Not yet documented.
+        /// <summary>
         protected static Double2DProcedure getGenericFunction(String cmd)
         {
             if (cmd.Equals("dgemm")) return fun_dgemm(false, false);
@@ -419,9 +548,9 @@ namespace Colt.Tests
             */
             return null;
         }
-        /**
-         * Executes a command
-         */
+        /// <summary>
+        /// Executes a command
+        /// <summary>
         protected static Boolean handle(String[] parameters)
         {
             Boolean success = true;
@@ -429,12 +558,15 @@ namespace Colt.Tests
             if (cmd.Equals("dgemm")) bench_dgemm(parameters);
             else if (cmd.Equals("dgemv")) bench_dgemv(parameters);
             else if (cmd.Equals("pow")) bench_pow(parameters);
-            else {
+            else
+            {
                 Double2DProcedure fun = getGenericFunction(cmd);
-                if (fun != null) {
+                if (fun != null)
+                {
                     benchGeneric(fun, parameters);
                 }
-                else {
+                else
+                {
                     success = false;
                     String s = "Command=" + parameters[0] + " is illegal or unknownd Should be one of " + commands() + "followed by appropriate parameters.\n" + usage() + "\nIgnoring this line.\n";
                     writer.WriteLine(s);
@@ -442,129 +574,10 @@ namespace Colt.Tests
             }
             return success;
         }
-        /**
-         * Runs the matrix benchmark operations defined in args or in the file specified by args0.
-         * To get detailed help on usage type java cern.colt.matrix.bench.BenchmarkMatrix -help
-         */
-        public static void main(String[] args)
-        {
 
-            String filename = "";
-
-            writer = new StreamWriter(filename);
-
-            int n = args.Length;
-            if (n == 0 || (n <= 1 && args[0].Equals("-help")))
-            { // overall help
-                writer.WriteLine(usage());
-                return;
-            }
-            if (args[0].Equals("-help"))
-            { // help on specific command
-                if (commands().IndexOf(args[1]) < 0)
-                {
-                    writer.WriteLine(args[1] + ": no such command available.\n" + usage());
-                }
-                else
-                {
-                    writer.WriteLine(usage(args[1]));
-                }
-                return;
-            }
-
-            writer.WriteLine("Colt Matrix benchmark running on\n");
-            writer.WriteLine(BenchmarkKernel.SystemInfo() + "\n");
-
-
-            string assemblyVersion = Assembly.Load("Cern").GetName().Version.ToString();
-
-            writer.WriteLine("Colt Version is " + assemblyVersion + "\n");
-
-            Timer timer = new Timer();
-                timer.Start();
-            if (!args[0].Equals("-file"))
-            { // interactive mode, commands supplied via java class args
-                writer.WriteLine("\n\nExecuting command = " + new List<Object>(args) + " ..");
-                handle(args);
-            }
-            else
-            { // batch mode, read commands from file
-              /* 
-              parse command file in args[0]
-              one command per line (including parameters)
-              for example:
-              // dgemm dense 2 2.0 false true 0.999 10 30 50 100 250 500 1000
-              dgemm dense 2 2.5 false true 0.999 10 50 
-              dgemm sparse 2 2.5 false true 0.001 500 1000  
-              */
-                StreamReader reader = null;
-                try
-                {
-                    reader = new StreamReader(args[1]);
-                }
-               catch (IOException exc) { throw new SystemException (exc.Message); }
-
-                StreamTokenizer stream = new StreamTokenizer(reader);
-                //stream.eolIsSignificant(true);
-                //stream.SlashSlashComments(true); // allow // comments
-                //stream.SlashStarComments(true);  // allow /* comments */
-                try
-                {
-                    var words = new List<Object>();
-                    int token;
-                    while ((token = stream.nextToken()) != StreamTokenizer.TT_EOF)
-                    { // while not end of file
-                        if (token == StreamTokenizer.TT_EOL)
-                        { // execute a command line at a time
-                          //writer.WriteLine(words);
-                            if (words.Count > 0)
-                            { // ignore emty lines
-                                String[] parameters = new String[words.Count];
-                                for (int i = 0; i < words.Count; i++) parameters[i] = (String)words[i];
-
-                                // execute command
-                                writer.WriteLine("\n\nExecuting command = " + words + " ..");
-                                handle(parameters);
-                            }
-                            words.Clear();
-                        }
-                        else {
-                            String word;
-                            var formatter = new Cern.Colt.Matrix.Implementation.FormerFactory().Create("%G");
-                            // ok: 2.0 -> 2   wrong: 2.0 -> 2.0 (kills int.Parse())
-                            if (token == StreamTokenizer.TT_NUMBER)
-                                word = formatter.eval(stream.Nval);
-                            else
-                                word = stream.Sval;
-                            if (word != null) words.Add(word);
-                        }
-                    }
-                    reader.Close();
-
-                    writer.WriteLine("\nCommand file name used: " + args[1] + "\nTo reproduce and compare results, here it's contents:");
-                    try {
-                        reader = new StreamReader(args[1]);
-                    } catch (IOException exc) { throw new SystemException(exc.Message); }
-
-                    /*InputStream input = new DataInputStream(new BufferedInputStream(new FileInputStream(args[1])));
-                    BufferedReader d
-                                   = new BufferedReader(new InputStreamReader(in));
-                                   */
-                    String line;
-                    while ((line = reader.ReadLine()) != null) { // while not end of file
-                        writer.WriteLine(line);
-                    }
-                    reader.Close();
-
-                } catch (IOException exc) { throw new SystemException(exc.Message); }
-            }
-
-            writer.WriteLine("\nProgram execution took a total of " + timer.Minutes() + " minutes.");
-            writer.WriteLine("Good bye.");
-        }
-        /**
-         * Executes procedure repeatadly until more than minSeconds have elapsed.
-         */
+        /// <summary>
+        /// Executes procedure repeatadly until more than minSeconds have elapsed.
+        /// <summary>
         protected static void run(double minSeconds, String title, Double2DProcedure function, String[] types, int[] sizes, double[] densities)
         {
             //int[] sizes = {33,500,1000};
@@ -649,9 +662,9 @@ namespace Colt.Tests
             */
             writer.WriteLine("Run took a total of " + runTime + "d End of run.");
         }
-        /**
-         * Executes procedure repeatadly until more than minSeconds have elapsed.
-         */
+        /// <summary>
+        /// Executes procedure repeatadly until more than minSeconds have elapsed.
+        /// <summary>
         protected static void runSpecial(double minSeconds, String title, Double2DProcedure function)
         {
             int[] sizes = { 10000 };
@@ -699,9 +712,9 @@ namespace Colt.Tests
 
             writer.WriteLine("Run took a total of " + runTime + "d End of run.");
         }
-        /**
-         * Overall usage.
-         */
+        /// <summary>
+        /// Overall usage.
+        /// <summary>
         protected static String usage()
         {
             String usage =
@@ -725,9 +738,9 @@ namespace Colt.Tests
         "// more comments ignored\n";
             return usage;
         }
-        /**
-         * Usage of a specific command.
-         */
+        /// <summary>
+        /// Usage of a specific command.
+        /// <summary>
         protected static String usage(String cmd)
         {
             String usage = cmd + " description: " + getGenericFunction(cmd).ToString() +
@@ -903,7 +916,8 @@ namespace Colt.Tests
 
             public funAssignGetSet_Double2DProcedure()
             {
-                timerProc = new TimerProcedure((t) => {
+                timerProc = new TimerProcedure((t) =>
+                {
                     int rows = B.Rows;
                     int columns = B.Columns;
                     /*
@@ -940,7 +954,8 @@ namespace Colt.Tests
 
             public funAssignGetSetQuick_Double2DProcedure()
             {
-                timerProc = new TimerProcedure((t) => {
+                timerProc = new TimerProcedure((t) =>
+                {
                     int rows = B.Rows;
                     int columns = B.Columns;
                     //for (int row=rows; --row >= 0; ) {
@@ -971,7 +986,8 @@ namespace Colt.Tests
 
             public funAssignLog_Double2DProcedure()
             {
-                timerProc = new TimerProcedure((t) => {
+                timerProc = new TimerProcedure((t) =>
+                {
                     Cern.Colt.Matrix.LinearAlgebra.SmpBlas.smpBlas.Assign(A, Cern.Jet.Math.Functions.DoubleFunctions.Log);
                 });
 
@@ -993,7 +1009,8 @@ namespace Colt.Tests
 
             public funAssignPlusMult_Double2DProcedure()
             {
-                timerProc = new TimerProcedure((t) => {
+                timerProc = new TimerProcedure((t) =>
+                {
                     Cern.Colt.Matrix.LinearAlgebra.SmpBlas.smpBlas.Assign(A, B, Cern.Jet.Math.Functions.DoubleDoubleFunctions.PlusMult(0.5));
                 });
 
@@ -1021,7 +1038,8 @@ namespace Colt.Tests
 
             public funCorrelation_Double2DProcedure()
             {
-                timerProc = new TimerProcedure((t) => {
+                timerProc = new TimerProcedure((t) =>
+                {
                     Cern.Colt.Matrix.DoubleAlgorithms.Statistics.Correlation(
                         Cern.Colt.Matrix.DoubleAlgorithms.Statistics.Covariance(A));
 
@@ -1095,7 +1113,8 @@ namespace Colt.Tests
 
             public funGetQuick_Double2DProcedure()
             {
-                timerProc = new TimerProcedure((t) => {
+                timerProc = new TimerProcedure((t) =>
+                {
                     int rows = B.Rows;
                     int columns = B.Columns;
                     double sum = 0;
@@ -1130,7 +1149,8 @@ namespace Colt.Tests
 
             public funLUDecompose_Double2DProcedure()
             {
-                timerProc = new TimerProcedure((t) => {
+                timerProc = new TimerProcedure((t) =>
+                {
                     lu.Decompose(A);
                 });
 
@@ -1159,7 +1179,8 @@ namespace Colt.Tests
 
             public funLUSolve_Double2DProcedure()
             {
-                timerProc = new TimerProcedure((t) => {
+                timerProc = new TimerProcedure((t) =>
+                {
                     lu.Solve(B);
                 });
 
@@ -1200,7 +1221,8 @@ namespace Colt.Tests
 
             public funMatMultLarge_Double2DProcedure()
             {
-                timerProc = new TimerProcedure((t) => {
+                timerProc = new TimerProcedure((t) =>
+                {
                     A.ZMult(B, C);
                 });
 
@@ -1237,7 +1259,8 @@ namespace Colt.Tests
 
             public funMatVectorMult_Double2DProcedure()
             {
-                timerProc = new TimerProcedure((t) => {
+                timerProc = new TimerProcedure((t) =>
+                {
                     A.ZMult(B.ViewRow(0), C.ViewRow(0));
                 });
 
@@ -1276,7 +1299,8 @@ namespace Colt.Tests
 
             public funSetQuick_Double2DProcedure()
             {
-                timerProc = new TimerProcedure((t) => {
+                timerProc = new TimerProcedure((t) =>
+                {
                     int rows = B.Rows;
                     int columns = B.Columns;
                     //for (int row=rows; --row >= 0; ) {
@@ -1360,7 +1384,8 @@ namespace Colt.Tests
 
             public funSOR8_Double2DProcedure()
             {
-                timerProc = new TimerProcedure((t) => {
+                timerProc = new TimerProcedure((t) =>
+                {
                     A.ZAssign8Neighbors(B, function);
                 });
 

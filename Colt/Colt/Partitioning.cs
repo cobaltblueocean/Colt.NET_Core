@@ -793,7 +793,8 @@ namespace Cern.Colt
         /// </param>
         public static void Partition(int[] list, int from, int to, int[] splitters, int splitFrom, int splitTo, int[] splitIndexes)
         {
-            int element, splitter; // int, double --> template type dependent
+            //int element, splitter; // int, double --> template type dependent
+            int splitter; // int, double --> template type dependent
 
             if (splitFrom > splitTo) return; // nothing to do
             if (from > to)

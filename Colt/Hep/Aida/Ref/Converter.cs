@@ -81,10 +81,11 @@ namespace Cern.Hep.Aida.Ref
         {
             int xBins = h.XAxis.Bins;
             int yBins = h.YAxis.Bins;
-            double[][] array = new double[xBins][];
+            //double[][] array = new double[xBins][];
+            var array = (new double[xBins, yBins]).ToJagged();
             for (int i = yBins; --i >= 0;)
             {
-                array[i] = new double[yBins];
+                //array[i] = new double[yBins];
                 for (int j = xBins; --j >= 0;)
                 {
                     array[j][i] = h.BinHeight(j, i);
@@ -100,13 +101,14 @@ namespace Cern.Hep.Aida.Ref
             int xBins = h.XAxis.Bins;
             int yBins = h.YAxis.Bins;
             int zBins = h.ZAxis.Bins;
-            double[][][] array = new double[xBins][][];
+            //double[][][] array = new double[xBins][][];
+            var array = (new double[xBins, yBins, zBins]).ToJagged();
             for (int j = xBins; --j >= 0;)
             {
-                array[j] = new double[yBins][];
+                //array[j] = new double[yBins][];
                 for (int i = yBins; --i >= 0;)
                 {
-                    array[j][i] = new double[zBins];
+                    //array[j][i] = new double[zBins];
                     for (int k = zBins; --k >= 0;)
                     {
                         array[j][i][k] = h.BinHeight(j, i, k);
@@ -155,7 +157,7 @@ namespace Cern.Hep.Aida.Ref
             String columnAxisName = null; //"X";
             String rowAxisName = null;
             Hep.Aida.Bin.BinFunction1D[] aggr = null; //{Hep.Aida.Bin.BinFunctions1D.sum};
-            String format = "%G";
+            String format = "G"; //"%G"
             //String format = "%1.2G";
 
             Cern.Colt.Matrix.Former f = new Cern.Colt.Matrix.Implementation.FormerFactory().Create(format);
@@ -173,7 +175,7 @@ namespace Cern.Hep.Aida.Ref
             String[] xEdges = new String[h.XAxis.Bins];
             for (int i = 0; i < h.XAxis.Bins; i++) xEdges[i] = Form(f, h.XAxis.BinLowerEdge(i));
 
-            String[] yEdges = null;
+            String[] yEdges = new[] { "Data" };
 
             Cern.Colt.Matrix.DoubleMatrix2D heights = new DenseDoubleMatrix2D(1, h.XAxis.Bins);
             heights.ViewRow(0).Assign(ToArrayHeights(h));
@@ -198,7 +200,7 @@ namespace Cern.Hep.Aida.Ref
             String columnAxisName = "X";
             String rowAxisName = "Y";
             Hep.Aida.Bin.BinFunction1D[] aggr = { Hep.Aida.Bin.BinFunctions1D.Sum() };
-            String format = "%G";
+            String format = "G"; // "%G"
             //String format = "%1.2G";
 
             Cern.Colt.Matrix.Former f = new Cern.Colt.Matrix.Implementation.FormerFactory().Create(format);
@@ -255,7 +257,7 @@ namespace Cern.Hep.Aida.Ref
             String rowAxisName = "Y";
             String sliceAxisName = "Z";
             Hep.Aida.Bin.BinFunction1D[] aggr = { Hep.Aida.Bin.BinFunctions1D.Sum() };
-            String format = "%G";
+            String format = "G"; //"%G"
             //String format = "%1.2G";
 
             Cern.Colt.Matrix.Former f = new Cern.Colt.Matrix.Implementation.FormerFactory().Create(format);

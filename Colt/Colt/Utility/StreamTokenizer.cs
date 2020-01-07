@@ -553,7 +553,7 @@ namespace System.Text
          * <li>For all other cases, 'x' is <code>ttype</code></li>
          * </ul>
          */
-        public String ToString()
+        public override String ToString()
         {
             String tempstr;
             if (ttype == TT_EOF)

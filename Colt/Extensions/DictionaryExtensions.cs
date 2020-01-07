@@ -9,6 +9,26 @@ namespace System.Collections.Generic
 {
     public static class DictionaryExtensions
     {
+
+        public static void AddOrUpdate<T1, T2>(this Dictionary<T1, T2> originalDictionary, T1 key, T2 value)
+        {
+            if (originalDictionary.ContainsKey(key))
+                originalDictionary[key] = value;
+            else
+                originalDictionary.Add(key, value);
+        }
+
+        public static void AddOrUpdateAll<T1, T2>(this Dictionary<T1, T2> originalDictionary, IEnumerable<KeyValuePair<T1, T2>> items)
+        {
+            foreach (var item in items)
+            {
+                if (originalDictionary.ContainsKey(item.Key))
+                    originalDictionary[item.Key] = item.Value;
+                else
+                    originalDictionary.Add(item.Key, item.Value);
+            }
+        }
+
         /// <summary>
         /// Ensures that the receiver can hold at least the specified number of elements without needing to allocate new internal memory.
         /// If necessary, allocates new internal memory and increases the capacity of the receiver.

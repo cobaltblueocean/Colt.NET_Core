@@ -11,14 +11,15 @@ using System;
 using System.IO;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using NUnit.Framework;
+using Cern.Hep.Aida;
+using Cern.Hep.Aida.Ref;
 
 namespace Colt.Tests
 {
-    using NUnit.Framework;
-    using Cern.Hep.Aida;
-    using Cern.Hep.Aida.Ref;
 
     /// <summary>
     /// AidaRefTest1 Description
@@ -27,8 +28,12 @@ namespace Colt.Tests
     public class AidaRefTest1
     {
         [Test]
-        public static void main(String[] argv)
+        public void TestMain()
         {
+            var path = NUnit.Framework.TestContext.CurrentContext.TestDirectory + "\\TestResult\\AidaRefTest1\\";
+            if (!Directory.Exists(path))
+                Directory.CreateDirectory(path);
+
             Random r = new Random();
             IHistogram1D h1 = new Histogram1D("AIDA 1D Histogram", 40, -3, 3);
             for (int i = 0; i < 10000; i++) h1.Fill(r.NextDouble());
@@ -36,14 +41,13 @@ namespace Colt.Tests
             IHistogram2D h2 = new Histogram2D("AIDA 2D Histogram", 40, -3, 3, 40, -3, 3);
             for (int i = 0; i < 10000; i++) h2.Fill(r.NextDouble(), r.NextDouble());
 
-            // Write the results as a PlotML files!
-            writeAsXML(h1, "aida1.xml");
-            writeAsXML(h2, "aida2.xml");
+            //// Write the results as a PlotML files!
+            writeAsXML(h1, path + "aida1.xml");
+            writeAsXML(h2, path + "aida2.xml");
 
-            // Try some projections
-
-            writeAsXML(h2.ProjectionX, "projectionX.xml");
-            writeAsXML(h2.ProjectionY, "projectionY.xml");
+            //// Try some projections
+            writeAsXML(h2.ProjectionX, path + "projectionX.xml");
+            writeAsXML(h2.ProjectionY, path + "projectionY.xml");
         }
 
         private static void writeAsXML(IHistogram1D h, String filename)
@@ -92,7 +96,6 @@ namespace Colt.Tests
                 }
             }
         }
-
         private static void writeAsXML(IHistogram2D h, String filename)
         {
             try

@@ -114,9 +114,10 @@ namespace Cern.Hep.Aida.Bin
         /// Adds the specified element to the receiver.
         /// </summary>
         /// <param name="element">element to be appended.</param>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public override void Add(double element)
         {
-            this.AddAllOf(new List<Double>(new double[] { element }));
+            AddAllOf(new List<Double>(new double[] { element }));
         }
 
         /// <summary>
@@ -131,6 +132,16 @@ namespace Cern.Hep.Aida.Bin
         #endregion
 
         #region Local Public Methods
+        /// <summary>
+        /// Adds all values of the specified list to the receiver.
+        /// </summary>
+        /// <param name="list">the list of which all values shall be added.</param>
+        [MethodImpl(MethodImplOptions.Synchronized)]
+        public new void AddAllOf(List<Double> list)
+        {
+            AddAllOfFromTo(list, 0, list.Count - 1);
+        }
+
         /// <summary>
         /// Adds the part of the specified list between indexes <i>from</i> (inclusive) and <i>to</i> (inclusive) to the receiver.
         /// </summary>

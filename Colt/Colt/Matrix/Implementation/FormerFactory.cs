@@ -67,13 +67,13 @@ namespace Cern.Colt.Matrix.Implementation
         public Former Create(String format)
         {
             var former = new Former(format);
-            former.eval = new Former.form((s) =>
+            former.form = new Former.formdlg((s) =>
             {
-                if (s == Double.PositiveInfinity || s == Double.NegativeInfinity)
+                if (format == "" || s == Double.PositiveInfinity || s == Double.NegativeInfinity)
                 {
                     return s.ToString();
                 }
-                return null;
+                return s.ToString(format);
             });
 
             return former;

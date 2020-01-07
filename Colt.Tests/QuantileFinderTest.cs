@@ -1,13 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
-using System.Diagnostics;
-using System.Linq;
+using System.IO;
 using NUnit.Framework;
-using System.Text;
 using Cern.Colt;
-using System.Threading.Tasks;
-using Cern.Jet.Stat;
 using Cern.Jet.Stat.Quantile;
 
 namespace Colt.Tests
@@ -15,15 +10,140 @@ namespace Colt.Tests
     /// <summary>
     /// A class holding test cases for exact and approximate quantile finders.
     /// </summary>
+    [TestFixture]
     public class QuantileFinderTest
     {
-        /**
- * Finds the first and last indexes of a specific element within a sorted list.
- * @return int[]
- * @param list cern.colt.list.List<Double>
- * @param element the element to search for
- */
-        protected static List<int> binaryMultiSearch(List<Double> list, double element)
+        [Test]
+        public void TestMain()
+        {
+            var path = NUnit.Framework.TestContext.CurrentContext.TestDirectory + "\\TestResult\\QuantileFinderTest\\";
+            if (!Directory.Exists(path))
+                Directory.CreateDirectory(path);
+
+            var filename = path + "QuantileFinderTest.log";
+
+            //Boolean known_N;
+            //if (args==null) known_N = false;
+            //else known_N = new Boolean(args[0]).BooleanValue();
+
+            int[] quantiles = { 100, 10000 };
+            //int[] quantiles = {1,100,10000};
+
+            long[] sizes = { long.MaxValue, 1000000, 10000000, 100000000 };
+
+            double[] deltas = { 0.0, 0.1, 0.00001 };
+            //double[] deltas = {0.0, 0.001, 0.00001, 0.000001};
+
+            //double[] epsilons = {0.0, 0.01, 0.001, 0.0001, 0.00001};
+            double[] epsilons = { 0.0, 0.1, 0.01, 0.001, 0.0001, 0.00001, 0.000001 };
+
+
+            try
+            {
+                using (StreamWriter writer = new StreamWriter(filename))
+                {
+                    //if (! known_N) sizes = new long[] {0};
+                    writer.WriteLine("\n\n");
+                    //if (known_N) 
+                    //	Console.WriteLine("Computing b's and k's for KNOWN N");
+                    //else 
+                    //	Console.WriteLine("Computing b's and k's for UNKNOWN N");
+                    writer.WriteLine("mem [System.Math.Round(elements/1000.0)]");
+                    writer.WriteLine("***********************************");
+                    Timer timer = new Timer();
+                    timer.Start();
+
+                    for (int q = 0; q < quantiles.Length; q++)
+                    {
+                        int p = quantiles[q];
+                        writer.WriteLine("------------------------------");
+                        writer.WriteLine("computing for p = " + p);
+                        for (int s = 0; s < sizes.Length; s++)
+                        {
+                            long N = sizes[s];
+                            writer.WriteLine("   ------------------------------");
+                            writer.WriteLine("   computing for N = " + N);
+                            for (int e = 0; e < epsilons.Length; e++)
+                            {
+                                double epsilon = epsilons[e];
+                                writer.WriteLine("      ------------------------------");
+                                writer.WriteLine("      computing for e = " + epsilon);
+                                for (int d = 0; d < deltas.Length; d++)
+                                {
+                                    double delta = deltas[d];
+                                    for (int knownCounter = 0; knownCounter < 2; knownCounter++)
+                                    {
+                                        Boolean known_N;
+                                        if (knownCounter == 0) known_N = true;
+                                        else known_N = false;
+
+                                        IDoubleQuantileFinder finder = QuantileFinderFactory.NewDoubleQuantileFinder(known_N, N, epsilon, delta, p, null);
+                                        //Console.WriteLine(finder.this.GetType().Name);
+                                        /*
+                                        double[] returnSamplingRate = new double[1];
+                                        long[] result;
+                                        if (known_N) {
+                                            result = QuantileFinderFactory.known_N_compute_B_and_K(N, epsilon, delta, p, returnSamplingRate);
+                                        }
+                                        else {
+                                            result = QuantileFinderFactory.unknown_N_compute_B_and_K(epsilon, delta, p);
+                                            long b1 = result[0];
+                                            long k1 = result[1];
+
+                                            if (N>=0) {
+                                                long[] resultKnown = QuantileFinderFactory.known_N_compute_B_and_K(N, epsilon, delta, p, returnSamplingRate);
+                                                long b2 = resultKnown[0];
+                                                long k2 = resultKnown[1];
+
+                                                if (b2 * k2 < b1 * k1) { // the KnownFinder is smaller
+                                                    result = resultKnown;
+                                                }
+                                            }
+                                        }
+
+
+                                        long b = result[0];
+                                        long k = result[1];
+                                        */
+                                        String knownStr = known_N ? "  known" : "unknown";
+                                        long mem = finder.TotalMemory();
+                                        if (mem == 0) mem = N;
+                                        //else if (mem==0 && !known_N && N<0) mem = long.MaxValue; // actually infinity
+                                        //else if (mem==0 && !known_N && N>=0) mem = N;
+                                        //Console.Write("         (e,d,N,p)=("+epsilon+","+delta+","+N+","+p+") --> ");
+                                        writer.Write("         (known, d)=(" + knownStr + ", " + delta + ") --> ");
+                                        //Console.Write("(mem,b,k,memF");
+                                        writer.Write("(MB,mem");
+                                        //if (known_N) Console.Write(",sampling");
+                                        //Console.Write(")=("+(System.Math.Round(b*k/1000.0))+","+b+","+k+", "+System.Math.Round(b*k*8/1024.0/1024.0));
+                                        //Console.Write(")=("+b*k/1000.0+","+b+","+k+", "+b*k*8/1024.0/1024.0+", "+System.Math.Round(b*k*8/1024.0/1024.0));
+                                        writer.Write(")=(" + mem * 8.0 / 1024.0 / 1024.0 + ",  " + mem / 1000.0 + ",  " + System.Math.Round(mem * 8.0 / 1024.0 / 1024.0));
+                                        //if (known_N) Console.Write(","+returnSamplingRate[0]);
+                                        writer.WriteLine(")");
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    timer.Stop();
+                }
+            }
+            catch (IOException x)
+            {
+                using (StreamWriter writer = new StreamWriter(filename))
+                {
+                    writer.Write(x.StackTrace);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Finds the first and last indexes of a specific element within a sorted list.
+        /// <summary>
+        /// <returns>int[]</returns>
+        /// <param name="list">cern.colt.list.List<Double></param>
+        /// <param name="element">the element to search for</param>
+        protected static List<int> BinaryMultiSearch(List<Double> list, double element)
         {
             int index = list.BinarySearch(element);
             if (index < 0) return null; //not found
@@ -38,10 +158,10 @@ namespace Colt.Tests
 
             return new List<int>(new int[] { from, to });
         }
-        /**
-         * Observed epsilon
-         */
-        public static double epsilon(int size, double phi, double rank)
+        /// <summary>
+        /// Observed epsilon
+        /// <summary>
+        public static double Epsilon(int size, double phi, double rank)
         {
             double s = size;
             //Console.WriteLine("\n");
@@ -49,35 +169,30 @@ namespace Colt.Tests
             //Console.WriteLine("\n");
             return System.Math.Abs(rank / s - phi);
         }
-        /**
-         * Observed epsilon
-         */
-        public static double epsilon(List<Double> sortedList, double phi, double element)
+        /// <summary>
+        /// Observed epsilon
+        /// <summary>
+        public static double Epsilon(List<Double> sortedList, double phi, double element)
         {
             double rank = Cern.Jet.Stat.Descriptive.RankInterpolated(sortedList, element);
-            return epsilon(sortedList.Count, phi, rank);
+            return Epsilon(sortedList.Count, phi, rank);
         }
-        /**
-         * Observed epsilon
-         */
-        public static double epsilon(List<Double> sortedList, IDoubleQuantileFinder finder, double phi)
+        /// <summary>
+        /// Observed epsilon
+        /// <summary>
+        public static double Epsilon(List<Double> sortedList, IDoubleQuantileFinder finder, double phi)
         {
             double element = finder.QuantileElements(new List<Double>(new double[] { phi }))[0];
-            return epsilon(sortedList, phi, element);
+            return Epsilon(sortedList, phi, element);
         }
-        public static void main(String[] args)
-        {
-            testBestBandKCalculation(args);
-            //testQuantileCalculation(args);
-            //testCollapse();
-        }
-        /**
-         * This method was created in VisualAge.
-         * @return double[]
-         * @param values cern.it.hepodbms.primitivearray.List<Double>
-         * @param phis double[]
-         */
-        public static double observedEpsilonAtPhi(double phi, ExactDoubleQuantileFinder exactFinder, IDoubleQuantileFinder approxFinder)
+
+        /// <summary>
+        /// This method was created in VisualAge.
+        /// <summary>
+        /// <returns>double[]</returns>
+        /// <param name="values">cern.it.hepodbms.primitivearray.List<Double></param>
+        /// <param name="phis">double[]</param>
+        public static double ObservedEpsilonAtPhi(double phi, ExactDoubleQuantileFinder exactFinder, IDoubleQuantileFinder approxFinder)
         {
             int N = (int)exactFinder.Size;
 
@@ -86,7 +201,7 @@ namespace Colt.Tests
             var tmp = exactFinder.QuantileElements(new List<Double>(new double[] { phi }))[0]; // just to ensure exactFinder is sorted
             double approxElement = approxFinder.QuantileElements(new List<Double>(new double[] { phi }))[0];
             //Console.WriteLine("approxElem="+approxElement);
-            List<int> approxRanks = binaryMultiSearch(exactFinder.Buffer, approxElement);
+            List<int> approxRanks = BinaryMultiSearch(exactFinder.Buffer, approxElement);
             int from = approxRanks[0];
             int to = approxRanks[1];
 
@@ -101,28 +216,28 @@ namespace Colt.Tests
             double epsilon = (double)distance / (double)N;
             return epsilon;
         }
-        /**
-         * This method was created in VisualAge.
-         * @return double[]
-         * @param values cern.it.hepodbms.primitivearray.List<Double>
-         * @param phis double[]
-         */
-        public static List<Double> observedEpsilonsAtPhis(List<Double> phis, ExactDoubleQuantileFinder exactFinder, IDoubleQuantileFinder approxFinder, double desiredEpsilon)
+        /// <summary>
+        /// This method was created in VisualAge.
+        /// <summary>
+        /// <returns>double[]</returns>
+        /// <param name="values">cern.it.hepodbms.primitivearray.List<Double></param>
+        /// <param name="phis">double[]</param>
+        public static List<Double> ObservedEpsilonsAtPhis(List<Double> phis, ExactDoubleQuantileFinder exactFinder, IDoubleQuantileFinder approxFinder, double desiredEpsilon)
         {
             List<Double> epsilons = new List<Double>(phis.Count);
 
             for (int i = phis.Count; --i >= 0;)
             {
-                double epsilon = observedEpsilonAtPhi(phis[i], exactFinder, approxFinder);
+                double epsilon = ObservedEpsilonAtPhi(phis[i], exactFinder, approxFinder);
                 epsilons.Add(epsilon);
                 if (epsilon > desiredEpsilon) Console.WriteLine("Real epsilon = " + epsilon + " is larger than desired by " + (epsilon - desiredEpsilon));
             }
             return epsilons;
         }
-        /**
-         * Not yet commented.
-         */
-        public static void test()
+        /// <summary>
+        /// Not yet commented.
+        /// <summary>
+        public static void Test()
         {
             String[] args = new String[20];
 
@@ -162,122 +277,15 @@ namespace Colt.Tests
             args[10] = max_N;
 
 
-            testQuantileCalculation(args);
+            TestQuantileCalculation(args);
         }
-        /**
-         * This method was created in VisualAge.
-         */
-        public static void testBestBandKCalculation(String[] args)
+
+        /// <summary>
+        /// This method was created in VisualAge.
+        /// <summary>
+        public static void TestLocalVarDeclarationSpeed(int size)
         {
-            //Boolean known_N;
-            //if (args==null) known_N = false;
-            //else known_N = new Boolean(args[0]).BooleanValue();
-
-            int[] quantiles = { 100, 10000 };
-            //int[] quantiles = {1,100,10000};
-
-            long[] sizes = { long.MaxValue, 1000000, 10000000, 100000000 };
-
-            double[] deltas = { 0.0, 0.1, 0.00001 };
-            //double[] deltas = {0.0, 0.001, 0.00001, 0.000001};
-
-            //double[] epsilons = {0.0, 0.01, 0.001, 0.0001, 0.00001};
-            double[] epsilons = { 0.0, 0.1, 0.01, 0.001, 0.0001, 0.00001, 0.000001 };
-
-
-
-            //if (! known_N) sizes = new long[] {0};
-            Console.WriteLine("\n\n");
-            //if (known_N) 
-            //	Console.WriteLine("Computing b's and k's for KNOWN N");
-            //else 
-            //	Console.WriteLine("Computing b's and k's for UNKNOWN N");
-            Console.WriteLine("mem [System.Math.Round(elements/1000.0)]");
-            Console.WriteLine("***********************************");
-            Timer timer = new Timer();
-            timer.Start();
-
-            for (int q = 0; q < quantiles.Length; q++)
-            {
-                int p = quantiles[q];
-                Console.WriteLine("------------------------------");
-                Console.WriteLine("computing for p = " + p);
-                for (int s = 0; s < sizes.Length; s++)
-                {
-                    long N = sizes[s];
-                    Console.WriteLine("   ------------------------------");
-                    Console.WriteLine("   computing for N = " + N);
-                    for (int e = 0; e < epsilons.Length; e++)
-                    {
-                        double epsilon = epsilons[e];
-                        Console.WriteLine("      ------------------------------");
-                        Console.WriteLine("      computing for e = " + epsilon);
-                        for (int d = 0; d < deltas.Length; d++)
-                        {
-                            double delta = deltas[d];
-                            for (int knownCounter = 0; knownCounter < 2; knownCounter++)
-                            {
-                                Boolean known_N;
-                                if (knownCounter == 0) known_N = true;
-                                else known_N = false;
-
-                                IDoubleQuantileFinder finder = QuantileFinderFactory.NewDoubleQuantileFinder(known_N, N, epsilon, delta, p, null);
-                                //Console.WriteLine(finder.this.GetType().Name);
-                                /*
-                                double[] returnSamplingRate = new double[1];
-                                long[] result;
-                                if (known_N) {
-                                    result = QuantileFinderFactory.known_N_compute_B_and_K(N, epsilon, delta, p, returnSamplingRate);
-                                }
-                                else {
-                                    result = QuantileFinderFactory.unknown_N_compute_B_and_K(epsilon, delta, p);
-                                    long b1 = result[0];
-                                    long k1 = result[1];
-
-                                    if (N>=0) {
-                                        long[] resultKnown = QuantileFinderFactory.known_N_compute_B_and_K(N, epsilon, delta, p, returnSamplingRate);
-                                        long b2 = resultKnown[0];
-                                        long k2 = resultKnown[1];
-
-                                        if (b2 * k2 < b1 * k1) { // the KnownFinder is smaller
-                                            result = resultKnown;
-                                        }
-                                    }
-                                }
-
-
-                                long b = result[0];
-                                long k = result[1];
-                                */
-                                String knownStr = known_N ? "  known" : "unknown";
-                                long mem = finder.TotalMemory();
-                                if (mem == 0) mem = N;
-                                //else if (mem==0 && !known_N && N<0) mem = long.MaxValue; // actually infinity
-                                //else if (mem==0 && !known_N && N>=0) mem = N;
-                                //Console.Write("         (e,d,N,p)=("+epsilon+","+delta+","+N+","+p+") --> ");
-                                Console.Write("         (known, d)=(" + knownStr + ", " + delta + ") --> ");
-                                //Console.Write("(mem,b,k,memF");
-                                Console.Write("(MB,mem");
-                                //if (known_N) Console.Write(",sampling");
-                                //Console.Write(")=("+(System.Math.Round(b*k/1000.0))+","+b+","+k+", "+System.Math.Round(b*k*8/1024.0/1024.0));
-                                //Console.Write(")=("+b*k/1000.0+","+b+","+k+", "+b*k*8/1024.0/1024.0+", "+System.Math.Round(b*k*8/1024.0/1024.0));
-                                Console.Write(")=(" + mem * 8.0 / 1024.0 / 1024.0 + ",  " + mem / 1000.0 + ",  " + System.Math.Round(mem * 8.0 / 1024.0 / 1024.0));
-                                //if (known_N) Console.Write(","+returnSamplingRate[0]);
-                                Console.WriteLine(")");
-                            }
-                        }
-                    }
-                }
-            }
-            Assert.Inconclusive(timer.Interval.ToString());
-            timer.Stop();
-        }
-        /**
-         * This method was created in VisualAge.
-         */
-        public static void testLocalVarDeclarationSpeed(int size)
-        {
-            Console.WriteLine("free=" +  Cern.Colt.Karnel.FreePhysicalMemorySize);
+            Console.WriteLine("free=" + Cern.Colt.Karnel.FreePhysicalMemorySize);
             Console.WriteLine("total=" + Cern.Colt.Karnel.TotalVisibleMemorySize);
 
             /*Timer timer = new Timer().Start();
@@ -313,9 +321,9 @@ namespace Colt.Tests
             Console.WriteLine("free=" + Cern.Colt.Karnel.FreePhysicalMemorySize);
             Console.WriteLine("total=" + Cern.Colt.Karnel.TotalVisibleMemorySize);
         }
-        /**
-         */
-        public static void testQuantileCalculation(String[] args)
+        /// <summary>
+        /// <summary>
+        public static void TestQuantileCalculation(String[] args)
         {
             int size = int.Parse(args[0]);
             int b = int.Parse(args[1]);
@@ -404,7 +412,7 @@ namespace Colt.Tests
             //Console.WriteLine("free="+Cern.Colt.Karnel.FreePhysicalMemorySize);
             //Console.WriteLine("total="+Cern.Colt.Karnel.TotalVisibleMemorySize);
 
-                timer.Stop();
+            timer.Stop();
             timer.Start();
 
             //approxFinder.close();
@@ -453,7 +461,7 @@ namespace Colt.Tests
                 */
 
 
-                List<Double> observedEpsilons = observedEpsilonsAtPhis(new List<Double>(phis), (ExactDoubleQuantileFinder)exactFinder, approxFinder, epsilon);
+                List<Double> observedEpsilons = ObservedEpsilonsAtPhis(new List<Double>(phis), (ExactDoubleQuantileFinder)exactFinder, approxFinder, epsilon);
                 Console.WriteLine("observedEpsilons=" + observedEpsilons);
 
                 double element = 1000.0f;
@@ -466,10 +474,10 @@ namespace Colt.Tests
                 Console.WriteLine("apprx elem(phi(" + element + "))=" + approxFinder.QuantileElements(new List<Double>(new double[] { approxFinder.Phi(element) })));
             }
         }
-        /**
-         * Not yet commented.
-         */
-        public static void testRank()
+        /// <summary>
+        /// Not yet commented.
+        /// <summary>
+        public static void TestRank()
         {
             List<Double> list = new List<Double>(new double[] { 1.0f, 5.0f, 5.0f, 5.0f, 7.0f, 10.0f });
             //Console.WriteLine(rankOfWithin(5.0f, list));

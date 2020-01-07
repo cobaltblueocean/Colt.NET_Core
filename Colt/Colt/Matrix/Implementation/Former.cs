@@ -33,20 +33,20 @@ namespace Cern.Colt.Matrix
         /// <returns>
         /// the formatted string
         /// </returns>
-        public delegate String form(double value);
-        public form eval;
+        public delegate String formdlg(double value);
+        public formdlg form;
 
         public String Format(double value)
         {
             if (String.IsNullOrEmpty(_format))
                 return value.ToString();
 
-            if (eval == null)
+            if (form == null)
             {
                 return String.Format(_format, value);
             }
 
-            return eval(value); 
+            return form(value); 
         }
     }
 

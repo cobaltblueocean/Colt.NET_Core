@@ -98,9 +98,9 @@ namespace Cern.Colt.Matrix.DoubleAlgorithms
         /// <see cref="Hep.Aida.Bin.BinFunctions1D"/>
         public static DoubleMatrix2D Aggregate(DoubleMatrix2D matrix, Hep.Aida.Bin.BinFunction1D[] aggr, DoubleMatrix2D result)
         {
-            DynamicBin1D bin = new DynamicBin1D();
-            double[] elements = new double[matrix.Rows];
-            List<Double> values = new List<Double>(elements);
+            var bin = new DynamicBin1D();
+            var elements = new double[matrix.Rows];
+            var values = elements.ToList();
             for (int column = matrix.Columns; --column >= 0;)
             {
                 matrix.ViewColumn(column).ToArray(ref elements); // copy column into values

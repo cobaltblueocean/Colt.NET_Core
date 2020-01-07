@@ -19,6 +19,7 @@ namespace Cern.Colt.Matrix.DoubleAlgorithms
     using System.Collections;
     using System.Collections.Generic;
     using System.Text;
+    using System.Linq;
     using Implementation;
 
     /// <summary>
@@ -31,7 +32,7 @@ namespace Cern.Colt.Matrix.DoubleAlgorithms
         /// </summary>
         public Formatter()
         {
-            formatString = "%G";
+            formatString = "G"; //"%G"
             alignmentString = DECIMAL;
         }
 
@@ -76,6 +77,22 @@ namespace Cern.Colt.Matrix.DoubleAlgorithms
         protected override string[][] Format(AbstractMatrix2D matrix)
         {
             return Format((DoubleMatrix2D)matrix);
+        }
+
+        /// <summary>
+        /// Converts a given cell to a String; no alignment considered.
+        /// <summary>
+        protected String Form(DoubleMatrix1D matrix, int index, Former formatter)
+        {
+            return formatter.form(matrix[index]);
+        }
+
+        /// <summary>
+        /// Converts a given cell to a String; no alignment considered.
+        /// <summary>
+        protected override String Form(AbstractMatrix1D matrix, int index, Former formatter)
+        {
+            return this.Form((DoubleMatrix1D)matrix, index, formatter);
         }
 
         /// <summary>
@@ -244,98 +261,98 @@ namespace Cern.Colt.Matrix.DoubleAlgorithms
             //this.alignment = DECIMAL;
             Align(s);
             //this.alignment = oldAlignment;
-            return new Cern.Colt.Matrix.DoubleAlgorithms.Formatter().ToTitleString(Cern.Colt.Matrix.ObjectFactory2D.Dense.Make(s), rowNames, columnNames, rowAxisName, columnAxisName, title);
+            return new Cern.Colt.Matrix.ObjectAlgorithms.Formatter().ToTitleString(Cern.Colt.Matrix.ObjectFactory2D.Dense.Make(s), rowNames, columnNames, rowAxisName, columnAxisName, title);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="matrix"></param>
-        /// <param name="rowNames"></param>
-        /// <param name="columnNames"></param>
-        /// <param name="rowAxisName"></param>
-        /// <param name="columnAxisName"></param>
-        /// <param name="title"></param>
-        /// <returns></returns>
-        public String ToTitleString(ObjectMatrix2D matrix, String[] rowNames, String[] columnNames, String rowAxisName, String columnAxisName, String title)
-        {
-            if (matrix.Size == 0) return "Empty matrix";
-            String oldFormat = this.formatString;
-            this.formatString = LEFT;
+        ///// <summary>
+        ///// 
+        ///// </summary>
+        ///// <param name="matrix"></param>
+        ///// <param name="rowNames"></param>
+        ///// <param name="columnNames"></param>
+        ///// <param name="rowAxisName"></param>
+        ///// <param name="columnAxisName"></param>
+        ///// <param name="title"></param>
+        ///// <returns></returns>
+        //public String ToTitleString(ObjectMatrix2D matrix, String[] rowNames, String[] columnNames, String rowAxisName, String columnAxisName, String title)
+        //{
+        //    if (matrix.Size == 0) return "Empty matrix";
+        //    String oldFormat = this.formatString;
+        //    this.formatString = LEFT;
 
-            int rows = matrix.Rows;
-            int columns = matrix.Columns;
+        //    int rows = matrix.Rows;
+        //    int columns = matrix.Columns;
 
-            // determine how many rows and columns are needed
-            int r = 0;
-            int c = 0;
-            r += (columnNames == null ? 0 : 1);
-            c += (rowNames == null ? 0 : 1);
-            c += (rowAxisName == null ? 0 : 1);
-            c += (rowNames != null || rowAxisName != null ? 1 : 0);
+        //    // determine how many rows and columns are needed
+        //    int r = 0;
+        //    int c = 0;
+        //    r += (columnNames == null ? 0 : 1);
+        //    c += (rowNames == null ? 0 : 1);
+        //    c += (rowAxisName == null ? 0 : 1);
+        //    c += (rowNames != null || rowAxisName != null ? 1 : 0);
 
-            int height = r + System.Math.Max(rows, rowAxisName == null ? 0 : rowAxisName.Length);
-            int width = c + columns;
+        //    int height = r + System.Math.Max(rows, rowAxisName == null ? 0 : rowAxisName.Length);
+        //    int width = c + columns;
 
-            // make larger matrix holding original matrix and naming strings
-            Cern.Colt.Matrix.ObjectMatrix2D titleMatrix = matrix.Like(height, width);
+        //    // make larger matrix holding original matrix and naming strings
+        //    Cern.Colt.Matrix.ObjectMatrix2D titleMatrix = matrix.Like(height, width);
 
-            // insert original matrix into larger matrix
-            titleMatrix.ViewPart(r, c, rows, columns).Assign(matrix);
+        //    // insert original matrix into larger matrix
+        //    titleMatrix.ViewPart(r, c, rows, columns).Assign(matrix);
 
-            // insert column axis name in leading row
-            if (r > 0) titleMatrix.ViewRow(0).ViewPart(c, columns).Assign(columnNames);
+        //    // insert column axis name in leading row
+        //    if (r > 0) titleMatrix.ViewRow(0).ViewPart(c, columns).Assign(columnNames);
 
-            // insert row axis name in leading column
-            if (rowAxisName != null)
-            {
-                String[] rowAxisStrings = new String[rowAxisName.Length];
-                for (int i = rowAxisName.Length; --i >= 0;) rowAxisStrings[i] = rowAxisName.Substring(i, i + 1);
-                titleMatrix.ViewColumn(0).ViewPart(r, rowAxisName.Length).Assign(rowAxisStrings);
-            }
-            // insert row names in next leading columns
-            if (rowNames != null) titleMatrix.ViewColumn(c - 2).ViewPart(r, rows).Assign(rowNames);
+        //    // insert row axis name in leading column
+        //    if (rowAxisName != null)
+        //    {
+        //        String[] rowAxisStrings = new String[rowAxisName.Length];
+        //        for (int i = rowAxisName.Length; --i >= 0;) rowAxisStrings[i] = rowAxisName.Substring(i, i + 1);
+        //        titleMatrix.ViewColumn(0).ViewPart(r, rowAxisName.Length).Assign(rowAxisStrings);
+        //    }
+        //    // insert row names in next leading columns
+        //    if (rowNames != null) titleMatrix.ViewColumn(c - 2).ViewPart(r, rows).Assign(rowNames);
 
-            // insert vertical "---------" separator line in next leading column
-            if (c > 0) titleMatrix.ViewColumn(c - 2 + 1).ViewPart(0, rows + r).Assign("|");
+        //    // insert vertical "---------" separator line in next leading column
+        //    if (c > 0) titleMatrix.ViewColumn(c - 2 + 1).ViewPart(0, rows + r).Assign("|");
 
-            // convert the large matrix to a string
-            Boolean oldPrintShape = this.printShape;
-            this.printShape = false;
-            String str = ToString(titleMatrix);
-            this.printShape = oldPrintShape;
+        //    // convert the large matrix to a string
+        //    Boolean oldPrintShape = this.printShape;
+        //    this.printShape = false;
+        //    String str = ToString(titleMatrix);
+        //    this.printShape = oldPrintShape;
 
-            // insert horizontal "--------------" separator line
-            var total = new StringBuilder(str);
-            if (columnNames != null)
-            {
-                int i = str.IndexOf(rowSeparator);
-                total.Insert(i + 1, Repeat('-', i) + rowSeparator);
-            }
-            else if (columnAxisName != null)
-            {
-                int i = str.IndexOf(rowSeparator);
-                total.Insert(0, Repeat('-', i) + rowSeparator);
-            }
+        //    // insert horizontal "--------------" separator line
+        //    var total = new StringBuilder(str);
+        //    if (columnNames != null)
+        //    {
+        //        int i = str.IndexOf(rowSeparator);
+        //        total.Insert(i + 1, Repeat('-', i) + rowSeparator);
+        //    }
+        //    else if (columnAxisName != null)
+        //    {
+        //        int i = str.IndexOf(rowSeparator);
+        //        total.Insert(0, Repeat('-', i) + rowSeparator);
+        //    }
 
-            // insert line for column axis name
-            if (columnAxisName != null)
-            {
-                int j = 0;
-                if (c > 0) j = str.IndexOf('|');
-                String s = Blanks(j);
-                if (c > 0) s = s + "| ";
-                s = s + columnAxisName + "\n";
-                total.Insert(0, s);
-            }
+        //    // insert line for column axis name
+        //    if (columnAxisName != null)
+        //    {
+        //        int j = 0;
+        //        if (c > 0) j = str.IndexOf('|');
+        //        String s = Blanks(j);
+        //        if (c > 0) s = s + "| ";
+        //        s = s + columnAxisName + "\n";
+        //        total.Insert(0, s);
+        //    }
 
-            // insert title
-            if (title != null) total.Insert(0, title + "\n");
+        //    // insert title
+        //    if (title != null) total.Insert(0, title + "\n");
 
-            this.formatString = oldFormat;
+        //    this.formatString = oldFormat;
 
-            return total.ToString();
-        }
+        //    return total.ToString();
+        //}
 
         /// <summary>
         /// Same as <i>toTitleString</i> except that additionally statistical aggregates (mean, median, sum, etcd) of rows and columns are printed.
@@ -367,37 +384,31 @@ namespace Cern.Colt.Matrix.DoubleAlgorithms
             DoubleMatrix2D tmp = matrix.Like(matrix.Rows + aggr.Length, matrix.Columns);
             tmp.ViewPart(0, 0, matrix.Rows, matrix.Columns).Assign(matrix);
             tmp.ViewPart(matrix.Rows, 0, aggr.Length, matrix.Columns).Assign(colStats);
-            colStats = null;
 
-            String[][] s1 = Format(tmp); Align(s1); tmp = null;
-            String[][] s2 = Format(rowStats); Align(s2); rowStats = null;
+            String[][] s1 = Format(tmp); Align(s1);
+            String[][] s2 = Format(rowStats); Align(s2);
 
             // copy strings into a large matrix holding the source matrix and all aggregations
             Cern.Colt.Matrix.ObjectMatrix2D allStats = Cern.Colt.Matrix.ObjectFactory2D.Dense.Make(matrix.Rows + aggr.Length, matrix.Columns + aggr.Length + 1);
             allStats.ViewPart(0, 0, matrix.Rows + aggr.Length, matrix.Columns).Assign(s1);
             allStats.ViewColumn(matrix.Columns).Assign("|");
             allStats.ViewPart(0, matrix.Columns + 1, matrix.Rows, aggr.Length).Assign(s2);
-            s1 = null; s2 = null;
 
             // append a vertical "|" separator plus names of aggregation functions to line holding columnNames
             if (columnNames != null)
             {
-                //cern.colt.list.ObjectArrayList list = new cern.colt.list.ObjectArrayList(columnNames);
                 var list = new List<Object>(columnNames);
                 list.Add("|");
-                for (int i = 0; i < aggr.Length; i++) list.Add(aggr[i].Method.Name); // add names of aggregation functions
-                columnNames = new String[list.Count];
-                columnNames = (String[])list.ToArray();
+                list.AddRange(aggr.Select(x => x.Method.Name).ToList());
+                columnNames = list.ToStringArray();
             }
 
             // append names of aggregation functions to line holding rowNames
             if (rowNames != null)
             {
-                //cern.colt.list.ObjectArrayList list = new cern.colt.list.ObjectArrayList(rowNames);
-                var list = new List<Object>(columnNames);
-                for (int i = 0; i < aggr.Length; i++) list.Add(aggr[i].Method.Name); // add names of aggregation functions
-                rowNames = new String[list.Count];
-                rowNames = (String[])list.ToArray();
+                var list = new List<Object>(rowNames);
+                list.AddRange(aggr.Select(x => x.Method.Name).ToList());
+                rowNames = list.ToStringArray();
             }
 
             // turn large matrix into string

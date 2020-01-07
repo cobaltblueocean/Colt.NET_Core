@@ -107,7 +107,7 @@ namespace Cern.Jet.Random
             { // SET-UP 
                 double mpa, mmb, mode;
                 double amb;
-                double a_, b_, a_1, b_1, pl;
+                double a_, b_, a_1, b_1;  //, pl
                 double help_1, help_2;
                 amb = a * a - b * b;                                        // a^2 - b^2 
                 samb = System.Math.Sqrt(amb);                                  // -log(f(mode)) 

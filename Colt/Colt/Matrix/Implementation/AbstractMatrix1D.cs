@@ -23,7 +23,6 @@ namespace Cern.Colt.Matrix.Implementation
     public abstract class AbstractMatrix1D : AbstractMatrix
     {
         /// <summary>
-        /// 
         /// Gets or sets the number of indexes between any two elements, i.e. <tt>index(i+1) - index(i)</tt>.
         /// </summary>
         private int _stride;
@@ -55,8 +54,8 @@ namespace Cern.Colt.Matrix.Implementation
         /// </returns>
         public override int Size
         {
-            get { return Size; }
-            set { Size = value; }
+            get { return base.Size; }
+            set { base.Size = value; }
         }
 
         /// <summary>

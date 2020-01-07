@@ -79,7 +79,7 @@ namespace Cern.Hep.Aida.Bin
         public static BinFunction1D Size()
         {
 
-            return x => x.Size;
+            return x => x.Size();
         }
 
         /// <summary>

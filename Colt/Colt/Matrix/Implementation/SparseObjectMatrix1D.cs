@@ -124,7 +124,7 @@ namespace Cern.Colt.Matrix.Implementation
         {
             Setup(size);
             //this.Elements = new OpenIntObjectHashMap(initialCapacity, minLoadFactor, maxLoadFactor);
-            this.MaxLoadFactor = minLoadFactor;
+            this.MinLoadFactor = minLoadFactor;
             this.MaxLoadFactor = maxLoadFactor;
 
             var capacity = PrimeFinder.NextPrime(initialCapacity);
