@@ -98,7 +98,7 @@ namespace Cern.Jet.Stat.Quantile
         /// Removes all elements from the receiver.  The receiver will be empty after this call returns, and its memory requirements will be close to zero.
         /// </summary>
         [MethodImpl(MethodImplOptions.Synchronized)]
-        public new void Clear()
+        public override void Clear()
         {
             base.Clear();
             this.currentTreeHeight = 1;
@@ -109,7 +109,7 @@ namespace Cern.Jet.Stat.Quantile
         /// Returns a deep copy of the receiver.
         /// </summary>
         /// <returns></returns>
-        public new Object Clone()
+        public override Object Clone()
         {
             UnknownDoubleQuantileEstimator copy = (UnknownDoubleQuantileEstimator)base.Clone();
             if (this.sampler != null) copy.sampler = (WeightedRandomSampler)copy.sampler.Clone();
@@ -121,7 +121,7 @@ namespace Cern.Jet.Stat.Quantile
         /// </summary>
         /// <param name="phis">the quantiles for which elements are to be computed. Each phi must be in the interval (0.0,1.0]. <tt>phis</tt> must be sorted ascending.</param>
         /// <returns>the approximate quantile elements.</returns>
-        public new List<Double> QuantileElements(List<Double> phis)
+        public override List<Double> QuantileElements(List<Double> phis)
         {
             if (precomputeEpsilon <= 0.0) return base.QuantileElements(phis);
 

@@ -28,7 +28,7 @@ namespace Cern.Colt
         /// <returns>
         /// a copy of the receiver.
         /// </returns>
-        public object Clone()
+        public virtual object Clone()
         {
             return MemberwiseClone();
         }

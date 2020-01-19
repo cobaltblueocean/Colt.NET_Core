@@ -126,14 +126,14 @@ namespace Cern.Jet.Stat.Quantile
             }
         }
 
-        public new Object Clone()
+        public override Object Clone()
         {
             KnownDoubleQuantileEstimator copy = (KnownDoubleQuantileEstimator)base.Clone();
             if (this.samplingAssistant != null) copy.samplingAssistant = (RandomSamplingAssistant)copy.samplingAssistant.Clone();
             return copy;
         }
 
-        public new List<Double> QuantileElements(List<Double> phis)
+        public override List<Double> QuantileElements(List<Double> phis)
         {
             /*
             * The KNOWN quantile finder reads off quantiles from FULL buffers only.

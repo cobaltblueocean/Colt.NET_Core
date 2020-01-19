@@ -280,6 +280,7 @@ namespace Cern.Jet.Stat.Quantile
                 result[0] = best_b;
                 result[1] = best_k;
                 result[2] = best_h;
+                result[3] = 1;
             }
 
             return result;

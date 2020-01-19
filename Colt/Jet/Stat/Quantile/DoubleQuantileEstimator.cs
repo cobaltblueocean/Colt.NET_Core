@@ -179,18 +179,19 @@ namespace Cern.Jet.Stat.Quantile
         /// Removes all elements from the receiver.  The receiver will
         /// be empty after this call returns, and its memory requirements will be close to zero.
         /// </summary>
-        public void Clear()
+        public virtual void Clear()
         {
             this.totalElementsFilled = 0;
             this.currentBufferToFill = null;
-            this.bufferSet.Clear();
+            if(this.bufferSet != null)
+                this.bufferSet.Clear();
         }
 
         /// <summary>
         /// Returns a deep copy of the receiver.
         /// </summary>
         /// <returns>a deep copy of the receiver.</returns>
-        public new Object Clone()
+        public override Object Clone()
         {
             DoubleQuantileEstimator copy = (DoubleQuantileEstimator)base.Clone();
             if (this.bufferSet != null)
@@ -211,7 +212,7 @@ namespace Cern.Jet.Stat.Quantile
         /// </summary>
         /// <param name="procedure">the procedure to be applied. Stops iteration if the procedure returns <tt>false</tt>, otherwise continues.</param>
         /// <returns><tt>false</tt> if the procedure stopped before all elements where iterated over, <tt>true</tt> otherwise. </returns>
-        public bool ForEach(DoubleProcedure procedure)
+        public virtual bool ForEach(DoubleProcedure procedure)
         {
             return this.bufferSet.ForEach(procedure);
         }
@@ -221,7 +222,7 @@ namespace Cern.Jet.Stat.Quantile
         /// This number usually differs from the results of method <tt>size()</tt>, according to the underlying datastructure.
         /// </summary>
         /// <returns></returns>
-        public long Memory()
+        public virtual long Memory()
         {
             return bufferSet.Memory();
         }
@@ -232,7 +233,7 @@ namespace Cern.Jet.Stat.Quantile
         /// </summary>
         /// <param name="element">the element to search for.</param>
         /// <returns>the percentage <tt>p</tt> of elements <tt>&lt;= element</tt> (<tt>0.0 &lt;= p &lt;=1.0)</tt>.</returns>
-        public double Phi(double element)
+        public virtual double Phi(double element)
         {
             return bufferSet.Phi(element);
         }
@@ -242,7 +243,7 @@ namespace Cern.Jet.Stat.Quantile
         /// </summary>
         /// <param name="phis">the quantiles for which elements are to be computed. Each phi must be in the interval [0.0,1.0]. <tt>phis</tt> must be sorted ascending.</param>
         /// <returns>the approximate quantile elements.</returns>
-        public List<double> QuantileElements(List<double> phis)
+        public virtual List<double> QuantileElements(List<double> phis)
         {
             /*
             //check parameter
