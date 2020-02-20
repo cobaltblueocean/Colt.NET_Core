@@ -242,7 +242,7 @@ namespace Cern.Jet.Stat.Quantile
         /// Returns a deep copy of the receiver.
         /// </summary>
         /// <returns>a deep copy of the receiver.</returns>
-        public new Object Clone()
+        public override Object Clone()
         {
             DoubleBufferSet copy = (DoubleBufferSet)base.Clone();
 

@@ -89,7 +89,7 @@ namespace Cern.Jet.Random
         /// After this call has returned, the copy and the receiver have equal but separate state.
         /// </summary>
         /// <returns>a copy of the receiver.</returns>
-        public new Object Clone()
+        public override Object Clone()
         {
             Empirical copy = (Empirical)base.Clone();
             if (this._cdf != null) copy._cdf = (double[])this._cdf.Clone();

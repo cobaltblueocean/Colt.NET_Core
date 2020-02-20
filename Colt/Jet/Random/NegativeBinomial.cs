@@ -77,7 +77,7 @@ namespace Cern.Jet.Random
         /// After this call has returned, the copy and the receiver have equal but separate state.
         /// </summary>
         /// <returns>a copy of the receiver.</returns>
-        public new Object Clone()
+        public override Object Clone()
         {
             NegativeBinomial copy = (NegativeBinomial)base.Clone();
             if (this.poisson != null) copy.poisson = (Poisson)this.poisson.Clone();

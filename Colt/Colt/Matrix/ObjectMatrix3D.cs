@@ -123,7 +123,7 @@ namespace Cern.Colt.Matrix
         /// <param name="f">a function transforming the current cell value.</param>
         /// <returns>the aggregated measure.</returns>
         /// <see cref="Cern.Jet.Math.Functions"/>
-        public Object Aggregate(Cern.Colt.Function.ObjectObjectFunction<Object> aggr, Cern.Colt.Function.ObjectFunction<Object> f)
+        public virtual Object Aggregate(Cern.Colt.Function.ObjectObjectFunction<Object> aggr, Cern.Colt.Function.ObjectFunction<Object> f)
         {
             if (Size == 0) return null;
             Object a = f(this[Slices - 1, Rows - 1, Columns - 1]);
@@ -178,7 +178,7 @@ namespace Cern.Colt.Matrix
         /// <returns>the aggregated measure.</returns>
         /// <exception cref="ArgumentException">if <i>Slices != other.Slices || Rows != other.Rows || Columns != other.Columns</i></exception>
         /// <see cref="Cern.Jet.Math.Functions"/>
-        public Object Aggregate(ObjectMatrix3D other, Cern.Colt.Function.ObjectObjectFunction<Object> aggr, Cern.Colt.Function.ObjectObjectFunction<Object> f)
+        public virtual Object Aggregate(ObjectMatrix3D other, Cern.Colt.Function.ObjectObjectFunction<Object> aggr, Cern.Colt.Function.ObjectObjectFunction<Object> f)
         {
             CheckShape(other);
             if (Size == 0) return null;
@@ -209,7 +209,7 @@ namespace Cern.Colt.Matrix
         /// <returns><i>this</i> (for convenience only).</returns>
         /// <exception cref="">if <i>values.Length != Slices || for any 0 &lt;= slice &lt; Slices: values[slice].Length != Rows</i>.</exception>
         /// <exception cref="">if <i>for any 0 &lt;= column &lt; Columns: values[slice][row].Length != Columns</i>.</exception>
-        public ObjectMatrix3D Assign(Object[][][] values)
+        public virtual ObjectMatrix3D Assign(Object[][][] values)
         {
             if (values.Length != Slices) throw new ArgumentException("Must have same number of Slices: Slices=" + values.Length + "Slices=" + Slices);
             for (int slice = Slices; --slice >= 0;)
@@ -250,7 +250,7 @@ namespace Cern.Colt.Matrix
         /// <param name="function">a function object taking as argument the current cell's value.</param>
         /// <returns><i>this</i> (for convenience only).</returns>
         /// <see cref="Cern.Jet.Math.Functions"/>
-        public ObjectMatrix3D Assign(Cern.Colt.Function.ObjectFunction<Object> function)
+        public virtual ObjectMatrix3D Assign(Cern.Colt.Function.ObjectFunction<Object> function)
         {
             for (int slice = Slices; --slice >= 0;)
             {
@@ -273,7 +273,7 @@ namespace Cern.Colt.Matrix
         /// <param name="other">the source matrix to copy from (may be identical to the receiver).</param>
         /// <returns><i>this</i> (for convenience only).</returns>
         /// <exception cref="ArgumentException">if <i>Slices != other.Slices || Rows != other.Rows || Columns != other.Columns</i></exception>
-        public ObjectMatrix3D Assign(ObjectMatrix3D other)
+        public virtual ObjectMatrix3D Assign(ObjectMatrix3D other)
         {
             if (other == this) return this;
             CheckShape(other);
@@ -319,7 +319,7 @@ namespace Cern.Colt.Matrix
         /// <returns><i>this</i> (for convenience only).</returns>
         /// <exception cref="ArgumentException">if <i>Slices != other.Slices || Rows != other.Rows || Columns != other.Columns</i></exception>
         /// <see cref="Cern.Jet.Math.Functions"/>
-        public ObjectMatrix3D Assign(ObjectMatrix3D y, Cern.Colt.Function.ObjectObjectFunction<Object> function)
+        public virtual ObjectMatrix3D Assign(ObjectMatrix3D y, Cern.Colt.Function.ObjectObjectFunction<Object> function)
         {
             CheckShape(y);
             for (int slice = Slices; --slice >= 0;)
@@ -342,7 +342,7 @@ namespace Cern.Colt.Matrix
         /// </summary>
         /// <param name="value">the value to be filled into the cells.</param>
         /// <returns><i>this</i> (for convenience only).</returns>
-        public ObjectMatrix3D Assign(Object value)
+        public virtual ObjectMatrix3D Assign(Object value)
         {
             for (int slice = Slices; --slice >= 0;)
             {
@@ -360,7 +360,7 @@ namespace Cern.Colt.Matrix
         /// <summary>
          /// Returns the number of cells having non-zero values; ignores tolerance.
          /// </summary>
-        public int Cardinality()
+        public virtual int Cardinality()
         {
             int cardinality = 0;
             for (int slice = Slices; --slice >= 0;)
@@ -383,7 +383,7 @@ namespace Cern.Colt.Matrix
         /// The returned matrix is not backed by this matrix, so changes in the returned matrix are not reflected in this matrix, and vice-versad 
         /// </summary>
         /// <returns>a deep copy of the receiver.</returns>
-        public ObjectMatrix3D Copy()
+        public virtual ObjectMatrix3D Copy()
         {
             return Like().Assign(this);
         }
@@ -413,7 +413,7 @@ namespace Cern.Colt.Matrix
         /// <param name="otherObj">the Object to be compared for equality with the receiver.</param>
         /// <param name="testForEquality">if true -> tests for equality, otherwise for identity.</param>
         /// <returns>true if the specified Object is equal to the receiver.</returns>
-        public Boolean Equals(Object otherObj, Boolean testForEquality)
+        public virtual Boolean Equals(Object otherObj, Boolean testForEquality)
         { //delta
             if (!(otherObj is ObjectMatrix3D)) { return false; }
             if (this == otherObj) return true;
@@ -491,7 +491,7 @@ namespace Cern.Colt.Matrix
         /// <param name="rowList">the list to be filled with row indexes, can have any size.</param>
         /// <param name="columnList">the list to be filled with column indexes, can have any size.</param>
         /// <param name="valueList">the list to be filled with values, can have any size.</param>
-        public void GetNonZeros(ref List<int> sliceList, ref List<int> rowList, ref List<int> columnList, ref List<Object> valueList)
+        public virtual void GetNonZeros(ref List<int> sliceList, ref List<int> rowList, ref List<int> columnList, ref List<Object> valueList)
         {
             sliceList.Clear();
             rowList.Clear();
@@ -526,7 +526,7 @@ namespace Cern.Colt.Matrix
         /// In general, the new matrix should have internal parametrization as similar as possible.
         /// </summary>
         /// <returns>a new empty matrix of the same dynamic type.</returns>
-        public ObjectMatrix3D Like()
+        public virtual ObjectMatrix3D Like()
         {
             return Like(Slices, Rows, Columns);
         }
@@ -554,7 +554,7 @@ namespace Cern.Colt.Matrix
         /// The values are copiedd So subsequent changes in <i>values</i> are not reflected in the matrix, and vice-versa.
         /// </summary>
         /// <returns>an array filled with the values of the cells.</returns>
-        public Object[][][] ToArray()
+        public virtual Object[][][] ToArray()
         {
             Object[][][] values = (new Object[Slices, Rows, Columns]).ToJagged();
             for (int slice = Slices; --slice >= 0;)
@@ -596,7 +596,7 @@ namespace Cern.Colt.Matrix
         /// <exception cref="IndexOutOfRangeException">if <i>column &lt; 0 || column >= Columns</i>.</exception>
         /// <see cref="ViewSlice(int)"/>
         /// <see cref="ViewRow(int)"/>
-        public ObjectMatrix2D ViewColumn(int column)
+        public virtual ObjectMatrix2D ViewColumn(int column)
         {
             CheckColumn(column);
             int sliceRows = this.Slices;
@@ -619,7 +619,7 @@ namespace Cern.Colt.Matrix
         /// <returns>a new flip view.</returns>
         /// <see cref="ViewSliceFlip()"/>
         /// <see cref="ViewRowFlip()"/>
-        public ObjectMatrix3D ViewColumnFlip()
+        public virtual ObjectMatrix3D ViewColumnFlip()
         {
             return (ObjectMatrix3D)(View().VColumnFlip());
         }
@@ -634,7 +634,7 @@ namespace Cern.Colt.Matrix
         /// <param name="axis2">the axis that shall become axis 2 (legal values 0..2).</param>
         /// <returns>a new dice view.</returns>
         /// <exception cref="ArgumentException">if some of the parameters are equal or not in range 0..2.</exception>
-        public ObjectMatrix3D ViewDice(int axis0, int axis1, int axis2)
+        public virtual ObjectMatrix3D ViewDice(int axis0, int axis1, int axis2)
         {
             return (ObjectMatrix3D)(View().VDice(axis0, axis1, axis2));
         }
@@ -652,7 +652,7 @@ namespace Cern.Colt.Matrix
         /// <param name="width">The width of the box.</param>
         /// <returns>the new view.</returns>
         /// <exception cref="IndexOutOfRangeException">if <i>slice &lt; 0 || depth &lt; 0 || slice + depth > Slices || row &lt; 0 || height &lt; 0 || row + height > Rows || column &lt; 0 || width &lt; 0 || column + width > Columns</i></exception>
-        public ObjectMatrix3D ViewPart(int slice, int row, int column, int depth, int height, int width)
+        public virtual ObjectMatrix3D ViewPart(int slice, int row, int column, int depth, int height, int width)
         {
             return (ObjectMatrix3D)(View().VPart(slice, row, column, depth, height, width));
         }
@@ -670,7 +670,7 @@ namespace Cern.Colt.Matrix
         /// <exception cref="IndexOutOfRangeException">if <i>row &lt; 0 || row >= row()</i>.</exception>
         /// <see cref="ViewSlice(int)"/>
         /// <see cref="ViewColumn(int)"/>
-        public ObjectMatrix2D ViewRow(int row)
+        public virtual ObjectMatrix2D ViewRow(int row)
         {
             CheckRow(row);
             int sliceRows = this.Slices;
@@ -693,7 +693,7 @@ namespace Cern.Colt.Matrix
         /// <returns>a new flip view.</returns>
         /// <see cref="ViewSliceFlip()"/>
         /// <see cref="ViewColumnFlip()"/>
-        public ObjectMatrix3D ViewRowFlip()
+        public virtual ObjectMatrix3D ViewRowFlip()
         {
             return (ObjectMatrix3D)(View().VRowFlip());
         }
@@ -715,7 +715,7 @@ namespace Cern.Colt.Matrix
         /// <exception cref="IndexOutOfRangeException">if <i>!(0 &lt;= slicees[i] &lt; Slices)</i> for any <i>i=0..slicees.Length()-1</i>.</exception>
         /// <exception cref="IndexOutOfRangeException">if <i>!(0 &lt;= rowes[i] &lt; Rows)</i> for any <i>i=0..rowes.Length()-1</i>.</exception>
         /// <exception cref="IndexOutOfRangeException">if <i>!(0 &lt;= columnIndexes[i] &lt; Columns)</i> for any <i>i=0..columnIndexes.Length()-1</i>.</exception>
-        public ObjectMatrix3D ViewSelection(int[] sliceIndexes, int[] rowIndexes, int[] columnIndexes)
+        public virtual ObjectMatrix3D ViewSelection(int[] sliceIndexes, int[] rowIndexes, int[] columnIndexes)
         {
             // check for "all"
             if (sliceIndexes == null)
@@ -778,7 +778,7 @@ namespace Cern.Colt.Matrix
         /// </summary>
         /// <param name="condition">The condition to be matched.</param>
         /// <returns>the new view.</returns>
-        public ObjectMatrix3D ViewSelection(ObjectMatrix2DProcedure condition)
+        public virtual ObjectMatrix3D ViewSelection(ObjectMatrix2DProcedure condition)
         {
             List<int> matches = new List<int>();
             for (int i = 0; i < Slices; i++)
@@ -805,7 +805,7 @@ namespace Cern.Colt.Matrix
         /// <exception cref="IndexOutOfRangeException">if <i>slice &lt; 0 || slice >= Slices</i>.</exception>
         /// <see cref="ViewRow(int)"/>
         /// <see cref="ViewColumn(int)"/>
-        public ObjectMatrix2D ViewSlice(int slice)
+        public virtual ObjectMatrix2D ViewSlice(int slice)
         {
             CheckSlice(slice);
             int sliceRows = this.Rows;
@@ -828,7 +828,7 @@ namespace Cern.Colt.Matrix
         /// <returns>a new flip view.</returns>
         /// <see cref="ViewRowFlip()"/>
         /// <see cref="ViewColumnFlip()"/>
-        public ObjectMatrix3D ViewSliceFlip()
+        public virtual ObjectMatrix3D ViewSliceFlip()
         {
             return (ObjectMatrix3D)(View().VSliceFlip());
         }
@@ -841,7 +841,7 @@ namespace Cern.Colt.Matrix
         /// </summary>
         /// <returns>a new sorted vector (matrix) view.</returns>
         /// <exception cref="IndexOutOfRangeException">if <i>row &lt; 0 || row >= Rows || column &lt; 0 || column >= Columns</i>.</exception>
-        public ObjectMatrix3D ViewSorted(int row, int column)
+        public virtual ObjectMatrix3D ViewSorted(int row, int column)
         {
             return Cern.Colt.Matrix.ObjectAlgorithms.Sorting.mergeSort.sort(this, row, column);
         }
@@ -857,7 +857,7 @@ namespace Cern.Colt.Matrix
         /// <param name="Columnstride">the column step factor.</param>
         /// <returns>a new view.</returns>
         /// <exception cref="IndexOutOfRangeException">if <i>Slicestride &lt;= 0 || Rowstride &lt;= 0 || Columnstride &lt;= 0</i>.</exception>
-        public ObjectMatrix3D ViewStrides(int Slicestride, int Rowstride, int Columnstride)
+        public virtual ObjectMatrix3D ViewStrides(int Slicestride, int Rowstride, int Columnstride)
         {
             return (ObjectMatrix3D)(View().VStrides(Slicestride, Rowstride, Columnstride));
         }

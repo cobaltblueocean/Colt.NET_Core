@@ -24,6 +24,6 @@ namespace Cern.Jet.Random
         /// Returns a random number from the distribution.
         /// </summary>
         /// <returns></returns>
-        public new abstract int NextInt();
+        public override abstract int NextInt();
     }
 }

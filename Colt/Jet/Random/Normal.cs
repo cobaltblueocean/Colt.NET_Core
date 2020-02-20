@@ -137,7 +137,7 @@ namespace Cern.Jet.Random
         /// Sets the uniform random generator internally used.
         /// </summary>
         /// <param name="randomGenerator"></param>
-        public new RandomEngine RandomGenerator
+        public override RandomEngine RandomGenerator
         {
             get
             {

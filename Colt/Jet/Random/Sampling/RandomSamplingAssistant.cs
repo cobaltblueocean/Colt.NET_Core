@@ -67,7 +67,7 @@ namespace Cern.Jet.Random.Sampling
         /// Returns a deep copy of the receiver.
         /// </summary>
         /// <returns></returns>
-        public new Object Clone()
+        public override Object Clone()
         {
             RandomSamplingAssistant copy = (RandomSamplingAssistant)base.Clone();
             copy.sampler = (RandomSampler)this.sampler.Clone();

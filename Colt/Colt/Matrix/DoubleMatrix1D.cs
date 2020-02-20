@@ -622,7 +622,7 @@ namespace Cern.Colt.Matrix
         /// <returns>
         /// A new flip view.
         /// </returns>
-        public DoubleMatrix1D ViewFlip()
+        public virtual DoubleMatrix1D ViewFlip()
         {
             return (DoubleMatrix1D)View().VFlip();
         }
@@ -642,7 +642,7 @@ namespace Cern.Colt.Matrix
         /// <exception cref="IndexOutOfRangeException">
         /// If <tt>index &lt; 0 || width &lt; 0 || index+width &gt; size()</tt>.
         /// </exception>
-        public DoubleMatrix1D ViewPart(int index, int width)
+        public virtual DoubleMatrix1D ViewPart(int index, int width)
         {
             return (DoubleMatrix1D)View().VPart(index, width);
         }
@@ -661,7 +661,7 @@ namespace Cern.Colt.Matrix
         /// <exception cref="IndexOutOfRangeException">
         /// If <tt>!(0 &lt;= indexes[i] &lt; size())</tt> for any <tt>i=0..indexes.length()-1</tt>.
         /// </exception>
-        public DoubleMatrix1D ViewSelection(int[] indexes)
+        public virtual DoubleMatrix1D ViewSelection(int[] indexes)
         {
             // check for "all"
             if (indexes == null)
@@ -687,7 +687,7 @@ namespace Cern.Colt.Matrix
         /// <returns>
         /// The new view.
         /// </returns>
-        public DoubleMatrix1D ViewSelection(DoubleProcedure condition)
+        public virtual DoubleMatrix1D ViewSelection(DoubleProcedure condition)
         {
             var matches = new List<int>();
             for (int i = 0; i < Size; i++)
@@ -702,7 +702,7 @@ namespace Cern.Colt.Matrix
         /// <returns>
         /// A new sorted vector (matrix) view.
         /// </returns>
-        public DoubleMatrix1D ViewSorted()
+        public virtual DoubleMatrix1D ViewSorted()
         {
             return Sorting.MergeSort.Sort(this);
         }
@@ -720,7 +720,7 @@ namespace Cern.Colt.Matrix
         /// <exception cref="IndexOutOfRangeException">
         /// If <tt>stride &lt;= 0</tt>.
         /// </exception>
-        public DoubleMatrix1D ViewStrides(int s)
+        public virtual DoubleMatrix1D ViewStrides(int s)
         {
             return (DoubleMatrix1D)View().VStrides(s);
         }

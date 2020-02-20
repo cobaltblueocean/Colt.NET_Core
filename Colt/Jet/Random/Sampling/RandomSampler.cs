@@ -151,7 +151,7 @@ namespace Cern.Jet.Random.Sampling
         /// Returns a deep copy of the receiver.
         /// </summary>
         /// <returns></returns>
-        public new Object Clone()
+        public override Object Clone()
         {
             RandomSampler copy = (RandomSampler)base.Clone();
             copy.my_RandomGenerator = (RandomEngine)this.my_RandomGenerator.Clone();

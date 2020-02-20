@@ -153,7 +153,7 @@ namespace Cern.Jet.Stat.Quantile
         /// Returns a String representation of the receiver.
         /// </summary>
         /// <returns></returns>
-        public new String ToString()
+        public override String ToString()
         {
             StringBuilder buf = new StringBuilder(base.ToString());
             buf.Length = (buf.Length - 1);

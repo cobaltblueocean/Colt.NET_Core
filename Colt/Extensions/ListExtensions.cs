@@ -10,7 +10,9 @@ namespace System
     {
         public static void EnsureCapacity<T>(this List<T> list, int minCapacity)
         {
-            list = list.ToArray().EnsureCapacity(minCapacity).ToList();
+            var tmp = list.ToArray().EnsureCapacity(minCapacity);
+            list.Clear();
+            list.AddRange(tmp);
         }
 
         public static Boolean ForEach<T>(this List<Double> list, Cern.Colt.Function.DoubleProcedure procedure)

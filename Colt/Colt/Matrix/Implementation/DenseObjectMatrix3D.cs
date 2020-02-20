@@ -164,7 +164,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <returns><i>this</i> (for convenience only).</returns>
         /// <exception cref="ArgumentException">if <i>values.Length != Slices || for any 0 &lt;= slice &lt; Slices: values[slice].Length != Rows</i>.</exception>
         /// <exception cref="ArgumentException">if <i>for any 0 &lt;= column &lt; Columns: values[slice][row].Length != Columns</i>.</exception>
-        public new ObjectMatrix3D Assign(Object[][][] values)
+        public override ObjectMatrix3D Assign(Object[][][] values)
         {
             if (!this.IsView)
             {
@@ -198,7 +198,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <param name="source">the source matrix to copy from (may be identical to the receiver).</param>
         /// <returns><i>this</i> (for convenience only).</returns>
         /// <exception cref="ArgumentException">if <i>Slices != source.Slices || Rows != source.Rows || Columns != source.Columns</i></exception>
-        public new ObjectMatrix3D Assign(ObjectMatrix3D source)
+        public override ObjectMatrix3D Assign(ObjectMatrix3D source)
         {
             // overriden for performance only
             if (!(source is DenseObjectMatrix3D))

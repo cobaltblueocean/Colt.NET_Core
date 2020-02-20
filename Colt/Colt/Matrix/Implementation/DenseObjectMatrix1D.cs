@@ -125,7 +125,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <param name="values">the values to be filled into the cells.</param>
         /// <returns><i>this</i> (for convenience only).</returns>
         /// <exception cref="ArgumentException">if <i>values.Length != size()</i>.</exception>
-        public new ObjectMatrix1D Assign(Object[] values)
+        public override ObjectMatrix1D Assign(Object[] values)
         {
             if (!IsView)
             {
@@ -156,7 +156,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <param name="function">a function object taking as argument the current cell's value.</param>
         /// <returns><i>this</i> (for convenience only).</returns>
         /// <see cref="Cern.Jet.Math.Functions"></see>
-        public new ObjectMatrix1D Assign(Cern.Colt.Function.ObjectFunction<Object> function)
+        public override ObjectMatrix1D Assign(Cern.Colt.Function.ObjectFunction<Object> function)
         {
             int s = Stride;
             int i = Index(0);
@@ -180,7 +180,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <param name="source">the source matrix to copy from (may be identical to the receiver).</param>
         /// <returns><i>this</i> (for convenience only).</returns>
         /// <exception cref="ArgumentException">if <i>size() != other.Count</i>.</exception>
-        public new ObjectMatrix1D Assign(ObjectMatrix1D source)
+        public override ObjectMatrix1D Assign(ObjectMatrix1D source)
         {
             // overriden for performance only
             if (!(source is DenseObjectMatrix1D))
@@ -249,7 +249,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <returns><i>this</i> (for convenience only).</returns>
         /// <exception cref="ArgumentException">if <i>size() != y.Count</i>.</exception>
         /// <see cref="Cern.Jet.Math.Functions"/>
-        public new ObjectMatrix1D Assign(ObjectMatrix1D y, Cern.Colt.Function.ObjectObjectFunction<Object> function)
+        public override ObjectMatrix1D Assign(ObjectMatrix1D y, Cern.Colt.Function.ObjectObjectFunction<Object> function)
         {
             // overriden for performance only
             if (!(y is DenseObjectMatrix1D))
@@ -369,7 +369,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <param name=""></param>
         /// <returns></returns>
         /// <exception cref="ArgumentException">if <i>size() != other.Count</i>.</exception>
-        public new void Swap(ObjectMatrix1D other)
+        public override void Swap(ObjectMatrix1D other)
         {
             // overriden for performance only
             if (!(other is DenseObjectMatrix1D))
@@ -407,7 +407,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <i>for (int i=0; i &lt; size(); i++) values[i] = get(i);</i>
         /// </summary>
         /// <exception cref="ArgumentException">if <i>values.Length &lt; size()</i>.</exception>
-        public new void ToArray(ref Object[] values)
+        public override void ToArray(ref Object[] values)
         {
             if (values.Length < Size) throw new ArgumentException("values too small");
             if (!this.IsView) Array.Copy(this.Elements, 0, values, 0, this.Elements.Length);

@@ -586,7 +586,7 @@ namespace Cern.Colt.Matrix
         /// <returns>
         /// A new dice view.
         /// </returns>
-        public DoubleMatrix2D ViewDice()
+        public virtual DoubleMatrix2D ViewDice()
         {
             return (DoubleMatrix2D)View().VDice();
         }
@@ -612,7 +612,7 @@ namespace Cern.Colt.Matrix
         /// <exception cref="IndexOutOfRangeException">
         /// If <tt>column &lt; 0 || width &lt; 0 || column+width &gt; columns() || row &lt; 0 || height &lt; 0 || row+height &gt; rows()</tt>
         /// </exception>
-        public DoubleMatrix2D ViewPart(int row, int column, int height, int width)
+        public virtual DoubleMatrix2D ViewPart(int row, int column, int height, int width)
         {
             return (DoubleMatrix2D)View().VPart(row, column, height, width);
         }
@@ -647,7 +647,7 @@ namespace Cern.Colt.Matrix
         /// <returns>
         /// A new flip view.
         /// </returns>
-        public DoubleMatrix2D ViewRowFlip()
+        public virtual DoubleMatrix2D ViewRowFlip()
         {
             return (DoubleMatrix2D)View().VRowFlip();
         }
@@ -669,7 +669,7 @@ namespace Cern.Colt.Matrix
         /// <exception cref="IndexOutOfRangeException">
         /// If <tt>!(0 &lt;= rowIndexes[i] &lt; rows())</tt> for any <tt>i=0..rowIndexes.Length()-1</tt> or if <tt>!(0 &lt;= columnIndexes[i] &lt; columns())</tt> for any <tt>i=0..columnIndexes.Length()-1</tt>.
         /// </exception>
-        public DoubleMatrix2D ViewSelection(int[] rowIndexes, int[] columnIndexes)
+        public virtual DoubleMatrix2D ViewSelection(int[] rowIndexes, int[] columnIndexes)
         {
             // check for "all"
             if (rowIndexes == null)
@@ -706,7 +706,7 @@ namespace Cern.Colt.Matrix
         /// <returns>
         /// The new view.
         /// </returns>
-        public DoubleMatrix2D ViewSelection(DoubleMatrix1DProcedure condition)
+        public virtual DoubleMatrix2D ViewSelection(DoubleMatrix1DProcedure condition)
         {
             var matches = new List<int>();
             for (int i = 0; i < Rows; i++)
@@ -730,7 +730,7 @@ namespace Cern.Colt.Matrix
         /// <exception cref="IndexOutOfRangeException">
         /// If <tt>column &lt; 0 || column &gt;= columns()</tt>.
         /// </exception>
-        public DoubleMatrix2D ViewSorted(int column)
+        public virtual DoubleMatrix2D ViewSorted(int column)
         {
             return Sorting.MergeSort.Sort(this, column);
         }
@@ -752,7 +752,7 @@ namespace Cern.Colt.Matrix
         /// <exception cref="IndexOutOfRangeException">
         /// If <tt>rStride &lt;= 0 || cStride &lt;= 0</tt>.
         /// </exception>
-        public DoubleMatrix2D ViewStrides(int rStride, int cStride)
+        public virtual DoubleMatrix2D ViewStrides(int rStride, int cStride)
         {
             return (DoubleMatrix2D)View().VStrides(rStride, cStride);
         }

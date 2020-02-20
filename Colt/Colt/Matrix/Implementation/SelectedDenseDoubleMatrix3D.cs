@@ -180,7 +180,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// </summary>
         /// <param name="rank">the absolute rank of the element.</param>
         /// <returns>the position.</returns>
-        public new int ColumnOffset(int absRank)
+        protected override int ColumnOffset(int absRank)
         {
             return ColumnOffsets[absRank];
         }
@@ -238,7 +238,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <exception cref="IndexOutOfRangeException">if <i>column &lt; 0 || column >= columns()</i>.</exception>
         /// <see cref="ViewSlice(int)"/>
         /// <see cref="ViewRow(int)"/>
-        public new DoubleMatrix2D ViewColumn(int column)
+        public override DoubleMatrix2D ViewColumn(int column)
         {
             CheckColumn(column);
 
@@ -271,7 +271,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <exception cref="IndexOutOfRangeException">if <i>row &lt; 0 || row >= row()</i>.</exception>
         /// <see cref="ViewSlice(int)"/>
         /// <see cref="ViewColumn(int)"/>
-        public new DoubleMatrix2D ViewRow(int row)
+        public override DoubleMatrix2D ViewRow(int row)
         {
             CheckRow(row);
 
@@ -305,7 +305,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <exception cref="IndexOutOfRangeException">if <i>slice &lt; 0 || slice >= Slices()</i>.</exception>
         /// <see cref="ViewRow(int)"/>
         /// <see cref="ViewColumn(int)"/>
-        public new DoubleMatrix2D ViewSlice(int slice)
+        public override DoubleMatrix2D ViewSlice(int slice)
         {
             CheckSlice(slice);
 

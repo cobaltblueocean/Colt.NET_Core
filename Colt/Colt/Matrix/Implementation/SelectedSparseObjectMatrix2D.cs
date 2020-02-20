@@ -315,7 +315,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <returns>a new slice view.</returns>
         /// <exception cref="ArgumentException">if <i>column &lt; 0 || column >= columns()</i>.</exception>
         /// <see cref="ViewRow(int)"/>
-        public new ObjectMatrix1D ViewColumn(int column)
+        public override ObjectMatrix1D ViewColumn(int column)
         {
             CheckColumn(column);
             int viewSize = this.Rows;
@@ -347,7 +347,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <returns>a new slice view.</returns>
         /// <exception cref="IndexOutOfRangeException">if <i>row &lt; 0 || row >= rows()</i>.</exception>
         /// <see cref="ViewColumn(int)"/>
-        public new ObjectMatrix1D ViewRow(int row)
+        public override ObjectMatrix1D ViewRow(int row)
         {
             CheckRow(row);
             int viewSize = this.Columns;

@@ -204,7 +204,7 @@ namespace Cern.Jet.Stat.Quantile
         /// Returns a String representation of the receiver.
         /// </summary>
         /// <returns></returns>
-        public new String ToString()
+        public override String ToString()
         {
             String s = this.GetType().Name;
             s = s.Substring(s.LastIndexOf('.') + 1);

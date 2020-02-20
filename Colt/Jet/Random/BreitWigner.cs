@@ -70,7 +70,7 @@ namespace Cern.Jet.Random
         /// <param name="gamma"></param>
         /// <param name="cut">cut==Double.NegativeInfinity indicates "don't cut".</param>
         /// <returns></returns>
-        public double NextDouble(double mean, double gamma, double cut)
+        public virtual double NextDouble(double mean, double gamma, double cut)
         {
             double val, rval, displ;
 
@@ -97,7 +97,7 @@ namespace Cern.Jet.Random
         /// <param name="mean"></param>
         /// <param name="gamma"></param>
         /// <param name="cut">cut==Double.NegativeInfinity indicates "don't cut".</param>
-        public void SetState(double mean, double gamma, double cut)
+        public virtual void SetState(double mean, double gamma, double cut)
         {
             this.mean = mean;
             this.gamma = gamma;

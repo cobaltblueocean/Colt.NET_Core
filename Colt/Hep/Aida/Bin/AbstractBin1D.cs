@@ -56,7 +56,7 @@ namespace Cern.Hep.Aida.Bin
         /// </summary>
         /// <param name="list">the list of which all values shall be added.</param>
         [MethodImpl(MethodImplOptions.Synchronized)]
-        public void AddAllOf(List<Double> list)
+        public virtual void AddAllOf(List<Double> list)
         {
             AddAllOfFromTo(list, 0, list.Count - 1);
         }
@@ -69,7 +69,7 @@ namespace Cern.Hep.Aida.Bin
         /// <param name="from">the index of the first element to be added (inclusive).</param>
         /// <param name="to">the index of the last element to be added (inclusive).</param>
         [MethodImpl(MethodImplOptions.Synchronized)]
-        public void AddAllOfFromTo(List<Double> list, int from, int to)
+        public virtual void AddAllOfFromTo(List<Double> list, int from, int to)
         {
             for (int i = from; i <= to; i++) Add(list[i]);
         }
@@ -82,7 +82,7 @@ namespace Cern.Hep.Aida.Bin
         /// <param name="capacity">the number of elements the buffer shall be capable of holding before overflowing and flushing to the receiver.</param>
         /// <returns>a streaming buffer having the receiver as target.</returns>
         [MethodImpl(MethodImplOptions.Synchronized)]
-        public Cern.Colt.Buffer.DoubleBuffer Buffered(int capacity)
+        public virtual Cern.Colt.Buffer.DoubleBuffer Buffered(int capacity)
         {
             return new Cern.Colt.Buffer.DoubleBuffer(this, capacity);
         }
@@ -92,7 +92,7 @@ namespace Cern.Hep.Aida.Bin
         /// </summary>
         /// <param name="other">the other bin to compare with</param>
         /// <returns>a summary of the deviations.</returns>
-        public String CompareWith(AbstractBin1D other)
+        public virtual String CompareWith(AbstractBin1D other)
         {
             StringBuilder buf = new StringBuilder();
             buf.Append("\nDifferences [percent]");

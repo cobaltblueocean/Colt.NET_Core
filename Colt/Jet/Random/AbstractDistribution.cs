@@ -48,7 +48,7 @@ namespace Cern.Jet.Random
         /// <summary>
         /// the uniform random generator internally used.
         /// </summary>
-        public RandomEngine RandomGenerator
+        public virtual RandomEngine RandomGenerator
         {
             get { return randomGenerator; }
             set { randomGenerator = value; }
@@ -89,7 +89,7 @@ namespace Cern.Jet.Random
         /// </summary>
         /// <param name="dummy"></param>
         /// <returns></returns>
-        public double Apply(double dummy)
+        public virtual double Apply(double dummy)
         {
             return NextDouble();
         }
@@ -100,7 +100,7 @@ namespace Cern.Jet.Random
         /// </summary>
         /// <param name="dummy"></param>
         /// <returns></returns>
-        public int Apply(int dummy)
+        public virtual int Apply(int dummy)
         {
             return NextInt();
         }
@@ -110,7 +110,7 @@ namespace Cern.Jet.Random
         /// After this call has returned, the copy and the receiver have equal but separate state.
         /// </summary>
         /// <returns>a copy of the receiver.</returns>
-        public Object Clone()
+        public virtual Object Clone()
         {
             AbstractDistribution copy = (AbstractDistribution)base.MemberwiseClone();
             if (this.randomGenerator != null) copy.randomGenerator = (RandomEngine)this.randomGenerator.Clone();
@@ -122,7 +122,7 @@ namespace Cern.Jet.Random
         /// Override this method if necessary.
         /// </summary>
         /// <returns></returns>
-        public int NextInt()
+        public virtual int NextInt()
         {
             return (int)System.Math.Round(NextDouble());
         }

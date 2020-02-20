@@ -31,7 +31,7 @@ namespace Cern.Hep.Aida.Bin
         /// <summary>
         /// Gets whether <tt>sumOfInversions()</tt> can return meaningful results.  Return <tt>false</tt> if the bin was constructed with insufficient parametrization, <tt>true</tt> otherwise.
         /// </summary>
-        public Boolean HasSumOfInversions
+        public virtual Boolean HasSumOfInversions
         {
             get { return this._hasSumOfInversions; }
             set { this._hasSumOfInversions = value; }
@@ -40,7 +40,7 @@ namespace Cern.Hep.Aida.Bin
         /// <summary>
         /// Gets to tell whether <tt>sumOfLogarithms()</tt> can return meaningful results.  Return <tt>false</tt> if the bin was constructed with insufficient parametrization, <tt>true</tt> otherwise.
         /// </summary>
-        public Boolean HasSumOfLogarithms
+        public virtual Boolean HasSumOfLogarithms
         {
             get { return this._hasSumOfLogarithms; }
             set { this._hasSumOfLogarithms = value; }
@@ -49,7 +49,7 @@ namespace Cern.Hep.Aida.Bin
         /// <summary>
         /// Gets the sum of logarithms, which is <tt>Sum( Log(x[i]) )</tt>.
         /// </summary>
-        public double SumOfLogarithms
+        public virtual double SumOfLogarithms
         {
             get {
                 if (!this.HasSumOfLogarithms) return Double.NaN;
@@ -62,7 +62,7 @@ namespace Cern.Hep.Aida.Bin
         /// <summary>
         /// Gets the sum of inversions, which is <tt>Sum( 1 / x[i] )</tt>.
         /// </summary>
-        public double SumOfInversions
+        public virtual double SumOfInversions
         {
             get {
                 if (!this.HasSumOfInversions) return Double.NaN;
@@ -75,7 +75,7 @@ namespace Cern.Hep.Aida.Bin
         /// <summary>
         /// Gets sum of powers
         /// </summary>
-        public double[] SumOfPowers
+        public virtual double[] SumOfPowers
         {
             get { return _sumOfPowers; }
             set { _sumOfPowers = value; }
@@ -114,7 +114,7 @@ namespace Cern.Hep.Aida.Bin
         /// <param name="from">the index of the first element to be added (inclusive).</param>
         /// <param name="to">the index of the last element to be added (inclusive).</param>
         [MethodImpl(MethodImplOptions.Synchronized)]
-        public new void AddAllOfFromTo(List<Double> list, int from, int to)
+        public override void AddAllOfFromTo(List<Double> list, int from, int to)
         {
             base.AddAllOfFromTo(list, from, to);
 
@@ -140,7 +140,7 @@ namespace Cern.Hep.Aida.Bin
         /// </summary>
         /// <returns>a deep copy of the receiver.</returns>
         [MethodImpl(MethodImplOptions.Synchronized)]
-        public new Object Clone()
+        public override Object Clone()
         {
             MightyStaticBin1D clone = (MightyStaticBin1D)base.Clone();
             if (_sumOfPowers != null) clone.SumOfPowers = (double[])clone.SumOfPowers.Clone();
@@ -152,7 +152,7 @@ namespace Cern.Hep.Aida.Bin
         /// </summary>
         /// <param name="other">the other bin to compare with</param>
         /// <returns>a summary of the deviations.</returns>
-        public new String CompareWith(AbstractBin1D other)
+        public override String CompareWith(AbstractBin1D other)
         {
             StringBuilder buf = new StringBuilder(base.CompareWith(other));
             if (other is MightyStaticBin1D) {
@@ -179,7 +179,7 @@ namespace Cern.Hep.Aida.Bin
         /// </summary>
         /// <returns>the geometric mean; <tt>Double.NaN</tt> if <tt>!hasSumOfLogarithms()</tt>.</returns>
         [MethodImpl(MethodImplOptions.Synchronized)]
-        public double GeometricMean()
+        public virtual double GeometricMean()
         {
             return Descriptive.GeometricMean(Size, SumOfLogarithms);
         }
@@ -189,7 +189,7 @@ namespace Cern.Hep.Aida.Bin
         /// </summary>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.Synchronized)]
-        public int GetMaxOrderForSumOfPowers()
+        public virtual int GetMaxOrderForSumOfPowers()
         {
             /* order 0..2 is always recorded.
                order 0 is Size
@@ -206,7 +206,7 @@ namespace Cern.Hep.Aida.Bin
         /// </summary>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.Synchronized)]
-        public int GetMinOrderForSumOfPowers()
+        public virtual int GetMinOrderForSumOfPowers()
         {
             int minOrder = 0;
             if (HasSumOfInversions) minOrder = -1;
@@ -219,7 +219,7 @@ namespace Cern.Hep.Aida.Bin
         /// </summary>
         /// <returns>the harmonic mean; <tt>Double.NaN</tt> if <tt>!hasSumOfInversions()</tt>.</returns>
         [MethodImpl(MethodImplOptions.Synchronized)]
-        public double HarmonicMean()
+        public virtual double HarmonicMean()
         {
             return Descriptive.HarmonicMean(Size, SumOfInversions);
         }
@@ -236,7 +236,7 @@ namespace Cern.Hep.Aida.Bin
         /// </summary>
         /// <param name="k"></param>
         /// <returns></returns>
-        public Boolean HasSumOfPowers(int k)
+        public virtual Boolean HasSumOfPowers(int k)
         {
             return GetMinOrderForSumOfPowers() <= k && k <= GetMaxOrderForSumOfPowers();
         }
@@ -246,7 +246,7 @@ namespace Cern.Hep.Aida.Bin
         /// </summary>
         /// <returns>the kurtosis; <tt>Double.NaN</tt> if <tt>!hasSumOfPowers(4)</tt>.</returns>
         [MethodImpl(MethodImplOptions.Synchronized)]
-        public double Kurtosis()
+        public virtual double Kurtosis()
         {
             return Descriptive.Kurtosis(Moment(4, Mean()), StandardDeviation());
         }
@@ -258,7 +258,7 @@ namespace Cern.Hep.Aida.Bin
         /// <param name="c">any number.</param>
         /// <returns><tt>Double.NaN</tt> if <tt>!hasSumOfPower(k)</tt>.</returns>
         [MethodImpl(MethodImplOptions.Synchronized)]
-        public double Moment(int k, double c)
+        public virtual double Moment(int k, double c)
         {
             if (k < 0) throw new ArgumentException("k must be >= 0");
             //checkOrder(k);
@@ -279,7 +279,7 @@ namespace Cern.Hep.Aida.Bin
         /// In other words: <tt>x[0]*x[1]*...*x[size()-1]</tt>.
         /// </summary>
         /// <returns>the product; <tt>Double.NaN</tt> if <tt>!hasSumOfLogarithms()</tt>.</returns>
-        public double Product()
+        public virtual double Product()
         {
             return Descriptive.Product(Size, SumOfLogarithms);
         }
@@ -289,7 +289,7 @@ namespace Cern.Hep.Aida.Bin
         /// </summary>
         /// <returns>the skew; <tt>Double.NaN</tt> if <tt>!hasSumOfPowers(3)</tt>.</returns>
         [MethodImpl(MethodImplOptions.Synchronized)]
-        public double Skew()
+        public virtual double Skew()
         {
             return Descriptive.Skew(Moment(3, Mean()), StandardDeviation());
         }
@@ -300,7 +300,7 @@ namespace Cern.Hep.Aida.Bin
         /// <param name="k">the order of the powers.</param>
         /// <returns>the sum of powers; <tt>Double.NaN</tt> if <tt>!hasSumOfPowers(k)</tt>.</returns>
         [MethodImpl(MethodImplOptions.Synchronized)]
-        public double GetSumOfPowers(int k)
+        public virtual double GetSumOfPowers(int k)
         {
             if (!HasSumOfPowers(k)) return Double.NaN;
             //checkOrder(k);	

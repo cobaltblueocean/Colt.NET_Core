@@ -103,7 +103,7 @@ namespace Cern.Colt.Matrix
         /// <param name="aggr">an aggregation function taking as first argument the current aggregation and as second argument the transformed current cell value.</param>
         /// <param name="f">a function transforming the current cell value.</param>
         /// <returns>the aggregated measure.</returns>
-        public Object Aggregate(Cern.Colt.Function.ObjectObjectFunction<Object> aggr, Cern.Colt.Function.ObjectFunction<Object> f)
+        public virtual Object Aggregate(Cern.Colt.Function.ObjectObjectFunction<Object> aggr, Cern.Colt.Function.ObjectFunction<Object> f)
         {
             if (Size == 0) return null;
             Object a = f(this[Size - 1]);
@@ -138,7 +138,7 @@ namespace Cern.Colt.Matrix
         /// <param name="f">a function transforming the current cell value.</param>
         /// <returns>the aggregated measure.</returns>
         /// <exception cref="ArgumentException">if <i>Size != other.Count</i>.</exception>
-        public Object Aggregate(ObjectMatrix1D other, Cern.Colt.Function.ObjectObjectFunction<Object> aggr, Cern.Colt.Function.ObjectObjectFunction<Object> f)
+        public virtual Object Aggregate(ObjectMatrix1D other, Cern.Colt.Function.ObjectObjectFunction<Object> aggr, Cern.Colt.Function.ObjectObjectFunction<Object> f)
         {
             CheckSize(other);
             if (Size == 0) return null;
@@ -159,7 +159,7 @@ namespace Cern.Colt.Matrix
         /// <param name="values">the values to be filled into the cells.</param>
         /// <returns><i>this</i> (for convenience only).</returns>
         /// <exception cref="ArgumentException">if <i>values.Length != Size</i>.</exception>
-        public ObjectMatrix1D Assign(Object[] values)
+        public virtual ObjectMatrix1D Assign(Object[] values)
         {
             if (values.Length != Size) throw new ArgumentException("Must have same number of cells: Length=" + values.Length + ", Size=" + Size);
             for (int i = Size; --i >= 0;)
@@ -187,7 +187,7 @@ namespace Cern.Colt.Matrix
         /// <returns><i>this</i> (for convenience only).</returns>
         /// <see cref="Cern.Jet.Math.Functions"/>
         /// <exception cref=""></exception>
-        public ObjectMatrix1D Assign(Cern.Colt.Function.ObjectFunction<Object> function)
+        public virtual ObjectMatrix1D Assign(Cern.Colt.Function.ObjectFunction<Object> function)
         {
             for (int i = Size; --i >= 0;)
             {
@@ -204,7 +204,7 @@ namespace Cern.Colt.Matrix
         /// <param name="other">the source matrix to copy from (may be identical to the receiver).</param>
         /// <returns><i>this</i> (for convenience only).</returns>
         /// <exception cref="ArgumentException">if <i>Size != other.Count</i>.</exception>
-        public ObjectMatrix1D Assign(ObjectMatrix1D other)
+        public virtual ObjectMatrix1D Assign(ObjectMatrix1D other)
         {
             if (other == this) return this;
             CheckSize(other);
@@ -236,7 +236,7 @@ namespace Cern.Colt.Matrix
         /// <returns><i>this</i> (for convenience only).</returns>
         /// <exception cref="ArgumentException">if <i>Size != y.Count</i>.</exception>
         /// <see cref="Cern.Jet.Math.Functions"/>
-        public ObjectMatrix1D Assign(ObjectMatrix1D y, Cern.Colt.Function.ObjectObjectFunction<Object> function)
+        public virtual ObjectMatrix1D Assign(ObjectMatrix1D y, Cern.Colt.Function.ObjectObjectFunction<Object> function)
         {
             CheckSize(y);
             for (int i = Size; --i >= 0;)
@@ -251,7 +251,7 @@ namespace Cern.Colt.Matrix
         /// </summary>
         /// <param name="value">the value to be filled into the cells.</param>
         /// <returns><i>this</i> (for convenience only).</returns>
-        public ObjectMatrix1D Assign(Object value)
+        public virtual ObjectMatrix1D Assign(Object value)
         {
             for (int i = Size; --i >= 0;)
             {
@@ -263,7 +263,7 @@ namespace Cern.Colt.Matrix
         /// <summary>
         /// Returns the number of cells having non-zero values; ignores tolerance.
         /// </summary>
-        public int Cardinality()
+        public virtual int Cardinality()
         {
             int cardinality = 0;
             for (int i = Size; --i >= 0;)
@@ -280,7 +280,7 @@ namespace Cern.Colt.Matrix
         /// The returned matrix is not backed by this matrix, so changes in the returned matrix are not reflected in this matrix, and vice-versad 
         /// </summary>
         /// <returns>a deep copy of the receiver.</returns>
-        public ObjectMatrix1D Copy()
+        public virtual ObjectMatrix1D Copy()
         {
             ObjectMatrix1D copy = Like();
             copy.Assign(this);
@@ -426,7 +426,7 @@ namespace Cern.Colt.Matrix
         /// Swaps each element<i> this[i]</i> with <i>other [i]</i>.
         /// </summary>
         /// <exception cref="ArgumentException">if <i>Size != other.Count</i>.</exception>
-        public void Swap(ObjectMatrix1D other)
+        public virtual void Swap(ObjectMatrix1D other)
         {
             CheckSize(other);
             for (int i = Size; --i >= 0;)
@@ -446,7 +446,7 @@ namespace Cern.Colt.Matrix
         /// <i>for (int i= 0; i<Size; i++) values[i] = get(i);</i>
         /// </summary>
         /// <returns>an array filled with the values of the cells.</returns>
-        public Object[] ToArray()
+        public virtual Object[] ToArray()
         {
             Object[] values = new Object[Size];
             ToArray(ref values);
@@ -461,7 +461,7 @@ namespace Cern.Colt.Matrix
         /// <i>for (int i= 0; i &lt; Size; i++) values[i] = get(i);</i>
         /// </summary>
         /// <exception cref="ArgumentException">if <i>values.Length<Size</i>.</exception>
-        public void ToArray(ref Object[] values)
+        public virtual void ToArray(ref Object[] values)
         {
             if (values.Length < Size) throw new ArgumentException("values too small");
             for (int i = Size; --i >= 0;)
@@ -485,7 +485,7 @@ namespace Cern.Colt.Matrix
         /// The returned view is backed by this matrix, so changes in the returned view are reflected in this matrix, and vice-versa.
         /// </summary>
         /// <returns>a new flip view.</returns>
-        public ObjectMatrix1D ViewFlip()
+        public virtual ObjectMatrix1D ViewFlip()
         {
             return (ObjectMatrix1D)(View().VFlip());
         }
@@ -509,7 +509,7 @@ namespace Cern.Colt.Matrix
         /// <param name="width">The width of the range.</param>
         /// <returns>the new view.</returns>
         /// <exception cref="IndexOutOfRangeException">if <i>index &lt; 0 || width &lt; 0 || index + width > Size</i>.</exception>
-        public ObjectMatrix1D ViewPart(int index, int width)
+        public virtual ObjectMatrix1D ViewPart(int index, int width)
         {
             return (ObjectMatrix1D)(View().VPart(index, width));
         }
@@ -533,7 +533,7 @@ namespace Cern.Colt.Matrix
         /// <param name="indexes">The indexes of the cells that shall be visible in the new view.To indicate that<i> all</i> cells shall be visible, simply set this parameter to <i>null</i>.</param>
         /// <returns>the new view.</returns>
         /// <exception cref="IndexOutOfRangeException">if <i>!(0 &lt;= indexes[i] < Size)</i> for any<i> i = 0..indexes.Length() - 1 </ tt >.</exception>
-        public ObjectMatrix1D ViewSelection(int[] indexes)
+        public virtual ObjectMatrix1D ViewSelection(int[] indexes)
         {
             // check for "all"
             if (indexes == null)
@@ -574,7 +574,7 @@ namespace Cern.Colt.Matrix
         /// </summary>
         /// <param name="condition">The condition to be matched.</param>
         /// <returns>the new view.</returns>
-        public ObjectMatrix1D ViewSelection(Cern.Colt.Function.ObjectProcedure<Object> condition)
+        public virtual ObjectMatrix1D ViewSelection(Cern.Colt.Function.ObjectProcedure<Object> condition)
         {
             List<int> matches = new List<int>();
             for (int i = 0; i < Size; i++)
@@ -592,7 +592,7 @@ namespace Cern.Colt.Matrix
         /// For more advanced sorting functionality, see <see cref="Cern.Colt.Matrix.ObjectAlgorithms.Sorting"/>.
         /// </summary>
         /// <returns>a new sorted vector(matrix) view.</returns>
-        public ObjectMatrix1D ViewSorted()
+        public virtual ObjectMatrix1D ViewSorted()
         {
             return Cern.Colt.Matrix.ObjectAlgorithms.Sorting.mergeSort.sort(this);
         }
@@ -604,7 +604,7 @@ namespace Cern.Colt.Matrix
         /// <param name="stride">the step factor.</param>
         /// <returns>the new view.</returns>
         /// <exception cref="IndexOutOfRangeException">if < tt > stride <= 0 </ tt >.</exception>
-        public ObjectMatrix1D ViewStrides(int stride)
+        public virtual ObjectMatrix1D ViewStrides(int stride)
         {
             return (ObjectMatrix1D)(View().VStrides(stride));
         }

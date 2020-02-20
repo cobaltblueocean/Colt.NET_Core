@@ -14,3 +14,9 @@ C:\Users\KEIN\Source\BitBucket\Repos\Colt\Colt\bin\Debug\Cern.dll
 C:\Users\KEIN\Source\BitBucket\Repos\Colt\Colt\bin\Debug\Cern.pdb
 C:\Users\Mercury21\Source\repos\Colt\Colt\bin\Debug\System.Runtime.InteropServices.RuntimeInformation.dll
 C:\Users\Mercury21\Source\repos\Colt\Colt\obj\Debug\Cern.csproj.CopyComplete
+C:\Users\Mercury21\Source\Repos\Colt.NET\Colt\obj\Debug\Cern.Properties.Resources.resources
+C:\Users\Mercury21\Source\Repos\Colt.NET\Colt\obj\Debug\Cern.csproj.GenerateResource.cache
+C:\Users\Mercury21\Source\Repos\Colt.NET\Colt\bin\Debug\Cern.dll
+C:\Users\Mercury21\Source\Repos\Colt.NET\Colt\bin\Debug\Cern.pdb
+C:\Users\Mercury21\Source\Repos\Colt.NET\Colt\obj\Debug\Cern.dll
+C:\Users\Mercury21\Source\Repos\Colt.NET\Colt\obj\Debug\Cern.pdb

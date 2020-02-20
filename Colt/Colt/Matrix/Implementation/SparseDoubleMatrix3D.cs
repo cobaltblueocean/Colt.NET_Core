@@ -247,7 +247,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
-        public new DoubleMatrix3D Assign(double value)
+        public override DoubleMatrix3D Assign(double value)
         {
             // overriden for performance only
             if (!this.IsView && value == 0) this.Elements.Clear();
@@ -262,7 +262,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// 
         /// </summary>
         /// <returns></returns>
-        public new int Cardinality()
+        public override int Cardinality()
         {
             if (!this.IsView) return this.Elements.Count;
             else return base.Cardinality();

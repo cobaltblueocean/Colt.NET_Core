@@ -317,7 +317,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <exception cref="IndexOutOfRangeException">if <i>column &lt; 0 || column >= columns()</i>.</exception>
         /// <see cref="ViewSlice(int)"/>
         /// <see cref="ViewRow(int)"/>
-        public new ObjectMatrix2D ViewColumn(int column)
+        public override ObjectMatrix2D ViewColumn(int column)
         {
             CheckColumn(column);
 
@@ -350,7 +350,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <exception cref="IndexOutOfRangeException">if <i>row &lt; 0 || row >= row()</i>.</exception>
         /// <see cref="ViewSlice(int)"/>
         /// <see cref="ViewColumn(int)"/>
-        public new ObjectMatrix2D ViewRow(int row)
+        public override ObjectMatrix2D ViewRow(int row)
         {
             CheckRow(row);
 
@@ -395,7 +395,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <exception cref="IndexOutOfRangeException">if <i>slice &lt; 0 || slice >= slices()</i>.</exception>
         /// <see cref="ViewRow(int)"/>
         /// <see cref="ViewColumn(int)"/>
-        public new ObjectMatrix2D ViewSlice(int slice)
+        public override ObjectMatrix2D ViewSlice(int slice)
         {
             CheckSlice(slice);
 

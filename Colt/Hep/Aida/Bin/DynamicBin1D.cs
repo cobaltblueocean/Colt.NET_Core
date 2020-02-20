@@ -94,7 +94,7 @@ namespace Cern.Hep.Aida.Bin
         public override void Add(double element)
         {
             Elements.Add(element);
-            InArgumentCheckerAll();
+            InvalidateAll();
         }
 
         /// <summary>
@@ -106,10 +106,10 @@ namespace Cern.Hep.Aida.Bin
         /// <param name="to">the index of the last element to be added (inclusive).</param>
         /// <exception cref="IndexOutOfRangeException">if <i>list.Count&gt;0 && (from&lt;0 || from&gt;to || to&gt;=list.Count)</i>. </exception>
         [MethodImpl(MethodImplOptions.Synchronized)]
-        public new void AddAllOfFromTo(List<Double> list, int from, int to)
+        public override void AddAllOfFromTo(List<Double> list, int from, int to)
         {
             this.Elements.AddAllOfFromTo(list, from, to);
-            this.InArgumentCheckerAll();
+            this.InvalidateAll();
         }
 
         /// <summary>
@@ -134,7 +134,7 @@ namespace Cern.Hep.Aida.Bin
         [MethodImpl(MethodImplOptions.Synchronized)]
         public double Aggregate(Cern.Colt.Function.DoubleDoubleFunction aggr, Cern.Colt.Function.DoubleFunction f)
         {
-            int s = Size();
+            int s = Size;
             if (s == 0) return Double.NaN;
             double a = f(Elements[s - 1]);
             for (int i = s - 1; --i >= 0;)
@@ -165,7 +165,7 @@ namespace Cern.Hep.Aida.Bin
         /// </summary>
         /// <returns>a deep copy of the receiver.</returns>
         [MethodImpl(MethodImplOptions.Synchronized)]
-        public new Object Clone()
+        public override Object Clone()
         {
             DynamicBin1D clone = (DynamicBin1D)base.Clone();
             if (this.Elements != null) clone.Elements = clone.Elements.Copy();
@@ -203,14 +203,14 @@ namespace Cern.Hep.Aida.Bin
         {
             lock (syncLock)
             {
-                if (Size() != other.Size()) throw new ArgumentException("both bins must have same Size");
+                if (Size != other.Size) throw new ArgumentException("both bins must have same Size");
                 double s = 0;
-                for (int i = Size(); --i >= 0;)
+                for (int i = Size; --i >= 0;)
                 {
                     s += this.Elements[i] * other.Elements[i];
                 }
 
-                double cov = (s - Sum * other.Sum / Size()) / Size();
+                double cov = (s - Sum * other.Sum / Size) / Size;
                 return cov;
             }
         }
@@ -285,7 +285,7 @@ namespace Cern.Hep.Aida.Bin
             lock (syncLock)
             {
                 double[] s2 = other.sortedElements_unsafe().ToArray();
-                int n = Size();
+                int n = Size;
                 return Includes(s1, s2, 0, n, 0, n) &&
                     Includes(s2, s1, 0, n, 0, n);
             }
@@ -359,7 +359,7 @@ namespace Cern.Hep.Aida.Bin
             //Cern.Colt.Map.AbstractDoubleIntMap map = new Cern.Colt.Map.OpenDoubleIntHashMap();
             var map = new Dictionary<double, int>();
             //Cern.Colt.Timer timer = new Cern.Colt.Timer().start();
-            for (int i = Size(); --i >= 0;)
+            for (int i = Size; --i >= 0;)
             {
                 double element = this.Elements[i];
                 //double element = i; // benchmark only TODO
@@ -398,7 +398,7 @@ namespace Cern.Hep.Aida.Bin
         /// 
         /// </summary>
         /// <param name="element">element to be appended.</param>
-        protected void InArgumentCheckerAll()
+        protected void InvalidateAll()
         {
             this.isSorted = false;
             this.isIncrementalStatValid = false;
@@ -425,7 +425,7 @@ namespace Cern.Hep.Aida.Bin
         /// <summary>
         /// Returns the Maximum.
         /// </summary>
-        public new double Max
+        public override double Max
         {
             get
             {
@@ -437,7 +437,7 @@ namespace Cern.Hep.Aida.Bin
         /// <summary>
         /// Returns the Minimum.
         /// </summary>
-        public new double Min
+        public override double Min
         {
             get
             {
@@ -453,7 +453,7 @@ namespace Cern.Hep.Aida.Bin
         /// <param name="k">the order; any number - can be less than zero, zero or greater than zero.</param>
         /// <param name="c">any number.</param>
         [MethodImpl(MethodImplOptions.Synchronized)]
-        public new double Moment(int k, double c)
+        public override double Moment(int k, double c)
         {
             // currently no caching for this parameter
             return Descriptive.Moment(this.Elements, k, c);
@@ -464,7 +464,7 @@ namespace Cern.Hep.Aida.Bin
         /// </summary>
         /// <param name="phi">must satisfy <i>0 &lt; phi &lt; 1</i>.</param>
         [MethodImpl(MethodImplOptions.Synchronized)]
-        public new double Quantile(double phi)
+        public override double Quantile(double phi)
         {
             return Descriptive.Quantile(sortedElements_unsafe(), phi);
         }
@@ -477,7 +477,7 @@ namespace Cern.Hep.Aida.Bin
         /// <param name="element">the element to search for.</param>
         /// <returns>the exact percentage <i>phi</i> of elements <i>&lt;= element</i> (<i>0.0 &lt;= phi &lt;= 1.0)</i>.</returns>
         [MethodImpl(MethodImplOptions.Synchronized)]
-        public new double QuantileInverse(double element)
+        public override double QuantileInverse(double element)
         {
             return Descriptive.QuantileInverse(sortedElements_unsafe(), element);
         }
@@ -488,7 +488,7 @@ namespace Cern.Hep.Aida.Bin
         /// <param name="percentages">the percentages for which Quantiles are to be computed.</param>
         /// Each percentage must be in the interval <i>(0.0,1.0]</i>d <i>percentages</i> must be sorted ascending.
         /// <returns>the exact Quantiles.</returns>
-        public new List<Double> Quantiles(List<Double> percentages)
+        public override List<Double> Quantiles(List<Double> percentages)
         {
             return Descriptive.Quantiles(sortedElements_unsafe(), percentages);
         }
@@ -506,7 +506,7 @@ namespace Cern.Hep.Aida.Bin
             if (changed)
             {
                 ClearAllMeasures();
-                InArgumentCheckerAll();
+                InvalidateAll();
                 //this.Size() = 0;
                 if (FixedOrder)
                 {
@@ -537,8 +537,8 @@ namespace Cern.Hep.Aida.Bin
 
             if (!withReplacement)
             { // without
-                if (n > Size()) throw new ArgumentException("n must be less than or equal to Size()");
-                Cern.Jet.Random.Sampling.RandomSamplingAssistant sampler = new Cern.Jet.Random.Sampling.RandomSamplingAssistant(n, Size(), randomGenerator);
+                if (n > Size) throw new ArgumentException("n must be less than or equal to Size()");
+                Cern.Jet.Random.Sampling.RandomSamplingAssistant sampler = new Cern.Jet.Random.Sampling.RandomSamplingAssistant(n, Size, randomGenerator);
                 for (int i = n; --i >= 0;)
                 {
                     if (sampler.SampleNextElement()) buffer.Add(this.Elements[i]);
@@ -547,7 +547,7 @@ namespace Cern.Hep.Aida.Bin
             else
             { // with
                 Cern.Jet.Random.Uniform uniform = new Cern.Jet.Random.Uniform(randomGenerator);
-                int s = Size();
+                int s = Size;
                 for (int i = n; --i >= 0;)
                 {
                     buffer.Add(this.Elements[uniform.NextIntFromTo(0, s - 1)]);
@@ -685,8 +685,8 @@ namespace Cern.Hep.Aida.Bin
 
             // since "resamples" can be quite large, we care about performance and memory
             int MaxCapacity = 1000;
-            int s1 = Size();
-            int s2 = other.Size();
+            int s1 = Size;
+            int s2 = other.Size;
 
             // prepare auxiliary bins and buffers
             DynamicBin1D sample1 = new DynamicBin1D();
@@ -739,10 +739,9 @@ namespace Cern.Hep.Aida.Bin
         /// 
         /// </summary>
         /// <returns>  the number of elements contained in the receiver.</returns>
-        [MethodImpl(MethodImplOptions.Synchronized)]
-        public new int Size()
+        public override int Size
         {
-            return Elements.Count;
+            get { return Elements.Count; }
             // Never ever use "this.Size" as it would be intuitive!
             // This class abuses "this.Size"d "this.Size" DOES NOT REFLECT the number of elements contained in the receiver!
             // Instead, "this.Size" reflects the number of elements incremental stats computation has already processed.
@@ -769,7 +768,7 @@ namespace Cern.Hep.Aida.Bin
                        and would therefore later need to rebuild incremental stats from scratch.
                     */
                     UpdateIncrementalStats();
-                    InArgumentCheckerAll();
+                    InvalidateAll();
 
                     this.Elements.Sort();
                     this.isIncrementalStatValid = true;
@@ -837,14 +836,14 @@ namespace Cern.Hep.Aida.Bin
         {
             Descriptive.Standardize(this.Elements, mean, standardDeviation);
             ClearAllMeasures();
-            InArgumentCheckerAll();
+            InvalidateAll();
             //this.Size = 0;
         }
 
         /// <summary>
         /// Returns the sum of all elements, which is <i>Sum( x[i] )</i>.
         /// </summary>
-        public new double Sum
+        public override double Sum
         {
             get
             {
@@ -856,7 +855,7 @@ namespace Cern.Hep.Aida.Bin
         /// <summary>
         /// Returns the sum of inversions, which is <i>Sum( 1 / x[i] )</i>.
         /// </summary>
-        public new double SumOfInversions
+        public override double SumOfInversions
         {
             get
             {
@@ -868,7 +867,7 @@ namespace Cern.Hep.Aida.Bin
         /// <summary>
         /// Returns the sum of logarithms, which is <i>Sum( Log(x[i]) )</i>.
         /// </summary>
-        public new double SumOfLogarithms
+        public override double SumOfLogarithms
         {
             get
             {
@@ -885,7 +884,7 @@ namespace Cern.Hep.Aida.Bin
         /// <param name="k">the order of the powers.</param>
         /// <returns>the sum of powers.</returns>
         [MethodImpl(MethodImplOptions.Synchronized)]
-        public new double GetSumOfPowers(int k)
+        public override double GetSumOfPowers(int k)
         {
             // no chaching for this measure
             if (k >= -1 && k <= 2) return base.GetSumOfPowers(k);
@@ -896,7 +895,7 @@ namespace Cern.Hep.Aida.Bin
         /// <summary>
         /// Returns the sum of squares, which is <i>Sum( x[i] * x[i] )</i>.
         /// </summary>
-        public new double SumOfSquares
+        public override double SumOfSquares
         {
             get
             {
@@ -988,7 +987,7 @@ namespace Cern.Hep.Aida.Bin
             arguments[2] = base.Sum;
             arguments[3] = base.SumOfSquares;
 
-            Descriptive.IncrementalUpdate(this.Elements, this.Size(), this.Elements.Count - 1, ref arguments);
+            Descriptive.IncrementalUpdate(this.Elements, this.Size, this.Elements.Count - 1, ref arguments);
 
             // store the new parameters back
             base.Min = arguments[0];
@@ -1006,7 +1005,7 @@ namespace Cern.Hep.Aida.Bin
         /// </summary>
         protected void UpdateSumOfInversions()
         {
-            base.SumOfInversions = Descriptive.SumOfInversions(this.Elements, 0, Size() - 1);
+            base.SumOfInversions = Descriptive.SumOfInversions(this.Elements, 0, Size - 1);
             this.isSumOfInversionsValid = true;
         }
         /// <summary>
@@ -1014,7 +1013,7 @@ namespace Cern.Hep.Aida.Bin
         /// </summary>
         protected void UpdateSumOfLogarithms()
         {
-            base.SumOfLogarithms = Descriptive.SumOfLogarithms(this.Elements, 0, Size() - 1);
+            base.SumOfLogarithms = Descriptive.SumOfLogarithms(this.Elements, 0, Size - 1);
             this.isSumOfLogarithmsValid = true;
         }
         /// <summary>

@@ -86,7 +86,7 @@ namespace Cern.Hep.Aida.Ref
 
         #endregion
 
-        public int[] MinMaxBins
+        public virtual int[] MinMaxBins
         {
             get
             {
@@ -127,7 +127,7 @@ namespace Cern.Hep.Aida.Ref
             }
         }
 
-        public IHistogram2D ProjectionXY
+        public virtual IHistogram2D ProjectionXY
         {
             get
             {
@@ -136,7 +136,7 @@ namespace Cern.Hep.Aida.Ref
             }
         }
 
-        public IHistogram2D ProjectionXZ
+        public virtual IHistogram2D ProjectionXZ
         {
             get
             {
@@ -145,7 +145,7 @@ namespace Cern.Hep.Aida.Ref
             }
         }
 
-        public IHistogram2D ProjectionYZ
+        public virtual IHistogram2D ProjectionYZ
         {
             get
             {
@@ -154,7 +154,7 @@ namespace Cern.Hep.Aida.Ref
             }
         }
 
-        public IAxis XAxis
+        public virtual IAxis XAxis
         {
             get
             {
@@ -166,7 +166,7 @@ namespace Cern.Hep.Aida.Ref
             }
         }
 
-        public IAxis YAxis
+        public virtual IAxis YAxis
         {
             get
             {
@@ -178,7 +178,7 @@ namespace Cern.Hep.Aida.Ref
             }
         }
 
-        public IAxis ZAxis
+        public virtual IAxis ZAxis
         {
             get
             {
@@ -271,7 +271,7 @@ namespace Cern.Hep.Aida.Ref
             }
         }
 
-        public void Fill(double x, double y, double z)
+        public virtual void Fill(double x, double y, double z)
         {
             Fill(x, y, z, 1);
         }
@@ -282,7 +282,7 @@ namespace Cern.Hep.Aida.Ref
         /// </summary>
         /// <param name="index"></param>
         /// <returns></returns>
-        protected int MapX(int index)
+        protected virtual int MapX(int index)
         {
             int bins = xAxis.Bins + 2;
             if (index >= bins) throw new ArgumentException("bin=" + index);
@@ -298,7 +298,7 @@ namespace Cern.Hep.Aida.Ref
         /// </summary>
         /// <param name="index"></param>
         /// <returns></returns>
-        protected int MapY(int index)
+        protected virtual int MapY(int index)
         {
             int bins = yAxis.Bins + 2;
             if (index >= bins) throw new ArgumentException("bin=" + index);
@@ -314,7 +314,7 @@ namespace Cern.Hep.Aida.Ref
         /// </summary>
         /// <param name="index"></param>
         /// <returns></returns>
-        protected int MapZ(int index)
+        protected virtual int MapZ(int index)
         {
             int bins = zAxis.Bins + 2;
             if (index >= bins) throw new ArgumentException("bin=" + index);
@@ -324,12 +324,12 @@ namespace Cern.Hep.Aida.Ref
             throw new ArgumentException("bin=" + index);
         }
 
-        public IHistogram2D SliceXY(int indexZ)
+        public virtual IHistogram2D SliceXY(int indexZ)
         {
             return SliceXY(indexZ, indexZ);
         }
 
-        public IHistogram2D SliceXY(int indexZ1, int indexZ2)
+        public virtual IHistogram2D SliceXY(int indexZ1, int indexZ2)
         {
             int start = MapZ(indexZ1);
             int stop = MapZ(indexZ2);
@@ -337,12 +337,12 @@ namespace Cern.Hep.Aida.Ref
             return InternalSliceXY(newTitle, start, stop);
         }
 
-        public IHistogram2D SliceXZ(int indexY)
+        public virtual IHistogram2D SliceXZ(int indexY)
         {
             return SliceXZ(indexY, indexY);
         }
 
-        public IHistogram2D SliceXZ(int indexY1, int indexY2)
+        public virtual IHistogram2D SliceXZ(int indexY1, int indexY2)
         {
             int start = MapY(indexY1);
             int stop = MapY(indexY2);
@@ -350,12 +350,12 @@ namespace Cern.Hep.Aida.Ref
             return InternalSliceXY(newTitle, start, stop);
         }
 
-        public IHistogram2D SliceYZ(int indexX)
+        public virtual IHistogram2D SliceYZ(int indexX)
         {
             return SliceYZ(indexX, indexX);
         }
 
-        public IHistogram2D SliceYZ(int indexX1, int indexX2)
+        public virtual IHistogram2D SliceYZ(int indexX1, int indexX2)
         {
             int start = MapX(indexX1);
             int stop = MapX(indexX2);

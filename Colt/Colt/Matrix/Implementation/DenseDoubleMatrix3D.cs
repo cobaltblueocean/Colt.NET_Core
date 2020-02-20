@@ -231,7 +231,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <returns><i>this</i> (for convenience only).</returns>
         /// <exception cref="ArgumentException">if <i>values.Length != Slices() || for any 0 &lt;= slice &lt; Slices(): values[slice].Length != Rows()</i>.</exception>
         /// <exception cref="ArgumentException">if <i>for any 0 &lt;= column &lt; Columns(): values[slice][row].Length != Columns()</i>.</exception>
-        public new DoubleMatrix3D Assign(double[][][] values)
+        public override DoubleMatrix3D Assign(double[][][] values)
         {
             if (!this.IsView)
             {
@@ -265,7 +265,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <param name="source">the source matrix to copy from (may be identical to the receiver).</param>
         /// <returns><i>this</i> (for convenience only).</returns>
         /// <exception cref="ArgumentException">if <i>Slices() != source.Slices() || Rows() != source.Rows() || Columns() != source.Columns()</i></exception>
-        public new DoubleMatrix3D Assign(DoubleMatrix3D source)
+        public override DoubleMatrix3D Assign(DoubleMatrix3D source)
         {
             // overriden for performance only
             if (!(source is DenseDoubleMatrix3D))
@@ -351,7 +351,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <returns></returns>
         /// <exception cref="NullReferenceException">if <i>function==null</i>.</exception>
         /// <exception cref="ArgumentException">if <i>Rows() != B.Rows() || Columns() != B.Columns() || Slices() != B.Slices() </i>.</exception>
-        public new void ZAssign27Neighbors(DoubleMatrix3D B, Cern.Colt.Function.Double27Function function)
+        public override void ZAssign27Neighbors(DoubleMatrix3D B, Cern.Colt.Function.Double27Function function)
         {
             // overridden for performance only
             if (!(B is DenseDoubleMatrix3D))

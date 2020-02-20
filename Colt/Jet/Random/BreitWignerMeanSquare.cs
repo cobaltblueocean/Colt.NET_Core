@@ -55,7 +55,7 @@ namespace Cern.Jet.Random
         /// After this call has returned, the copy and the receiver have equal but separate state.
         /// </summary>
         /// <returns>a copy of the receiver.</returns>
-        public new Object Clone()
+        public override Object Clone()
         {
             BreitWignerMeanSquare copy = (BreitWignerMeanSquare)base.Clone();
             if (this.uniform != null) copy.uniform = new Uniform(copy.randomGenerator);
@@ -69,7 +69,7 @@ namespace Cern.Jet.Random
         /// <param name="gamma"></param>
         /// <param name="cut">cut==Double.NegativeInfinity indicates "don't cut".</param>
         /// <returns></returns>
-        public new double NextDouble(double mean, double gamma, double cut)
+        public override double NextDouble(double mean, double gamma, double cut)
         {
             if (gamma == 0.0) return mean;
             if (cut == Double.NegativeInfinity)

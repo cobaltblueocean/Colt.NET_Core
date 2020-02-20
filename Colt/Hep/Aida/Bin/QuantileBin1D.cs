@@ -618,7 +618,7 @@ namespace Cern.Hep.Aida.Bin
 
         #region Local Public Methods
         [MethodImpl(MethodImplOptions.Synchronized)]
-        public new void AddAllOfFromTo(List<Double> list, int from, int to)
+        public override void AddAllOfFromTo(List<Double> list, int from, int to)
         {
             base.AddAllOfFromTo(list, from, to);
             if (this.finder != null) this.finder.AddAllOfFromTo(list, from, to);
@@ -632,14 +632,14 @@ namespace Cern.Hep.Aida.Bin
         }
 
         [MethodImpl(MethodImplOptions.Synchronized)]
-        public new Object Clone()
+        public override Object Clone()
         {
             QuantileBin1D clone = (QuantileBin1D)base.Clone();
             if (this.finder != null) clone.finder = (IDoubleQuantileFinder)clone.finder.Clone();
             return clone;
         }
 
-        public new String CompareWith(AbstractBin1D other)
+        public override String CompareWith(AbstractBin1D other)
         {
             StringBuilder buf = new StringBuilder(base.CompareWith(other));
             if (other is QuantileBin1D) {
@@ -651,25 +651,25 @@ namespace Cern.Hep.Aida.Bin
             return buf.ToString();
         }
 
-        public double Median()
+        public virtual double Median()
         {
             return Quantile(0.5);
         }
 
         [MethodImpl(MethodImplOptions.Synchronized)]
-        public double Quantile(double phi)
+        public virtual double Quantile(double phi)
         {
             return Quantiles(new List<Double>(new double[] { phi }))[0];
         }
 
         [MethodImpl(MethodImplOptions.Synchronized)]
-        public double QuantileInverse(double element)
+        public virtual double QuantileInverse(double element)
         {
             return finder.Phi(element);
         }
 
         [MethodImpl(MethodImplOptions.Synchronized)]
-        public List<Double> Quantiles(List<Double> phis)
+        public virtual List<Double> Quantiles(List<Double> phis)
         {
             return finder.QuantileElements(phis);
         }

@@ -52,7 +52,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// Returns the content of this matrix if it is a wrapper; or <i>this</i> otherwise.
         /// Override this method in wrappers.
         /// </summary>
-        public DoubleMatrix1D Content
+        public virtual DoubleMatrix1D Content
         {
             get { return _content; }
             protected set { _content = value; }
@@ -102,7 +102,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// The returned view is backed by this matrix, so changes in the returned view are reflected in this matrix, and vice-versa.
         /// </summary>
         /// <returns>a new flip view.</returns>
-        public new DoubleMatrix1D ViewFlip()
+        public override DoubleMatrix1D ViewFlip()
         {
             DoubleMatrix1D view = new WrapperDoubleMatrix1DFlip(this);
             return view;
@@ -127,7 +127,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <param name="width">The width of the range.</param>
         /// <returns>the new view.</returns>
         /// <exception cref="IndexOutOfRangeException">if <i>index &lt; 0 || width &lt; 0 || index + width > Size()</i>.</exception>
-        public new DoubleMatrix1D ViewPart(int index, int width)
+        public override DoubleMatrix1D ViewPart(int index, int width)
         {
             CheckRange(index, width);
             DoubleMatrix1D view = new WrapperDoubleMatrix1DPart(this, index);
@@ -153,7 +153,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// -->
         /// view     = (0,8,7,8)
         /// </example>
-        public new DoubleMatrix1D ViewSelection(int[] indexes)
+        public override DoubleMatrix1D ViewSelection(int[] indexes)
         {
             // check for "all"
             if (indexes == null)
@@ -189,7 +189,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <param name="_stride">the step factor.</param>
         /// <returns>the new view.</returns>
         /// <exception cref="IndexOutOfRangeException">if <i>stride &lt;= 0</i>.</exception>
-        public new DoubleMatrix1D ViewStrides(int _stride)
+        public override DoubleMatrix1D ViewStrides(int _stride)
         {
             if (Stride <= 0) throw new IndexOutOfRangeException("illegal stride: " + Stride);
             DoubleMatrix1D view = new WrapperDoubleMatrix1DStrides(this, _stride);

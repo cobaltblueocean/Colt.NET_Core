@@ -101,7 +101,7 @@ namespace Cern.Jet.Random
         /// After this call has returned, the copy and the receiver have equal but separate state.
         /// </summary>
         /// <returns>a copy of the receiver.</returns>
-        public new Object Clone()
+        public override Object Clone()
         {
             Poisson copy = (Poisson)base.Clone();
             if (this.pp != null) copy.pp = (double[])this.pp.Clone();

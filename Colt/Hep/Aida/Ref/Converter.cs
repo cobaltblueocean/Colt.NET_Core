@@ -199,7 +199,7 @@ namespace Cern.Hep.Aida.Ref
         {
             String columnAxisName = "X";
             String rowAxisName = "Y";
-            Hep.Aida.Bin.BinFunction1D[] aggr = { Hep.Aida.Bin.BinFunctions1D.Sum() };
+            Hep.Aida.Bin.BinFunction1D[] aggr = { Hep.Aida.Bin.BinFunctions1D.Sum };
             String format = "G"; // "%G"
             //String format = "%1.2G";
 
@@ -256,7 +256,7 @@ namespace Cern.Hep.Aida.Ref
             String columnAxisName = "X";
             String rowAxisName = "Y";
             String sliceAxisName = "Z";
-            Hep.Aida.Bin.BinFunction1D[] aggr = { Hep.Aida.Bin.BinFunctions1D.Sum() };
+            Hep.Aida.Bin.BinFunction1D[] aggr = { Hep.Aida.Bin.BinFunctions1D.Sum };
             String format = "G"; //"%G"
             //String format = "%1.2G";
 

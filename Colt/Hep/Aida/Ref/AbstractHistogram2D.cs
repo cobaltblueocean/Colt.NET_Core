@@ -73,7 +73,7 @@ namespace Cern.Hep.Aida.Ref
         public abstract override void Reset();
         #endregion
 
-        public int[] MinMaxBins
+        public virtual int[] MinMaxBins
         {
             get
             {
@@ -107,7 +107,7 @@ namespace Cern.Hep.Aida.Ref
             }
         }
 
-        public IHistogram1D ProjectionX
+        public virtual IHistogram1D ProjectionX
         {
             get
             {
@@ -117,7 +117,7 @@ namespace Cern.Hep.Aida.Ref
             }
         }
 
-        public IHistogram1D ProjectionY
+        public virtual IHistogram1D ProjectionY
         {
             get
             {
@@ -127,7 +127,7 @@ namespace Cern.Hep.Aida.Ref
             }
         }
 
-        public IAxis XAxis
+        public virtual IAxis XAxis
         {
             get
             {
@@ -139,7 +139,7 @@ namespace Cern.Hep.Aida.Ref
             }
         }
 
-        public IAxis YAxis
+        public virtual IAxis YAxis
         {
             get
             {
@@ -231,17 +231,17 @@ namespace Cern.Hep.Aida.Ref
             }
         }
 
-        public int BinEntriesX(int indexX)
+        public virtual int BinEntriesX(int indexX)
         {
             return ProjectionX.BinEntries(indexX);
         }
 
-        public int BinEntriesY(int indexY)
+        public virtual int BinEntriesY(int indexY)
         {
             return ProjectionY.BinEntries(indexY);
         }
 
-        public double BinHeightX(int indexX)
+        public virtual double BinHeightX(int indexX)
         {
             return ProjectionX.BinHeight(indexX);
         }
@@ -251,7 +251,7 @@ namespace Cern.Hep.Aida.Ref
             return ProjectionY.BinHeight(indexY);
         }
 
-        public void Fill(double x, double y)
+        public virtual void Fill(double x, double y)
         {
             Fill(x, y, 1);
         }
@@ -262,7 +262,7 @@ namespace Cern.Hep.Aida.Ref
         /// </summary>
         /// <param name="index"></param>
         /// <returns></returns>
-        public int MapX(int index)
+        public virtual int MapX(int index)
         {
             int bins = xAxis.Bins + 2;
             if (index >= bins) throw new ArgumentException("bin=" + index);
@@ -278,7 +278,7 @@ namespace Cern.Hep.Aida.Ref
         /// </summary>
         /// <param name="index"></param>
         /// <returns></returns>
-        public int MapY(int index)
+        public virtual int MapY(int index)
         {
             int bins = yAxis.Bins + 2;
             if (index >= bins) throw new ArgumentException("bin=" + index);
@@ -288,7 +288,7 @@ namespace Cern.Hep.Aida.Ref
             throw new ArgumentException("bin=" + index);
         }
 
-        public IHistogram1D SliceX(int indexY)
+        public virtual IHistogram1D SliceX(int indexY)
         {
             //int start = yAxis.map(indexY);
             int start = MapY(indexY);
@@ -296,7 +296,7 @@ namespace Cern.Hep.Aida.Ref
             return InternalSliceX(newTitle, start, start);
         }
 
-        public IHistogram1D SliceX(int indexY1, int indexY2)
+        public virtual IHistogram1D SliceX(int indexY1, int indexY2)
         {
             //int start = yAxis.map(indexY1);
             //int stop = yAxis.map(indexY2);
@@ -306,7 +306,7 @@ namespace Cern.Hep.Aida.Ref
             return InternalSliceX(newTitle, start, stop);
         }
 
-        public IHistogram1D SliceY(int indexX)
+        public virtual IHistogram1D SliceY(int indexX)
         {
             //int start = xAxis.map(indexX);
             int start = MapX(indexX);
@@ -314,7 +314,7 @@ namespace Cern.Hep.Aida.Ref
             return InternalSliceY(newTitle, start, start);
         }
 
-        public IHistogram1D SliceY(int indexX1, int indexX2)
+        public virtual IHistogram1D SliceY(int indexX1, int indexX2)
         {
             //int start = xAxis.map(indexX1);
             //int stop = xAxis.map(indexX2);

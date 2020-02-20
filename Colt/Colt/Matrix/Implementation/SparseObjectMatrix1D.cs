@@ -149,7 +149,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <summary>
         /// Returns the number of cells having non-zero values.
         /// </summary>
-        public new int Cardinality()
+        public override int Cardinality()
         {
             if (!this.IsView) return this.Elements.Count;
             else return base.Cardinality();

@@ -112,7 +112,7 @@ namespace Cern.Jet.Stat.Quantile
         #endregion
 
         #region Local Public Methods
-        public new void Clear()
+        public override void Clear()
         {
             base.Clear();
             this.beta = 1.0;

@@ -36,7 +36,7 @@ namespace System.IO
 
         #endregion
 
-        public new int Read()
+        public override int Read()
         {
             _bufferReader = (PushbackReader)this.MemberwiseClone();
             return this.Read();

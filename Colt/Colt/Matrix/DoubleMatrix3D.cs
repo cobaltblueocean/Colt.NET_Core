@@ -171,7 +171,7 @@ namespace Cern.Colt.Matrix
         /// <param name="f">a function transforming the current cell value.</param>
         /// <returns>the aggregated measure.</returns>
         /// <see cref="Cern.Jet.Math.Functions"/>
-        public double Aggregate(Cern.Colt.Function.DoubleDoubleFunction aggr, Cern.Colt.Function.DoubleFunction f)
+        public virtual double Aggregate(Cern.Colt.Function.DoubleDoubleFunction aggr, Cern.Colt.Function.DoubleFunction f)
         {
             if (Size == 0) return Double.NaN;
             double a = f(this[Slices - 1, Rows - 1, Columns - 1]);
@@ -225,7 +225,7 @@ namespace Cern.Colt.Matrix
         /// <returns>the aggregated measure.</returns>
         /// <see cref="Cern.Jet.Math.Functions"/>
         /// <exception cref="ArgumentException">if <i>Slices != other.Slices || Rows != other.Rows || Columns != other.Columns</i></exception>
-        public double Aggregate(DoubleMatrix3D other, Cern.Colt.Function.DoubleDoubleFunction aggr, Cern.Colt.Function.DoubleDoubleFunction f)
+        public virtual double Aggregate(DoubleMatrix3D other, Cern.Colt.Function.DoubleDoubleFunction aggr, Cern.Colt.Function.DoubleDoubleFunction f)
         {
             CheckShape(other);
             if (Size == 0) return Double.NaN;
@@ -256,7 +256,7 @@ namespace Cern.Colt.Matrix
         /// <returns><i>this</i> (for convenience only).</returns>
         /// <exception cref="ArgumentException">if <i>values.Length != Slices || for any 0 &lt;= slice &lt; Slices: values[slice].Length != Rows</exception>
         /// <exception cref="ArgumentException">if <i>for any 0 &lt;= column &lt; Columns: values[slice][row].Length != Columns</i>.</exception>
-        public DoubleMatrix3D Assign(double[][][] values)
+        public virtual DoubleMatrix3D Assign(double[][][] values)
         {
             if (values.Length != Slices) throw new ArgumentException("Must have same number of Slices: Slices=" + values.Length + "Slices=" + Slices);
             for (int slice = Slices; --slice >= 0;)
@@ -281,7 +281,7 @@ namespace Cern.Colt.Matrix
         /// </summary>
         /// <param name="value">the value to be filled into the cells.</param>
         /// <returns><i>this</i> (for convenience only).</returns>
-        public DoubleMatrix3D Assign(double value)
+        public virtual DoubleMatrix3D Assign(double value)
         {
             for (int slice = Slices; --slice >= 0;)
             {
@@ -317,7 +317,7 @@ namespace Cern.Colt.Matrix
         /// <param name="function">a function object taking as argument the current cell's value.</param>
         /// <returns><i>this</i> (for convenience only).</returns>
         /// <see cref="Cern.Jet.Math.Functions"/>
-        public DoubleMatrix3D Assign(Cern.Colt.Function.DoubleFunction function)
+        public virtual DoubleMatrix3D Assign(Cern.Colt.Function.DoubleFunction function)
         {
             for (int slice = Slices; --slice >= 0;)
             {
@@ -340,7 +340,7 @@ namespace Cern.Colt.Matrix
         /// <param name="other">the source matrix to copy from (may be identical to the receiver).</param>
         /// <returns><i>this</i> (for convenience only).</returns>
         /// <exception cref="ArgumentException">if <i>Slices != other.Slices || Rows != other.Rows || Columns != other.Columns</i></exception>
-        public DoubleMatrix3D Assign(DoubleMatrix3D other)
+        public virtual DoubleMatrix3D Assign(DoubleMatrix3D other)
         {
             if (other == this) return this;
             CheckShape(other);
@@ -386,7 +386,7 @@ namespace Cern.Colt.Matrix
         /// <returns><i>this</i> (for convenience only).</returns>
         /// <exception cref="ArgumentException">if <i>Slices != other.Slices || Rows != other.Rows || Columns != other.Columns</i></exception>
         /// <see cref="Cern.Jet.Math.Functions"/>
-        public DoubleMatrix3D Assign(DoubleMatrix3D y, Cern.Colt.Function.DoubleDoubleFunction function)
+        public virtual DoubleMatrix3D Assign(DoubleMatrix3D y, Cern.Colt.Function.DoubleDoubleFunction function)
         {
             CheckShape(y);
             for (int slice = Slices; --slice >= 0;)
@@ -405,7 +405,7 @@ namespace Cern.Colt.Matrix
         /// <summary>
         /// Returns the number of cells having non-zero values; ignores tolerance.
         /// </summary>
-        public int Cardinality()
+        public virtual int Cardinality()
         {
             int cardinality = 0;
             for (int slice = Slices; --slice >= 0;)
@@ -529,7 +529,7 @@ namespace Cern.Colt.Matrix
         /// The values are copiedd So subsequent changes in <i>values</i> are not reflected in the matrix, and vice-versa.
         /// </summary>
         /// <returns>an array filled with the values of the cells.</returns>
-        public double[][][] ToArray()
+        public virtual double[][][] ToArray()
         {
             double[][][] values = new double[Slices][][];
             values = values.Initialize(Slices, Rows, Columns);
@@ -561,7 +561,7 @@ namespace Cern.Colt.Matrix
         /// <exception cref="IndexOutOfRangeException"></exception>
         /// <see cref="ViewSlice(int)"/>
         /// <see cref="ViewRow(int)"/>
-        public DoubleMatrix2D ViewColumn(int column)
+        public virtual DoubleMatrix2D ViewColumn(int column)
         {
             CheckColumn(column);
             int sliceRows = this.Slices;
@@ -584,7 +584,7 @@ namespace Cern.Colt.Matrix
         /// <returns>a new flip view.</returns>
         /// <see cref="ViewSliceFlip()"/>
         /// <see cref="ViewRowFlip()"/>
-        public DoubleMatrix3D ViewColumnFlip()
+        public virtual DoubleMatrix3D ViewColumnFlip()
         {
             return (DoubleMatrix3D)(View().VColumnFlip());
         }
@@ -599,7 +599,7 @@ namespace Cern.Colt.Matrix
         /// <param name="axis2">the axis that shall become axis 2 (legal values 0.2).</param>
         /// <returns>a new dice view.</returns>
         /// <exception cref="ArgumentException">if some of the parameters are equal or not in range 0.2.</exception>
-        public DoubleMatrix3D ViewDice(int axis0, int axis1, int axis2)
+        public virtual DoubleMatrix3D ViewDice(int axis0, int axis1, int axis2)
         {
             return (DoubleMatrix3D)(View().VDice(axis0, axis1, axis2));
         }
@@ -617,7 +617,7 @@ namespace Cern.Colt.Matrix
         /// <param name="width">The width of the box.</param>
         /// <returns>the new view.</returns>
         /// <exception cref="IndexOutOfRangeException">if <i>slice %lt; 0 || depth %lt; 0 || slice+depth>Slices || row %lt; 0 || height %lt; 0 || row+height>Rows || column %lt; 0 || width %lt; 0 || column+width>Columns</i></exception>
-        public DoubleMatrix3D ViewPart(int slice, int row, int column, int depth, int height, int width)
+        public virtual DoubleMatrix3D ViewPart(int slice, int row, int column, int depth, int height, int width)
         {
             return (DoubleMatrix3D)(View().VPart(slice, row, column, depth, height, width));
         }
@@ -635,7 +635,7 @@ namespace Cern.Colt.Matrix
         /// <exception cref="IndexOutOfRangeException">if <i>row %lt; 0 || row >= row()</i>.</exception>
         /// <see cref="ViewSlice(int)"/>
         /// <see cref="ViewColumn(int)"/>
-        public DoubleMatrix2D ViewRow(int row)
+        public virtual DoubleMatrix2D ViewRow(int row)
         {
             CheckRow(row);
             int sliceRows = this.Slices;
@@ -659,7 +659,7 @@ namespace Cern.Colt.Matrix
         /// <returns>a new flip view.</returns>
         /// <see cref="ViewSliceFlip(int)"/>
         /// <see cref="ViewColumnFlip(int)"/>
-        public DoubleMatrix3D ViewRowFlip()
+        public virtual DoubleMatrix3D ViewRowFlip()
         {
             return (DoubleMatrix3D)(View().VRowFlip());
         }
@@ -682,7 +682,7 @@ namespace Cern.Colt.Matrix
         /// <exception cref="IndexOutOfRangeException">if <i> !(0 %lt;= sliceIndexes[i] %lt; Slices) </i> for any<i> i = 0.sliceIndexes.Length() - 1 </i>.</exception>
         /// <exception cref="IndexOutOfRangeException">if <i> !(0 %lt;= rowIndexes[i] %lt; Rows) </i> for any<i> i = 0.rowIndexes.Length() - 1 </i>.</exception>
         /// <exception cref="IndexOutOfRangeException">if <i> !(0 %lt;= columnIndexes[i] %lt; Columns) </i> for any<i> i = 0.columnIndexes.Length() - 1 </i>.</exception>
-        public DoubleMatrix3D ViewSelection(int[] sliceIndexes, int[] rowIndexes, int[] columnIndexes)
+        public virtual DoubleMatrix3D ViewSelection(int[] sliceIndexes, int[] rowIndexes, int[] columnIndexes)
         {
             // check for "all"
             if (sliceIndexes == null)
@@ -746,7 +746,7 @@ namespace Cern.Colt.Matrix
         /// </summary>
         /// <param name="condition">The condition to be matched.</param>
         /// <returns>the new view.</returns>
-        public DoubleMatrix3D ViewSelection(DoubleMatrix2DProcedure condition)
+        public virtual DoubleMatrix3D ViewSelection(DoubleMatrix2DProcedure condition)
         {
             List<int> matches = new List<int>();
             for (int i = 0; i < Slices; i++)
@@ -772,7 +772,7 @@ namespace Cern.Colt.Matrix
         /// <exception cref="IndexOutOfRangeException">if <i>slice %lt; 0 || slice >= Slices</i>.</exception>
         /// <see cref="ViewRow(int)"/>
         /// <see cref="ViewColumn(int)"/>
-        public DoubleMatrix2D ViewSlice(int slice)
+        public virtual DoubleMatrix2D ViewSlice(int slice)
         {
             CheckSlice(slice);
             int sliceRows = this.Rows;
@@ -795,7 +795,7 @@ namespace Cern.Colt.Matrix
         /// <returns>a new flip view.</returns>
         /// <see cref="ViewRowFlip()"/>
         /// <see cref="ViewColumnFlip()"/>
-        public DoubleMatrix3D ViewSliceFlip()
+        public virtual DoubleMatrix3D ViewSliceFlip()
         {
             return (DoubleMatrix3D)(View().VSliceFlip());
         }
@@ -808,7 +808,7 @@ namespace Cern.Colt.Matrix
         /// </summary>
         /// <returns>a new sorted vector(matrix) view.</returns>
         /// <exception cref="IndexOutOfRangeException">if <i> row %lt; 0 || row >= Rows || column %lt; 0 || column >= Columns </i>.</exception>
-        public DoubleMatrix3D ViewSorted(int row, int column)
+        public virtual DoubleMatrix3D ViewSorted(int row, int column)
         {
             return Cern.Colt.Matrix.DoubleAlgorithms.Sorting.MergeSort.Sort(this, row, column);
         }
@@ -824,7 +824,7 @@ namespace Cern.Colt.Matrix
         /// <param name="Columnstride">the column step factor.</param>
         /// <returns>a new view.</returns>
         /// <exception cref="IndexOutOfRangeException">if <i> Slicestride %lt;= 0 || Rowstride %lt;= 0 || Columnstride %lt;= 0 </i>.</exception>
-        public DoubleMatrix3D ViewStrides(int Slicestride, int Rowstride, int Columnstride)
+        public virtual DoubleMatrix3D ViewStrides(int Slicestride, int Rowstride, int Columnstride)
         {
             return (DoubleMatrix3D)(View().ViewStrides(Slicestride, Rowstride, Columnstride));
         }
@@ -887,7 +887,7 @@ namespace Cern.Colt.Matrix
         /// <returns></returns>
         /// <exception cref="NullReferenceException">if <i>function==null</i>.</exception>
         /// <exception cref="ArgumentException">if <i>Rows != B.Rows || Columns != B.Columns || Slices != B.Slices </i>.</exception>
-        public void ZAssign27Neighbors(DoubleMatrix3D B, Cern.Colt.Function.Double27Function function)
+        public virtual void ZAssign27Neighbors(DoubleMatrix3D B, Cern.Colt.Function.Double27Function function)
         {
             if (function == null) throw new NullReferenceException("function must not be null.");
             CheckShape(B);
@@ -971,7 +971,7 @@ namespace Cern.Colt.Matrix
         /// Returns the sum of all cells; <i>Sum( x[i,j,k] )</i>.
         /// </summary>
         /// <returns>the sum.</returns>
-        public double ZSum()
+        public virtual double ZSum()
         {
             if (Size == 0) return 0;
             return Aggregate(Cern.Jet.Math.Functions.DoubleDoubleFunctions.Plus, Cern.Jet.Math.Functions.DoubleFunctions.Identity);

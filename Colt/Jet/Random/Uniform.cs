@@ -75,7 +75,7 @@ namespace Cern.Jet.Random
             return min + (max - min) * randomGenerator.Raw();
         }
 
-        public new int NextInt()
+        public override int NextInt()
         {
             return NextIntFromTo((int)System.Math.Round(min), (int)System.Math.Round(max));
         }

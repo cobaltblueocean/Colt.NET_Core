@@ -66,7 +66,7 @@ namespace Cern.Hep.Aida.Ref
             }
         }
 
-        public new double SumAllBinHeights
+        public override double SumAllBinHeights
         {
             get
             {
@@ -201,7 +201,7 @@ namespace Cern.Hep.Aida.Ref
             return heights[MapX(indexX)][MapY(indexY)];
         }
 
-        public new void Fill(double x, double y)
+        public override void Fill(double x, double y)
         {
             //int xBin = xAxis.getBin(x);
             //int yBin = xAxis.getBin(y);

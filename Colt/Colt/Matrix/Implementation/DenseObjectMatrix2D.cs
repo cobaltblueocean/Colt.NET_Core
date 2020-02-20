@@ -143,7 +143,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <param name="values">the values to be filled into the cells.</param>
         /// <returns><i>this</i> (for convenience only).</returns>
         /// <exception cref="ArgumentException">if <i>values.Length != rows() || for any 0 &lt;= row &lt; rows(): values[row].Length != columns()</i>.</exception>
-        public new ObjectMatrix2D Assign(Object[][] values)
+        public override ObjectMatrix2D Assign(Object[][] values)
         {
             if (!this.IsView)
             {
@@ -186,7 +186,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <param name=""><i>this</i> (for convenience only).</param>
         /// <returns></returns>
         /// <see cref="Cern.Jet.Math.Functions"></see>
-        public new ObjectMatrix2D Assign(Cern.Colt.Function.ObjectFunction<Object> function)
+        public override ObjectMatrix2D Assign(Cern.Colt.Function.ObjectFunction<Object> function)
         {
             Object[] elems = this.Elements;
             if (elems == null) throw new NullReferenceException();
@@ -215,7 +215,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <param name="source">the source matrix to copy from (may be identical to the receiver).</param>
         /// <returns><i>this</i> (for convenience only).</returns>
         /// <exception cref="ArgumentException">if <i>columns() != source.columns() || rows() != source.rows()</i></exception>
-        public new ObjectMatrix2D Assign(ObjectMatrix2D source)
+        public override ObjectMatrix2D Assign(ObjectMatrix2D source)
         {
             // overriden for performance only
             if (!(source is DenseObjectMatrix2D))
@@ -293,7 +293,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <returns><i>this</i> (for convenience only).</returns>
         /// <exception cref="ArgumentException">if <i>columns() != other.columns() || rows() != other.rows()</i></exception>
         /// <see cref="Cern.Jet.Math.Functions"/>
-        public new ObjectMatrix2D Assign(ObjectMatrix2D y, Cern.Colt.Function.ObjectObjectFunction<Object> function)
+        public override ObjectMatrix2D Assign(ObjectMatrix2D y, Cern.Colt.Function.ObjectObjectFunction<Object> function)
         {
             // overriden for performance only
             if (!(y is DenseObjectMatrix2D))

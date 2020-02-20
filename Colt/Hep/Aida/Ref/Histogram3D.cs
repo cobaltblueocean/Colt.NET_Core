@@ -260,7 +260,7 @@ namespace Cern.Hep.Aida.Ref
             return heights[MapX(indexX)][MapY(indexY)][MapZ(indexZ)];
         }
 
-        public new void Fill(double x, double y, double z)
+        public override void Fill(double x, double y, double z)
         {
             int xBin = MapX(xAxis.CoordToIndex(x));
             int yBin = MapY(yAxis.CoordToIndex(y));

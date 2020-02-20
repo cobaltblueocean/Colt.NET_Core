@@ -27,89 +27,81 @@ namespace Cern.Hep.Aida.Bin
         /// Function that returns <tt>x.Max()</tt>.
         /// </summary>
         /// <returns></returns>
-        public static BinFunction1D Max()
+        public static BinFunction1D Max
         {
-            return x => x.Max;
+            get { return x => x.Max; }
         }
 
         /// <summary>
         /// Function that returns <i>x => x.Mean()</i>.
         /// </summary>
         /// <returns></returns>
-        public static BinFunction1D Mean()
+        public static BinFunction1D Mean
         {
-
-            return x => x.Mean();
+            get { return x => x.Mean(); }
         }
 
         /// <summary>
         /// Function that returns <i>x => x.Median()</i>.
         /// </summary>
         /// <returns></returns>
-        public static BinFunction1D Median()
+        public static BinFunction1D Median
         {
-
-            return x => x.Median();
+            get { return x => x.Median(); }
         }
 
         /// <summary>
         /// Function that returns <i>x => x.min()</i>.
         /// </summary>
         /// <returns></returns>
-        public static BinFunction1D Min()
+        public static BinFunction1D Min
         {
-
-            return x => x.Min;
+            get { return x => x.Min; }
         }
 
         /// <summary>
         /// Function that returns <i>x => x.rms()</i>.
         /// </summary>
         /// <returns></returns>
-        public static BinFunction1D Rms()
+        public static BinFunction1D Rms
         {
-
-            return x => x.Rms();
+            get { return x => x.Rms(); }
         }
 
         /// <summary>
         /// Function that returns <i>x => x.Count</i>.
         /// </summary>
         /// <returns></returns>
-        public static BinFunction1D Size()
+        public static BinFunction1D Size
         {
-
-            return x => x.Size();
+            get { return x => x.Size; }
         }
 
         /// <summary>
         /// Function that returns <i>x => x.standardDeviation()</i>.
         /// </summary>
         /// <returns></returns>
-        public static BinFunction1D StandardDeviation()
+        public static BinFunction1D StandardDeviation
         {
-
-            return x => x.StandardDeviation();
+            get { return x => x.StandardDeviation(); }
         }
 
         /// <summary>
         /// Function that returns <i>x => x.sum()</i>.
         /// </summary>
         /// <returns></returns>
-        public static BinFunction1D Sum()
+        public static BinFunction1D Sum
         {
-
-            return x => x.Sum;
+            get { return x => x.Sum; }
         }
 
         /// <summary>
         /// Function that returns <i>x => x.sumOfLogarithms()</i>.
         /// </summary>
         /// <returns></returns>
-        public static BinFunction1D SumOfLogarithms()
+        public static BinFunction1D SumOfLogarithms
         {
-
-            return x => x.SumOfLogarithms;
+            get { return x => x.SumOfLogarithms; }
         }
 
         /// <summary>
@@ -118,7 +110,6 @@ namespace Cern.Hep.Aida.Bin
         /// <returns></returns>
         public static BinFunction1D GeometricMean()
         {
-
             return x => x.GeometricMean();
         }
     }
