@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Cern.Colt.List;
 
 namespace Cern.Colt.Buffer
 {
@@ -17,7 +18,7 @@ namespace Cern.Colt.Buffer
         protected double[] elements;
 
         // vars cached for speed
-        protected List<Double> list;
+        protected DoubleArrayList list;
         protected int capacity;
         protected int size;
         #endregion
@@ -37,7 +38,7 @@ namespace Cern.Colt.Buffer
             this.target = target;
             this.capacity = capacity;
             this.elements = new double[capacity];
-            this.list = new List<Double>(elements);
+            this.list = new DoubleArrayList(elements);
             this.size = 0;
         }
         #endregion
@@ -47,9 +48,9 @@ namespace Cern.Colt.Buffer
         /// Adds all elements of the specified list to the receiver.
         /// </summary>
         /// <param name="list">the list of which all elements shall be added.</param>
-        public void AddAllOf(List<double> list)
+        public void AddAllOf(DoubleArrayList list)
         {
-            int listSize = list.Count;
+            int listSize = list.Size;
             if (this.size + listSize >= this.capacity) Flush();
             this.target.AddAllOf(list);
         }

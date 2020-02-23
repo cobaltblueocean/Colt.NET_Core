@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Runtime.CompilerServices;
 using Cern.Jet.Random.Engine;
 using Cern.Jet.Random.Sampling;
+using Cern.Colt.List;
 
 namespace Cern.Jet.Stat.Quantile
 {
@@ -121,7 +122,7 @@ namespace Cern.Jet.Stat.Quantile
         /// </summary>
         /// <param name="phis">the quantiles for which elements are to be computed. Each phi must be in the interval (0.0,1.0]. <tt>phis</tt> must be sorted ascending.</param>
         /// <returns>the approximate quantile elements.</returns>
-        public override List<Double> QuantileElements(List<Double> phis)
+        public override DoubleArrayList QuantileElements(DoubleArrayList phis)
         {
             if (precomputeEpsilon <= 0.0) return base.QuantileElements(phis);
 
@@ -137,7 +138,7 @@ namespace Cern.Jet.Stat.Quantile
             //select that quantile from the precomputed set that corresponds to a position closest to phi.
             phis = phis.Copy();
             double e = precomputeEpsilon;
-            for (int index = phis.Count; --index >= 0;)
+            for (int index = phis.Size; --index >= 0;)
             {
                 double phi = phis[index];
                 int i = (int)System.Math.Round(((2.0 * phi / e) - 1.0) / 2.0); // finds closest

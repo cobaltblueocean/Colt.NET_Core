@@ -19,6 +19,7 @@ namespace Cern.Colt.Matrix
     using System.Collections;
     using System.Collections.Generic;
     using System.Reflection;
+    using Cern.Colt.List;
 
     using DoubleAlgorithms;
 
@@ -252,7 +253,7 @@ namespace Cern.Colt.Matrix
             return Assign(y, function.Apply);
         }
 
-        public DoubleMatrix1D Assign(DoubleMatrix1D y, Cern.Jet.Math.PlusMult function, List<int> nonZeroIndexes)
+        public DoubleMatrix1D Assign(DoubleMatrix1D y, Cern.Jet.Math.PlusMult function, IntArrayList nonZeroIndexes)
         {
             CheckSize(y);
             int[] nonZeroElements = nonZeroIndexes.ToArray();
@@ -290,7 +291,7 @@ namespace Cern.Colt.Matrix
             return this;
         }
 
-        public DoubleMatrix1D Assign(DoubleMatrix1D y, Cern.Colt.Function.DoubleDoubleFunction function, List<int> nonZeroIndexes)
+        public DoubleMatrix1D Assign(DoubleMatrix1D y, Cern.Colt.Function.DoubleDoubleFunction function, IntArrayList nonZeroIndexes)
         {
             CheckSize(y);
             int[] nonZeroElements = nonZeroIndexes.ToArray();
@@ -429,7 +430,7 @@ namespace Cern.Colt.Matrix
         /// <param name="valueList">
         /// The list to be filled with values, can have any size.
         /// </param>
-        public virtual void GetNonZeros(List<int> indexList, List<double> valueList)
+        public virtual void GetNonZeros(IntArrayList indexList, List<double> valueList)
         {
             bool fillIndexList = indexList != null;
             bool fillValueList = valueList != null;
@@ -461,12 +462,12 @@ namespace Cern.Colt.Matrix
         /// <param name="maxCardinality">
         /// The max cardinality.
         /// </param>
-        public void GetNonZeros(List<int> indexList, List<double> valueList, int maxCardinality)
+        public void GetNonZeros(IntArrayList indexList, List<double> valueList, int maxCardinality)
         {
             bool fillIndexList = indexList != null;
             bool fillValueList = valueList != null;
             int card = Cardinality(maxCardinality);
-            if (fillIndexList) indexList.Capacity = card;
+            if (fillIndexList) indexList.Size = card;
             if (fillValueList) valueList.Capacity = card;
             if (!(card < maxCardinality)) return;
 
@@ -689,7 +690,7 @@ namespace Cern.Colt.Matrix
         /// </returns>
         public virtual DoubleMatrix1D ViewSelection(DoubleProcedure condition)
         {
-            var matches = new List<int>();
+            var matches = new IntArrayList();
             for (int i = 0; i < Size; i++)
                 if (condition(this[i])) matches.Add(i);
             return ViewSelection(matches.ToArray());
@@ -793,7 +794,7 @@ namespace Cern.Colt.Matrix
         /// <returns>
         /// The sum of products.
         /// </returns>
-        public virtual double ZDotProduct(DoubleMatrix1D y, int from, int length, List<int> nonZeroIndexes)
+        public virtual double ZDotProduct(DoubleMatrix1D y, int from, int length, IntArrayList nonZeroIndexes)
         {
             // determine minimum length
             if (from < 0 || length <= 0) return 0;
@@ -932,7 +933,7 @@ namespace Cern.Colt.Matrix
         /// <returns>
         /// The sum of products.
         /// </returns>
-        protected double ZDotProduct(DoubleMatrix1D y, List<int> nonZeroIndexes)
+        protected double ZDotProduct(DoubleMatrix1D y, IntArrayList nonZeroIndexes)
         {
             return ZDotProduct(y, 0, Size, nonZeroIndexes);
         }

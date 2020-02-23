@@ -475,6 +475,63 @@
         }
 
         /// <summary>
+        /// Sorts the specified range of the specified array of elements according
+        /// to the order induced by the specified comparator.
+        /// </summary>
+        /// <param name="a">
+        /// The array to be sorted.
+        /// </param>
+        /// <param name="fromIndex">
+        /// The index of the first element (inclusive) to be sorted.
+        /// </param>
+        /// <param name="toIndex">
+        /// The index of the last element (exclusive) to be sorted.
+        /// </param>
+        /// <param name="c">
+        /// The comparator to determine the order of the array.
+        /// </param>
+        /// <exception cref="ArgumentException">
+        /// If <i>fromIndex &gt; toIndex</i>
+        /// </exception>
+        /// <exception cref="IndexOutOfRangeException">
+        /// If <i>fromIndex &lt; 0</i> or <i>toIndex &gt; a.Length</i>
+        /// </exception>
+        public static void QuickSort(Byte[] a, int fromIndex, int toIndex, ByteComparator c)
+        {
+            RangeCheck(a.Length, fromIndex, toIndex);
+            QuickSort1(a, fromIndex, toIndex - fromIndex, c);
+        }
+
+
+        /// <summary>
+        /// Sorts the specified range of the specified array of elements according
+        /// to the order induced by the specified comparator.
+        /// </summary>
+        /// <param name="a">
+        /// The array to be sorted.
+        /// </param>
+        /// <param name="fromIndex">
+        /// The index of the first element (inclusive) to be sorted.
+        /// </param>
+        /// <param name="toIndex">
+        /// The index of the last element (exclusive) to be sorted.
+        /// </param>
+        /// <param name="c">
+        /// The comparator to determine the order of the array.
+        /// </param>
+        /// <exception cref="ArgumentException">
+        /// If <i>fromIndex &gt; toIndex</i>
+        /// </exception>
+        /// <exception cref="IndexOutOfRangeException">
+        /// If <i>fromIndex &lt; 0</i> or <i>toIndex &gt; a.Length</i>
+        /// </exception>
+        public static void QuickSort(double[] a, int fromIndex, int toIndex, DoubleComparator c)
+        {
+            RangeCheck(a.Length, fromIndex, toIndex);
+            QuickSort1(a, fromIndex, toIndex - fromIndex, c);
+        }
+
+        /// <summary>
         /// Sorts the specified range of the specified array of elements.
         ///
         /// <p>This sort is guaranteed to be <i>stable</i>:  equal elements will
@@ -981,6 +1038,33 @@
         }
 
         /// <summary>
+        /// Returns the index of the median of the three indexed ints.
+        /// </summary>
+        private static int Med3(double[] x, int a, int b, int c, DoubleComparator comp)
+        {
+            int ab = comp(x[a], x[b]);
+            int ac = comp(x[a], x[c]);
+            int bc = comp(x[b], x[c]);
+            return ab < 0 ?
+            (bc < 0 ? b : ac < 0 ? c : a) :
+            (bc > 0 ? b : ac > 0 ? c : a);
+        }
+
+        /// <summary>
+        /// Returns the index of the median of the three indexed ints.
+        /// </summary>
+        private static int Med3(Byte[] x, int a, int b, int c, ByteComparator comp)
+        {
+            int ab = comp(x[a], x[b]);
+            int ac = comp(x[a], x[c]);
+            int bc = comp(x[b], x[c]);
+            return ab < 0 ?
+            (bc < 0 ? b : ac < 0 ? c : a) :
+            (bc > 0 ? b : ac > 0 ? c : a);
+        }
+
+
+        /// <summary>
         /// Check that fromIndex and toIndex are in range, and throw an
         /// appropriate exception if they aren't.
         /// </summary>
@@ -999,6 +1083,153 @@
         /// Sorts the specified sub-array of ints into ascending order.
         /// </summary>
         private static void QuickSort1(int[] x, int off, int len, IntComparator comp)
+        {
+            // Insertion sort on smallest arrays
+            if (len < SMALL)
+            {
+                for (int i = off; i < len + off; i++)
+                    for (int j = i; j > off && comp(x[j - 1], x[j]) > 0; j--)
+                        Swap(x, j, j - 1);
+                return;
+            }
+
+            // Choose a partition element, v
+            int m = off + (len / 2);
+
+            // Small arrays, middle element
+            if (len > SMALL)
+            {
+                int l = off;
+                int n = off + len - 1;
+                if (len > MEDIUM)
+                {        // Big arrays, pseudomedian of 9
+                    int s = len / 8;
+                    l = Med3(x, l, l + s, l + (2 * s), comp);
+                    m = Med3(x, m - s, m, m + s, comp);
+                    n = Med3(x, n - (2 * s), n - s, n, comp);
+                }
+
+                m = Med3(x, l, m, n, comp); // Mid-size, med of 3
+            }
+
+            var v = x[m];
+
+            // Establish Invariant: v* (<v)* (>v)* v*
+            int a = off, b = a, c = off + len - 1, d = c;
+            while (true)
+            {
+                int comparison;
+                while (b <= c && (comparison = comp(x[b], v)) <= 0)
+                {
+                    if (comparison == 0)
+                        Swap(x, a++, b);
+                    b++;
+                }
+
+                while (c >= b && (comparison = comp(x[c], v)) >= 0)
+                {
+                    if (comparison == 0)
+                        Swap(x, c, d--);
+                    c--;
+                }
+
+                if (b > c)
+                    break;
+                Swap(x, b++, c--);
+            }
+
+            // Swap partition elements back to middle
+            int n1 = off + len;
+            int s1 = System.Math.Min(a - off, b - a);
+            Vecswap(x, off, b - s1, s1);
+            s1 = System.Math.Min(d - c, n1 - d - 1);
+            Vecswap(x, b, n1 - s1, s1);
+
+            // Recursively sort non-partition-elements
+            if ((s1 = b - a) > 1)
+                QuickSort1(x, off, s1, comp);
+            if ((s1 = d - c) > 1)
+                QuickSort1(x, n1 - s1, s1, comp);
+        }
+
+        /// <summary>
+        /// Sorts the specified sub-array of ints into ascending order.
+        /// </summary>
+        private static void QuickSort1(double[] x, int off, int len, DoubleComparator comp)
+        {
+            // Insertion sort on smallest arrays
+            if (len < SMALL)
+            {
+                for (int i = off; i < len + off; i++)
+                    for (int j = i; j > off && comp(x[j - 1], x[j]) > 0; j--)
+                        Swap(x, j, j - 1);
+                return;
+            }
+
+            // Choose a partition element, v
+            int m = off + (len / 2);
+
+            // Small arrays, middle element
+            if (len > SMALL)
+            {
+                int l = off;
+                int n = off + len - 1;
+                if (len > MEDIUM)
+                {        // Big arrays, pseudomedian of 9
+                    int s = len / 8;
+                    l = Med3(x, l, l + s, l + (2 * s), comp);
+                    m = Med3(x, m - s, m, m + s, comp);
+                    n = Med3(x, n - (2 * s), n - s, n, comp);
+                }
+
+                m = Med3(x, l, m, n, comp); // Mid-size, med of 3
+            }
+
+            var v = x[m];
+
+            // Establish Invariant: v* (<v)* (>v)* v*
+            int a = off, b = a, c = off + len - 1, d = c;
+            while (true)
+            {
+                int comparison;
+                while (b <= c && (comparison = comp(x[b], v)) <= 0)
+                {
+                    if (comparison == 0)
+                        Swap(x, a++, b);
+                    b++;
+                }
+
+                while (c >= b && (comparison = comp(x[c], v)) >= 0)
+                {
+                    if (comparison == 0)
+                        Swap(x, c, d--);
+                    c--;
+                }
+
+                if (b > c)
+                    break;
+                Swap(x, b++, c--);
+            }
+
+            // Swap partition elements back to middle
+            int n1 = off + len;
+            int s1 = System.Math.Min(a - off, b - a);
+            Vecswap(x, off, b - s1, s1);
+            s1 = System.Math.Min(d - c, n1 - d - 1);
+            Vecswap(x, b, n1 - s1, s1);
+
+            // Recursively sort non-partition-elements
+            if ((s1 = b - a) > 1)
+                QuickSort1(x, off, s1, comp);
+            if ((s1 = d - c) > 1)
+                QuickSort1(x, n1 - s1, s1, comp);
+        }
+
+
+        /// <summary>
+        /// Sorts the specified sub-array of ints into ascending order.
+        /// </summary>
+        private static void QuickSort1(Byte[] x, int off, int len, ByteComparator comp)
         {
             // Insertion sort on smallest arrays
             if (len < SMALL)
@@ -1760,6 +1991,24 @@
         /// Swaps x[a .d (a+n-1)] with x[b .d (b+n-1)].
         /// </summary>
         private static void Vecswap(int[] x, int a, int b, int n)
+        {
+            for (int i = 0; i < n; i++, a++, b++)
+                Swap(x, a, b);
+        }
+
+        /// <summary>
+        /// Swaps x[a .d (a+n-1)] with x[b .d (b+n-1)].
+        /// </summary>
+        private static void Vecswap(double[] x, int a, int b, int n)
+        {
+            for (int i = 0; i < n; i++, a++, b++)
+                Swap(x, a, b);
+        }
+
+        /// <summary>
+        /// Swaps x[a .d (a+n-1)] with x[b .d (b+n-1)].
+        /// </summary>
+        private static void Vecswap(Byte[] x, int a, int b, int n)
         {
             for (int i = 0; i < n; i++, a++, b++)
                 Swap(x, a, b);

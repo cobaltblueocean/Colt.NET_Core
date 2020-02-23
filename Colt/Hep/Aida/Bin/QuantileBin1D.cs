@@ -7,6 +7,7 @@ using Cern.Jet.Stat.Quantile;
 using Cern.Jet.Random.Engine;
 using System.Runtime.CompilerServices;
 using Cern.Jet.Stat;
+using Cern.Colt.List;
 
 namespace Cern.Hep.Aida.Bin
 {
@@ -618,7 +619,7 @@ namespace Cern.Hep.Aida.Bin
 
         #region Local Public Methods
         [MethodImpl(MethodImplOptions.Synchronized)]
-        public override void AddAllOfFromTo(List<Double> list, int from, int to)
+        public override void AddAllOfFromTo(DoubleArrayList list, int from, int to)
         {
             base.AddAllOfFromTo(list, from, to);
             if (this.finder != null) this.finder.AddAllOfFromTo(list, from, to);
@@ -659,7 +660,7 @@ namespace Cern.Hep.Aida.Bin
         [MethodImpl(MethodImplOptions.Synchronized)]
         public virtual double Quantile(double phi)
         {
-            return Quantiles(new List<Double>(new double[] { phi }))[0];
+            return Quantiles(new DoubleArrayList(new double[] { phi }))[0];
         }
 
         [MethodImpl(MethodImplOptions.Synchronized)]
@@ -669,7 +670,7 @@ namespace Cern.Hep.Aida.Bin
         }
 
         [MethodImpl(MethodImplOptions.Synchronized)]
-        public virtual List<Double> Quantiles(List<Double> phis)
+        public virtual DoubleArrayList Quantiles(DoubleArrayList phis)
         {
             return finder.QuantileElements(phis);
         }
@@ -680,7 +681,7 @@ namespace Cern.Hep.Aida.Bin
         }
 
         [MethodImpl(MethodImplOptions.Synchronized)]
-        public MightyStaticBin1D[] SplitApproximately(List<Double> percentages, int k)
+        public MightyStaticBin1D[] SplitApproximately(DoubleArrayList percentages, int k)
         {
             /*
                percentages = [p0, p1, p2, ..d, p(size-2), p(size-1)]
@@ -701,7 +702,7 @@ namespace Cern.Hep.Aida.Bin
                                                  [0.2, 0.25) [0.25, 0.3)
 
              */
-            int percentSize = percentages.Count;
+            int percentSize = percentages.Size;
             if (k < 1 || percentSize < 2) throw new ArgumentException();
 
             double[] percent = percentages.ToArray();
@@ -723,7 +724,7 @@ namespace Cern.Hep.Aida.Bin
             }
 
             // compute quantile elements;
-            double[] quantiles = Quantiles(new List<Double>(subBins)).ToArray();
+            double[] quantiles = Quantiles(new DoubleArrayList(subBins)).ToArray();
 
             // collect summary statistics for each bin.
             // one bin's statistics are the integrated statistics of its subintervals.
@@ -813,10 +814,10 @@ namespace Cern.Hep.Aida.Bin
         [MethodImpl(MethodImplOptions.Synchronized)]
         public MightyStaticBin1D[] SplitApproximately(Hep.Aida.IAxis axis, int k)
         {
-            List<Double> percentages = new List<Double>(new Hep.Aida.Ref.Converter().Edges(axis));
-            percentages.Insert(0, Double.NegativeInfinity);
+            DoubleArrayList percentages = new DoubleArrayList(new Hep.Aida.Ref.Converter().Edges(axis));
+            percentages.BeforeInsert(0, Double.NegativeInfinity);
             percentages.Add(Double.PositiveInfinity);
-            for (int i = percentages.Count; --i >= 0;)
+            for (int i = percentages.Size; --i >= 0;)
             {
                 percentages[i] = QuantileInverse(percentages[i]);
             }

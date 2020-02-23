@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Cern.Colt.List;
 
 namespace Cern.Colt.Matrix.Implementation
 {
@@ -27,7 +28,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <summary>
         /// The elements of the matrix.
         /// </summary>
-        private List<int>[] indexes;
+        private IntArrayList[] indexes;
         private List<Double>[] values;
 
         /// <summary>
@@ -55,7 +56,7 @@ namespace Cern.Colt.Matrix.Implementation
                 int j = column;
 
                 int k = -1;
-                List<int> indexList = indexes[i];
+                IntArrayList indexList = indexes[i];
                 if (indexList != null) k = indexList.BinarySearch(j);
 
                 if (k >= 0)
@@ -69,7 +70,7 @@ namespace Cern.Colt.Matrix.Implementation
                         if (s > 2 && s * 3 < indexList.ToArray().Length)
                         {
                             indexList.SetSize(s * 3 / 2);
-                            indexList.TrimExcess();
+                            indexList.TrimToSize();
                             indexList.SetSize(s);
 
                             valueList.SetSize(s * 3 / 2);
@@ -90,7 +91,7 @@ namespace Cern.Colt.Matrix.Implementation
 
                     if (indexList == null)
                     {
-                        indexes[i] = new List<int>(3);
+                        indexes[i] = new IntArrayList(3);
                         values[i] = new List<Double>(3);
                     }
                     indexes[i].Insert(k, j);
@@ -124,7 +125,7 @@ namespace Cern.Colt.Matrix.Implementation
         {
             
             Setup(rows, columns);
-            indexes = new List<int>[rows];
+            indexes = new IntArrayList[rows];
             values = new List<Double>[rows];
         }
 
@@ -220,7 +221,7 @@ namespace Cern.Colt.Matrix.Implementation
             int j = column;
 
             int k = -1;
-            List<int> indexList = indexes[i];
+            IntArrayList indexList = indexes[i];
             if (indexList != null) k = indexList.BinarySearch(j);
 
             if (k >= 0)
@@ -234,7 +235,7 @@ namespace Cern.Colt.Matrix.Implementation
                     if (s > 2 && s * 3 < indexList.ToArray().Length)
                     {
                         indexList.SetSize(s * 3 / 2);
-                        indexList.TrimExcess();
+                        indexList.TrimToSize();
                         indexList.SetSize(s);
 
                         valueList.SetSize(s * 3 / 2);
@@ -255,7 +256,7 @@ namespace Cern.Colt.Matrix.Implementation
 
                 if (indexList == null)
                 {
-                    indexes[i] = new List<int>(3);
+                    indexes[i] = new IntArrayList(3);
                     values[i] = new List<Double>(3);
                 }
                 indexes[i].Insert(k, j);
@@ -275,7 +276,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <param name="alpha"></param>
         /// <param name="beta"></param>
         /// <exception cref="ArgumentException">if <i>A.columns() != y.Count || A.rows() > z.Count)</i>.</exception>
-        protected void ZMult(DoubleMatrix1D y, DoubleMatrix1D z, List<int> nonZeroIndexes, DoubleMatrix1D[] allRows, double alpha, double beta)
+        protected void ZMult(DoubleMatrix1D y, DoubleMatrix1D z, IntArrayList nonZeroIndexes, DoubleMatrix1D[] allRows, double alpha, double beta)
         {
             if (Columns != y.Size || Rows > z.Size)
                 throw new ArgumentException("Incompatible args: " + ToStringShort() + ", " + y.ToStringShort() + ", " + z.ToStringShort());

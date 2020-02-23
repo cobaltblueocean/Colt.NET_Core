@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using NUnit.Framework;
 using Cern.Colt;
+using Cern.Colt.List;
 using Cern.Jet.Stat.Quantile;
 
 namespace Colt.Tests
@@ -141,9 +142,9 @@ namespace Colt.Tests
         /// Finds the first and last indexes of a specific element within a sorted list.
         /// <summary>
         /// <returns>int[]</returns>
-        /// <param name="list">cern.colt.list.List<Double></param>
+        /// <param name="list">cern.colt.list.DoubleArrayList</param>
         /// <param name="element">the element to search for</param>
-        protected static List<int> BinaryMultiSearch(List<Double> list, double element)
+        protected static IntArrayList BinaryMultiSearch(DoubleArrayList list, double element)
         {
             int index = list.BinarySearch(element);
             if (index < 0) return null; //not found
@@ -156,7 +157,7 @@ namespace Colt.Tests
             while (to < list.Count && list[to] == element) to++;
             to--;
 
-            return new List<int>(new int[] { from, to });
+            return new IntArrayList(new int[] { from, to });
         }
         /// <summary>
         /// Observed epsilon
@@ -172,7 +173,7 @@ namespace Colt.Tests
         /// <summary>
         /// Observed epsilon
         /// <summary>
-        public static double Epsilon(List<Double> sortedList, double phi, double element)
+        public static double Epsilon(DoubleArrayList sortedList, double phi, double element)
         {
             double rank = Cern.Jet.Stat.Descriptive.RankInterpolated(sortedList, element);
             return Epsilon(sortedList.Count, phi, rank);
@@ -180,9 +181,9 @@ namespace Colt.Tests
         /// <summary>
         /// Observed epsilon
         /// <summary>
-        public static double Epsilon(List<Double> sortedList, IDoubleQuantileFinder finder, double phi)
+        public static double Epsilon(DoubleArrayList sortedList, IDoubleQuantileFinder finder, double phi)
         {
-            double element = finder.QuantileElements(new List<Double>(new double[] { phi }))[0];
+            double element = finder.QuantileElements(new DoubleArrayList(new double[] { phi }))[0];
             return Epsilon(sortedList, phi, element);
         }
 
@@ -190,7 +191,7 @@ namespace Colt.Tests
         /// This method was created in VisualAge.
         /// <summary>
         /// <returns>double[]</returns>
-        /// <param name="values">cern.it.hepodbms.primitivearray.List<Double></param>
+        /// <param name="values">cern.it.hepodbms.primitivearray.DoubleArrayList</param>
         /// <param name="phis">double[]</param>
         public static double ObservedEpsilonAtPhi(double phi, ExactDoubleQuantileFinder exactFinder, IDoubleQuantileFinder approxFinder)
         {
@@ -198,10 +199,10 @@ namespace Colt.Tests
 
             int exactRank = (int)Utils.EpsilonCeiling(phi * N) - 1;
             //Console.WriteLine("exactRank="+exactRank);
-            var tmp = exactFinder.QuantileElements(new List<Double>(new double[] { phi }))[0]; // just to ensure exactFinder is sorted
-            double approxElement = approxFinder.QuantileElements(new List<Double>(new double[] { phi }))[0];
+            var tmp = exactFinder.QuantileElements(new DoubleArrayList(new double[] { phi }))[0]; // just to ensure exactFinder is sorted
+            double approxElement = approxFinder.QuantileElements(new DoubleArrayList(new double[] { phi }))[0];
             //Console.WriteLine("approxElem="+approxElement);
-            List<int> approxRanks = BinaryMultiSearch(exactFinder.Buffer, approxElement);
+            IntArrayList approxRanks = BinaryMultiSearch(exactFinder.Buffer, approxElement);
             int from = approxRanks[0];
             int to = approxRanks[1];
 
@@ -220,11 +221,11 @@ namespace Colt.Tests
         /// This method was created in VisualAge.
         /// <summary>
         /// <returns>double[]</returns>
-        /// <param name="values">cern.it.hepodbms.primitivearray.List<Double></param>
+        /// <param name="values">cern.it.hepodbms.primitivearray.DoubleArrayList</param>
         /// <param name="phis">double[]</param>
-        public static List<Double> ObservedEpsilonsAtPhis(List<Double> phis, ExactDoubleQuantileFinder exactFinder, IDoubleQuantileFinder approxFinder, double desiredEpsilon)
+        public static DoubleArrayList ObservedEpsilonsAtPhis(DoubleArrayList phis, ExactDoubleQuantileFinder exactFinder, IDoubleQuantileFinder approxFinder, double desiredEpsilon)
         {
-            List<Double> epsilons = new List<Double>(phis.Count);
+            DoubleArrayList epsilons = new DoubleArrayList(phis.Count);
 
             for (int i = phis.Count; --i >= 0;)
             {
@@ -366,7 +367,7 @@ namespace Colt.Tests
             IDoubleQuantileFinder exactFinder = QuantileFinderFactory.NewDoubleQuantileFinder(false, -1, 0.0, delta, quantiles, null);
             Console.WriteLine(exactFinder);
 
-            List<Double> list = new List<Double>(size);
+            DoubleArrayList list = new DoubleArrayList(size);
 
             for (int chunk = 0; chunk < chunks; chunk++)
             {
@@ -416,12 +417,12 @@ namespace Colt.Tests
             timer.Start();
 
             //approxFinder.close();
-            List<Double> approxQuantiles = approxFinder.QuantileElements(new List<Double>(phis));
+            DoubleArrayList approxQuantiles = approxFinder.QuantileElements(new DoubleArrayList(phis));
 
             Console.WriteLine(timer.Display);
             timer.Stop();
 
-            Console.WriteLine("Phis=" + new List<Double>(phis));
+            Console.WriteLine("Phis=" + new DoubleArrayList(phis));
             Console.WriteLine("ApproxQuantiles=" + approxQuantiles);
 
             //Console.WriteLine("MaxLevel of full buffers="+maxLevelOfFullBuffers(approxFinder.bufferSet));
@@ -438,7 +439,7 @@ namespace Colt.Tests
                 timer.Reset();
 
                 //exactFinder.close();
-                List<Double> exactQuantiles = exactFinder.QuantileElements(new List<Double>(phis));
+                DoubleArrayList exactQuantiles = exactFinder.QuantileElements(new DoubleArrayList(phis));
                 Console.WriteLine(timer.Display);
 
                 timer.Stop();
@@ -447,10 +448,10 @@ namespace Colt.Tests
 
 
                 //double[] errors1 = errors1(exactQuantiles.ToArray(), approxQuantiles.ToArray());
-                //Console.WriteLine("Error1="+new List<Double>(errors1));
+                //Console.WriteLine("Error1="+new DoubleArrayList(errors1));
 
                 /*
-                List<Double> buffer = new List<Double>((int)exactFinder.Count);
+                DoubleArrayList buffer = new DoubleArrayList((int)exactFinder.Count);
                 exactFinder.forEach(
                     new cern.colt.function.DoubleFunction() {
                         public void apply(double element) {
@@ -461,7 +462,7 @@ namespace Colt.Tests
                 */
 
 
-                List<Double> observedEpsilons = ObservedEpsilonsAtPhis(new List<Double>(phis), (ExactDoubleQuantileFinder)exactFinder, approxFinder, epsilon);
+                DoubleArrayList observedEpsilons = ObservedEpsilonsAtPhis(new DoubleArrayList(phis), (ExactDoubleQuantileFinder)exactFinder, approxFinder, epsilon);
                 Console.WriteLine("observedEpsilons=" + observedEpsilons);
 
                 double element = 1000.0f;
@@ -470,8 +471,8 @@ namespace Colt.Tests
                 Console.WriteLine("exact phi(" + element + ")=" + exactFinder.Phi(element));
                 Console.WriteLine("apprx phi(" + element + ")=" + approxFinder.Phi(element));
 
-                Console.WriteLine("exact elem(phi(" + element + "))=" + exactFinder.QuantileElements(new List<Double>(new double[] { exactFinder.Phi(element) })));
-                Console.WriteLine("apprx elem(phi(" + element + "))=" + approxFinder.QuantileElements(new List<Double>(new double[] { approxFinder.Phi(element) })));
+                Console.WriteLine("exact elem(phi(" + element + "))=" + exactFinder.QuantileElements(new DoubleArrayList(new double[] { exactFinder.Phi(element) })));
+                Console.WriteLine("apprx elem(phi(" + element + "))=" + approxFinder.QuantileElements(new DoubleArrayList(new double[] { approxFinder.Phi(element) })));
             }
         }
         /// <summary>
@@ -479,7 +480,7 @@ namespace Colt.Tests
         /// <summary>
         public static void TestRank()
         {
-            List<Double> list = new List<Double>(new double[] { 1.0f, 5.0f, 5.0f, 5.0f, 7.0f, 10.0f });
+            DoubleArrayList list = new DoubleArrayList(new double[] { 1.0f, 5.0f, 5.0f, 5.0f, 7.0f, 10.0f });
             //Console.WriteLine(rankOfWithin(5.0f, list));
         }
     }

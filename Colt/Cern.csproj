@@ -65,6 +65,16 @@
     <Compile Include="Colt\Buffer\IObjectBufferConsumer.cs" />
     <Compile Include="Colt\Buffer\ObjectBuffer.cs" />
     <Compile Include="Colt\Exception\UnsupportedPlatformException.cs" />
+    <Compile Include="Colt\List\AbstractBooleanList.cs" />
+    <Compile Include="Colt\List\AbstractCollection.cs" />
+    <Compile Include="Colt\List\AbstractByteList.cs" />
+    <Compile Include="Colt\List\AbstractIntList.cs" />
+    <Compile Include="Colt\List\AbstractDoubleList.cs" />
+    <Compile Include="Colt\List\AbstractList.cs" />
+    <Compile Include="Colt\List\BooleanArrayList.cs" />
+    <Compile Include="Colt\List\ByteArrayList.cs" />
+    <Compile Include="Colt\List\IntArrayList.cs" />
+    <Compile Include="Colt\List\DoubleArrayList.cs" />
     <Compile Include="Colt\Utility\FrameworkVersion.cs" />
     <Compile Include="Colt\Utility\FrameworkVersionDetection.cs" />
     <Compile Include="Colt\Utility\MappingStrings.cs" />
@@ -161,6 +171,7 @@
     <Compile Include="Extensions\ArrayExtensions.cs" />
     <Compile Include="Extensions\DateTimeExtensions.cs" />
     <Compile Include="Extensions\DictionaryExtensions.cs" />
+    <Compile Include="Extensions\EnumeratorExtensions.cs" />
     <Compile Include="Extensions\ListExtensions.cs" />
     <Compile Include="Extensions\ObjectExtension.cs" />
     <Compile Include="Extensions\PremitiveExtensions.cs" />

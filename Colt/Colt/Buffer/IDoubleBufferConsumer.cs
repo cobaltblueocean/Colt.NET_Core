@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Cern.Colt.List;
 
 namespace Cern.Colt.Buffer
 {
@@ -15,6 +16,6 @@ namespace Cern.Colt.Buffer
         /// Adds all elements of the specified list to the receiver.
         /// </summary>
         /// <param name="list">the list of which all elements shall be added.</param>
-        void AddAllOf(List<Double> list);
+        void AddAllOf(DoubleArrayList list);
     }
 }

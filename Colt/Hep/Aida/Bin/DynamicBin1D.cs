@@ -1,4 +1,13 @@
-﻿using System;
+﻿// <copyright file=".cs" company="CERN">
+//   Copyright © 1999 CERN - European Organization for Nuclear Research.
+//   Permission to use, copy, modify, distribute and sell this software and its documentation for any purpose 
+//   is hereby granted without fee, provided that the above copyright notice appear in all copies and 
+//   that both that copyright notice and this permission notice appear in supporting documentation. 
+//   CERN makes no representations about the suitability of this software for any purpose. 
+//   It is provided "as is" without expressed or implied warranty.
+//   Ported from Java to C# by Kei Nakai, 2018.
+// </copyright>
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,6 +15,7 @@ using System.Threading.Tasks;
 using Cern.Jet.Random.Engine;
 using Cern.Jet.Stat;
 using System.Runtime.CompilerServices;
+using Cern.Colt.List;
 
 namespace Cern.Hep.Aida.Bin
 {
@@ -44,12 +54,12 @@ namespace Cern.Hep.Aida.Bin
         /// <summary>
         /// The elements contained in this bin.
         /// </summary>
-        private List<Double> _elements = null;
+        private DoubleArrayList _elements = null;
 
         /// <summary>
         /// The elements contained in this bin, sorted ascending.
         /// </summary>
-        private List<Double> _sortedElements = null;
+        private DoubleArrayList _sortedElements = null;
 
         /// <summary>
         /// Preserve element order under all circumstances?
@@ -78,8 +88,8 @@ namespace Cern.Hep.Aida.Bin
         public DynamicBin1D() : base()
         {
             this.Clear();
-            this._elements = new List<Double>();
-            this._sortedElements = new List<Double>(0);
+            this._elements = new DoubleArrayList();
+            this._sortedElements = new DoubleArrayList(0);
             this.FixedOrder = false;
             this.HasSumOfLogarithms = true;
             this.HasSumOfInversions = true;
@@ -93,7 +103,7 @@ namespace Cern.Hep.Aida.Bin
         [MethodImpl(MethodImplOptions.Synchronized)]
         public override void Add(double element)
         {
-            Elements.Add(element);
+            _elements.Add(element);
             InvalidateAll();
         }
 
@@ -106,9 +116,9 @@ namespace Cern.Hep.Aida.Bin
         /// <param name="to">the index of the last element to be added (inclusive).</param>
         /// <exception cref="IndexOutOfRangeException">if <i>list.Count&gt;0 && (from&lt;0 || from&gt;to || to&gt;=list.Count)</i>. </exception>
         [MethodImpl(MethodImplOptions.Synchronized)]
-        public override void AddAllOfFromTo(List<Double> list, int from, int to)
+        public override void AddAllOfFromTo(DoubleArrayList list, int from, int to)
         {
-            this.Elements.AddAllOfFromTo(list, from, to);
+            this._elements.AddAllOfFromTo(list, from, to);
             this.InvalidateAll();
         }
 
@@ -136,10 +146,10 @@ namespace Cern.Hep.Aida.Bin
         {
             int s = Size;
             if (s == 0) return Double.NaN;
-            double a = f(Elements[s - 1]);
+            double a = f(_elements[s - 1]);
             for (int i = s - 1; --i >= 0;)
             {
-                a = aggr(a, f(Elements[i]));
+                a = aggr(a, f(_elements[i]));
             }
             return a;
         }
@@ -153,7 +163,7 @@ namespace Cern.Hep.Aida.Bin
         {
             base.Clear();
 
-            if (this.Elements != null) this.Elements.Clear();
+            if (this._elements != null) this._elements.Clear();
             if (this.SortedElements != null) this.SortedElements.Clear();
 
             this.ArgumentCheckerAll();
@@ -168,7 +178,7 @@ namespace Cern.Hep.Aida.Bin
         public override Object Clone()
         {
             DynamicBin1D clone = (DynamicBin1D)base.Clone();
-            if (this.Elements != null) clone.Elements = clone.Elements.Copy();
+            if (this._elements != null) clone._elements = clone._elements.Copy();
             if (this.SortedElements != null) clone.SortedElements = clone.SortedElements.Copy();
             return clone;
         }
@@ -207,7 +217,7 @@ namespace Cern.Hep.Aida.Bin
                 double s = 0;
                 for (int i = Size; --i >= 0;)
                 {
-                    s += this.Elements[i] * other.Elements[i];
+                    s += this._elements[i] * other._elements[i];
                 }
 
                 double cov = (s - Sum * other.Sum / Size) / Size;
@@ -220,12 +230,15 @@ namespace Cern.Hep.Aida.Bin
         /// Concerning the order in which elements are returned, see {@link #setFixedOrder(Boolean)}.
         /// </summary>
         /// <returns>a copy of the currently stored elements.</returns>
-        public List<Double> Elements
+        public DoubleArrayList Elements
         {
             get
             {
                 // safe since we are already synchronized.
-                return elements_unsafe().Copy();
+                if (elements_unsafe() != null)
+                    return elements_unsafe().Copy();
+                else
+                    return null;
             }
             set
             {
@@ -244,7 +257,7 @@ namespace Cern.Hep.Aida.Bin
         /// ..
         /// double sinSum = 0;
         /// synchronized (dynamicBin) { // lock out anybody else
-        ///     List<Double> elements = dynamicBin.elements_unsafe();
+        ///     DoubleArrayList elements = dynamicBin.elements_unsafe();
         ///     // read each element and do something with it, for example
         /// 	   double[] values = elements.ToArray(); // zero-copy
         /// 	   for (int i=dynamicBin.Count; --i >=0; ) {
@@ -259,7 +272,7 @@ namespace Cern.Hep.Aida.Bin
         /// </pre>summary>
         /// <returns>the currently stored elements.</returns>
         [MethodImpl(MethodImplOptions.Synchronized)]
-        protected List<Double> elements_unsafe()
+        protected DoubleArrayList elements_unsafe()
         {
             return this._elements;
         }
@@ -336,7 +349,7 @@ namespace Cern.Hep.Aida.Bin
         /// <param name="distinctElements">a list to be filled with the distinct elements; can have any Size.</param>
         /// <param name="frequencies">     a list to be filled with the frequencies; can have any Size; set this parameter to <i>null</i> to ignore it.</param>
         [MethodImpl(MethodImplOptions.Synchronized)]
-        public void Frequencies(List<Double> distinctElements, List<int> frequencies)
+        public void Frequencies(DoubleArrayList distinctElements, IntArrayList frequencies)
         {
             Descriptive.Frequencies(sortedElements_unsafe(), distinctElements, frequencies);
         }
@@ -488,7 +501,7 @@ namespace Cern.Hep.Aida.Bin
         /// <param name="percentages">the percentages for which Quantiles are to be computed.</param>
         /// Each percentage must be in the interval <i>(0.0,1.0]</i>d <i>percentages</i> must be sorted ascending.
         /// <returns>the exact Quantiles.</returns>
-        public override List<Double> Quantiles(List<Double> percentages)
+        public override DoubleArrayList Quantiles(DoubleArrayList percentages)
         {
             return Descriptive.Quantiles(sortedElements_unsafe(), percentages);
         }
@@ -500,7 +513,7 @@ namespace Cern.Hep.Aida.Bin
         /// <param name="list">the elements to be removed.</param>
         /// <returns><code>true</code> if the receiver changed as a result of the call.</returns>
         [MethodImpl(MethodImplOptions.Synchronized)]
-        public Boolean RemoveAllOf(List<Double> list)
+        public Boolean RemoveAllOf(DoubleArrayList list)
         {
             Boolean changed = this.Elements.RemoveAll(list);
             if (changed)
@@ -629,8 +642,8 @@ namespace Cern.Hep.Aida.Bin
         /// double[] v2 = {10,11,12,13,14,15,16,17,18,19,  20,  30,31,32,33,34,35,36,37,38,39};
         /// hep.aida.bin.DynamicBin1D X = new hep.aida.bin.DynamicBin1D();
         /// hep.aida.bin.DynamicBin1D Y = new hep.aida.bin.DynamicBin1D();
-        /// X.addAllOf(new Cern.Colt.list.List<Double>(v1));
-        /// Y.addAllOf(new Cern.Colt.list.List<Double>(v2));
+        /// X.addAllOf(new Cern.Colt.list.DoubleArrayList(v1));
+        /// Y.addAllOf(new Cern.Colt.list.DoubleArrayList(v2));
         /// Cern.Jet.Random.Engine.RandomEngine random = new Cern.Jet.Random.Engine.MersenneTwister();
         /// 
         /// // bootstrap resampling of differences of means:
@@ -741,7 +754,7 @@ namespace Cern.Hep.Aida.Bin
         /// <returns>  the number of elements contained in the receiver.</returns>
         public override int Size
         {
-            get { return Elements.Count; }
+            get { return Elements.Size; }
             // Never ever use "this.Size" as it would be intuitive!
             // This class abuses "this.Size"d "this.Size" DOES NOT REFLECT the number of elements contained in the receiver!
             // Instead, "this.Size" reflects the number of elements incremental stats computation has already processed.
@@ -757,7 +770,7 @@ namespace Cern.Hep.Aida.Bin
                 if (this.FixedOrder)
                 {
                     this.SortedElements.Clear();
-                    this.SortedElements.AddAllOfFromTo(this.Elements, 0, this.Elements.Count - 1);
+                    this.SortedElements.AddAllOfFromTo(this.Elements, 0, this.Elements.Size - 1);
                     this.SortedElements.Sort();
                 }
                 else
@@ -783,12 +796,15 @@ namespace Cern.Hep.Aida.Bin
         /// 
         /// </summary>
         /// <returns>a copy of the currently stored elements, sorted ascending.</returns>
-        public List<Double> SortedElements
+        public DoubleArrayList SortedElements
         {
             get
             {
-                // safe since we are already synchronized.
-                return sortedElements_unsafe().Copy();
+                if (elements_unsafe() != null)
+                    // safe since we are already synchronized.
+                    return sortedElements_unsafe().Copy();
+                else
+                    return null;
             }
             set
             {
@@ -806,7 +822,7 @@ namespace Cern.Hep.Aida.Bin
         /// <pre>
         /// ..
         /// synchronized (dynamicBin) { // lock out anybody else
-        ///     List<Double> elements = dynamicBin.SortedElements_unsafe();
+        ///     DoubleArrayList elements = dynamicBin.SortedElements_unsafe();
         /// 	   // read each element and do something with it, e.g.
         /// 	   double[] values = elements.ToArray(); // zero-copy
         /// 	   for (int i=dynamicBin.Count; --i >=0; ) {
@@ -820,7 +836,7 @@ namespace Cern.Hep.Aida.Bin
         /// </summary>
         /// <returns>the currently stored elements, sorted ascending.</returns>
         [MethodImpl(MethodImplOptions.Synchronized)]
-        protected List<Double> sortedElements_unsafe()
+        protected DoubleArrayList sortedElements_unsafe()
         {
             Sort();
             if (FixedOrder) return this._sortedElements;
@@ -911,10 +927,10 @@ namespace Cern.Hep.Aida.Bin
         public override String ToString()
         {
             StringBuilder buf = new StringBuilder(base.ToString());
-            List<Double> distinctElements = new List<Double>();
-            List<int> freq = new List<int>();
+            DoubleArrayList distinctElements = new DoubleArrayList();
+            IntArrayList freq = new IntArrayList();
             Frequencies(distinctElements, freq);
-            if (distinctElements.Count < 100)
+            if (distinctElements.Size < 100)
             { // don't cause unintended floods
                 buf.Append("Distinct elements: " + distinctElements + "\n");
                 buf.Append("Frequencies: " + freq + "\n");
@@ -936,9 +952,9 @@ namespace Cern.Hep.Aida.Bin
         [MethodImpl(MethodImplOptions.Synchronized)]
         public void Trim(int s, int l)
         {
-            List<Double> elems = SortedElements;
+            DoubleArrayList elems = SortedElements;
             Clear();
-            AddAllOfFromTo(elems, s, elems.Count - 1 - l);
+            AddAllOfFromTo(elems, s, elems.Size - 1 - l);
         }
 
         /// <summary>
@@ -967,10 +983,10 @@ namespace Cern.Hep.Aida.Bin
         [MethodImpl(MethodImplOptions.Synchronized)]
         public override void TrimToSize()
         {
-            this.Elements.TrimExcess();
+            this.Elements.TrimToSize();
 
             this.SortedElements.Clear();
-            this.SortedElements.TrimExcess();
+            this.SortedElements.TrimToSize();
             if (FixedOrder) this.isSorted = false;
         }
 
@@ -987,7 +1003,7 @@ namespace Cern.Hep.Aida.Bin
             arguments[2] = base.Sum;
             arguments[3] = base.SumOfSquares;
 
-            Descriptive.IncrementalUpdate(this.Elements, this.Size, this.Elements.Count - 1, ref arguments);
+            Descriptive.IncrementalUpdate(this.Elements, this.Size, this.Elements.Size - 1, ref arguments);
 
             // store the new parameters back
             base.Min = arguments[0];

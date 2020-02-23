@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Cern.Jet.Random.Engine;
+using Cern.Colt.List;
 
 namespace Cern.Jet.Random.Sampling
 {
@@ -132,7 +133,7 @@ namespace Cern.Jet.Random.Sampling
             WeightedRandomSampler sampler = new WeightedRandomSampler();
             sampler.Weight = weight;
 
-            List<int> sample = new List<int>();
+            IntArrayList sample = new IntArrayList();
             for (int i = 0; i < size; i++)
             {
                 if (sampler.SampleNextElement()) sample.Add(i);

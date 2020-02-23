@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Cern.Colt.List;
 
 namespace Cern.Jet.Stat
 {
@@ -43,9 +44,9 @@ namespace Cern.Jet.Stat
         /// <param name="mean"></param>
         /// <param name="variance"></param>
         /// <returns></returns>
-        public static double AutoCorrelation(List<Double> data, int lag, double mean, double variance)
+        public static double AutoCorrelation(DoubleArrayList data, int lag, double mean, double variance)
         {
-            int N = data.Count;
+            int N = data.Size;
             if (lag >= N) throw new ArgumentException("Lag is too large");
 
             double[] elements = data.ToArray();
@@ -65,7 +66,7 @@ namespace Cern.Jet.Stat
         /// <param name="data2"></param>
         /// <param name="standardDev2"></param>
         /// <returns></returns>
-        public static double Correlation(List<Double> data1, double standardDev1, List<Double> data2, double standardDev2)
+        public static double Correlation(DoubleArrayList data1, double standardDev1, DoubleArrayList data2, double standardDev2)
         {
             return Covariance(data1, data2) / (standardDev1 * standardDev2);
         }
@@ -78,10 +79,10 @@ namespace Cern.Jet.Stat
         /// <param name="data1"></param>
         /// <param name="data2"></param>
         /// <returns></returns>
-        public static double Covariance(List<Double> data1, List<Double> data2)
+        public static double Covariance(DoubleArrayList data1, DoubleArrayList data2)
         {
-            int size = data1.Count;
-            if (size != data2.Count || size == 0) throw new ArgumentException();
+            int size = data1.Size;
+            if (size != data2.Size || size == 0) throw new ArgumentException();
             double[] elements1 = data1.ToArray();
             double[] elements2 = data2.ToArray();
 
@@ -103,9 +104,9 @@ namespace Cern.Jet.Stat
         /// </summary>
         /// <param name="data"></param>
         /// <returns></returns>
-        public static double DurbinWatson(List<Double> data)
+        public static double DurbinWatson(DoubleArrayList data)
         {
-            int size = data.Count;
+            int size = data.Size;
             if (size < 2) throw new ArgumentException("data sequence must contain at least two values.");
 
             double[] elements = data.ToArray();
@@ -133,13 +134,13 @@ namespace Cern.Jet.Stat
         /// <param name="sortedData">the data; must be sorted ascending.</param>
         /// <param name="distinctValues">a list to be filled with the distinct values; can have any size.</param>
         /// <param name="frequencies">a list to be filled with the frequencies; can have any size; set this parameter to <tt>null</tt> to ignore it.</param>
-        public static void Frequencies(List<Double> sortedData, List<Double> distinctValues, List<int> frequencies)
+        public static void Frequencies(DoubleArrayList sortedData, DoubleArrayList distinctValues, IntArrayList frequencies)
         {
             distinctValues.Clear();
             if (frequencies != null) frequencies.Clear();
 
             double[] sortedElements = sortedData.ToArray();
-            int size = sortedData.Count;
+            int size = sortedData.Size;
             int i = 0;
 
             while (i < size)
@@ -184,9 +185,9 @@ namespace Cern.Jet.Stat
         /// </summary>
         /// <param name="data"></param>
         /// <returns></returns>
-        public static double GeometricMean(List<Double> data)
+        public static double GeometricMean(DoubleArrayList data)
         {
-            return GeometricMean(data.Count, SumOfLogarithms(data, 0, data.Count - 1));
+            return GeometricMean(data.Size, SumOfLogarithms(data, 0, data.Size - 1));
         }
 
         /// <summary>
@@ -233,9 +234,9 @@ namespace Cern.Jet.Stat
         /// <param name="from">the index of the first element within <tt>data</tt> to consider.</param>
         /// <param name="to">the index of the last element within <tt>data</tt> to consider.</param>
         /// <param name="inOut">inOut the old values.  output the updated values filled into the <tt>inOut</tt> array.</param>
-        public static void IncrementalUpdate(List<Double> data, int from, int to, ref double[] inOut)
+        public static void IncrementalUpdate(DoubleArrayList data, int from, int to, ref double[] inOut)
         {
-            CheckRangeFromTo(from, to, data.Count);
+            CheckRangeFromTo(from, to, data.Size);
 
             // read current values
             double min = inOut[0];
@@ -276,7 +277,7 @@ namespace Cern.Jet.Stat
             inOut[3] = sumSquares;
 
             // At this point of return the following postcondition holds:
-            // data.Count-from elements have been consumed by this call.
+            // data.Size-from elements have been consumed by this call.
         }
 
         /// <summary>
@@ -315,9 +316,9 @@ namespace Cern.Jet.Stat
         /// <param name="fromSumIndex"></param>
         /// <param name="toSumIndex"></param>
         /// <param name="sumOfPowers">the old values of the sums, and returns the updated values filled into the <tt>sumOfPowers</tt> array.</param>
-        public static void IncrementalUpdateSumsOfPowers(List<Double> data, int from, int to, int fromSumIndex, int toSumIndex, ref double[] sumOfPowers)
+        public static void IncrementalUpdateSumsOfPowers(DoubleArrayList data, int from, int to, int fromSumIndex, int toSumIndex, ref double[] sumOfPowers)
         {
-            int size = data.Count;
+            int size = data.Size;
             int lastIndex = toSumIndex - fromSumIndex;
             if (from > size || lastIndex + 1 > sumOfPowers.Length) throw new ArgumentException();
             double[] elements;
@@ -416,7 +417,7 @@ namespace Cern.Jet.Stat
             }
 
             // At this point of return the following postcondition holds:
-            // data.Count-fromIndex elements have been consumed by this call.
+            // data.Size-fromIndex elements have been consumed by this call.
         }
 
         /// <summary>
@@ -449,11 +450,11 @@ namespace Cern.Jet.Stat
         /// <param name="from">the index of the first element within <tt>data</tt> (and <tt>weights</tt>) to consider.</param>
         /// <param name="to">the index of the last element within <tt>data</tt> (and <tt>weights</tt>) to consider.  The method incorporates elements <tt>data[from], ..., data[to]</tt>.</param>
         /// <param name="inOut">input the old values, and return the updated values filled into the <tt>inOut</tt> array.</param>
-        public static void IncrementalWeightedUpdate(List<Double> data, List<Double> weights, int from, int to, double[] inOut)
+        public static void IncrementalWeightedUpdate(DoubleArrayList data, DoubleArrayList weights, int from, int to, double[] inOut)
         {
-            int dataSize = data.Count;
+            int dataSize = data.Size;
             CheckRangeFromTo(from, to, dataSize);
-            if (dataSize != weights.Count) throw new ArgumentException("from=" + from + ", to=" + to + ", data.Count=" + dataSize + ", weights.Count=" + weights.Count);
+            if (dataSize != weights.Size) throw new ArgumentException("from=" + from + ", to=" + to + ", data.Size=" + dataSize + ", weights.Size=" + weights.Size);
 
             // read current values
             double sum = inOut[0];
@@ -477,7 +478,7 @@ namespace Cern.Jet.Stat
             inOut[1] = sumOfSquares;
 
             // At this point of return the following postcondition holds:
-            // data.Count-from elements have been consumed by this call.
+            // data.Size-from elements have been consumed by this call.
         }
 
         /// <summary>
@@ -498,7 +499,7 @@ namespace Cern.Jet.Stat
         /// <param name="mean"></param>
         /// <param name="standardDeviation"></param>
         /// <returns></returns>
-        public static double Kurtosis(List<Double> data, double mean, double standardDeviation)
+        public static double Kurtosis(DoubleArrayList data, double mean, double standardDeviation)
         {
             return Kurtosis(Moment(data, 4, mean), standardDeviation);
         }
@@ -510,9 +511,9 @@ namespace Cern.Jet.Stat
         /// <param name="data"></param>
         /// <param name="mean"></param>
         /// <returns></returns>
-        public static double Lag1(List<Double> data, double mean)
+        public static double Lag1(DoubleArrayList data, double mean)
         {
-            int size = data.Count;
+            int size = data.Size;
             double[] elements = data.ToArray();
             double r1;
             double q = 0;
@@ -535,9 +536,9 @@ namespace Cern.Jet.Stat
         /// </summary>
         /// <param name="data"></param>
         /// <returns></returns>
-        public static double Max(List<Double> data)
+        public static double Max(DoubleArrayList data)
         {
-            int size = data.Count;
+            int size = data.Size;
             if (size == 0) throw new ArgumentException();
 
             double[] elements = data.ToArray();
@@ -556,9 +557,9 @@ namespace Cern.Jet.Stat
         /// </summary>
         /// <param name="data"></param>
         /// <returns></returns>
-        public static double Mean(List<Double> data)
+        public static double Mean(DoubleArrayList data)
         {
-            return Sum(data) / data.Count;
+            return Sum(data) / data.Size;
         }
 
         /// <summary>
@@ -568,10 +569,10 @@ namespace Cern.Jet.Stat
         /// <param name="data"></param>
         /// <param name="mean"></param>
         /// <returns></returns>
-        public static double MeanDeviation(List<Double> data, double mean)
+        public static double MeanDeviation(DoubleArrayList data, double mean)
         {
             double[] elements = data.ToArray();
-            int size = data.Count;
+            int size = data.Size;
             double sum = 0;
             for (int i = size; --i >= 0;) sum += System.Math.Abs(elements[i] - mean);
             return sum / size;
@@ -582,12 +583,12 @@ namespace Cern.Jet.Stat
         /// </summary>
         /// <param name="sortedData">the data sequence; <b>must be sorted ascending</b>.</param>
         /// <returns></returns>
-        public static double Median(List<Double> sortedData)
+        public static double Median(DoubleArrayList sortedData)
         {
             return Quantile(sortedData, 0.5);
             /*
             double[] sortedElements = sortedData.ToArray();
-            int n = sortedData.Count;
+            int n = sortedData.Size;
             int lhs = (n - 1) / 2 ;
             int rhs = n / 2 ;
 
@@ -606,9 +607,9 @@ namespace Cern.Jet.Stat
         /// </summary>
         /// <param name="data"></param>
         /// <returns></returns>
-        public static double Min(List<Double> data)
+        public static double Min(DoubleArrayList data)
         {
-            int size = data.Count;
+            int size = data.Size;
             if (size == 0) throw new ArgumentException();
 
             double[] elements = data.ToArray();
@@ -663,9 +664,9 @@ namespace Cern.Jet.Stat
         /// <param name="k"></param>
         /// <param name="c"></param>
         /// <returns></returns>
-        public static double Moment(List<Double> data, int k, double c)
+        public static double Moment(DoubleArrayList data, int k, double c)
         {
-            return SumOfPowerDeviations(data, k, c) / data.Count;
+            return SumOfPowerDeviations(data, k, c) / data.Size;
         }
 
         /// <summary>
@@ -717,9 +718,9 @@ namespace Cern.Jet.Stat
         /// </summary>
         /// <param name="data"></param>
         /// <returns></returns>
-        public static double Product(List<Double> data)
+        public static double Product(DoubleArrayList data)
         {
-            int size = data.Count;
+            int size = data.Size;
             double[] elements = data.ToArray();
 
             double product = 1;
@@ -735,10 +736,10 @@ namespace Cern.Jet.Stat
         /// <param name="sortedData">the data sequence; <b>must be sorted ascending</b>.</param>
         /// <param name="phi">the percentage; must satisfy <tt>0 &lt;= phi &lt;= 1</tt>.</param>
         /// <returns></returns>
-        public static double Quantile(List<Double> sortedData, double phi)
+        public static double Quantile(DoubleArrayList sortedData, double phi)
         {
             double[] sortedElements = sortedData.ToArray();
-            int n = sortedData.Count;
+            int n = sortedData.Size;
 
             double index = phi * (n - 1);
             int lhs = (int)index;
@@ -766,9 +767,9 @@ namespace Cern.Jet.Stat
         /// <param name="sortedList">the list to be searched (must be sorted ascending).</param>
         /// <param name="element">the element to search for.</param>
         /// <returns>the percentage <tt>phi</tt> of elements <tt>&lt;= element</tt> (<tt>0.0 &lt;= phi &lt;= 1.0)</tt>.</returns>
-        public static double QuantileInverse(List<Double> sortedList, double element)
+        public static double QuantileInverse(DoubleArrayList sortedList, double element)
         {
-            return RankInterpolated(sortedList, element) / sortedList.Count;
+            return RankInterpolated(sortedList, element) / sortedList.Size;
         }
 
         /// <summary>
@@ -778,10 +779,10 @@ namespace Cern.Jet.Stat
         /// <param name="sortedData">the data sequence; <b>must be sorted ascending</b>.</param>
         /// <param name="percentages">the percentages for which quantiles are to be computed.  Each percentage must be in the interval <tt>[0.0,1.0]</tt>.</param>
         /// <returns>the quantiles.</returns>
-        public static List<Double> Quantiles(List<Double> sortedData, List<Double> percentages)
+        public static DoubleArrayList Quantiles(DoubleArrayList sortedData, DoubleArrayList percentages)
         {
-            int s = percentages.Count;
-            List<Double> quantiles = new List<Double>(s);
+            int s = percentages.Size;
+            DoubleArrayList quantiles = new DoubleArrayList(s);
 
             for (int i = 0; i < s; i++)
             {
@@ -801,7 +802,7 @@ namespace Cern.Jet.Stat
         /// <param name="sortedList">the list to be searched (must be sorted ascending).</param>
         /// <param name="element">the element to search for.</param>
         /// <returns>the rank of the element.</returns>
-        public static double RankInterpolated(List<Double> sortedList, double element)
+        public static double RankInterpolated(DoubleArrayList sortedList, double element)
         {
             int index = sortedList.BinarySearch(element);
 
@@ -809,14 +810,14 @@ namespace Cern.Jet.Stat
             { // element found
               // skip to the right over multiple occurances of element.
                 int to1 = index + 1;
-                int s = sortedList.Count;
+                int s = sortedList.Size;
                 while (to1 < s && sortedList[to1] == element) to1++;
                 return to1;
             }
 
             // element not found
             int insertionPoint = -index - 1;
-            if (insertionPoint == 0 || insertionPoint == sortedList.Count) return insertionPoint;
+            if (insertionPoint == 0 || insertionPoint == sortedList.Size) return insertionPoint;
 
             double from = sortedList[insertionPoint - 1];
             double to = sortedList[insertionPoint];
@@ -865,9 +866,9 @@ namespace Cern.Jet.Stat
         /// <param name="mean"></param>
         /// <param name="sampleVariance"></param>
         /// <returns></returns>
-        public static double SampleKurtosis(List<Double> data, double mean, double sampleVariance)
+        public static double SampleKurtosis(DoubleArrayList data, double mean, double sampleVariance)
         {
-            return SampleKurtosis(data.Count, Moment(data, 4, mean), sampleVariance);
+            return SampleKurtosis(data.Size, Moment(data, 4, mean), sampleVariance);
         }
 
         /// <summary>
@@ -911,9 +912,9 @@ namespace Cern.Jet.Stat
         /// <param name="mean"></param>
         /// <param name="sampleVariance"></param>
         /// <returns></returns>
-        public static double SampleSkew(List<Double> data, double mean, double sampleVariance)
+        public static double SampleSkew(DoubleArrayList data, double mean, double sampleVariance)
         {
-            return SampleSkew(data.Count, Moment(data, 3, mean), sampleVariance);
+            return SampleSkew(data.Size, Moment(data, 3, mean), sampleVariance);
         }
 
         /// <summary>
@@ -982,10 +983,10 @@ namespace Cern.Jet.Stat
         /// <param name="data"></param>
         /// <param name="mean"></param>
         /// <returns></returns>
-        public static double SampleVariance(List<Double> data, double mean)
+        public static double SampleVariance(DoubleArrayList data, double mean)
         {
             double[] elements = data.ToArray();
-            int size = data.Count;
+            int size = data.Size;
             double sum = 0;
             // find the sum of the squares 
             for (int i = size; --i >= 0;)
@@ -1028,7 +1029,7 @@ namespace Cern.Jet.Stat
         /// <param name="mean"></param>
         /// <param name="standardDeviation"></param>
         /// <returns></returns>
-        public static double Skew(List<Double> data, double mean, double standardDeviation)
+        public static double Skew(DoubleArrayList data, double mean, double standardDeviation)
         {
             return Skew(Moment(data, 3, mean), standardDeviation);
         }
@@ -1065,16 +1066,16 @@ namespace Cern.Jet.Stat
         /// <param name="sortedList">the list to be partitioned (must be sorted ascending).</param>
         /// <param name="splitters">the points at which the list shall be partitioned (must be sorted ascending).</param>
         /// <returns>the sublists (an array with <tt>length == splitters.size() + 1</tt>.  Each sublist is returned sorted ascending.</returns>
-        public static List<Double>[] Split(List<Double> sortedList, List<Double> splitters)
+        public static DoubleArrayList[] Split(DoubleArrayList sortedList, DoubleArrayList splitters)
         {
             // assertion: data is sorted ascending.
             // assertion: splitValues is sorted ascending.
-            int noOfBins = splitters.Count + 1;
+            int noOfBins = splitters.Size + 1;
 
-            List<Double>[] bins = new List<Double>[noOfBins];
-            for (int j = noOfBins; --j >= 0;) bins[j] = new List<Double>();
+            DoubleArrayList[] bins = new DoubleArrayList[noOfBins];
+            for (int j = noOfBins; --j >= 0;) bins[j] = new DoubleArrayList();
 
-            int listSize = sortedList.Count;
+            int listSize = sortedList.Size;
             int nextStart = 0;
             int i = 0;
             while (nextStart < listSize && i < noOfBins - 1)
@@ -1085,7 +1086,7 @@ namespace Cern.Jet.Stat
                 { // splitValue not found
                     int insertionPosition = -index - 1;
                     //bins[i].addAllOfFromTo(sortedList, nextStart, insertionPosition - 1);
-                    bins[i].AddRange(sortedList.GetRange(nextStart, insertionPosition - 1));
+                    bins[i].AddAllOfFromTo(sortedList, nextStart, insertionPosition - 1);
                     nextStart = insertionPosition;
                 }
                 else
@@ -1098,15 +1099,15 @@ namespace Cern.Jet.Stat
                     } while (index >= 0 && sortedList[index] == splitValue);
 
                     //bins[i].addAllOfFromTo(sortedList, nextStart, index);
-                    bins[i].AddRange(sortedList.GetRange(nextStart, index));
+                    bins[i].AddAllOfFromTo(sortedList, nextStart, index);
                     nextStart = index + 1;
                 }
                 i++;
             }
 
             // now fill the remainder
-            //bins[noOfBins - 1].addAllOfFromTo(sortedList, nextStart, sortedList.Count - 1);
-            bins[noOfBins - 1].AddRange(sortedList.GetRange(nextStart, sortedList.Count - 1));
+            //bins[noOfBins - 1].addAllOfFromTo(sortedList, nextStart, sortedList.Size - 1);
+            bins[noOfBins - 1].AddAllOfFromTo(sortedList, nextStart, sortedList.Size - 1);
 
             return bins;
         }
@@ -1140,10 +1141,10 @@ namespace Cern.Jet.Stat
         /// <param name="data"></param>
         /// <param name="mean"></param>
         /// <param name="standardDeviation"></param>
-        public static void Standardize(List<Double> data, double mean, double standardDeviation)
+        public static void Standardize(DoubleArrayList data, double mean, double standardDeviation)
         {
             double[] elements = data.ToArray();
-            for (int i = data.Count; --i >= 0;) elements[i] = (elements[i] - mean) / standardDeviation;
+            for (int i = data.Size; --i >= 0;) elements[i] = (elements[i] - mean) / standardDeviation;
         }
 
         /// <summary>
@@ -1152,7 +1153,7 @@ namespace Cern.Jet.Stat
         /// </summary>
         /// <param name="data"></param>
         /// <returns></returns>
-        public static double Sum(List<Double> data)
+        public static double Sum(DoubleArrayList data)
         {
             return SumOfPowerDeviations(data, 1, 0.0);
         }
@@ -1165,7 +1166,7 @@ namespace Cern.Jet.Stat
         /// <param name="from">the index of the first data element (inclusive).</param>
         /// <param name="to">the index of the last data element (inclusive).</param>
         /// <returns></returns>
-        public static double SumOfInversions(List<Double> data, int from, int to)
+        public static double SumOfInversions(DoubleArrayList data, int from, int to)
         {
             return SumOfPowerDeviations(data, -1, 0.0, from, to);
         }
@@ -1177,7 +1178,7 @@ namespace Cern.Jet.Stat
         /// <param name="from">the index of the first data element (inclusive).</param>
         /// <param name="to">the index of the last data element (inclusive).</param>
         /// <returns></returns>
-        public static double SumOfLogarithms(List<Double> data, int from, int to)
+        public static double SumOfLogarithms(DoubleArrayList data, int from, int to)
         {
             double[] elements = data.ToArray();
             double logsum = 0;
@@ -1192,9 +1193,9 @@ namespace Cern.Jet.Stat
         /// <param name="k"></param>
         /// <param name="c"></param>
         /// <returns></returns>
-        public static double SumOfPowerDeviations(List<Double> data, int k, double c)
+        public static double SumOfPowerDeviations(DoubleArrayList data, int k, double c)
         {
-            return SumOfPowerDeviations(data, k, c, 0, data.Count - 1);
+            return SumOfPowerDeviations(data, k, c, 0, data.Size - 1);
         }
 
         /// <summary>
@@ -1206,7 +1207,7 @@ namespace Cern.Jet.Stat
         /// <param name="from"></param>
         /// <param name="to"></param>
         /// <returns></returns>
-        public static double SumOfPowerDeviations(List<Double> data, int k, double c, int from, int to)
+        public static double SumOfPowerDeviations(DoubleArrayList data, int k, double c, int from, int to)
         {
             double[] elements = data.ToArray();
             double sum = 0;
@@ -1258,7 +1259,7 @@ namespace Cern.Jet.Stat
         /// <param name="data"></param>
         /// <param name="k"></param>
         /// <returns></returns>
-        public static double SumOfPowers(List<Double> data, int k)
+        public static double SumOfPowers(DoubleArrayList data, int k)
         {
             return SumOfPowerDeviations(data, k, 0);
         }
@@ -1281,7 +1282,7 @@ namespace Cern.Jet.Stat
         /// </summary>
         /// <param name="data"></param>
         /// <returns></returns>
-        public static double SumOfSquares(List<Double> data)
+        public static double SumOfSquares(DoubleArrayList data)
         {
             return SumOfPowerDeviations(data, 2, 0.0);
         }
@@ -1294,9 +1295,9 @@ namespace Cern.Jet.Stat
         /// <param name="left">the number of leading elements to trim.</param>
         /// <param name="right">the number of trailing elements to trim.</param>
         /// <returns></returns>
-        public static double TrimmedMean(List<Double> sortedData, double mean, int left, int right)
+        public static double TrimmedMean(DoubleArrayList sortedData, double mean, int left, int right)
         {
-            int N = sortedData.Count;
+            int N = sortedData.Size;
             if (N == 0) throw new ArgumentException("Empty data.");
             if (left + right >= N) throw new ArgumentException("Not enough data.");
 
@@ -1340,10 +1341,10 @@ namespace Cern.Jet.Stat
         /// <param name="data"></param>
         /// <param name="weights"></param>
         /// <returns></returns>
-        public static double WeightedMean(List<Double> data, List<Double> weights)
+        public static double WeightedMean(DoubleArrayList data, DoubleArrayList weights)
         {
-            int size = data.Count;
-            if (size != weights.Count || size == 0) throw new ArgumentException();
+            int size = data.Size;
+            if (size != weights.Size || size == 0) throw new ArgumentException();
 
             double[] elements = data.ToArray();
             double[] theWeights = weights.ToArray();
@@ -1380,9 +1381,9 @@ namespace Cern.Jet.Stat
         /// <param name="left">the number of leading elements to trim.</param>
         /// <param name="right">the number of trailing elements to trim.</param>
         /// <returns></returns>
-        public static double WinsorizedMean(List<Double> sortedData, double mean, int left, int right)
+        public static double WinsorizedMean(DoubleArrayList sortedData, double mean, int left, int right)
         {
-            int N = sortedData.Count;
+            int N = sortedData.Size;
             if (N == 0) throw new ArgumentException("Empty data.");
             if (left + right >= N) throw new ArgumentException("Not enough data.");
 
@@ -1409,9 +1410,9 @@ namespace Cern.Jet.Stat
         /// <param name="data1"></param>
         /// <param name="data2"></param>
         /// <returns></returns>
-        private static double Covariance2(List<Double> data1, List<Double> data2)
+        private static double Covariance2(DoubleArrayList data1, DoubleArrayList data2)
         {
-            int size = data1.Count;
+            int size = data1.Size;
             double mean1 = Descriptive.Mean(data1);
             double mean2 = Descriptive.Mean(data2);
             double covariance = 0.0D;

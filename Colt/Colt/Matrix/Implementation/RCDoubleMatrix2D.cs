@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Cern.Colt.List;
 
 namespace Cern.Colt.Matrix.Implementation
 {
@@ -25,8 +26,8 @@ namespace Cern.Colt.Matrix.Implementation
         /// The elements of the matrix.
         /// </summary>
         
-        public List<int> Indexes { get; protected set; }
-        public List<Double> Values { get; protected set; }
+        public IntArrayList Indexes { get; protected set; }
+        public DoubleArrayList Values { get; protected set; }
         public int[] Starts { get; protected set; }
 
         /// <summary>
@@ -101,8 +102,8 @@ namespace Cern.Colt.Matrix.Implementation
             { // we can hold rows*columns>int.MaxValue cells !
                 if (!"matrix too large".Equals(exc.Message)) throw exc;
             }
-            Indexes = new List<int>();
-            Values = new List<Double>();
+            Indexes = new IntArrayList();
+            Values = new DoubleArrayList();
             Starts = new int[rows + 1];
         }
 
@@ -368,8 +369,8 @@ namespace Cern.Colt.Matrix.Implementation
 
         public void TrimToSize()
         {
-            Indexes.TrimExcess();
-            Values.TrimExcess();
+            Indexes.TrimToSize();
+            Values.TrimToSize();
         }
 
         public override DoubleMatrix1D ZMult(DoubleMatrix1D y, DoubleMatrix1D z, double alpha, double beta, Boolean transposeA)

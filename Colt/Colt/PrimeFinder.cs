@@ -84,7 +84,7 @@ namespace Cern.Colt
         public static int NextPrime(int desiredCapacity)
         {
             int i = Array.BinarySearch(primeCapacities, desiredCapacity);
-            //int i = new cern.colt.list.List<int>(primeCapacities).BinarySearch(desiredCapacity); // for debug only TODO
+            //int i = new cern.colt.list.IntArrayList(primeCapacities).BinarySearch(desiredCapacity); // for debug only TODO
             if (i < 0)
             {
                 // desired capacity not found, choose next prime greater than desired capacity

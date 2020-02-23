@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Cern.Colt.Function;
+using Cern.Colt.List;
 
 namespace Cern.Jet.Stat.Quantile
 {
@@ -115,9 +116,9 @@ namespace Cern.Jet.Stat.Quantile
         /// Adds all values of the specified list to the receiver.
         /// </summary>
         /// <param name="values">the list of which all values shall be added.</param>
-        public void AddAllOf(List<double> values)
+        public void AddAllOf(DoubleArrayList values)
         {
-            AddAllOfFromTo(values, 0, values.Count - 1);
+            AddAllOfFromTo(values, 0, values.Size - 1);
         }
 
         /// <summary>
@@ -126,7 +127,7 @@ namespace Cern.Jet.Stat.Quantile
         /// <param name="values">the list of which elements shall be added.</param>
         /// <param name="from">the index of the first element to be added (inclusive).</param>
         /// <param name="to">the index of the last element to be added (inclusive).</param>
-        public void AddAllOfFromTo(List<double> values, int from, int to)
+        public void AddAllOfFromTo(DoubleArrayList values, int from, int to)
         {
             /*
             // the obvious version, but we can do quicker...
@@ -135,13 +136,13 @@ namespace Cern.Jet.Stat.Quantile
             for (int i=0; i<theSize; ) add(theValues[i++]);
             */
 
-            double[] valuesToAdd = values.ToArray();
+            double[] valuesToAdd = values.Elements;
             int k = this.bufferSet.NumberOfElements;
             int bufferSize = k;
             double[] bufferValues = null;
             if (currentBufferToFill != null)
             {
-                bufferValues = currentBufferToFill.Values.ToArray();
+                bufferValues = currentBufferToFill.Values.Elements;
                 bufferSize = currentBufferToFill.Size;
             }
 
@@ -155,7 +156,7 @@ namespace Cern.Jet.Stat.Quantile
                         NewBuffer();
                         if (!currentBufferToFill.IsAllocated) currentBufferToFill.Allocate();
                         currentBufferToFill.IsSorted = false;
-                        bufferValues = currentBufferToFill.Values.ToArray();
+                        bufferValues = currentBufferToFill.Values.Elements;
                         bufferSize = 0;
                     }
 
@@ -183,8 +184,9 @@ namespace Cern.Jet.Stat.Quantile
         {
             this.totalElementsFilled = 0;
             this.currentBufferToFill = null;
-            if(this.bufferSet != null)
-                this.bufferSet.Clear();
+            //if(this.bufferSet != null)
+            //    this.bufferSet.Clear();
+            this.bufferSet.Clear();
         }
 
         /// <summary>
@@ -243,7 +245,7 @@ namespace Cern.Jet.Stat.Quantile
         /// </summary>
         /// <param name="phis">the quantiles for which elements are to be computed. Each phi must be in the interval [0.0,1.0]. <tt>phis</tt> must be sorted ascending.</param>
         /// <returns>the approximate quantile elements.</returns>
-        public virtual List<double> QuantileElements(List<double> phis)
+        public virtual DoubleArrayList QuantileElements(DoubleArrayList phis)
         {
             /*
             //check parameter
@@ -258,9 +260,9 @@ namespace Cern.Jet.Stat.Quantile
 
             phis = PreProcessPhis(phis);
 
-            long[] triggerPositions = new long[phis.Count];
+            long[] triggerPositions = new long[phis.Size];
             long totalSize = this.bufferSet.TotalSize;
-            for (int i = phis.Count; --i >= 0;)
+            for (int i = phis.Size; --i >= 0;)
             {
                 triggerPositions[i] = Utils.EpsilonCeiling(phis[i] * totalSize) - 1;
             }
@@ -270,10 +272,10 @@ namespace Cern.Jet.Stat.Quantile
             //System.out.println(bufferSet);
 
             DoubleBuffer[] fullBuffers = bufferSet.GetFullOrPartialBuffers();
-            double[] quantileElements = new double[phis.Count];
+            double[] quantileElements = new double[phis.Size];
 
             //do the main work: determine values at given positions in sorted sequence
-            return new List<Double>(bufferSet.GetValuesAtPositions(fullBuffers, triggerPositions));
+            return new DoubleArrayList(bufferSet.GetValuesAtPositions(fullBuffers, triggerPositions));
         }
 
         /// <summary>
@@ -333,7 +335,7 @@ namespace Cern.Jet.Stat.Quantile
         /// </summary>
         /// <param name="phis"></param>
         /// <returns></returns>
-        protected List<Double> PreProcessPhis(List<Double> phis)
+        protected DoubleArrayList PreProcessPhis(DoubleArrayList phis)
         {
             return phis;
         }

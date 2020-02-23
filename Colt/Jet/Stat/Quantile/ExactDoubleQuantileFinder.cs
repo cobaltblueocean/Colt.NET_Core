@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Cern.Colt.Function;
+using Cern.Colt.List;
 
 namespace Cern.Jet.Stat.Quantile
 {
@@ -15,7 +16,7 @@ namespace Cern.Jet.Stat.Quantile
     {
 
         #region Local Variables
-        private List<Double> buffer;
+        private DoubleArrayList buffer;
         private Boolean isSorted;
         #endregion
 
@@ -23,7 +24,7 @@ namespace Cern.Jet.Stat.Quantile
         /// <summary>
         /// Gets or sets the buffer
         /// </summary>
-        public List<Double> Buffer
+        public DoubleArrayList Buffer
         {
             get { return buffer; }
             set { buffer = value; }
@@ -47,7 +48,7 @@ namespace Cern.Jet.Stat.Quantile
         {
             get
             {
-                return buffer.Count;
+                return buffer.Size;
             }
         }
 
@@ -59,7 +60,7 @@ namespace Cern.Jet.Stat.Quantile
         /// </summary>
         public ExactDoubleQuantileFinder()
         {
-            this.buffer = new List<Double>(0);
+            this.buffer = new DoubleArrayList(0);
             this.Clear();
         }
         #endregion
@@ -79,9 +80,9 @@ namespace Cern.Jet.Stat.Quantile
         /// Adds all values of the specified list to the receiver.
         /// </summary>
         /// <param name="values">the list of which all values shall be added.</param>
-        public void AddAllOf(List<double> values)
+        public void AddAllOf(DoubleArrayList values)
         {
-            AddAllOfFromTo(values, 0, values.Count - 1);
+            AddAllOfFromTo(values, 0, values.Size - 1);
         }
 
         /// <summary>
@@ -90,10 +91,10 @@ namespace Cern.Jet.Stat.Quantile
         /// <param name="values">the list of which elements shall be added.</param>
         /// <param name="from">the index of the first element to be added (inclusive).</param>
         /// <param name="to">the index of the last element to be added (inclusive).</param>
-        public void AddAllOfFromTo(List<double> values, int from, int to)
+        public void AddAllOfFromTo(DoubleArrayList values, int from, int to)
         {
             //buffer.AddAllOfFromTo(values, from, to);
-            buffer.AddRange(values.GetRange(from, to)); 
+            buffer.AddAllOfFromTo(values, from, to); 
 
             this.isSorted = false;
         }
@@ -104,7 +105,7 @@ namespace Cern.Jet.Stat.Quantile
         public void Clear()
         {
             this.buffer.Clear();
-            this.buffer.TrimExcess();
+            this.buffer.TrimToSize();
             this.isSorted = false;
         }
 
@@ -115,7 +116,7 @@ namespace Cern.Jet.Stat.Quantile
         public override Object Clone()
         {
             ExactDoubleQuantileFinder copy = (ExactDoubleQuantileFinder)base.Clone();
-            if (this.buffer != null) copy.buffer = copy.buffer.ToList();
+            if (this.buffer != null) copy.buffer = this.buffer.Copy();
             return copy;
         }
 
@@ -161,7 +162,7 @@ namespace Cern.Jet.Stat.Quantile
         /// </summary>
         /// <param name="phis">the quantiles for which elements are to be computedd Each phi must be in the interval [0.0,1.0]d <i>phis</i> must be sorted ascending.</param>
         /// <returns>the exact quantile elements.</returns>
-        public List<double> QuantileElements(List<double> phis)
+        public DoubleArrayList QuantileElements(DoubleArrayList phis)
         {
             this.Sort();
             return Cern.Jet.Stat.Descriptive.Quantiles(this.buffer, phis);
@@ -172,7 +173,7 @@ namespace Cern.Jet.Stat.Quantile
                 int rank=(int)Utils.epsilonCeiling(phis.Get(i)*bufferSize) -1;
                 quantileElements[i]=buffer.Get(rank);
             }
-            return new List<Double>(quantileElements);
+            return new DoubleArrayList(quantileElements);
             */
         }
 

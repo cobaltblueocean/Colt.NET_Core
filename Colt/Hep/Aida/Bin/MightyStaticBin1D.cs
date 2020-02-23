@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Runtime.CompilerServices;
 using Cern.Jet.Stat;
+using Cern.Colt.List;
 
 namespace Cern.Hep.Aida.Bin
 {
@@ -114,7 +115,7 @@ namespace Cern.Hep.Aida.Bin
         /// <param name="from">the index of the first element to be added (inclusive).</param>
         /// <param name="to">the index of the last element to be added (inclusive).</param>
         [MethodImpl(MethodImplOptions.Synchronized)]
-        public override void AddAllOfFromTo(List<Double> list, int from, int to)
+        public override void AddAllOfFromTo(DoubleArrayList list, int from, int to)
         {
             base.AddAllOfFromTo(list, from, to);
 
@@ -265,7 +266,7 @@ namespace Cern.Hep.Aida.Bin
             if (!HasSumOfPowers(k)) return Double.NaN;
 
             int maxOrder = System.Math.Min(k, GetMaxOrderForSumOfPowers());
-            List<Double> sumOfPows = new List<Double>(maxOrder + 1);
+            DoubleArrayList sumOfPows = new DoubleArrayList(maxOrder + 1);
             sumOfPows.Add(Size);
             sumOfPows.Add(Sum);
             sumOfPows.Add(SumOfSquares);

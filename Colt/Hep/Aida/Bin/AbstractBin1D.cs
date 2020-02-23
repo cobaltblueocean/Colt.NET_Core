@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Cern.Jet.Stat;
 using System.Runtime.CompilerServices;
+using Cern.Colt.List;
 
 namespace Cern.Hep.Aida.Bin
 {
@@ -56,9 +57,9 @@ namespace Cern.Hep.Aida.Bin
         /// </summary>
         /// <param name="list">the list of which all values shall be added.</param>
         [MethodImpl(MethodImplOptions.Synchronized)]
-        public virtual void AddAllOf(List<Double> list)
+        public virtual void AddAllOf(DoubleArrayList list)
         {
-            AddAllOfFromTo(list, 0, list.Count - 1);
+            AddAllOfFromTo(list, 0, list.Size - 1);
         }
 
         /// <summary>
@@ -69,7 +70,7 @@ namespace Cern.Hep.Aida.Bin
         /// <param name="from">the index of the first element to be added (inclusive).</param>
         /// <param name="to">the index of the last element to be added (inclusive).</param>
         [MethodImpl(MethodImplOptions.Synchronized)]
-        public virtual void AddAllOfFromTo(List<Double> list, int from, int to)
+        public virtual void AddAllOfFromTo(DoubleArrayList list, int from, int to)
         {
             for (int i = from; i <= to; i++) Add(list[i]);
         }

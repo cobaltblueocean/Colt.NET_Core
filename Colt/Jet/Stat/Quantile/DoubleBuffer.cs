@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Cern.Colt.List;
 
 namespace Cern.Jet.Stat.Quantile
 {
@@ -13,7 +14,7 @@ namespace Cern.Jet.Stat.Quantile
     {
 
         #region Local Variables
-        protected List<Double> values;
+        protected DoubleArrayList values;
         protected Boolean isSorted;
         #endregion
 
@@ -25,7 +26,7 @@ namespace Cern.Jet.Stat.Quantile
         {
             get
             {
-                return values.Count == 0;
+                return values.Size == 0;
             }
         }
 
@@ -36,7 +37,7 @@ namespace Cern.Jet.Stat.Quantile
         {
             get
             {
-                return values.Count == k;
+                return values.Size == k;
             }
         }
 
@@ -47,7 +48,7 @@ namespace Cern.Jet.Stat.Quantile
         {
             get
             {
-                return values.Count;
+                return values.Size;
             }
         }
 
@@ -59,7 +60,7 @@ namespace Cern.Jet.Stat.Quantile
         #endregion
 
         #region Property
-        public List<Double> Values
+        public DoubleArrayList Values
         {
             get { return values; }
         }
@@ -73,7 +74,7 @@ namespace Cern.Jet.Stat.Quantile
         /// <param name="k"></param>
         public DoubleBuffer(int k) : base(k)
         {
-            this.values = new List<Double>(0);
+            this.values = new DoubleArrayList(0);
             this.isSorted = false;
         }
 
@@ -114,7 +115,7 @@ namespace Cern.Jet.Stat.Quantile
             return "k=" + this.k +
                     ", w=" + Weight.ToString() +
                     ", l=" + Level.ToString() +
-                    ", size=" + values.Count;
+                    ", size=" + values.Size;
             //", v=" + values.ToString();
         }
         #endregion
@@ -139,8 +140,19 @@ namespace Cern.Jet.Stat.Quantile
         /// <param name="to"></param>
         public void AddAllOfFromTo(List<Double> elements, int from, int to)
         {
+            AddAllOfFromTo(new DoubleArrayList(elements), from, to);
+        }
+
+        /// <summary>
+        /// Adds a value to the receiver.
+        /// </summary>
+        /// <param name="elements"></param>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        public void AddAllOfFromTo(DoubleArrayList elements, int from, int to)
+        {
             if (!isAllocated) Allocate(); // lazy buffer allocation can safe memory.
-            values.AddRange(elements.GetRange(from, to)); //addAllOfFromTo(elements, from, to);
+            values.AddAllOfFromTo(elements, from, to);
             this.isSorted = false;
         }
 
@@ -151,7 +163,7 @@ namespace Cern.Jet.Stat.Quantile
         public override Object Clone()
         {
             DoubleBuffer copy = (DoubleBuffer)base.Clone();
-            if (this.values != null) copy.values = this.values.ToList();
+            if (this.values != null) copy.values = this.values;
             return copy;
         }
 

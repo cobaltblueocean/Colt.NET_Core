@@ -39,7 +39,7 @@ namespace Colt.Tests
             {
                 using (StreamWriter writer = new StreamWriter(filename))
                 {
-                    var argv = new String[] { "50", "L" };
+                    var argv = new String[] { "100", "L" };
                     /*
                      * Get the number of examples from the first argument
                      */
@@ -120,8 +120,6 @@ namespace Colt.Tests
                     {
                         double percent = ((double)i) * 0.01;
                         double quantile = qAccum.Quantile(percent);
-
-                        var test_quantile = Quartiles(new double[] { percent });
 
                         writer.WriteLine(percent.ToString("0.00") + "  " + quantile + ",  " + dbin.Quantile(percent) + ",  " + (dbin.Quantile(percent) - quantile));
                         i = i + step;

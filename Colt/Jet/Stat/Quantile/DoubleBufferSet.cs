@@ -278,7 +278,7 @@ namespace Cern.Jet.Stat.Quantile
 
             DoubleBuffer outputBuffer = buffers[0];
             outputBuffer.Values.Clear();
-            outputBuffer.Values.AddRange(outputValues);
+            outputBuffer.Values.SetElements(outputValues);
             outputBuffer.Weight =W;
 
             return outputBuffer;
@@ -314,7 +314,7 @@ namespace Cern.Jet.Stat.Quantile
             {
                 for (int w = buffers[i].Weight; --w >= 0;)
                 {
-                    if (!(buffers[i].Values.ForEach<double>(procedure))) return false;
+                    if (!(buffers[i].Values.ForEach(procedure))) return false;
                 }
             }
             return true;

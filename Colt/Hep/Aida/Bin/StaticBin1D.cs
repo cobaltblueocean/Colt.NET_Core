@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Runtime.CompilerServices;
 using Cern.Jet.Stat;
+using Cern.Colt.List;
+
 namespace Cern.Hep.Aida.Bin
 {
     public class StaticBin1D : AbstractBin1D
@@ -117,7 +119,7 @@ namespace Cern.Hep.Aida.Bin
         [MethodImpl(MethodImplOptions.Synchronized)]
         public override void Add(double element)
         {
-            AddAllOf(new List<Double>(new double[] { element }));
+            this.AddAllOf(new DoubleArrayList(new double[] { element }));
         }
 
         /// <summary>
@@ -137,7 +139,7 @@ namespace Cern.Hep.Aida.Bin
         ///// </summary>
         ///// <param name="list">the list of which all values shall be added.</param>
         //[MethodImpl(MethodImplOptions.Synchronized)]
-        //public override void AddAllOf(List<Double> list)
+        //public override void AddAllOf(DoubleArrayList list)
         //{
         //    AddAllOfFromTo(list, 0, list.Count - 1);
         //}
@@ -149,7 +151,7 @@ namespace Cern.Hep.Aida.Bin
         /// <param name="from">the index of the first element to be added (inclusive).</param>
         /// <param name="to">the index of the last element to be added (inclusive).</param>
         [MethodImpl(MethodImplOptions.Synchronized)]
-        public override void AddAllOfFromTo(List<Double> list, int from, int to)
+        public override void AddAllOfFromTo(DoubleArrayList list, int from, int to)
         {
             //if (this.arguments == null) setUpCache();
             lock(arguments) {

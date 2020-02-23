@@ -13,6 +13,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Cern.Colt.Function;
+using Cern.Colt.List;
 
 namespace Cern.Colt
 {
@@ -1048,7 +1049,7 @@ namespace Cern.Colt
 
             /*
             Console.WriteLine("splitter="+splitter);
-            Console.WriteLine("before="+new List<int>(list));
+            Console.WriteLine("before="+new IntArrayList(list));
             int head = from;
             int trail = to;
             int element;
@@ -1066,14 +1067,14 @@ namespace Cern.Colt
                 }
                 head++;
                 trail--;
-                Console.WriteLine("after ="+new List<int>(list)+", head="+head);
+                Console.WriteLine("after ="+new IntArrayList(list)+", head="+head);
             }
             */
 
 
             /*
             //Console.WriteLine("splitter="+splitter);
-            //Console.WriteLine("before="+new List<int>(list));
+            //Console.WriteLine("before="+new IntArrayList(list));
             to++;
             //int head = from;
             int element;
@@ -1094,7 +1095,7 @@ namespace Cern.Colt
                     //}
                     //head++;
                 }
-                //Console.WriteLine("after ="+new List<int>(list)+", head="+head);
+                //Console.WriteLine("after ="+new IntArrayList(list)+", head="+head);
             }
             */
 
@@ -1115,7 +1116,7 @@ namespace Cern.Colt
                         list[trail--] = oldHead;
                     }
                 }
-                //Console.WriteLine(new List<int>(list));
+                //Console.WriteLine(new IntArrayList(list));
 
             }
             */
@@ -1254,7 +1255,7 @@ namespace Cern.Colt
         /// <param name="to"></param>
         /// <param name="splitters"></param>
         /// <param name="splitIndexes"></param>
-        public static void Partition(List<Double> list, int from, int to, List<Double> splitters, List<int> splitIndexes)
+        public static void Partition(List<Double> list, int from, int to, List<Double> splitters, IntArrayList splitIndexes)
         {
             Partition(list.ToArray(), from, to, splitters.ToArray(), 0, splitters.Count - 1, splitIndexes.ToArray());
         }
@@ -1267,7 +1268,7 @@ namespace Cern.Colt
         /// <param name="to"></param>
         /// <param name="splitters"></param>
         /// <param name="splitIndexes"></param>
-        public static void Partition(List<int> list, int from, int to, List<int> splitters, List<int> splitIndexes)
+        public static void Partition(IntArrayList list, int from, int to, IntArrayList splitters, IntArrayList splitIndexes)
         {
             Partition(list.ToArray(), from, to, splitters.ToArray(), 0, splitters.Count - 1, splitIndexes.ToArray());
         }

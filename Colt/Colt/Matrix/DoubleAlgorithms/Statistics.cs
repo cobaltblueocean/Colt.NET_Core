@@ -13,6 +13,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Cern.Colt.Function;
+using Cern.Colt.List;
 using Cern.Hep.Aida.Bin;
 using Cern.Colt.Matrix.Implementation;
 using F1 = Cern.Jet.Math.Functions.DoubleFunctions;
@@ -100,12 +101,12 @@ namespace Cern.Colt.Matrix.DoubleAlgorithms
         {
             var bin = new DynamicBin1D();
             var elements = new double[matrix.Rows];
-            var values = elements.ToList();
+            var values = elements;
             for (int column = matrix.Columns; --column >= 0;)
             {
                 matrix.ViewColumn(column).ToArray(ref elements); // copy column into values
                 bin.Clear();
-                bin.AddAllOf(values);
+                bin.AddAllOf(new DoubleArrayList(values));
                 for (int i = aggr.Length; --i >= 0;)
                 {
                     result[i, column] = aggr[i](bin);
@@ -170,7 +171,7 @@ namespace Cern.Colt.Matrix.DoubleAlgorithms
         public static DynamicBin1D Bin(DoubleMatrix1D vector)
         {
             DynamicBin1D bin = new DynamicBin1D();
-            bin.AddAllOf(DoubleFactory1D.Dense.ToList(vector));
+            bin.AddAllOf(new DoubleArrayList(DoubleFactory1D.Dense.ToList(vector).ToArray()));
             return bin;
         }
 
@@ -289,10 +290,10 @@ namespace Cern.Colt.Matrix.DoubleAlgorithms
         {
             if (x.Size != y.Size || y.Size != weights.Size) throw new ArgumentException("vectors must have same size");
 
-            double epsilon = 1.0E-9;
-            List<Double> distinct = new List<Double>();
-            double[] vals = new double[x.Size];
-            List<Double> sorted = new List<Double>(vals);
+            var epsilon = 1.0E-9;
+            var distinct = new DoubleArrayList();
+            var vals = new double[x.Size];
+            var sorted = new DoubleArrayList(vals);
 
             // compute distinct values of x
             vals = x.ToArray(); // copy x into vals
@@ -300,7 +301,7 @@ namespace Cern.Colt.Matrix.DoubleAlgorithms
             Cern.Jet.Stat.Descriptive.Frequencies(sorted, distinct, null);
             // since bins are right-open [from,to) we need an additional dummy bin so that the last distinct value does not fall into the overflow bin
             if (distinct.Count > 0) distinct.Add(distinct[distinct.Count - 1] + epsilon);
-            distinct.TrimExcess();
+            distinct.TrimToSize();
             Hep.Aida.IAxis xaxis = new Hep.Aida.Ref.VariableAxis(distinct.ToArray());
 
             // compute distinct values of y
@@ -309,7 +310,7 @@ namespace Cern.Colt.Matrix.DoubleAlgorithms
             Cern.Jet.Stat.Descriptive.Frequencies(sorted, distinct, null);
             // since bins are right-open [from,to) we need an additional dummy bin so that the last distinct value does not fall into the overflow bin
             if (distinct.Count > 0) distinct.Add(distinct[distinct.Count - 1] + epsilon);
-            distinct.TrimExcess();
+            distinct.TrimToSize();
             Hep.Aida.IAxis yaxis = new Hep.Aida.Ref.VariableAxis(distinct.ToArray());
 
             Hep.Aida.IHistogram2D histo = new Hep.Aida.Ref.Histogram2D("Cube", xaxis, yaxis);
@@ -334,10 +335,10 @@ namespace Cern.Colt.Matrix.DoubleAlgorithms
         {
             if (x.Size != y.Size || x.Size != z.Size || x.Size != weights.Size) throw new ArgumentException("vectors must have same size");
 
-            double epsilon = 1.0E-9;
-            List<Double> distinct = new List<Double>();
-            double[] vals = new double[x.Size];
-            List<Double> sorted = new List<Double>(vals);
+            var epsilon = 1.0E-9;
+            var distinct = new DoubleArrayList();
+            var vals = new double[x.Size];
+            var sorted = new DoubleArrayList(vals);
 
             // compute distinct values of x
             vals = x.ToArray(); // copy x into vals
@@ -345,7 +346,7 @@ namespace Cern.Colt.Matrix.DoubleAlgorithms
             Cern.Jet.Stat.Descriptive.Frequencies(sorted, distinct, null);
             // since bins are right-open [from,to) we need an additional dummy bin so that the last distinct value does not fall into the overflow bin
             if (distinct.Count > 0) distinct.Add(distinct[distinct.Count - 1] + epsilon);
-            distinct.TrimExcess();
+            distinct.TrimToSize();
             Hep.Aida.IAxis xaxis = new Hep.Aida.Ref.VariableAxis(distinct.ToArray());
 
             // compute distinct values of y
@@ -354,7 +355,7 @@ namespace Cern.Colt.Matrix.DoubleAlgorithms
             Cern.Jet.Stat.Descriptive.Frequencies(sorted, distinct, null);
             // since bins are right-open [from,to) we need an additional dummy bin so that the last distinct value does not fall into the overflow bin
             if (distinct.Count > 0) distinct.Add(distinct[distinct.Count - 1] + epsilon);
-            distinct.TrimExcess();
+            distinct.TrimToSize();
             Hep.Aida.IAxis yaxis = new Hep.Aida.Ref.VariableAxis(distinct.ToArray());
 
             // compute distinct values of z
@@ -363,7 +364,7 @@ namespace Cern.Colt.Matrix.DoubleAlgorithms
             Cern.Jet.Stat.Descriptive.Frequencies(sorted, distinct, null);
             // since bins are right-open [from,to) we need an additional dummy bin so that the last distinct value does not fall into the overflow bin
             if (distinct.Count > 0) distinct.Add(distinct[distinct.Count - 1] + epsilon);
-            distinct.TrimExcess();
+            distinct.TrimToSize();
             Hep.Aida.IAxis zaxis = new Hep.Aida.Ref.VariableAxis(distinct.ToArray());
 
             Hep.Aida.IHistogram3D histo = new Hep.Aida.Ref.Histogram3D("Cube", xaxis, yaxis, zaxis);

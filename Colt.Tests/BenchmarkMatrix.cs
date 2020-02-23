@@ -356,7 +356,7 @@ namespace Colt.Tests
         /// <summary>
         protected static String commands()
         {
-            return "dgemm, dgemv, pow, assign, assignGetSet, assignGetSetQuick, assignLog, assignPlusMult, elementwiseMult, elementwiseMultB, SOR5, SOR8, LUDecompose, LUSolve";
+            return "[dgemm, dense, 2, 2, 0.99, false, true, 5, 5, 50, 100, 300, 500, 1000]";
         }
 
         #region Test Class Constructors

@@ -14,6 +14,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Cern.Colt.Matrix.Implementation;
+using Cern.Colt.List;
 
 namespace Cern.Colt.Matrix
 {
@@ -485,13 +486,13 @@ namespace Cern.Colt.Matrix
         /// This implementation fill like: <i>for (slice = 0..Slices-1) for (row = 0..Rows-1) for (column = 0..colums-1) do ..d </i>.
         /// However, subclasses are free to us any other order, even an order that may change over time as cell values are changed.
         /// (Of course, result lists indexes are guaranteed to correspond to the same cell).
-        /// For an example, see {@link ObjectMatrix2D#getNonZeros(List<int>,List<int>,List<Object>)}.
+        /// For an example, see {@link ObjectMatrix2D#getNonZeros(IntArrayList,IntArrayList,List<Object>)}.
         /// </summary>
         /// <param name="sliceList">the list to be filled with slice indexes, can have any size.</param>
         /// <param name="rowList">the list to be filled with row indexes, can have any size.</param>
         /// <param name="columnList">the list to be filled with column indexes, can have any size.</param>
         /// <param name="valueList">the list to be filled with values, can have any size.</param>
-        public virtual void GetNonZeros(ref List<int> sliceList, ref List<int> rowList, ref List<int> columnList, ref List<Object> valueList)
+        public virtual void GetNonZeros(ref IntArrayList sliceList, ref IntArrayList rowList, ref IntArrayList columnList, ref List<Object> valueList)
         {
             sliceList.Clear();
             rowList.Clear();
@@ -780,13 +781,13 @@ namespace Cern.Colt.Matrix
         /// <returns>the new view.</returns>
         public virtual ObjectMatrix3D ViewSelection(ObjectMatrix2DProcedure condition)
         {
-            List<int> matches = new List<int>();
+            IntArrayList matches = new IntArrayList();
             for (int i = 0; i < Slices; i++)
             {
                 if (condition(ViewSlice(i))) matches.Add(i);
             }
 
-            matches.TrimExcess();
+            matches.TrimToSize();
             return ViewSelection(matches.ToArray(), null, null); // take all Rows and Columns
         }
 

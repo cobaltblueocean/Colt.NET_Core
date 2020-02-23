@@ -17,6 +17,7 @@ namespace Cern.Colt.Matrix.Implementation
 {
     using System;
     using System.Collections.Generic;
+    using Cern.Colt.List;
 
     using Function;
 
@@ -197,7 +198,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <param name="valueList">
         /// The list to be filled with values, can have any size.
         /// </param>
-        public override void GetNonZeros(List<int> indexList, List<double> valueList)
+        public override void GetNonZeros(IntArrayList indexList, List<double> valueList)
         {
             bool fillIndexList = indexList != null;
             bool fillValueList = valueList != null;

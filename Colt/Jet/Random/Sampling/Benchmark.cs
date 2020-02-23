@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Cern.Jet.Random.Engine;
 using Cern.Hep.Aida.Bin;
+using Cern.Colt.List;
 
 namespace Cern.Jet.Random.Sampling
 {
@@ -56,7 +57,7 @@ namespace Cern.Jet.Random.Sampling
 
             // collect random numbers and print statistics
             int size = 100000;
-            List<Double> numbers = new List<Double>(size);
+            var numbers = new DoubleArrayList(size);
             for (int i = 0; i < size; i++) numbers.Add(dist.NextDouble());
 
             DynamicBin1D bin = new DynamicBin1D();

@@ -22,6 +22,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Cern.Colt.List;
 
 namespace Cern.Colt.Matrix.LinearAlgebra
 {
@@ -151,7 +152,7 @@ namespace Cern.Colt.Matrix.LinearAlgebra
             DoubleMatrix1D[] LUrows = new DoubleMatrix1D[m];
             for (int i = 0; i < m; i++) LUrows[i] = LU.ViewRow(i);
 
-            List<int> nonZeroIndexes = new List<int>(); // sparsity
+            IntArrayList nonZeroIndexes = new IntArrayList(); // sparsity
             DoubleMatrix1D LUcolj = LU.ViewColumn(0).Like();  // blocked column j
             Cern.Jet.Math.Mult multFunction = Cern.Jet.Math.Mult.CreateInstance(0);
 
@@ -365,7 +366,7 @@ namespace Cern.Colt.Matrix.LinearAlgebra
            Cern.Jet.Math.Mult div =Cern.Jet.Math.Mult.Div(0);
            Cern.Jet.Math.PlusMult minusMult =Cern.Jet.Math.PlusMult.MinusMult(0);
 
-            List<int> nonZeroIndexes = new List<int>(); // sparsity
+            IntArrayList nonZeroIndexes = new IntArrayList(); // sparsity
             DoubleMatrix1D Browk = Cern.Colt.Matrix.DoubleFactory1D.Dense.Make(nx); // blocked row k
 
             // Solve L*Y = B(piv,:)
@@ -460,7 +461,7 @@ namespace Cern.Colt.Matrix.LinearAlgebra
             catch (ArgumentException exc) { buf.Append(unknown + exc.Message); }
 
             buf.Append("\npivot = ");
-            try { buf.Append((new List<int>(this.Pivot)).ToString()); }
+            try { buf.Append((new IntArrayList(this.Pivot)).ToString()); }
             catch (ArgumentException exc) { buf.Append(unknown + exc.Message); }
 
             buf.Append("\n\nL = ");

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Cern.Colt.List;
 
 namespace Cern.Jet.Stat.Quantile
 {
@@ -11,9 +12,9 @@ namespace Cern.Jet.Stat.Quantile
     {
         void Add(double value);
 
-        void AddAllOf(List<Double> values);
+        void AddAllOf(DoubleArrayList values);
 
-        void AddAllOfFromTo(List<Double> values, int from, int to);
+        void AddAllOfFromTo(DoubleArrayList values, int from, int to);
 
         void Clear();
 
@@ -25,7 +26,7 @@ namespace Cern.Jet.Stat.Quantile
 
         double Phi(double element);
 
-        List<Double> QuantileElements(List<Double> phis);
+        DoubleArrayList QuantileElements(DoubleArrayList phis);
 
         long Size { get; }
 

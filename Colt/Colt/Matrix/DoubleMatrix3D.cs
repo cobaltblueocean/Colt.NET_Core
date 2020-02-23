@@ -13,6 +13,7 @@ namespace Cern.Colt.Matrix
     using Function;
     using Implementation;
     using LinearAlgebra;
+    using Cern.Colt.List;
 
     /// <summary>
     /// A condition or procedure : takes a single argument and returns a boolean value.
@@ -458,7 +459,7 @@ namespace Cern.Colt.Matrix
         /// <param name="rowList">the list to be filled with row indexes, can have any size.</param>
         /// <param name="columnList">the list to be filled with column indexes, can have any size.</param>
         /// <param name="valueList">the list to be filled with values, can have any size.</param>
-        public void GetNonZeros(List<int> sliceList, List<int> rowList, List<int> columnList, List<Double> valueList)
+        public void GetNonZeros(IntArrayList sliceList, IntArrayList rowList, IntArrayList columnList, DoubleArrayList valueList)
         {
             sliceList.Clear();
             rowList.Clear();
@@ -748,13 +749,13 @@ namespace Cern.Colt.Matrix
         /// <returns>the new view.</returns>
         public virtual DoubleMatrix3D ViewSelection(DoubleMatrix2DProcedure condition)
         {
-            List<int> matches = new List<int>();
+            IntArrayList matches = new IntArrayList();
             for (int i = 0; i < Slices; i++)
             {
                 if (condition(ViewSlice(i))) matches.Add(i);
             }
 
-            matches.TrimExcess();
+            matches.TrimToSize();
             return ViewSelection(matches.ToArray(), null, null); // take all Rows and Columns
         }
 

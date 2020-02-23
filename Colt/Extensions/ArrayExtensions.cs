@@ -229,6 +229,63 @@ namespace System
         //    return newArray;
         //}
 
+        public static T[] SafeCopy<T>(this T[] array)
+        {
+            if (array != null)
+            {
+                var dist = new T[array.Length];
+                Array.Copy(array, dist, array.Length);
+                return dist;
+            }
+            else
+                return null;
+        }
+
+        public static T[][] SafeCopy<T>(this T[][] array)
+        {
+            if (array != null)
+            {
+                var dist = new T[array.Length, array[0].Length];
+                Array.Copy(array.ToMultidimensional(), dist, array.Length);
+                return dist.ToJagged();
+            }
+            else
+                return null;
+        }
+
+        public static T[][][] SafeCopy<T>(this T[][][] array)
+        {
+            if (array != null)
+            {
+                var dist = new T[array.Length, array[0].Length, array[0][0].Length];
+                Array.Copy(array.ToMultidimensional(), dist, array.Length);
+                return dist.ToJagged();
+            }
+            else
+                return null;
+        }
+
+        /// <summary>
+        /// Ensures that the specified array cannot hold more than <tt>maxCapacity</tt> elements.
+        /// An application can use this operation to minimize array storage.
+        /// <p>
+        /// Returns the identical array if <tt>array.length &lt;= maxCapacity</tt>.
+        /// Otherwise, returns a new array with a length of <tt>maxCapacity</tt>
+        /// containing the first <tt>maxCapacity</tt> elements of <tt>array</tt>.
+        /// 
+        /// <summary>
+        /// <param name=""> maxCapacity   the desired maximum capacity.</param>
+        public static T[] TrimToCapacity<T>(this T[] array, int maxCapacity)
+        {
+            if (array.Length > maxCapacity)
+            {
+                T[] oldArray = array;
+                array = new T[maxCapacity];
+                oldArray.CopyTo(array, 0);
+            }
+            return array;
+        }
+
         public static T[][] ToJagged<T>(this T[,] array)
         {
             int row = array.GetLength(0);
@@ -246,7 +303,6 @@ namespace System
 
             return jagary;
         }
-
 
         public static T[][][] ToJagged<T>(this T[,,] array)
         {
@@ -288,7 +344,6 @@ namespace System
             return mult;
         }
 
-
         public static T[,,] ToMultidimensional<T>(this T[][][] array)
         {
             T[,,] mult = new T[array.GetLength(0), array.GetLength(1), array.GetLength(2)];
@@ -320,7 +375,6 @@ namespace System
 
             return array;
         }
-
 
         public static T[][][] Initialize<T>(this T[][][] array, int slice, int row, int col)
         {

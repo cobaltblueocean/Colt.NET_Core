@@ -14,6 +14,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Cern.Colt.Matrix.Implementation;
+using Cern.Colt.List;
 
 namespace Cern.Colt.Matrix
 {
@@ -379,7 +380,7 @@ namespace Cern.Colt.Matrix
         /// </summary>
         /// <param name="indexList">the list to be filled with indexes, can have any size.</param>
         /// <param name="valueList">the list to be filled with values, can have any size.</param>
-        public void GetNonZeros(ref List<int> indexList, ref List<Object> valueList)
+        public void GetNonZeros(ref IntArrayList indexList, ref List<Object> valueList)
         {
             Boolean fillIndexList = indexList != null;
             Boolean fillValueList = valueList != null;
@@ -576,12 +577,12 @@ namespace Cern.Colt.Matrix
         /// <returns>the new view.</returns>
         public virtual ObjectMatrix1D ViewSelection(Cern.Colt.Function.ObjectProcedure<Object> condition)
         {
-            List<int> matches = new List<int>();
+            IntArrayList matches = new IntArrayList();
             for (int i = 0; i < Size; i++)
             {
                 if (condition(this[i])) matches.Add(i);
             }
-            matches.TrimExcess();
+            matches.TrimToSize();
             return ViewSelection(matches.ToArray());
         }
 

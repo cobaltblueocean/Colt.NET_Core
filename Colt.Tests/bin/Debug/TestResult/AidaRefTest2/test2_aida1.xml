@@ -1,6 +1,6 @@
 AIDA 1D Histogram:
    Entries=10000, ExtraEntries=0
-   Mean=0.49469166836957, Rms=0.288628714556862
+   Mean=0.500658344101468, Rms=0.288195206752183
    MinBinHeight=0, MaxBinHeight=10000
    Axis: Bins=3, Min=-30, Max=1000
 Heights:

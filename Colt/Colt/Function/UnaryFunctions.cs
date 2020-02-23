@@ -24,6 +24,29 @@ namespace Cern.Colt.Function
     /// <returns>
     /// The result of the function.
     /// </returns>
+    public delegate double BooleanFunction(double argument);
+
+    /// <summary>
+    /// Applies a procedure to an argument.
+    /// Optionally can return a boolean flag to inform the object calling the procedure.
+    /// </summary>
+    /// <param name="element">
+    /// The element passed to the procedure..
+    /// </param>
+    /// <returns>
+    /// A flag to inform the object calling the procedure.
+    /// </returns>
+    public delegate bool BooleanProcedure(bool element);
+
+    /// <summary>
+    /// A function that takes a single argument and returns a single value.
+    /// </summary>
+    /// <param name="argument">
+    /// The argument passed to the function.
+    /// </param>
+    /// <returns>
+    /// The result of the function.
+    /// </returns>
     public delegate double DoubleFunction(double argument);
 
     /// <summary>

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Cern.Jet.Random.Engine;
 using Cern.Jet.Random.Sampling;
+using Cern.Colt.List;
 
 namespace Cern.Jet.Stat.Quantile
 {
@@ -133,7 +134,7 @@ namespace Cern.Jet.Stat.Quantile
             return copy;
         }
 
-        public override List<Double> QuantileElements(List<Double> phis)
+        public override DoubleArrayList QuantileElements(DoubleArrayList phis)
         {
             /*
             * The KNOWN quantile finder reads off quantiles from FULL buffers only.
@@ -164,7 +165,7 @@ namespace Cern.Jet.Stat.Quantile
                 this.beta = 1.0;
             }
 
-            List<Double> quantileElements = base.QuantileElements(phis);
+            DoubleArrayList quantileElements = base.QuantileElements(phis);
 
             // restore state we were in before.
             // remove the temporarily added infinities.
@@ -196,7 +197,7 @@ namespace Cern.Jet.Stat.Quantile
                 even = !even;
             }
 
-            //buffer.Values.addAllOfFromTo(new List<Double>(infinities),0,missingInfinities-1);
+            //buffer.Values.addAllOfFromTo(new DoubleArrayList(infinities),0,missingInfinities-1);
 
             //this.totalElementsFilled -= infinities;
 
@@ -209,12 +210,12 @@ namespace Cern.Jet.Stat.Quantile
             return this.BufferSet.GetFullOrPartialBuffersWithLevel(minLevel);
         }
 
-        protected new List<Double> PreProcessPhis(List<Double> phis)
+        protected new DoubleArrayList PreProcessPhis(DoubleArrayList phis)
         {
             if (beta > 1.0)
             {
                 phis = phis.Copy();
-                for (int i = phis.Count; --i >= 0;)
+                for (int i = phis.Size; --i >= 0;)
                 {
                     phis[i] = (2 * phis[i] + beta - 1) / (2 * beta);
                 }
@@ -235,8 +236,8 @@ namespace Cern.Jet.Stat.Quantile
                 even = !even;
             }
 
-            buffer.Values.RemoveRange(buffer.Size - plusInf, buffer.Size - 1);
-            buffer.Values.RemoveRange(0, minusInf - 1);
+            buffer.Values.RemoveFromTo(buffer.Size - plusInf, buffer.Size - 1);
+            buffer.Values.RemoveFromTo(0, minusInf - 1);
             //this.totalElementsFilled -= infinities;
         }
         #endregion
