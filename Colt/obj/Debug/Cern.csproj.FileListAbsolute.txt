@@ -20,3 +20,4 @@ C:\Users\Mercury21\Source\Repos\Colt.NET\Colt\bin\Debug\Cern.dll
 C:\Users\Mercury21\Source\Repos\Colt.NET\Colt\bin\Debug\Cern.pdb
 C:\Users\Mercury21\Source\Repos\Colt.NET\Colt\obj\Debug\Cern.dll
 C:\Users\Mercury21\Source\Repos\Colt.NET\Colt\obj\Debug\Cern.pdb
+C:\Users\Mercury21\Source\Repos\Colt.NET\Colt\obj\Debug\Cern.csprojAssemblyReference.cache
