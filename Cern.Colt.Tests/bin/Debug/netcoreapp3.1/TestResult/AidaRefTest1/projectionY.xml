@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE plotML SYSTEM "plotML.dtd">
+<plotML>
+<plot>
+<dataArea>
+<data1d>
+<bins1d title="AIDA 2D Histogram (projectionY)">
+0,0
+0,0
+0,0
+0,0
+0,0
+0,0
+0,0
+0,0
+0,0
+0,0
+0,0
+0,0
+0,0
+0,0
+0,0
+0,0
+0,0
+0,0
+0,0
+0,0
+1500,38.72983346207417
+1467,38.301436004411116
+1493,38.63935817272331
+1549,39.35733730830886
+1531,39.1279950930277
+1501,38.742741255621034
+959,30.967725134404045
+0,0
+0,0
+0,0
+0,0
+0,0
+0,0
+0,0
+0,0
+0,0
+0,0
+0,0
+0,0
+0,0
+</bins1d>
+<binnedDataAxisAttributes type="double" axis="x0" min="-3" max="3" numberOfBins="40"/>
+<statistics>
+<statistic name="Entries" value="10000"/>
+<statistic name="Underflow" value="0"/>
+<statistic name="Overflow" value="0"/>
+</statistics>
+</data1d>
+</dataArea>
+</plot>
+</plotML>
