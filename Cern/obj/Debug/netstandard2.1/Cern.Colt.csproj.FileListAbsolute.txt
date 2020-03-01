@@ -1,4 +1,3 @@
-C:\Users\Mercury21\Source\Repos\Colt.NET_Core\Cern\obj\Debug\netstandard2.1\Cern.Colt.csprojAssemblyReference.cache
 C:\Users\Mercury21\Source\Repos\Colt.NET_Core\Cern\obj\Debug\netstandard2.1\Cern.Colt.Properties.Resources.resources
 C:\Users\Mercury21\Source\Repos\Colt.NET_Core\Cern\obj\Debug\netstandard2.1\Cern.Colt.csproj.GenerateResource.cache
 C:\Users\Mercury21\Source\Repos\Colt.NET_Core\Cern\obj\Debug\netstandard2.1\Cern.Colt.AssemblyInfoInputs.cache
