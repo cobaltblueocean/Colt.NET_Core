@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Cern.Colt.Properties {
+namespace Cern.Properties {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace Cern.Colt.Properties {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Cern.Colt.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Cern.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -205,6 +205,15 @@ namespace Cern.Colt.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The threshold value cannot be negative or zero..
+        /// </summary>
+        internal static string AutoParallel_ThresholdValueNegative {
+            get {
+                return ResourceManager.GetString("AutoParallel_ThresholdValueNegative", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Could not download {0} - FTP server closed the connection..
         /// </summary>
         internal static string DownloadInfoConnectionClosed {
@@ -219,6 +228,744 @@ namespace Cern.Colt.Properties {
         internal static string DownloadInfoInvalidResponseReceived {
             get {
                 return ResourceManager.GetString("DownloadInfoInvalidResponseReceived", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to All rows of array must have same number of columns..
+        /// </summary>
+        internal static string Exception_AllRowsOfArrayMustHaveSameNumberOfColumns {
+            get {
+                return ResourceManager.GetString("Exception_AllRowsOfArrayMustHaveSameNumberOfColumns", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Array Length must be a multiple of m..
+        /// </summary>
+        internal static string Exception_ArrayLengthMustBeAMultipleOfM {
+            get {
+                return ResourceManager.GetString("Exception_ArrayLengthMustBeAMultipleOfM", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Assertion: b&gt;=2 &amp;&amp; k&gt;=1.
+        /// </summary>
+        internal static string Exception_AssertionB_K {
+            get {
+                return ResourceManager.GetString("Exception_AssertionB_K", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to At leat one probability must be &gt; 0.0.
+        /// </summary>
+        internal static string Exception_AtLeastOneProbabilityMustBePositive {
+            get {
+                return ResourceManager.GetString("Exception_AtLeastOneProbabilityMustBePositive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Attempted to access {0} at column={1}.
+        /// </summary>
+        internal static string Exception_AttemptedToAccessAtColumn {
+            get {
+                return ResourceManager.GetString("Exception_AttemptedToAccessAtColumn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Attempted to access {0} at row={1}.
+        /// </summary>
+        internal static string Exception_AttemptedToAccessAtRow {
+            get {
+                return ResourceManager.GetString("Exception_AttemptedToAccessAtRow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Attempted to access {0} at slice={1}.
+        /// </summary>
+        internal static string Exception_AttemptedToAccessAtSlice {
+            get {
+                return ResourceManager.GetString("Exception_AttemptedToAccessAtSlice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bad weight.
+        /// </summary>
+        internal static string Exception_BadWeight {
+            get {
+                return ResourceManager.GetString("Exception_BadWeight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to both bins must have same Size.
+        /// </summary>
+        internal static string Exception_BothBinsMustHaveSameSize {
+            get {
+                return ResourceManager.GetString("Exception_BothBinsMustHaveSameSize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Oops! buffer.Length==0..
+        /// </summary>
+        internal static string Exception_BufferLengthIsZero {
+            get {
+                return ResourceManager.GetString("Exception_BufferLengthIsZero", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Can&apos;t store non-zero value to non-tridiagonal coordinate: row={0}, column={1}, value={2}.
+        /// </summary>
+        internal static string Exception_CannotStoreNonZeroValueToNonTridiagonalCoordinate {
+            get {
+                return ResourceManager.GetString("Exception_CannotStoreNonZeroValueToNonTridiagonalCoordinate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Count must not be greater than n..
+        /// </summary>
+        internal static string Exception_CountMustNotBeGreaterThanN {
+            get {
+                return ResourceManager.GetString("Exception_CountMustNotBeGreaterThanN", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to data sequence must contain at least two values..
+        /// </summary>
+        internal static string Exception_DataSequence {
+            get {
+                return ResourceManager.GetString("Exception_DataSequence", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Different number of columns..
+        /// </summary>
+        internal static string Exception_DifferentNumberOfColumns {
+            get {
+                return ResourceManager.GetString("Exception_DifferentNumberOfColumns", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Different number of rows..
+        /// </summary>
+        internal static string Exception_DifferentNumberOfRows {
+            get {
+                return ResourceManager.GetString("Exception_DifferentNumberOfRows", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edges must be sorted ascending and must not contain multiple identical values..
+        /// </summary>
+        internal static string Exception_EdgesMustBeSorted {
+            get {
+                return ResourceManager.GetString("Exception_EdgesMustBeSorted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Element={0} is not contained in distinct elements..
+        /// </summary>
+        internal static string Exception_ElementIsNotContainedInDistinctElements {
+            get {
+                return ResourceManager.GetString("Exception_ElementIsNotContainedInDistinctElements", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Element={0} not contained in any bin..
+        /// </summary>
+        internal static string Exception_ElementNotContainedInAnyBin {
+            get {
+                return ResourceManager.GetString("Exception_ElementNotContainedInAnyBin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Empty data..
+        /// </summary>
+        internal static string Exception_EmptyData {
+            get {
+                return ResourceManager.GetString("Exception_EmptyData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to fromIndex is negative..
+        /// </summary>
+        internal static string Exception_FromIndexNegative {
+            get {
+                return ResourceManager.GetString("Exception_FromIndexNegative", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to fromK must be less or equal to toK.
+        /// </summary>
+        internal static string Exception_fromK_MustBeLessOrEqualTo_toK {
+            get {
+                return ResourceManager.GetString("Exception_fromK_MustBeLessOrEqualTo_toK", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to from: {0}, to: {1}, size={2}.
+        /// </summary>
+        internal static string Exception_FromToSize {
+            get {
+                return ResourceManager.GetString("Exception_FromToSize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to function must not be null..
+        /// </summary>
+        internal static string Exception_FuncionMustNotBeNull {
+            get {
+                return ResourceManager.GetString("Exception_FuncionMustNotBeNull", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to gamma: overflow.
+        /// </summary>
+        internal static string Exception_GammaOverflow {
+            get {
+                return ResourceManager.GetString("Exception_GammaOverflow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to gamma: singular.
+        /// </summary>
+        internal static string Exception_GammaSingular {
+            get {
+                return ResourceManager.GetString("Exception_GammaSingular", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ibeta: Domain error!.
+        /// </summary>
+        internal static string Exception_IBetaDomainError {
+            get {
+                return ResourceManager.GetString("Exception_IBetaDomainError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Illegal Axes: {0}, {1}.
+        /// </summary>
+        internal static string Exception_IllegalAxes2 {
+            get {
+                return ResourceManager.GetString("Exception_IllegalAxes2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Illegal Axes: {0}, {1}, {2}.
+        /// </summary>
+        internal static string Exception_IllegalAxes3 {
+            get {
+                return ResourceManager.GetString("Exception_IllegalAxes3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Illegal Index.
+        /// </summary>
+        internal static string Exception_IllegalIndex {
+            get {
+                return ResourceManager.GetString("Exception_IllegalIndex", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Illegal Interpolation Type.
+        /// </summary>
+        internal static string Exception_IllegalInterpolationType {
+            get {
+                return ResourceManager.GetString("Exception_IllegalInterpolationType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Illegal operation or error upon construction of.
+        /// </summary>
+        internal static string Exception_IllegalOperationOrErrorUponConstructionOf {
+            get {
+                return ResourceManager.GetString("Exception_IllegalOperationOrErrorUponConstructionOf", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Illegal stride.
+        /// </summary>
+        internal static string Exception_IllegalStride {
+            get {
+                return ResourceManager.GetString("Exception_IllegalStride", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Illegal strides: {0}, {1}.
+        /// </summary>
+        internal static string Exception_IllegalStrides {
+            get {
+                return ResourceManager.GetString("Exception_IllegalStrides", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Illegal strides: {0}, {1}, {2}.
+        /// </summary>
+        internal static string Exception_IllegalStrides3 {
+            get {
+                return ResourceManager.GetString("Exception_IllegalStrides3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Oops! illegal missing values..
+        /// </summary>
+        internal static string Exception_IlligalMissingValues {
+            get {
+                return ResourceManager.GetString("Exception_IlligalMissingValues", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Incompatible args: {0}, {1}, {2}.
+        /// </summary>
+        internal static string Exception_IncompatibleArgs {
+            get {
+                return ResourceManager.GetString("Exception_IncompatibleArgs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Incompatible dimensions: (columns,rows)=({0},{1}), (other.columns,other.rows)=({2},{3}).
+        /// </summary>
+        internal static string Exception_IncompatibleDimensions {
+            get {
+                return ResourceManager.GetString("Exception_IncompatibleDimensions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Incompatible dimensions: {0} and {1}.
+        /// </summary>
+        internal static string Exception_IncompatibleDimensions2 {
+            get {
+                return ResourceManager.GetString("Exception_IncompatibleDimensions2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Incompatible dimensions: {0}, {1}, {2}.
+        /// </summary>
+        internal static string Exception_IncompatibleDimensions3 {
+            get {
+                return ResourceManager.GetString("Exception_IncompatibleDimensions3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Incompatible dimensions: {0} and {1}.
+        /// </summary>
+        internal static string Exception_IncompatibleDimensionsAandB {
+            get {
+                return ResourceManager.GetString("Exception_IncompatibleDimensionsAandB", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Incompatible dimensions: {0}, {1}, {2}.
+        /// </summary>
+        internal static string Exception_IncompatibleDimensionsAandBandC {
+            get {
+                return ResourceManager.GetString("Exception_IncompatibleDimensionsAandBandC", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Incompatible result matrix:{0}, {1}, {2}.
+        /// </summary>
+        internal static string Exception_IncompatibleResultMatrix {
+            get {
+                return ResourceManager.GetString("Exception_IncompatibleResultMatrix", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Incompatible sizes: size={0}, other.Size={1}.
+        /// </summary>
+        internal static string Exception_IncompatibleSizes {
+            get {
+                return ResourceManager.GetString("Exception_IncompatibleSizes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid bin range..
+        /// </summary>
+        internal static string Exception_InvalidBinRange {
+            get {
+                return ResourceManager.GetString("Exception_InvalidBinRange", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid permutation.
+        /// </summary>
+        internal static string Exception_InvalidPermutation {
+            get {
+                return ResourceManager.GetString("Exception_InvalidPermutation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to k must be &gt;= 0..
+        /// </summary>
+        internal static string Exception_KMustBePositive {
+            get {
+                return ResourceManager.GetString("Exception_KMustBePositive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Lag is too large.
+        /// </summary>
+        internal static string Exception_LagIsTooLarge {
+            get {
+                return ResourceManager.GetString("Exception_LagIsTooLarge", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to lgam: Overflow.
+        /// </summary>
+        internal static string Exception_LogGammaOverflow {
+            get {
+                return ResourceManager.GetString("Exception_LogGammaOverflow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Matrices must not be identical.
+        /// </summary>
+        internal static string Exception_MatricesMustNotBeIdentical {
+            get {
+                return ResourceManager.GetString("Exception_MatricesMustNotBeIdentical", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Matrix2D inner dimensions must agree:{0}, {1}.
+        /// </summary>
+        internal static string Exception_Matrix2DInnerDimensionMustAgree {
+            get {
+                return ResourceManager.GetString("Exception_Matrix2DInnerDimensionMustAgree", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Matrix dimensions must agree..
+        /// </summary>
+        internal static string Exception_MatrixDimensionsMustAgree {
+            get {
+                return ResourceManager.GetString("Exception_MatrixDimensionsMustAgree", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Matrix is not symmetric positive definite..
+        /// </summary>
+        internal static string Exception_MatrixIsNotSymmetricPositiveDefinite {
+            get {
+                return ResourceManager.GetString("Exception_MatrixIsNotSymmetricPositiveDefinite", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Matrix is rank deficient..
+        /// </summary>
+        internal static string Exception_MatrixIsRankDeficient {
+            get {
+                return ResourceManager.GetString("Exception_MatrixIsRankDeficient", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Matrix is singular..
+        /// </summary>
+        internal static string Exception_MatrixIsSingular {
+            get {
+                return ResourceManager.GetString("Exception_MatrixIsSingular", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Matrix must be rectangular: {0}.
+        /// </summary>
+        internal static string Exception_MatrixMustBeRectangular {
+            get {
+                return ResourceManager.GetString("Exception_MatrixMustBeRectangular", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Matrix must be square..
+        /// </summary>
+        internal static string Exception_MatrixMustBeSquare {
+            get {
+                return ResourceManager.GetString("Exception_MatrixMustBeSquare", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Matrix row dimensions must agree..
+        /// </summary>
+        internal static string Exception_MatrixRowDimensionsMustAgree {
+            get {
+                return ResourceManager.GetString("Exception_MatrixRowDimensionsMustAgree", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to matrix too large.
+        /// </summary>
+        internal static string Exception_MatrixTooLarge {
+            get {
+                return ResourceManager.GetString("Exception_MatrixTooLarge", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Must satisfy N &gt;= 0.
+        /// </summary>
+        internal static string Exception_MustSatisfyNGraterThanOrEqualsToZero {
+            get {
+                return ResourceManager.GetString("Exception_MustSatisfyNGraterThanOrEqualsToZero", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Negative count..
+        /// </summary>
+        internal static string Exception_NegativeCount {
+            get {
+                return ResourceManager.GetString("Exception_NegativeCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Negative k.
+        /// </summary>
+        internal static string Exception_NegativeK {
+            get {
+                return ResourceManager.GetString("Exception_NegativeK", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Negative probability.
+        /// </summary>
+        internal static string Exception_NegativeProbability {
+            get {
+                return ResourceManager.GetString("Exception_NegativeProbability", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to negative size.
+        /// </summary>
+        internal static string Exception_NegativeSize {
+            get {
+                return ResourceManager.GetString("Exception_NegativeSize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to n must be &gt;= 0.
+        /// </summary>
+        internal static string Exception_NMustBeGraterThanOrEqualToZero {
+            get {
+                return ResourceManager.GetString("Exception_NMustBeGraterThanOrEqualToZero", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to n must be &lt;= N.
+        /// </summary>
+        internal static string Exception_NMustBeLessThanOrEqualToN {
+            get {
+                return ResourceManager.GetString("Exception_NMustBeLessThanOrEqualToN", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to n must be less than or equal to Size().
+        /// </summary>
+        internal static string Exception_NMustBeLessThanOrEqualToSize {
+            get {
+                return ResourceManager.GetString("Exception_NMustBeLessThanOrEqualToSize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Oops, no empty buffer..
+        /// </summary>
+        internal static string Exception_NoEmptyBuffer {
+            get {
+                return ResourceManager.GetString("Exception_NoEmptyBuffer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Non-existing probability distribution function..
+        /// </summary>
+        internal static string Exception_NonExistingPdf {
+            get {
+                return ResourceManager.GetString("Exception_NonExistingPdf", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Non instantiable.
+        /// </summary>
+        internal static string Exception_NonInstantiable {
+            get {
+                return ResourceManager.GetString("Exception_NonInstantiable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Not enough data..
+        /// </summary>
+        internal static string Exception_NotEnoughData {
+            get {
+                return ResourceManager.GetString("Exception_NotEnoughData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to N too large (a sequence of N elements only has N! permutations)..
+        /// </summary>
+        internal static string Exception_NTooLarge {
+            get {
+                return ResourceManager.GetString("Exception_NTooLarge", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Overflow.
+        /// </summary>
+        internal static string Exception_Overflow {
+            get {
+                return ResourceManager.GetString("Exception_Overflow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Parts larger than matrix..
+        /// </summary>
+        internal static string Exception_PartsLargerThanMatrix {
+            get {
+                return ResourceManager.GetString("Exception_PartsLargerThanMatrix", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Permutations are enumerated 1 .d N!.
+        /// </summary>
+        internal static string Exception_PermutationsAreEnumerated {
+            get {
+                return ResourceManager.GetString("Exception_PermutationsAreEnumerated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Phis must be sorted ascending..
+        /// </summary>
+        internal static string Exception_PhisMustBeAscending {
+            get {
+                return ResourceManager.GetString("Exception_PhisMustBeAscending", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Random sample exhausted..
+        /// </summary>
+        internal static string Exception_RandomSampleExhausted {
+            get {
+                return ResourceManager.GetString("Exception_RandomSampleExhausted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to fromIndex({0}) &gt; toIndex({1}).
+        /// </summary>
+        internal static string Exception_RankingFromTo {
+            get {
+                return ResourceManager.GetString("Exception_RankingFromTo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This Pool instance is in the process of being disposed, can&apos;t add anymore..
+        /// </summary>
+        internal static string Exception_ThisPoolInstanceIsInTheProcess {
+            get {
+                return ResourceManager.GetString("Exception_ThisPoolInstanceIsInTheProcess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This Pool instance has already been disposed..
+        /// </summary>
+        internal static string Exception_ThisPoolProcessHasAlreadyBeenDisposed {
+            get {
+                return ResourceManager.GetString("Exception_ThisPoolProcessHasAlreadyBeenDisposed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to toIndex greater than array lenght.
+        /// </summary>
+        internal static string Exception_ToIndexExceedSize {
+            get {
+                return ResourceManager.GetString("Exception_ToIndexExceedSize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Too many rows.
+        /// </summary>
+        internal static string Exception_TooManyRows {
+            get {
+                return ResourceManager.GetString("Exception_TooManyRows", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to values too small.
+        /// </summary>
+        internal static string Exception_ValuesTooSmall {
+            get {
+                return ResourceManager.GetString("Exception_ValuesTooSmall", resourceCulture);
             }
         }
         
@@ -394,6 +1141,60 @@ namespace Cern.Colt.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Must have same number of cells: length={0}, Size={1}.
+        /// </summary>
+        internal static string Matrix_MustHaveSameNumberOfCell {
+            get {
+                return ResourceManager.GetString("Matrix_MustHaveSameNumberOfCell", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Must have same number of Columns in every row: Columns={0}, Columns={1}.
+        /// </summary>
+        internal static string Matrix_MustHaveSameNumberOfColumnsInEveryRow {
+            get {
+                return ResourceManager.GetString("Matrix_MustHaveSameNumberOfColumnsInEveryRow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Must have same number of rows: rows={0}, rows={1}.
+        /// </summary>
+        internal static string Matrix_MustHaveSameNumberOfRows {
+            get {
+                return ResourceManager.GetString("Matrix_MustHaveSameNumberOfRows", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Must have same number of Rows in every slice: Rows={0}, Rows={1}.
+        /// </summary>
+        internal static string Matrix_MustHaveSameNumberOfRowsInEverySlice {
+            get {
+                return ResourceManager.GetString("Matrix_MustHaveSameNumberOfRowsInEverySlice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Must have same number of Slices: Slices={0}, Slices={1}.
+        /// </summary>
+        internal static string Matrix_MustHaveSameNumberOfSlices {
+            get {
+                return ResourceManager.GetString("Matrix_MustHaveSameNumberOfSlices", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to vectors must have same size.
+        /// </summary>
+        internal static string Matrix_VectorsMustHaveSameSize {
+            get {
+                return ResourceManager.GetString("Matrix_VectorsMustHaveSameSize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cannot apply format &quot;{0}&quot; to the date &quot;{1}&quot; as the date is already in local time..
         /// </summary>
         internal static string MDA_InvalidFormatForLocal {
@@ -408,6 +1209,15 @@ namespace Cern.Colt.Properties {
         internal static string MDA_InvalidFormatForUtc {
             get {
                 return ResourceManager.GetString("MDA_InvalidFormatForUtc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Platform is not supported..
+        /// </summary>
+        internal static string PlatformNotSupportedMessage {
+            get {
+                return ResourceManager.GetString("PlatformNotSupportedMessage", resourceCulture);
             }
         }
     }

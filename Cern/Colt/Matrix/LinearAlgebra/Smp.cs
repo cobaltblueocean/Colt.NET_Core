@@ -161,7 +161,7 @@ namespace Cern.Colt.Matrix.LinearAlgebra
                 int offset = i * span;
                 if (i == noOfTasks - 1) span = p - span * i; // last span may be a bit larger
 
-                DoubleMatrix2D AA, BB, CC;
+                //DoubleMatrix2D AA, BB, CC;
                 if (!splitHoriz)
                 {   // split B along columns into blocks
                     blocks[i] = A.ViewPart(0, offset, A.Rows, span);
@@ -235,7 +235,7 @@ namespace Cern.Colt.Matrix.LinearAlgebra
                 int offset = i * span;
                 if (i == noOfTasks - 1) span = p - span * i; // last span may be a bit larger
 
-                DoubleMatrix2D AA, BB, CC;
+                //DoubleMatrix2D AA, BB, CC;
                 if (!splitHoriz)
                 {
                     // split B along columns into blocks

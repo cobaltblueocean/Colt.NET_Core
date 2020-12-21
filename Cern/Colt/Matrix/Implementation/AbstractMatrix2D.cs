@@ -64,7 +64,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// </exception>
         public void CheckShape(AbstractMatrix2D b)
         {
-            if (Columns != b.Columns || Rows != b.Rows) throw new ArgumentOutOfRangeException("Incompatible dimensions: " + this + " and " + b);
+            if (Columns != b.Columns || Rows != b.Rows) throw new ArgumentOutOfRangeException(String.Format(Cern.LocalizedResources.Instance().Exception_IncompatibleDimensionsAandB, this, b));
         }
 
         /// <summary>
@@ -81,7 +81,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// </exception>
         public void CheckShape(AbstractMatrix2D b, AbstractMatrix2D c)
         {
-            if (Columns != b.Columns || Rows != b.Rows || Columns != c.Columns || Rows != c.Rows) throw new ArgumentOutOfRangeException("Incompatible dimensions: " + this + ", " + b + ", " + c);
+            if (Columns != b.Columns || Rows != b.Rows || Columns != c.Columns || Rows != c.Rows) throw new ArgumentOutOfRangeException(String.Format(Cern.LocalizedResources.Instance().Exception_IncompatibleDimensionsAandBandC, this, b, c));
         }
 
         /// <summary>
@@ -194,7 +194,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// </exception>
         protected void CheckColumn(int column)
         {
-            if (column < 0 || column >= Columns) throw new IndexOutOfRangeException("Attempted to access " + this + " at column=" + column);
+            if (column < 0 || column >= Columns) throw new IndexOutOfRangeException(String.Format(Cern.LocalizedResources.Instance().Exception_AttemptedToAccessAtColumn, this , column));
         }
 
         /// <summary>
@@ -226,7 +226,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// </exception>
         protected void CheckRow(int row)
         {
-            if (row < 0 || row >= Rows) throw new IndexOutOfRangeException("Attempted to access " + this + " at row=" + row);
+            if (row < 0 || row >= Rows) throw new IndexOutOfRangeException(String.Format(Cern.LocalizedResources.Instance().Exception_AttemptedToAccessAtRow, this, row));
         }
 
         /// <summary>
@@ -307,7 +307,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// </exception>
         protected void Setup(int rows, int columns, int rZero, int cZero, int rStride, int cStride)
         {
-            if (rows < 0 || columns < 0) throw new ArgumentException("negative size");
+            if (rows < 0 || columns < 0) throw new ArgumentException(Cern.LocalizedResources.Instance().Exception_NegativeSize);
             this.Rows = rows;
             this.Columns = columns;
 
@@ -318,7 +318,7 @@ namespace Cern.Colt.Matrix.Implementation
             this.ColumnStride = cStride;
 
             IsView = false;
-            if ((double)columns * rows > int.MaxValue) throw new ArgumentException("matrix too large");
+            if ((double)columns * rows > int.MaxValue) throw new ArgumentException(Cern.LocalizedResources.Instance().Exception_MatrixTooLarge);
         }
 
         /// <summary>
@@ -430,7 +430,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// </exception>
         protected AbstractMatrix2D VStrides(int rStride, int cStride)
         {
-            if (rStride <= 0 || cStride <= 0) throw new ArgumentException("illegal strides: " + rStride + ", " + cStride);
+            if (rStride <= 0 || cStride <= 0) throw new ArgumentException(String.Format(Cern.LocalizedResources.Instance().Exception_IllegalStrides, rStride, cStride));
             this.RowStride *= rStride;
             this.ColumnStride *= cStride;
             if (Rows != 0) Rows = ((Rows - 1) / rStride) + 1;

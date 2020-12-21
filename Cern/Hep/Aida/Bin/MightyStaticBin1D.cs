@@ -261,7 +261,7 @@ namespace Cern.Hep.Aida.Bin
         [MethodImpl(MethodImplOptions.Synchronized)]
         public virtual double Moment(int k, double c)
         {
-            if (k < 0) throw new ArgumentException("k must be >= 0");
+            if (k < 0) throw new ArgumentException(Cern.LocalizedResources.Instance().Exception_KMustBePositive);
             //checkOrder(k);
             if (!HasSumOfPowers(k)) return Double.NaN;
 
@@ -433,7 +433,7 @@ namespace Cern.Hep.Aida.Bin
         /// <returns><tt>false</tt> if the bin was constructed with insufficient parametrization, <tt>true</tt> otherwise.</returns>
         protected Boolean XHasSumOfPowers(int fromK, int toK)
         {
-            if (fromK > toK) throw new ArgumentException("fromK must be less or equal to toK");
+            if (fromK > toK) throw new ArgumentException(Cern.LocalizedResources.Instance().Exception_fromK_MustBeLessOrEqualTo_toK);
             return GetMinOrderForSumOfPowers() <= fromK && toK <= GetMaxOrderForSumOfPowers();
         }
 

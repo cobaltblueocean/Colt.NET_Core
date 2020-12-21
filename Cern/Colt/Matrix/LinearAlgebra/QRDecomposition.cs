@@ -218,11 +218,11 @@ namespace Cern.Colt.Matrix.LinearAlgebra
             Functions F = Functions.functions;
             if (B.Rows != m)
             {
-                throw new ArgumentException("Matrix row dimensions must agree.");
+                throw new ArgumentException(Cern.LocalizedResources.Instance().Exception_MatrixRowDimensionsMustAgree);
             }
             if (!this.HasFullRank)
             {
-                throw new ArgumentException("Matrix is rank deficient.");
+                throw new ArgumentException(Cern.LocalizedResources.Instance().Exception_MatrixIsRankDeficient);
             }
 
             // Copy right hand side

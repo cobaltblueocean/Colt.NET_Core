@@ -1365,12 +1365,11 @@
         private static void RangeCheck(int arrayLen, int fromIndex, int toIndex)
         {
             if (fromIndex > toIndex)
-                throw new ArgumentException("fromIndex(" + fromIndex +
-                           ") > toIndex(" + toIndex + ")");
+                throw new ArgumentException(String.Format(Cern.LocalizedResources.Instance().Exception_RankingFromTo, fromIndex , toIndex ));
             if (fromIndex < 0)
-                throw new IndexOutOfRangeException("fromIndex negative");
+                throw new IndexOutOfRangeException(Cern.LocalizedResources.Instance().Exception_FromIndexNegative);
             if (toIndex > arrayLen)
-                throw new IndexOutOfRangeException("toIndex greater than array lenght");
+                throw new IndexOutOfRangeException(Cern.LocalizedResources.Instance().Exception_ToIndexExceedSize);
         }
 
         #endregion

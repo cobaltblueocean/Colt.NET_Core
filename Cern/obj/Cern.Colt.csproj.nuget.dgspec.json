@@ -5,10 +5,10 @@
   },
   "projects": {
     "C:\\Users\\Mercury21\\Source\\Repos\\Colt.NET_Core\\Cern\\Cern.Colt.csproj": {
-      "version": "1.0.0",
+      "version": "0.9.0",
       "restore": {
         "projectUniqueName": "C:\\Users\\Mercury21\\Source\\Repos\\Colt.NET_Core\\Cern\\Cern.Colt.csproj",
-        "projectName": "Cern.Colt",
+        "projectName": "Cern.Colt.NET",
         "projectPath": "C:\\Users\\Mercury21\\Source\\Repos\\Colt.NET_Core\\Cern\\Cern.Colt.csproj",
         "packagesPath": "C:\\Users\\Mercury21\\.nuget\\packages\\",
         "outputPath": "C:\\Users\\Mercury21\\Source\\Repos\\Colt.NET_Core\\Cern\\obj\\",
@@ -31,6 +31,7 @@
         },
         "frameworks": {
           "netstandard2.1": {
+            "targetAlias": "netstandard2.1",
             "projectReferences": {}
           }
         },
@@ -42,6 +43,7 @@
       },
       "frameworks": {
         "netstandard2.1": {
+          "targetAlias": "netstandard2.1",
           "dependencies": {
             "Microsoft.Win32.Registry": {
               "target": "Package",
@@ -67,7 +69,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.102\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.101\\RuntimeIdentifierGraph.json"
         }
       }
     }

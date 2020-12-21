@@ -129,7 +129,7 @@ namespace Cern.Hep.Aida.Ref
             // Attention: our internal definition of bins has been choosen
             // so that this works properly even if the indeces passed in include
             // the underflow or overflow bins
-            if (indexY2 < indexY1) throw new ArgumentException("Invalid bin range");
+            if (indexY2 < indexY1) throw new ArgumentException(Cern.LocalizedResources.Instance().Exception_InvalidBinRange);
 
             int sliceBins = xAxis.Bins + 2;
             int[] sliceEntries = new int[sliceBins];
@@ -156,7 +156,7 @@ namespace Cern.Hep.Aida.Ref
             // Attention: our internal definition of bins has been choosen
             // so that this works properly even if the indeces passed in include
             // the underflow or overflow bins
-            if (indexX2 < indexX1) throw new ArgumentException("Invalid bin range");
+            if (indexX2 < indexX1) throw new ArgumentException(Cern.LocalizedResources.Instance().Exception_InvalidBinRange);
 
             int sliceBins = yAxis.Bins + 2;
             int[] sliceEntries = new int[sliceBins];

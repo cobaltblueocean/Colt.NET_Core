@@ -37,7 +37,7 @@ namespace Cern.Jet.Random.Sampling
         {
             get { return weight; }
             set {
-                if (value < 1) throw new ArgumentException("bad weight");
+                if (value < 1) throw new ArgumentException(Cern.LocalizedResources.Instance().Exception_BadWeight);
                 this.weight = value;
                 this.skip = 0;
                 this.nextTriggerPos = UNDEFINED;

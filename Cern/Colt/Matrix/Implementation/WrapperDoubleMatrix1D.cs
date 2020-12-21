@@ -191,7 +191,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <exception cref="IndexOutOfRangeException">if <i>stride &lt;= 0</i>.</exception>
         public override DoubleMatrix1D ViewStrides(int _stride)
         {
-            if (Stride <= 0) throw new IndexOutOfRangeException("illegal stride: " + Stride);
+            if (Stride <= 0) throw new IndexOutOfRangeException(Cern.LocalizedResources.Instance().Exception_IllegalStride);
             DoubleMatrix1D view = new WrapperDoubleMatrix1DStrides(this, _stride);
 
             view.Size = Size;

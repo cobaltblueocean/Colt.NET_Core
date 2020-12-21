@@ -60,7 +60,7 @@ namespace Cern.Jet.Stat.Quantile
         {
             int numberOfEmptyBuffers = this.BufferSet.GetNumberOfEmptyBuffers();
             //DoubleBuffer[] emptyBuffers = this.BufferSet.GetEmptyBuffers();
-            if (numberOfEmptyBuffers == 0) throw new InvalidOperationException("Oops, no empty buffer.");
+            if (numberOfEmptyBuffers == 0) throw new InvalidOperationException(Cern.LocalizedResources.Instance().Exception_NoEmptyBuffer);
 
             this.CurrentBufferToFill = this.BufferSet.GetFirstEmptyBuffer();
             if (numberOfEmptyBuffers == 1 && !this.weHadMoreThanOneEmptyBuffer)
@@ -152,7 +152,7 @@ namespace Cern.Jet.Stat.Quantile
             if (partial != null)
             { // any auxiliary infinities needed?
                 missingValues = BufferSet.BufferSize - partial.Size;
-                if (missingValues <= 0) throw new InvalidOperationException("Oops! illegal missing values.");
+                if (missingValues <= 0) throw new InvalidOperationException(Cern.LocalizedResources.Instance().Exception_IlligalMissingValues);
 
                 //System.out.println("adding "+missingValues+" infinity elements...");
                 this.AddInfinities(missingValues, partial);

@@ -99,7 +99,7 @@ namespace Cern.Colt.List
         protected int CodeOf(long element)
         {
             int index = Array.BinarySearch(distinctValues, element);
-            if (index < 0) throw new ArgumentException("Element=" + element + " not contained in distinct elements.");
+            if (index < 0) throw new ArgumentException(String.Format(Cern.LocalizedResources.Instance().Exception_ElementIsNotContainedInDistinctElements, element));
             return index;
         }
         /// <summary>

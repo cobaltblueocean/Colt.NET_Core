@@ -321,8 +321,9 @@ namespace System.Text
                 {
                     _nval = Double.Parse(tokbuf.ToString());
                 }
-                catch (FormatException _)
+                catch (FormatException fex)
                 {
+                    Console.Write(fex.Message);
                     _nval = 0.0;
                 }
                 if (isNegative)

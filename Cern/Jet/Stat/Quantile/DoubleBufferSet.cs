@@ -396,7 +396,7 @@ namespace Cern.Jet.Stat.Quantile
         {
             //if (buffers.Length==0) 
             //{
-            //	throw new ArgumentException("Oops! buffer.Length==0.");
+            //	throw new ArgumentException(Cern.LocalizedResources.Instance().Exception_BufferLengthIsZero);
             //}
 
             //System.out.println("triggers="+cern.it.util.Arrays.ToString(positions));

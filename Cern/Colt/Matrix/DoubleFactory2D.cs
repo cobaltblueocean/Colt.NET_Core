@@ -163,7 +163,7 @@ namespace Cern.Colt.Matrix
                     if (part != null)
                     {
                         int width = part.Columns;
-                        if (maxWidth > 0 && width > 0 && width != maxWidth) throw new ArgumentOutOfRangeException("parts", "Different number of columns.");
+                        if (maxWidth > 0 && width > 0 && width != maxWidth) throw new ArgumentOutOfRangeException("parts", Cern.LocalizedResources.Instance().Exception_DifferentNumberOfColumns);
                         maxWidth = Math.Max(maxWidth, width);
                     }
                 }
@@ -182,7 +182,7 @@ namespace Cern.Colt.Matrix
                     if (part != null)
                     {
                         int height = part.Rows;
-                        if (maxHeight > 0 && height > 0 && height != maxHeight) throw new ArgumentOutOfRangeException("parts", "Different number of rows.");
+                        if (maxHeight > 0 && height > 0 && height != maxHeight) throw new ArgumentOutOfRangeException("parts", Cern.LocalizedResources.Instance().Exception_DifferentNumberOfRows);
                         maxHeight = Math.Max(maxHeight, height);
                     }
                 }
@@ -303,7 +303,7 @@ namespace Cern.Colt.Matrix
                     if (part != null)
                     {
                         int width = part.Columns;
-                        if (maxWidth > 0 && width > 0 && width != maxWidth) throw new ArgumentException("Different number of columns.");
+                        if (maxWidth > 0 && width > 0 && width != maxWidth) throw new ArgumentException(Cern.LocalizedResources.Instance().Exception_DifferentNumberOfColumns);
                         maxWidth = Math.Max(maxWidth, width);
                     }
                 }
@@ -322,7 +322,7 @@ namespace Cern.Colt.Matrix
                     if (part != null)
                     {
                         int height = part.Rows;
-                        if (maxHeight > 0 && height > 0 && height != maxHeight) throw new ArgumentException("Different number of rows.");
+                        if (maxHeight > 0 && height > 0 && height != maxHeight) throw new ArgumentException(Cern.LocalizedResources.Instance().Exception_DifferentNumberOfRows);
                         maxHeight = Math.Max(maxHeight, height);
                     }
                 }
@@ -336,7 +336,7 @@ namespace Cern.Colt.Matrix
             int resultCols = 0;
             for (int column = columns; --column >= 0; ) resultCols += maxWidths[column];
 
-            if (matrix.Rows < resultRows || matrix.Columns < resultCols) throw new ArgumentException("Parts larger than matrix.");
+            if (matrix.Rows < resultRows || matrix.Columns < resultCols) throw new ArgumentException(Cern.LocalizedResources.Instance().Exception_PartsLargerThanMatrix);
 
             // copy
             int r = 0;
@@ -470,7 +470,7 @@ namespace Cern.Colt.Matrix
         {
             int columns = rows != 0 ? values.Length / rows : 0;
             if (rows * columns != values.Length)
-                throw new ArgumentException("Array length must be a multiple of m.");
+                throw new ArgumentException(Cern.LocalizedResources.Instance().Exception_ArrayLengthMustBeAMultipleOfM);
 
             DoubleMatrix2D matrix = Make(rows, columns);
             for (int row = 0; row < rows; row++)
@@ -582,7 +582,7 @@ namespace Cern.Colt.Matrix
                 if (array[row] != null)
                 {
                     if (columns == -1) columns = array[row].Length;
-                    if (array[row].Length != columns) throw new ArgumentOutOfRangeException("array", "All rows of array must have same number of columns.");
+                    if (array[row].Length != columns) throw new ArgumentOutOfRangeException("array", Cern.LocalizedResources.Instance().Exception_AllRowsOfArrayMustHaveSameNumberOfColumns);
                 }
             }
         }
@@ -604,7 +604,7 @@ namespace Cern.Colt.Matrix
                 if (array[row] != null)
                 {
                     if (columns == -1) columns = array[row].Length;
-                    if (array[row].Length != columns) throw new ArgumentOutOfRangeException("array", "All rows of array must have same number of columns.");
+                    if (array[row].Length != columns) throw new ArgumentOutOfRangeException("array", Cern.LocalizedResources.Instance().Exception_AllRowsOfArrayMustHaveSameNumberOfColumns);
                 }
             }
         }

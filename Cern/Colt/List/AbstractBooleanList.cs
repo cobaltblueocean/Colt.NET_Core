@@ -753,5 +753,10 @@ namespace Cern.Colt.List
         {
             return PartFromTo(0, _size - 1).ToArray().ToString();
         }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
     }
 }

@@ -165,11 +165,260 @@
   <data name="Argument_StringZeroLength" xml:space="preserve">
     <value>String cannot be of zero length.</value>
   </data>
+  <data name="AutoParallel_ThresholdValueNegative" xml:space="preserve">
+    <value>The threshold value cannot be negative or zero.</value>
+  </data>
   <data name="DownloadInfoConnectionClosed" xml:space="preserve">
     <value>Could not download {0} - FTP server closed the connection.</value>
   </data>
   <data name="DownloadInfoInvalidResponseReceived" xml:space="preserve">
     <value>Could not download {0} - a web page was returned from the web server.</value>
+  </data>
+  <data name="Exception_AllRowsOfArrayMustHaveSameNumberOfColumns" xml:space="preserve">
+    <value>All rows of array must have same number of columns.</value>
+  </data>
+  <data name="Exception_ArrayLengthMustBeAMultipleOfM" xml:space="preserve">
+    <value>Array Length must be a multiple of m.</value>
+  </data>
+  <data name="Exception_AssertionB_K" xml:space="preserve">
+    <value>Assertion: b&gt;=2 &amp;&amp; k&gt;=1</value>
+  </data>
+  <data name="Exception_AtLeastOneProbabilityMustBePositive" xml:space="preserve">
+    <value>At leat one probability must be &gt; 0.0</value>
+  </data>
+  <data name="Exception_AttemptedToAccessAtColumn" xml:space="preserve">
+    <value>Attempted to access {0} at column={1}</value>
+  </data>
+  <data name="Exception_AttemptedToAccessAtRow" xml:space="preserve">
+    <value>Attempted to access {0} at row={1}</value>
+  </data>
+  <data name="Exception_AttemptedToAccessAtSlice" xml:space="preserve">
+    <value>Attempted to access {0} at slice={1}</value>
+  </data>
+  <data name="Exception_BadWeight" xml:space="preserve">
+    <value>Bad weight</value>
+  </data>
+  <data name="Exception_BothBinsMustHaveSameSize" xml:space="preserve">
+    <value>both bins must have same Size</value>
+  </data>
+  <data name="Exception_BufferLengthIsZero" xml:space="preserve">
+    <value>Oops! buffer.Length==0.</value>
+  </data>
+  <data name="Exception_CannotStoreNonZeroValueToNonTridiagonalCoordinate" xml:space="preserve">
+    <value>Can't store non-zero value to non-tridiagonal coordinate: row={0}, column={1}, value={2}</value>
+  </data>
+  <data name="Exception_CountMustNotBeGreaterThanN" xml:space="preserve">
+    <value>Count must not be greater than n.</value>
+  </data>
+  <data name="Exception_DataSequence" xml:space="preserve">
+    <value>data sequence must contain at least two values.</value>
+  </data>
+  <data name="Exception_DifferentNumberOfColumns" xml:space="preserve">
+    <value>Different number of columns.</value>
+  </data>
+  <data name="Exception_DifferentNumberOfRows" xml:space="preserve">
+    <value>Different number of rows.</value>
+  </data>
+  <data name="Exception_EdgesMustBeSorted" xml:space="preserve">
+    <value>Edges must be sorted ascending and must not contain multiple identical values.</value>
+  </data>
+  <data name="Exception_ElementIsNotContainedInDistinctElements" xml:space="preserve">
+    <value>Element={0} is not contained in distinct elements.</value>
+  </data>
+  <data name="Exception_ElementNotContainedInAnyBin" xml:space="preserve">
+    <value>Element={0} not contained in any bin.</value>
+  </data>
+  <data name="Exception_EmptyData" xml:space="preserve">
+    <value>Empty data.</value>
+  </data>
+  <data name="Exception_FromIndexNegative" xml:space="preserve">
+    <value>fromIndex is negative.</value>
+  </data>
+  <data name="Exception_fromK_MustBeLessOrEqualTo_toK" xml:space="preserve">
+    <value>fromK must be less or equal to toK</value>
+  </data>
+  <data name="Exception_FromToSize" xml:space="preserve">
+    <value>from: {0}, to: {1}, size={2}</value>
+  </data>
+  <data name="Exception_FuncionMustNotBeNull" xml:space="preserve">
+    <value>function must not be null.</value>
+  </data>
+  <data name="Exception_GammaOverflow" xml:space="preserve">
+    <value>gamma: overflow</value>
+  </data>
+  <data name="Exception_GammaSingular" xml:space="preserve">
+    <value>gamma: singular</value>
+  </data>
+  <data name="Exception_IBetaDomainError" xml:space="preserve">
+    <value>ibeta: Domain error!</value>
+  </data>
+  <data name="Exception_IllegalAxes2" xml:space="preserve">
+    <value>Illegal Axes: {0}, {1}</value>
+  </data>
+  <data name="Exception_IllegalAxes3" xml:space="preserve">
+    <value>Illegal Axes: {0}, {1}, {2}</value>
+  </data>
+  <data name="Exception_IllegalIndex" xml:space="preserve">
+    <value>Illegal Index</value>
+  </data>
+  <data name="Exception_IllegalInterpolationType" xml:space="preserve">
+    <value>Illegal Interpolation Type</value>
+  </data>
+  <data name="Exception_IllegalOperationOrErrorUponConstructionOf" xml:space="preserve">
+    <value>Illegal operation or error upon construction of</value>
+  </data>
+  <data name="Exception_IllegalStride" xml:space="preserve">
+    <value>Illegal stride</value>
+  </data>
+  <data name="Exception_IllegalStrides" xml:space="preserve">
+    <value>Illegal strides: {0}, {1}</value>
+  </data>
+  <data name="Exception_IllegalStrides3" xml:space="preserve">
+    <value>Illegal strides: {0}, {1}, {2}</value>
+  </data>
+  <data name="Exception_IlligalMissingValues" xml:space="preserve">
+    <value>Oops! illegal missing values.</value>
+  </data>
+  <data name="Exception_IncompatibleArgs" xml:space="preserve">
+    <value>Incompatible args: {0}, {1}, {2}</value>
+  </data>
+  <data name="Exception_IncompatibleDimensions" xml:space="preserve">
+    <value>Incompatible dimensions: (columns,rows)=({0},{1}), (other.columns,other.rows)=({2},{3})</value>
+  </data>
+  <data name="Exception_IncompatibleDimensions2" xml:space="preserve">
+    <value>Incompatible dimensions: {0} and {1}</value>
+  </data>
+  <data name="Exception_IncompatibleDimensions3" xml:space="preserve">
+    <value>Incompatible dimensions: {0}, {1}, {2}</value>
+  </data>
+  <data name="Exception_IncompatibleDimensionsAandB" xml:space="preserve">
+    <value>Incompatible dimensions: {0} and {1}</value>
+  </data>
+  <data name="Exception_IncompatibleDimensionsAandBandC" xml:space="preserve">
+    <value>Incompatible dimensions: {0}, {1}, {2}</value>
+  </data>
+  <data name="Exception_IncompatibleResultMatrix" xml:space="preserve">
+    <value>Incompatible result matrix:{0}, {1}, {2}</value>
+  </data>
+  <data name="Exception_IncompatibleSizes" xml:space="preserve">
+    <value>Incompatible sizes: size={0}, other.Size={1}</value>
+  </data>
+  <data name="Exception_InvalidBinRange" xml:space="preserve">
+    <value>Invalid bin range.</value>
+  </data>
+  <data name="Exception_InvalidPermutation" xml:space="preserve">
+    <value>Invalid permutation</value>
+  </data>
+  <data name="Exception_KMustBePositive" xml:space="preserve">
+    <value>k must be &gt;= 0.</value>
+  </data>
+  <data name="Exception_LagIsTooLarge" xml:space="preserve">
+    <value>Lag is too large</value>
+  </data>
+  <data name="Exception_LogGammaOverflow" xml:space="preserve">
+    <value>lgam: Overflow</value>
+  </data>
+  <data name="Exception_MatricesMustNotBeIdentical" xml:space="preserve">
+    <value>Matrices must not be identical</value>
+  </data>
+  <data name="Exception_Matrix2DInnerDimensionMustAgree" xml:space="preserve">
+    <value>Matrix2D inner dimensions must agree:{0}, {1}</value>
+  </data>
+  <data name="Exception_MatrixDimensionsMustAgree" xml:space="preserve">
+    <value>Matrix dimensions must agree.</value>
+  </data>
+  <data name="Exception_MatrixIsNotSymmetricPositiveDefinite" xml:space="preserve">
+    <value>Matrix is not symmetric positive definite.</value>
+  </data>
+  <data name="Exception_MatrixIsRankDeficient" xml:space="preserve">
+    <value>Matrix is rank deficient.</value>
+  </data>
+  <data name="Exception_MatrixIsSingular" xml:space="preserve">
+    <value>Matrix is singular.</value>
+  </data>
+  <data name="Exception_MatrixMustBeRectangular" xml:space="preserve">
+    <value>Matrix must be rectangular: {0}</value>
+  </data>
+  <data name="Exception_MatrixMustBeSquare" xml:space="preserve">
+    <value>Matrix must be square.</value>
+  </data>
+  <data name="Exception_MatrixRowDimensionsMustAgree" xml:space="preserve">
+    <value>Matrix row dimensions must agree.</value>
+  </data>
+  <data name="Exception_MatrixTooLarge" xml:space="preserve">
+    <value>matrix too large</value>
+  </data>
+  <data name="Exception_MustSatisfyNGraterThanOrEqualsToZero" xml:space="preserve">
+    <value>Must satisfy N &gt;= 0</value>
+  </data>
+  <data name="Exception_NegativeCount" xml:space="preserve">
+    <value>Negative count.</value>
+  </data>
+  <data name="Exception_NegativeK" xml:space="preserve">
+    <value>Negative k</value>
+  </data>
+  <data name="Exception_NegativeProbability" xml:space="preserve">
+    <value>Negative probability</value>
+  </data>
+  <data name="Exception_NegativeSize" xml:space="preserve">
+    <value>negative size</value>
+  </data>
+  <data name="Exception_NMustBeGraterThanOrEqualToZero" xml:space="preserve">
+    <value>n must be &gt;= 0</value>
+  </data>
+  <data name="Exception_NMustBeLessThanOrEqualToN" xml:space="preserve">
+    <value>n must be &lt;= N</value>
+  </data>
+  <data name="Exception_NMustBeLessThanOrEqualToSize" xml:space="preserve">
+    <value>n must be less than or equal to Size()</value>
+  </data>
+  <data name="Exception_NoEmptyBuffer" xml:space="preserve">
+    <value>Oops, no empty buffer.</value>
+  </data>
+  <data name="Exception_NonExistingPdf" xml:space="preserve">
+    <value>Non-existing probability distribution function.</value>
+  </data>
+  <data name="Exception_NonInstantiable" xml:space="preserve">
+    <value>Non instantiable</value>
+  </data>
+  <data name="Exception_NotEnoughData" xml:space="preserve">
+    <value>Not enough data.</value>
+  </data>
+  <data name="Exception_NTooLarge" xml:space="preserve">
+    <value>N too large (a sequence of N elements only has N! permutations).</value>
+  </data>
+  <data name="Exception_Overflow" xml:space="preserve">
+    <value>Overflow</value>
+  </data>
+  <data name="Exception_PartsLargerThanMatrix" xml:space="preserve">
+    <value>Parts larger than matrix.</value>
+  </data>
+  <data name="Exception_PermutationsAreEnumerated" xml:space="preserve">
+    <value>Permutations are enumerated 1 .d N!</value>
+  </data>
+  <data name="Exception_PhisMustBeAscending" xml:space="preserve">
+    <value>Phis must be sorted ascending.</value>
+  </data>
+  <data name="Exception_RandomSampleExhausted" xml:space="preserve">
+    <value>Random sample exhausted.</value>
+  </data>
+  <data name="Exception_RankingFromTo" xml:space="preserve">
+    <value>fromIndex({0}) &gt; toIndex({1})</value>
+  </data>
+  <data name="Exception_ThisPoolInstanceIsInTheProcess" xml:space="preserve">
+    <value>This Pool instance is in the process of being disposed, can't add anymore.</value>
+  </data>
+  <data name="Exception_ThisPoolProcessHasAlreadyBeenDisposed" xml:space="preserve">
+    <value>This Pool instance has already been disposed.</value>
+  </data>
+  <data name="Exception_ToIndexExceedSize" xml:space="preserve">
+    <value>toIndex greater than array lenght</value>
+  </data>
+  <data name="Exception_TooManyRows" xml:space="preserve">
+    <value>Too many rows</value>
+  </data>
+  <data name="Exception_ValuesTooSmall" xml:space="preserve">
+    <value>values too small</value>
   </data>
   <data name="FileDownloaderCancelled" xml:space="preserve">
     <value>Download was cancelled.</value>
@@ -228,10 +477,31 @@
   <data name="InvalidCast_FromTo" xml:space="preserve">
     <value>Invalid cast from '{0}' to '{1}'.</value>
   </data>
+  <data name="Matrix_MustHaveSameNumberOfCell" xml:space="preserve">
+    <value>Must have same number of cells: length={0}, Size={1}</value>
+  </data>
+  <data name="Matrix_MustHaveSameNumberOfColumnsInEveryRow" xml:space="preserve">
+    <value>Must have same number of Columns in every row: Columns={0}, Columns={1}</value>
+  </data>
+  <data name="Matrix_MustHaveSameNumberOfRows" xml:space="preserve">
+    <value>Must have same number of rows: rows={0}, rows={1}</value>
+  </data>
+  <data name="Matrix_MustHaveSameNumberOfRowsInEverySlice" xml:space="preserve">
+    <value>Must have same number of Rows in every slice: Rows={0}, Rows={1}</value>
+  </data>
+  <data name="Matrix_MustHaveSameNumberOfSlices" xml:space="preserve">
+    <value>Must have same number of Slices: Slices={0}, Slices={1}</value>
+  </data>
+  <data name="Matrix_VectorsMustHaveSameSize" xml:space="preserve">
+    <value>vectors must have same size</value>
+  </data>
   <data name="MDA_InvalidFormatForLocal" xml:space="preserve">
     <value>Cannot apply format "{0}" to the date "{1}" as the date is already in local time.</value>
   </data>
   <data name="MDA_InvalidFormatForUtc" xml:space="preserve">
     <value>Cannot apply format "{0}" to the date "{1}" as the date is already in universal time.</value>
+  </data>
+  <data name="PlatformNotSupportedMessage" xml:space="preserve">
+    <value>Platform is not supported.</value>
   </data>
 </root>

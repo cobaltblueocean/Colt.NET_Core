@@ -20,13 +20,13 @@ namespace System.Collections.Generic
 
         public static void AddOrUpdateAll<T1, T2>(this Dictionary<T1, T2> originalDictionary, IEnumerable<KeyValuePair<T1, T2>> items)
         {
-            foreach (var item in items)
+            AutoParallel.AutoParallelForEach(items, (item) =>
             {
                 if (originalDictionary.ContainsKey(item.Key))
                     originalDictionary[item.Key] = item.Value;
                 else
                     originalDictionary.Add(item.Key, item.Value);
-            }
+            });
         }
 
         /// <summary>
@@ -154,10 +154,10 @@ namespace System.Collections.Generic
             List < KeyValuePair < TKey, TValue >> l = kv.ToList();
             l.TrimExcess();
             var newDic = new Dictionary<TKey, TValue>(l.Count);
-            foreach (var p in l)
+            AutoParallel.AutoParallelForEach(l, (p) =>
             {
                 newDic.Add(p.Key, p.Value);
-            }
+            });
             return newDic;
         }
     }

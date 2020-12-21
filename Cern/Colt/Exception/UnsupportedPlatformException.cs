@@ -9,7 +9,7 @@ namespace System
     public class UnsupportedPlatformException : Exception
     {
         public UnsupportedPlatformException()
-            : this("Platform is not supported.")
+            : this(Cern.LocalizedResources.Instance().PlatformNotSupportedMessage)
         {
 
         }

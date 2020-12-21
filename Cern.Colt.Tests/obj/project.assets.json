@@ -1290,7 +1290,7 @@
           "lib/netstandard1.3/System.Xml.XPath.XmlDocument.dll": {}
         }
       },
-      "Cern.Colt/1.0.0": {
+      "Cern.Colt.NET/0.9.0": {
         "type": "project",
         "framework": ".NETStandard,Version=v2.1",
         "dependencies": {
@@ -1298,10 +1298,10 @@
           "System.Management": "4.7.0"
         },
         "compile": {
-          "bin/placeholder/Cern.Colt.dll": {}
+          "bin/placeholder/Cern.Colt.NET.dll": {}
         },
         "runtime": {
-          "bin/placeholder/Cern.Colt.dll": {}
+          "bin/placeholder/Cern.Colt.NET.dll": {}
         }
       }
     }
@@ -4810,7 +4810,7 @@
         "system.xml.xpath.xmldocument.nuspec"
       ]
     },
-    "Cern.Colt/1.0.0": {
+    "Cern.Colt.NET/0.9.0": {
       "type": "project",
       "path": "../Cern/Cern.Colt.csproj",
       "msbuildProject": "../Cern/Cern.Colt.csproj"
@@ -4818,7 +4818,7 @@
   },
   "projectFileDependencyGroups": {
     ".NETCoreApp,Version=v3.1": [
-      "Cern.Colt >= 1.0.0",
+      "Cern.Colt.NET >= 0.9.0",
       "Microsoft.NET.Test.Sdk >= 16.5.0",
       "NUnit3TestAdapter >= 3.16.1",
       "nunit >= 3.12.0"
@@ -4856,6 +4856,7 @@
       },
       "frameworks": {
         "netcoreapp3.1": {
+          "targetAlias": "netcoreapp3.1",
           "projectReferences": {
             "C:\\Users\\Mercury21\\Source\\Repos\\Colt.NET_Core\\Cern\\Cern.Colt.csproj": {
               "projectPath": "C:\\Users\\Mercury21\\Source\\Repos\\Colt.NET_Core\\Cern\\Cern.Colt.csproj"
@@ -4871,6 +4872,7 @@
     },
     "frameworks": {
       "netcoreapp3.1": {
+        "targetAlias": "netcoreapp3.1",
         "dependencies": {
           "Microsoft.NET.Test.Sdk": {
             "target": "Package",
@@ -4902,7 +4904,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.102\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.101\\RuntimeIdentifierGraph.json"
       }
     }
   }

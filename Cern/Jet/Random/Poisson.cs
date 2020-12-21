@@ -148,10 +148,9 @@ namespace Cern.Jet.Random
             RandomEngine gen = this.RandomGenerator;
             double my = theMean;
 
-            double t, g, my_k;
-
-            double gx, gy, px, py, e, x, xx, delta, v;
-            int sign;
+            //double t, g, my_k;
+            //double gx, gy, px, py, e, x, xx, delta, v;
+            //int sign;
 
             //static double p,q,p0,pp[36];
             //static long ll,m;

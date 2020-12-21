@@ -182,7 +182,7 @@ namespace Cern.Jet.Random
             if (interpolationType != LINEAR_INTERPOLATION &&
                 interpolationType != NO_INTERPOLATION)
             {
-                throw new ArgumentException("Illegal Interpolation Type");
+                throw new ArgumentException(Cern.LocalizedResources.Instance().Exception_IllegalInterpolationType);
             }
             this.interpolationType = interpolationType;
 
@@ -201,10 +201,10 @@ namespace Cern.Jet.Random
             for (int ptn = 0; ptn < nBins; ++ptn)
             {
                 double prob = pdf[ptn];
-                if (prob < 0.0) throw new ArgumentException("Negative probability");
+                if (prob < 0.0) throw new ArgumentException(Cern.LocalizedResources.Instance().Exception_NegativeProbability);
                 _cdf[ptn + 1] = _cdf[ptn] + prob;
             }
-            if (_cdf[nBins] <= 0.0) throw new ArgumentException("At leat one probability must be > 0.0");
+            if (_cdf[nBins] <= 0.0) throw new ArgumentException(Cern.LocalizedResources.Instance().Exception_AtLeastOneProbabilityMustBePositive);
             for (int ptn = 0; ptn < nBins + 1; ++ptn)
             {
                 _cdf[ptn] /= _cdf[nBins];

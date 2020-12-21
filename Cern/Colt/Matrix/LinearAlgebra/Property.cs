@@ -75,7 +75,7 @@
         {
             if (a.Rows < a.Columns)
             {
-                throw new ArgumentOutOfRangeException("Matrix must be rectangular: " + AbstractFormatter.Shape(a));
+                throw new ArgumentOutOfRangeException(String.Format(Cern.LocalizedResources.Instance().Exception_MatrixMustBeRectangular, AbstractFormatter.Shape(a)));
             }
         }
 
@@ -86,7 +86,7 @@
         /// <exception cref="ArgumentException">if <i>A.Rows != A.Columns</i>.</exception>
         public void CheckSquare(DoubleMatrix2D A)
         {
-            if (A.Rows != A.Columns) throw new ArgumentException("Matrix must be square: " + Cern.Colt.Matrix.DoubleAlgorithms.Formatter.Shape(A));
+            if (A.Rows != A.Columns) throw new ArgumentException(Cern.LocalizedResources.Instance().Exception_MatrixMustBeSquare);
         }
 
         /// <summary>
@@ -311,13 +311,13 @@
             return true;
         }
 
-        /**
-Modifies the given matrix square matrix <i>A</i> such that it is diagonally dominant by row and column, hence non-singular, hence invertible.
-For testing purposes only.
-@param A the square matrix to modify.
-@throws ArgumentException if <i>!isSquare(A)</i>.
-*/
-        public void generateNonSingular(DoubleMatrix2D A)
+        /// <summary>
+        /// Modifies the given matrix square matrix<i>A</i> such that it is diagonally dominant by row and column, hence non-singular, hence invertible.
+        /// For testing purposes only.
+        /// <summary>
+        ///<param name = "A" > the square matrix to modify.</param>
+        ///<exception cref = "ArgumentException" >if <i>!isSquare(A)</i>. </exception>
+        public void GenerateNonSingular(DoubleMatrix2D A)
         {
             CheckSquare(A);
             var F = Cern.Jet.Math.Functions.functions;
@@ -333,17 +333,17 @@ For testing purposes only.
                 A[i, i] = System.Math.Max(rowSum, colSum) + i + 1;
             }
         }
-        /**
-         */
+        /// <summary>
+        /// <summary>
         protected static String Get(List<Object> list, int index)
         {
             return ((String)list[index]);
         }
-        /**
-         * A matrix <i>A</i> is <i>diagonal</i> if <i>A[i,j] == 0</i> whenever <i>i != j</i>.
-         * Matrix may but need not be square.
-         */
-        public Boolean isDiagonal(DoubleMatrix2D A)
+        /// <summary>
+        /// A matrix <i>A</i> is <i>diagonal</i> if <i>A[i,j] == 0</i> whenever <i>i != j</i>.
+        /// Matrix may but need not be square.
+        /// <summary>
+        public Boolean IsDiagonal(DoubleMatrix2D A)
         {
             double epsilon = Tolerance;
             int rows = A.Rows;
@@ -358,14 +358,14 @@ For testing purposes only.
             }
             return true;
         }
-        /**
-         * A matrix <i>A</i> is <i>diagonally dominant by column</i> if the absolute value of each diagonal element is larger than the sum of the absolute values of the off-diagonal elements in the corresponding column.
-         * <i>returns true if for all i: abs(A[i,i]) &gt; Sum(abs(A[j,i])); j != i.</i>
-         * Matrix may but need not be square.
-         * <p>
-         * Note: Ignores tolerance.
-         */
-        public Boolean isDiagonallyDominantByColumn(DoubleMatrix2D A)
+        /// <summary>
+        /// A matrix <i>A</i> is <i>diagonally dominant by column</i> if the absolute value of each diagonal element is larger than the sum of the absolute values of theoff-diagonal elements in the corresponding column.
+        /// <i>returns true if for all i: abs(A[i,i]) &gt; Sum(abs(A[j,i])); j != i.</i>
+        /// Matrix may but need not be square.
+        /// <p>
+        /// Note: Ignores tolerance.
+        /// <summary>
+        public Boolean IsDiagonallyDominantByColumn(DoubleMatrix2D A)
         {
             Cern.Jet.Math.Functions F = Cern.Jet.Math.Functions.functions;
             double epsilon = Tolerance;
@@ -378,14 +378,14 @@ For testing purposes only.
             }
             return true;
         }
-        /**
-         * A matrix <i>A</i> is <i>diagonally dominant by row</i> if the absolute value of each diagonal element is larger than the sum of the absolute values of the off-diagonal elements in the corresponding row.
-         * <i>returns true if for all i: abs(A[i,i]) &gt; Sum(abs(A[i,j])); j != i.</i> 
-         * Matrix may but need not be square.
-         * <p>
-         * Note: Ignores tolerance.
-         */
-        public Boolean isDiagonallyDominantByRow(DoubleMatrix2D A)
+        /// <summary>
+        /// A matrix <i>A</i> is <i>diagonally dominant by row</i> if the absolute value of each diagonal element is larger than the sum of the absolute values of the off-diagonal elements in the corresponding row.
+        /// <i>returns true if for all i: abs(A[i,i]) &gt; Sum(abs(A[i,j])); j != i.</i>
+        /// Matrix may but need not be square.
+        /// <p>
+        /// Note: Ignores tolerance.
+        /// <summary>
+        public Boolean IsDiagonallyDominantByRow(DoubleMatrix2D A)
         {
             Cern.Jet.Math.Functions F = Cern.Jet.Math.Functions.functions;
             double epsilon = Tolerance;
@@ -398,11 +398,11 @@ For testing purposes only.
             }
             return true;
         }
-        /**
-         * A matrix <i>A</i> is an <i>identity</i> matrix if <i>A[i,i] == 1</i> and all other cells are zero.
-         * Matrix may but need not be square.
-         */
-        public Boolean isIdentity(DoubleMatrix2D A)
+        /// <summary>
+        /// A matrix <i>A</i> is an <i>identity</i> matrix if <i>A[i,i] == 1</i> and all other cells are zero.
+        /// Matrix may but need not be square.
+        /// <summary>
+        public Boolean IsIdentity(DoubleMatrix2D A)
         {
             double epsilon = Tolerance;
             int rows = A.Rows;
@@ -421,11 +421,11 @@ For testing purposes only.
             }
             return true;
         }
-        /**
-         * A matrix <i>A</i> is <i>lower bidiagonal</i> if <i>A[i,j]==0</i> unless <i>i==j || i==j+1</i>.
-         * Matrix may but need not be square.
-         */
-        public Boolean isLowerBidiagonal(DoubleMatrix2D A)
+        /// <summary>
+        /// A matrix <i>A</i> is <i>lower bidiagonal</i> if <i>A[i,j]==0</i> unless <i>i==j || i==j+1</i>.
+        /// Matrix may but need not be square.
+        /// <summary>
+        public Boolean IsLowerBidiagonal(DoubleMatrix2D A)
         {
             double epsilon = Tolerance;
             int rows = A.Rows;
@@ -443,11 +443,11 @@ For testing purposes only.
             }
             return true;
         }
-        /**
-         * A matrix <i>A</i> is <i>lower triangular</i> if <i>A[i,j]==0</i> whenever <i>i &lt; j</i>.
-         * Matrix may but need not be square.
-         */
-        public Boolean isLowerTriangular(DoubleMatrix2D A)
+        /// <summary>
+        /// A matrix <i>A</i> is <i>lower triangular</i> if <i>A[i,j]==0</i> whenever <i>i &lt; j</i>.
+        /// Matrix may but need not be square.
+        /// <summary>
+        public Boolean IsLowerTriangular(DoubleMatrix2D A)
         {
             double epsilon = Tolerance;
             int rows = A.Rows;
@@ -462,12 +462,12 @@ For testing purposes only.
             }
             return true;
         }
-        /**
-         * A matrix <i>A</i> is <i>non-negative</i> if <i>A[i,j] &gt;= 0</i> holds for all cells.
-         * <p>
-         * Note: Ignores tolerance.
-         */
-        public Boolean isNonNegative(DoubleMatrix2D A)
+        /// <summary>
+        /// A matrix <i>A</i> is <i>non-negative</i> if <i>A[i,j] &gt;= 0</i> holds for all cells.
+        /// <p>
+        /// Note: Ignores tolerance.
+        /// <summary>
+        public Boolean IsNonNegative(DoubleMatrix2D A)
         {
             int rows = A.Rows;
             int columns = A.Columns;
@@ -480,21 +480,21 @@ For testing purposes only.
             }
             return true;
         }
-        /**
-         * A square matrix <i>A</i> is <i>orthogonal</i> if <i>A*transpose(A) = I</i>.
-         * @throws ArgumentException if <i>!isSquare(A)</i>.
-         */
-        public Boolean isOrthogonal(DoubleMatrix2D A)
+        /// <summary>
+        /// A square matrix <i>A</i> is <i>orthogonal</i> if <i>A*transpose(A) = I</i>.
+        /// <summary>
+        /// <exception cref="ArgumentException">if <i>!isSquare(A)</i>. </exception>
+        public Boolean IsOrthogonal(DoubleMatrix2D A)
         {
             CheckSquare(A);
             return Equals(A.ZMult(A, null, 1, 0, false, true), Cern.Colt.Matrix.DoubleFactory2D.Dense.Identity(A.Rows));
         }
-        /**
-         * A matrix <i>A</i> is <i>positive</i> if <i>A[i,j] &gt; 0</i> holds for all cells.
-         * <p>
-         * Note: Ignores tolerance.
-         */
-        public Boolean isPositive(DoubleMatrix2D A)
+        /// <summary>
+        /// A matrix <i>A</i> is <i>positive</i> if <i>A[i,j] &gt; 0</i> holds for all cells.
+        /// <p>
+        /// Note: Ignores tolerance.
+        /// <summary>
+        public Boolean IsPositive(DoubleMatrix2D A)
         {
             int rows = A.Rows;
             int columns = A.Columns;
@@ -507,20 +507,20 @@ For testing purposes only.
             }
             return true;
         }
-        /**
-         * A matrix <i>A</i> is <i>singular</i> if it has no inverse, that is, iff <i>det(A)==0</i>.
-         */
-        public Boolean isSingular(DoubleMatrix2D A)
+        /// <summary>
+        /// A matrix <i>A</i> is <i>singular</i> if it has no inverse, that is, iff <i>det(A)==0</i>.
+        /// <summary>
+        public Boolean IsSingular(DoubleMatrix2D A)
         {
             var lu = new LUDecomposition(A);
 
             return !(System.Math.Abs(lu.Det()) >= Tolerance);
         }
-        /**
-         * A square matrix <i>A</i> is <i>skew-symmetric</i> if <i>A = -transpose(A)</i>, that is <i>A[i,j] == -A[j,i]</i>.
-         * @throws ArgumentException if <i>!isSquare(A)</i>.
-         */
-        public Boolean isSkewSymmetric(DoubleMatrix2D A)
+        /// <summary>
+        /// A square matrix <i>A</i> is <i>skew-symmetric</i> if <i>A = -transpose(A)</i>, that is <i>A[i,j] == -A[j,i]</i>.
+        /// <summary>
+        /// <exception cref="ArgumentException">if <i>!isSquare(A)</i>. </exception>
+        public Boolean IsSkewSymmetric(DoubleMatrix2D A)
         {
             CheckSquare(A);
             double epsilon = Tolerance;
@@ -536,18 +536,18 @@ For testing purposes only.
             }
             return true;
         }
-        /**
-         * A matrix <i>A</i> is <i>square</i> if it has the same number of rows and columns.
-         */
-        public Boolean isSquare(DoubleMatrix2D A)
+        /// <summary>
+        /// A matrix <i>A</i> is <i>square</i> if it has the same number of rows and columns.
+        /// <summary>
+        public Boolean IsSquare(DoubleMatrix2D A)
         {
             return A.Rows == A.Columns;
         }
-        /**
-         * A matrix <i>A</i> is <i>strictly lower triangular</i> if <i>A[i,j]==0</i> whenever <i>i &lt;= j</i>.
-         * Matrix may but need not be square.
-         */
-        public Boolean isStrictlyLowerTriangular(DoubleMatrix2D A)
+        /// <summary>
+        /// A matrix <i>A</i> is <i>strictly lower triangular</i> if <i>A[i,j]==0</i> whenever <i>i &lt;= j</i>.
+        /// Matrix may but need not be square.
+        /// <summary>
+        public Boolean IsStrictlyLowerTriangular(DoubleMatrix2D A)
         {
             double epsilon = Tolerance;
             int rows = A.Rows;
@@ -562,13 +562,13 @@ For testing purposes only.
             }
             return true;
         }
-        /**
-         * A matrix <i>A</i> is <i>strictly triangular</i> if it is triangular and its diagonal elements all equal 0.
-         * Matrix may but need not be square.
-         */
-        public Boolean isStrictlyTriangular(DoubleMatrix2D A)
+        /// <summary>
+        /// A matrix <i>A</i> is <i>strictly triangular</i> if it is triangular and its diagonal elements all equal 0.
+        /// Matrix may but need not be square.
+        /// <summary>
+        public Boolean IsStrictlyTriangular(DoubleMatrix2D A)
         {
-            if (!isTriangular(A)) return false;
+            if (!IsTriangular(A)) return false;
 
             double epsilon = Tolerance;
             for (int i = System.Math.Min(A.Rows, A.Columns); --i >= 0;)
@@ -578,11 +578,11 @@ For testing purposes only.
             }
             return true;
         }
-        /**
-         * A matrix <i>A</i> is <i>strictly upper triangular</i> if <i>A[i,j]==0</i> whenever <i>i &gt;= j</i>.
-         * Matrix may but need not be square.
-         */
-        public Boolean isStrictlyUpperTriangular(DoubleMatrix2D A)
+        /// <summary>
+        /// A matrix <i>A</i> is <i>strictly upper triangular</i> if <i>A[i,j]==0</i> whenever <i>i &gt;= j</i>.
+        /// Matrix may but need not be square.
+        /// <summary>
+        public Boolean IsStrictlyUpperTriangular(DoubleMatrix2D A)
         {
             double epsilon = Tolerance;
             int rows = A.Rows;
@@ -598,30 +598,30 @@ For testing purposes only.
             return true;
         }
 
-        /**
-* A matrix <i>A</i> is <i>symmetric</i> if <i>A = tranpose(A)</i>, that is <i>A[i,j] == A[j,i]</i>.
-* @throws ArgumentException if <i>!isSquare(A)</i>.
-*/
+        /// <summary>
+        /// A matrix <i>A</i> is <i>symmetric</i> if <i>A = tranpose(A)</i>, that is <i>A[i,j] == A[j,i]</i>.
+        /// <summary>
+        /// <exception cref="ArgumentException">if <i>!isSquare(A)</i>. </exception>
         public Boolean IsSymmetric(DoubleMatrix2D A)
         {
             CheckSquare(A);
             return Equals(A, A.ViewDice());
         }
 
-        /**
-         * A matrix <i>A</i> is <i>triangular</i> iff it is either upper or lower triangular.
-         * Matrix may but need not be square.
-         */
-        public Boolean isTriangular(DoubleMatrix2D A)
+        /// <summary>
+        /// A matrix <i>A</i> is <i>triangular</i> iff it is either upper or lower triangular.
+        /// Matrix may but need not be square.
+        /// <summary>
+        public Boolean IsTriangular(DoubleMatrix2D A)
         {
-            return isLowerTriangular(A) || isUpperTriangular(A);
+            return IsLowerTriangular(A) || IsUpperTriangular(A);
         }
 
-        /**
- * A matrix <i>A</i> is <i>tridiagonal</i> if <i>A[i,j]==0</i> whenever <i>System.Math.Abs(i-j) > 1</i>.
- * Matrix may but need not be square.
- */
-        public Boolean isTridiagonal(DoubleMatrix2D A)
+        /// <summary>
+        /// A matrix <i>A</i> is <i>tridiagonal</i> if <i>A[i,j]==0</i> whenever <i>System.Math.Abs(i-j) > 1</i>.
+        /// Matrix may but need not be square.
+        /// <summary>
+        public Boolean IsTridiagonal(DoubleMatrix2D A)
         {
             double epsilon = Tolerance;
             int rows = A.Rows;
@@ -639,13 +639,13 @@ For testing purposes only.
             }
             return true;
         }
-        /**
-         * A matrix <i>A</i> is <i>unit triangular</i> if it is triangular and its diagonal elements all equal 1.
-         * Matrix may but need not be square.
-         */
-        public Boolean isUnitTriangular(DoubleMatrix2D A)
+        /// <summary>
+        /// A matrix <i>A</i> is <i>unit triangular</i> if it is triangular and its diagonal elements all equal 1.
+        /// Matrix may but need not be square.
+        /// <summary>
+        public Boolean IsUnitTriangular(DoubleMatrix2D A)
         {
-            if (!isTriangular(A)) return false;
+            if (!IsTriangular(A)) return false;
 
             double epsilon = Tolerance;
             for (int i = System.Math.Min(A.Rows, A.Columns); --i >= 0;)
@@ -655,11 +655,11 @@ For testing purposes only.
             }
             return true;
         }
-        /**
-         * A matrix <i>A</i> is <i>upper bidiagonal</i> if <i>A[i,j]==0</i> unless <i>i==j || i==j-1</i>.
-         * Matrix may but need not be square.
-         */
-        public Boolean isUpperBidiagonal(DoubleMatrix2D A)
+        /// <summary>
+        /// A matrix <i>A</i> is <i>upper bidiagonal</i> if <i>A[i,j]==0</i> unless <i>i==j || i==j-1</i>.
+        /// Matrix may but need not be square.
+        /// <summary>
+        public Boolean IsUpperBidiagonal(DoubleMatrix2D A)
         {
             double epsilon = Tolerance;
             int rows = A.Rows;
@@ -677,11 +677,11 @@ For testing purposes only.
             }
             return true;
         }
-        /**
-         * A matrix <i>A</i> is <i>upper triangular</i> if <i>A[i,j]==0</i> whenever <i>i &gt; j</i>.
-         * Matrix may but need not be square.
-         */
-        public Boolean isUpperTriangular(DoubleMatrix2D A)
+        /// <summary>
+        /// A matrix <i>A</i> is <i>upper triangular</i> if <i>A[i,j]==0</i> whenever <i>i &gt; j</i>.
+        /// Matrix may but need not be square.
+        /// <summary>
+        public Boolean IsUpperTriangular(DoubleMatrix2D A)
         {
             double epsilon = Tolerance;
             int rows = A.Rows;
@@ -696,25 +696,25 @@ For testing purposes only.
             }
             return true;
         }
-        /**
-         * A matrix <i>A</i> is <i>zero</i> if all its cells are zero.
-         */
-        public Boolean isZero(DoubleMatrix2D A)
+        /// <summary>
+        /// A matrix <i>A</i> is <i>zero</i> if all its cells are zero.
+        /// <summary>
+        public Boolean IsZero(DoubleMatrix2D A)
         {
             return Equals(A, 0);
         }
-        /**
-The <i>lower bandwidth</i> of a square matrix <i>A</i> is the maximum <i>i-j</i> for which <i>A[i,j]</i> is nonzero and <i>i &gt; j</i>.
-A <i>banded</i> matrix has a "band" about the diagonal.
-Diagonal, tridiagonal and triangular matrices are special cases.
-
-@param A the square matrix to analyze.
-@return the lower bandwith.
-@throws ArgumentException if <i>!isSquare(A)</i>.
-@see #semiBandwidth(DoubleMatrix2D)
-@see #upperBandwidth(DoubleMatrix2D)
-*/
-        public int lowerBandwidth(DoubleMatrix2D A)
+        /// <summary>
+        /// The<i> lower bandwidth</i> of a square matrix<i> A</i> is the maximum <i>i-j</i> for which<i> A[i, j]</i> is nonzero and <i>i &gt; j</i>.
+        ///  A<i> banded</i> matrix has a "band" about the diagonal.
+        ///  Diagonal, tridiagonal and triangular matrices are special cases.
+/// <summary>
+/// </summary>
+///<param name = "A" > the square matrix to analyze.</param>
+///<returns>the lower bandwith.</returns>
+///<exception cref = "ArgumentException" >if <i>!isSquare(A)</i>. </exception>
+///<see cref = "#semiBandwidth(DoubleMatrix2D)" ></ see>
+///<see cref= "#upperBandwidth(DoubleMatrix2D)" ></ see>
+        public int LowerBandwidth(DoubleMatrix2D A)
         {
             CheckSquare(A);
             double epsilon = Tolerance;
@@ -731,150 +731,149 @@ Diagonal, tridiagonal and triangular matrices are special cases.
             }
             return 0;
         }
-        /**
-Returns the <i>semi-bandwidth</i> of the given square matrix <i>A</i>.
-A <i>banded</i> matrix has a "band" about the diagonal.
-It is a matrix with all cells equal to zero, 
-with the possible exception of the cells along the diagonal line,
-the <i>k</i> diagonal lines above the diagonal, and the <i>k</i> diagonal lines below the diagonal.
-The <i>semi-bandwith l</i> is the number <i>k+1</i>.
-The <i>bandwidth p</i> is the number <i>2*k + 1</i>.
-For example, a tridiagonal matrix corresponds to <i>k=1, l=2, p=3</i>, 
-a diagonal or zero matrix corresponds to <i>k=0, l=1, p=1</i>, 
-<p>
-The <i>upper bandwidth</i> is the maximum <i>j-i</i> for which <i>A[i,j]</i> is nonzero and <i>j &gt; i</i>.
-The <i>lower bandwidth</i> is the maximum <i>i-j</i> for which <i>A[i,j]</i> is nonzero and <i>i &gt; j</i>d 
-Diagonal, tridiagonal and triangular matrices are special cases.
-<p>
-Examples:
-<table border="1" cellspacing="0">
-          <tr align="left" valign="top"> 
-            <td valign="middle" align="left"><i>matrix</i></td>
-            <td> <i>4&nbsp;x&nbsp;4&nbsp;<br>
-              0&nbsp;0&nbsp;0&nbsp;0<br>
-              0&nbsp;0&nbsp;0&nbsp;0<br>
-              0&nbsp;0&nbsp;0&nbsp;0<br>
-              0&nbsp;0&nbsp;0&nbsp;0 </i></td>
-            <td><i>4&nbsp;x&nbsp;4<br>
-              1&nbsp;0&nbsp;0&nbsp;0<br>
-              0&nbsp;0&nbsp;0&nbsp;0<br>
-              0&nbsp;0&nbsp;0&nbsp;0<br>
-              0&nbsp;0&nbsp;0&nbsp;1 </i></td>
-            <td><i>4&nbsp;x&nbsp;4<br>
-              1&nbsp;1&nbsp;0&nbsp;0<br>
-              1&nbsp;1&nbsp;1&nbsp;0<br>
-              0&nbsp;1&nbsp;1&nbsp;1<br>
-              0&nbsp;0&nbsp;1&nbsp;1 </i></td>
-            <td><i> 4&nbsp;x&nbsp;4<br>
-              0&nbsp;1&nbsp;1&nbsp;1<br>
-              0&nbsp;1&nbsp;1&nbsp;1<br>
-              0&nbsp;0&nbsp;0&nbsp;1<br>
-              0&nbsp;0&nbsp;0&nbsp;1 </i></td>
-            <td><i> 4&nbsp;x&nbsp;4<br>
-              0&nbsp;0&nbsp;0&nbsp;0<br>
-              1&nbsp;1&nbsp;0&nbsp;0<br>
-              1&nbsp;1&nbsp;0&nbsp;0<br>
-              1&nbsp;1&nbsp;1&nbsp;1 </i></td>
-            <td><i>4&nbsp;x&nbsp;4<br>
-              1&nbsp;1&nbsp;0&nbsp;0<br>
-              0&nbsp;1&nbsp;1&nbsp;0<br>
-              0&nbsp;1&nbsp;0&nbsp;1<br>
-              1&nbsp;0&nbsp;1&nbsp;1 </i><i> </i> </td>
-            <td><i>4&nbsp;x&nbsp;4<br>
-              1&nbsp;1&nbsp;1&nbsp;0<br>
-              0&nbsp;1&nbsp;0&nbsp;0<br>
-              1&nbsp;1&nbsp;0&nbsp;1<br>
-              0&nbsp;0&nbsp;1&nbsp;1 </i> </td>
-          </tr>
-          <tr align="center" valign="middle"> 
-            <td><i>upperBandwidth</i></td>
-            <td> 
-              <div align="center"><i>0</i></div>
-            </td>
-            <td> 
-              <div align="center"><i>0</i></div>
-            </td>
-            <td> 
-              <div align="center"><i>1</i></div>
-            </td>
-            <td><i>3</i></td>
-            <td align="center" valign="middle"><i>0</i></td>
-            <td align="center" valign="middle"> 
-              <div align="center"><i>1</i></div>
-            </td>
-            <td align="center" valign="middle"> 
-              <div align="center"><i>2</i></div>
-            </td>
-          </tr>
-          <tr align="center" valign="middle"> 
-            <td><i>lowerBandwidth</i></td>
-            <td> 
-              <div align="center"><i>0</i></div>
-            </td>
-            <td> 
-              <div align="center"><i>0</i></div>
-            </td>
-            <td> 
-              <div align="center"><i>1</i></div>
-            </td>
-            <td><i>0</i></td>
-            <td align="center" valign="middle"><i>3</i></td>
-            <td align="center" valign="middle"> 
-              <div align="center"><i>3</i></div>
-            </td>
-            <td align="center" valign="middle"> 
-              <div align="center"><i>2</i></div>
-            </td>
-          </tr>
-          <tr align="center" valign="middle"> 
-            <td><i>semiBandwidth</i></td>
-            <td> 
-              <div align="center"><i>1</i></div>
-            </td>
-            <td> 
-              <div align="center"><i>1</i></div>
-            </td>
-            <td> 
-              <div align="center"><i>2</i></div>
-            </td>
-            <td><i>4</i></td>
-            <td align="center" valign="middle"><i>4</i></td>
-            <td align="center" valign="middle"> 
-              <div align="center"><i>4</i></div>
-            </td>
-            <td align="center" valign="middle"> 
-              <div align="center"><i>3</i></div>
-            </td>
-          </tr>
-          <tr align="center" valign="middle"> 
-            <td><i>description</i></td>
-            <td> 
-              <div align="center"><i>zero</i></div>
-            </td>
-            <td> 
-              <div align="center"><i>diagonal</i></div>
-            </td>
-            <td> 
-              <div align="center"><i>tridiagonal</i></div>
-            </td>
-            <td><i>upper triangular</i></td>
-            <td align="center" valign="middle"><i>lower triangular</i></td>
-            <td align="center" valign="middle"> 
-              <div align="center"><i>unstructured</i></div>
-            </td>
-            <td align="center" valign="middle"> 
-              <div align="center"><i>unstructured</i></div>
-            </td>
-          </tr>
-</table>
-
-@param A the square matrix to analyze.
-@return the semi-bandwith <i>l</i>.
-@throws ArgumentException if <i>!isSquare(A)</i>.
-@see #lowerBandwidth(DoubleMatrix2D)
-@see #upperBandwidth(DoubleMatrix2D)
-*/
-        public int semiBandwidth(DoubleMatrix2D A)
+        /// <summary>
+        ///         Returns the<i>semi-bandwidth</i> of the given square matrix <i>A</i>.
+        ///         A<i> banded</i> matrix has a "band" about the diagonal.
+        ///         It is a matrix with all cells equal to zero,
+        ///         with the possible exception of the cells along the diagonal line,
+        ///         the<i> k</i> diagonal lines above the diagonal, and the <i>k</i> diagonal lines below the diagonal.
+        /// The<i> semi-bandwith l</i> is the number <i>k+1</i>.
+        /// The<i> bandwidth p</i> is the number <i>2*k + 1</i>.
+        /// For example, a tridiagonal matrix corresponds to<i> k = 1, l= 2, p= 3 </ i >,
+        ///         a diagonal or zero matrix corresponds to<i> k = 0, l= 1, p= 1 </ i >,
+        ///         <p>
+        /// The<i> upper bandwidth</i> is the maximum <i>j-i</i> for which<i> A[i, j]</i> is nonzero and <i>j &gt; i</i>.
+        ///  The<i> lower bandwidth</i> is the maximum<i>i-j</i> for which<i> A[i, j]</i> is nonzero and <i>i &gt; j</i> d
+        /// Diagonal, tridiagonal and triangular matrices are special cases.
+        /// <p>
+        /// Examples:
+        /// <table border = "1" cellspacing="0">
+        ///           <tr align = "left" valign="top"> 
+        ///             <td valign = "middle" align="left"><i>matrix</i></td>
+        ///             <td> <i>4&nbsp;x&nbsp;4&nbsp;<br>
+        ///               0&nbsp;0&nbsp;0&nbsp;0<br>
+        ///               0&nbsp;0&nbsp;0&nbsp;0<br>
+        ///               0&nbsp;0&nbsp;0&nbsp;0<br>
+        ///               0&nbsp;0&nbsp;0&nbsp;0 </i></td>
+        ///             <td><i>4&nbsp;x&nbsp;4<br>
+        ///               1&nbsp;0&nbsp;0&nbsp;0<br>
+        ///               0&nbsp;0&nbsp;0&nbsp;0<br>
+        ///               0&nbsp;0&nbsp;0&nbsp;0<br>
+        ///               0&nbsp;0&nbsp;0&nbsp;1 </i></td>
+        ///             <td><i>4&nbsp;x&nbsp;4<br>
+        ///               1&nbsp;1&nbsp;0&nbsp;0<br>
+        ///               1&nbsp;1&nbsp;1&nbsp;0<br>
+        ///               0&nbsp;1&nbsp;1&nbsp;1<br>
+        ///               0&nbsp;0&nbsp;1&nbsp;1 </i></td>
+        ///             <td><i> 4&nbsp;x&nbsp;4<br>
+        ///               0&nbsp;1&nbsp;1&nbsp;1<br>
+        ///               0&nbsp;1&nbsp;1&nbsp;1<br>
+        ///               0&nbsp;0&nbsp;0&nbsp;1<br>
+        ///               0&nbsp;0&nbsp;0&nbsp;1 </i></td>
+        ///             <td><i> 4&nbsp;x&nbsp;4<br>
+        ///               0&nbsp;0&nbsp;0&nbsp;0<br>
+        ///               1&nbsp;1&nbsp;0&nbsp;0<br>
+        ///               1&nbsp;1&nbsp;0&nbsp;0<br>
+        ///               1&nbsp;1&nbsp;1&nbsp;1 </i></td>
+        ///             <td><i>4&nbsp;x&nbsp;4<br>
+        ///               1&nbsp;1&nbsp;0&nbsp;0<br>
+        ///               0&nbsp;1&nbsp;1&nbsp;0<br>
+        ///               0&nbsp;1&nbsp;0&nbsp;1<br>
+        ///               1&nbsp;0&nbsp;1&nbsp;1 </i><i> </i> </td>
+        ///             <td><i>4&nbsp;x&nbsp;4<br>
+        ///               1&nbsp;1&nbsp;1&nbsp;0<br>
+        ///               0&nbsp;1&nbsp;0&nbsp;0<br>
+        ///               1&nbsp;1&nbsp;0&nbsp;1<br>
+        ///               0&nbsp;0&nbsp;1&nbsp;1 </i> </td>
+        ///           </tr>
+        ///           <tr align = "center" valign="middle"> 
+        ///             <td><i>upperBandwidth</i></td>
+        ///             <td> 
+        ///               <div align = "center" >< i > 0 </ i ></ div >
+        ///             </ td >
+        ///             < td >
+        ///               < div align="center"><i>0</i></div>
+        ///             </td>
+        ///             <td> 
+        ///               <div align = "center" >< i > 1 </ i ></ div >
+        ///             </ td >
+        ///             < td >< i > 3 </ i ></ td >
+        ///             < td align="center" valign="middle"><i>0</i></td>
+        ///             <td align = "center" valign="middle"> 
+        ///               <div align = "center" >< i > 1 </ i ></ div >
+        ///             </ td >
+        ///             < td align="center" valign="middle"> 
+        ///               <div align = "center" >< i > 2 </ i ></ div >
+        ///             </ td >
+        ///           </ tr >
+        ///           < tr align="center" valign="middle"> 
+        ///             <td><i>lowerBandwidth</i></td>
+        ///             <td> 
+        ///               <div align = "center" >< i > 0 </ i ></ div >
+        ///             </ td >
+        ///             < td >
+        ///               < div align="center"><i>0</i></div>
+        ///             </td>
+        ///             <td> 
+        ///               <div align = "center" >< i > 1 </ i ></ div >
+        ///             </ td >
+        ///             < td >< i > 0 </ i ></ td >
+        ///             < td align="center" valign="middle"><i>3</i></td>
+        ///             <td align = "center" valign="middle"> 
+        ///               <div align = "center" >< i > 3 </ i ></ div >
+        ///             </ td >
+        ///             < td align="center" valign="middle"> 
+        ///               <div align = "center" >< i > 2 </ i ></ div >
+        ///             </ td >
+        ///           </ tr >
+        ///           < tr align="center" valign="middle"> 
+        ///             <td><i>semiBandwidth</i></td>
+        ///             <td> 
+        ///               <div align = "center" >< i > 1 </ i ></ div >
+        ///             </ td >
+        ///             < td >
+        ///               < div align="center"><i>1</i></div>
+        ///             </td>
+        ///             <td> 
+        ///               <div align = "center" >< i > 2 </ i ></ div >
+        ///             </ td >
+        ///             < td >< i > 4 </ i ></ td >
+        ///             < td align="center" valign="middle"><i>4</i></td>
+        ///             <td align = "center" valign="middle"> 
+        ///               <div align = "center" >< i > 4 </ i ></ div >
+        ///             </ td >
+        ///             < td align="center" valign="middle"> 
+        ///               <div align = "center" >< i > 3 </ i ></ div >
+        ///             </ td >
+        ///           </ tr >
+        ///           < tr align="center" valign="middle"> 
+        ///             <td><i>description</i></td>
+        ///             <td> 
+        ///               <div align = "center" >< i > zero </ i ></ div >
+        ///             </ td >
+        ///             < td >
+        ///               < div align="center"><i>diagonal</i></div>
+        ///             </td>
+        ///             <td> 
+        ///               <div align = "center" >< i > tridiagonal </ i ></ div >
+        ///             </ td >
+        ///             < td >< i > upper triangular</i></td>
+        ///             <td align = "center" valign="middle"><i>lower triangular</i></td>
+        ///             <td align = "center" valign= "middle" >
+        ///                 < div align= "center" >< i > unstructured </ i ></ div >
+        ///               </ td >
+        ///               < td align= "center" valign= "middle" >
+        ///                 < div align= "center" >< i > unstructured </ i ></ div >
+        ///               </ td >
+        ///             </ tr >
+        ///   </ table >
+        /// <summary>
+        ///<param name= "A" > the square matrix to analyze.</param>
+        ///<returns>the semi-bandwith<i> l</i>.</returns>
+        ///<exception cref = "ArgumentException" >if <i>!isSquare(A)</i>. </exception>
+        ///<see cref = "#lowerBandwidth(DoubleMatrix2D)" ></see>
+        ///<see cref= "#upperBandwidth(DoubleMatrix2D)" ></see>
+        public int SemiBandwidth(DoubleMatrix2D A)
         {
             CheckSquare(A);
             double epsilon = Tolerance;
@@ -893,11 +892,11 @@ Examples:
             }
             return 1;
         }
-        /**
-         * Sets the tolerance to <i>System.Math.Abs(newTolerance)</i>.
-         * @throws NotSupportedException if <i>this==DEFAULT || this==ZERO || this==TWELVE</i>.
-         */
-        public void setTolerance(double newTolerance)
+        /// <summary>
+        /// Sets the tolerance to <i>System.Math.Abs(newTolerance)</i>.
+        /// <summary>
+        /// <exception cref="NotSupportedException">if <i>this==DEFAULT || this==ZERO || this==TWELVE</i>. </exception>
+        public void SetTolerance(double newTolerance)
         {
             if (this == DEFAULT || this == ZERO || this == TWELVE)
             {
@@ -906,40 +905,41 @@ Examples:
             }
             Tolerance = System.Math.Abs(newTolerance);
         }
-        /**
-Returns summary information about the given matrix <i>A</i>.
-That is a String with (propertyName, propertyValue) pairs.
-Useful for debugging or to quickly get the rough picture of a matrix.
-For example,
-<pre>
-density                      : 0.9
-isDiagonal                   : false
-isDiagonallyDominantByRow    : false
-isDiagonallyDominantByColumn : false
-isIdentity                   : false
-isLowerBidiagonal            : false
-isLowerTriangular            : false
-isNonNegative                : true
-isOrthogonal                 : Illegal operation or error: Matrix must be square.
-isPositive                   : true
-isSingular                   : Illegal operation or error: Matrix must be square.
-isSkewSymmetric              : Illegal operation or error: Matrix must be square.
-isSquare                     : false
-isStrictlyLowerTriangular    : false
-isStrictlyTriangular         : false
-isStrictlyUpperTriangular    : false
-isSymmetric                  : Illegal operation or error: Matrix must be square.
-isTriangular                 : false
-isTridiagonal                : false
-isUnitTriangular             : false
-isUpperBidiagonal            : false
-isUpperTriangular            : false
-isZero                       : false
-lowerBandwidth               : Illegal operation or error: Matrix must be square.
-semiBandwidth                : Illegal operation or error: Matrix must be square.
-upperBandwidth               : Illegal operation or error: Matrix must be square.
-</pre>
-*/
+
+        /// <summary>
+        /// Returns summary information about the given matrix<i> A</i>.
+        /// That is a String with (propertyName, propertyValue) pairs.
+        /// Useful for debugging or to quickly get the rough picture of a matrix.
+        ///         For example,
+        ///         <pre>
+        /// density                      : 0.9
+        /// isDiagonal                   : false
+        /// isDiagonallyDominantByRow    : false
+        /// isDiagonallyDominantByColumn : false
+        /// isIdentity                   : false
+        /// isLowerBidiagonal            : false
+        /// isLowerTriangular            : false
+        /// isNonNegative                : true
+        /// isOrthogonal                 : Illegal operation or error: Matrix must be square.
+        /// isPositive                   : true
+        /// isSingular                   : Illegal operation or error: Matrix must be square.
+        /// isSkewSymmetric              : Illegal operation or error: Matrix must be square.
+        /// isSquare                     : false
+        /// isStrictlyLowerTriangular    : false
+        /// isStrictlyTriangular         : false
+        /// isStrictlyUpperTriangular    : false
+        /// isSymmetric                  : Illegal operation or error: Matrix must be square.
+        /// isTriangular                 : false
+        /// isTridiagonal                : false
+        /// isUnitTriangular             : false
+        /// isUpperBidiagonal            : false
+        /// isUpperTriangular            : false
+        /// isZero                       : false
+        /// lowerBandwidth               : Illegal operation or error: Matrix must be square.
+        /// semiBandwidth                : Illegal operation or error: Matrix must be square.
+        /// upperBandwidth               : Illegal operation or error: Matrix must be square.
+        /// </pre>
+        /// <summary>
         public String ToString(DoubleMatrix2D A)
         {
             var names = new List<Object>();
@@ -953,65 +953,65 @@ upperBandwidth               : Illegal operation or error: Matrix must be square
 
             // determine properties
             names.Add("isDiagonal");
-            try { values.Add(isDiagonal(A).ToString()); }
+            try { values.Add(IsDiagonal(A).ToString()); }
             catch (ArgumentException exc) { values.Add(unknown + exc.Message); }
 
             // determine properties
             names.Add("isDiagonallyDominantByRow");
-            try { values.Add(isDiagonallyDominantByRow(A).ToString()); }
+            try { values.Add(IsDiagonallyDominantByRow(A).ToString()); }
             catch (ArgumentException exc) { values.Add(unknown + exc.Message); }
 
             // determine properties
             names.Add("isDiagonallyDominantByColumn");
-            try { values.Add(isDiagonallyDominantByColumn(A).ToString()); }
+            try { values.Add(IsDiagonallyDominantByColumn(A).ToString()); }
             catch (ArgumentException exc) { values.Add(unknown + exc.Message); }
 
             names.Add("isIdentity");
-            try { values.Add(isIdentity(A).ToString()); }
+            try { values.Add(IsIdentity(A).ToString()); }
             catch (ArgumentException exc) { values.Add(unknown + exc.Message); }
 
             names.Add("isLowerBidiagonal");
-            try { values.Add(isLowerBidiagonal(A).ToString()); }
+            try { values.Add(IsLowerBidiagonal(A).ToString()); }
             catch (ArgumentException exc) { values.Add(unknown + exc.Message); }
 
             names.Add("isLowerTriangular");
-            try { values.Add(isLowerTriangular(A).ToString()); }
+            try { values.Add(IsLowerTriangular(A).ToString()); }
             catch (ArgumentException exc) { values.Add(unknown + exc.Message); }
 
             names.Add("isNonNegative");
-            try { values.Add(isNonNegative(A).ToString()); }
+            try { values.Add(IsNonNegative(A).ToString()); }
             catch (ArgumentException exc) { values.Add(unknown + exc.Message); }
 
             names.Add("isOrthogonal");
-            try { values.Add(isOrthogonal(A).ToString()); }
+            try { values.Add(IsOrthogonal(A).ToString()); }
             catch (ArgumentException exc) { values.Add(unknown + exc.Message); }
 
             names.Add("isPositive");
-            try { values.Add(isPositive(A).ToString()); }
+            try { values.Add(IsPositive(A).ToString()); }
             catch (ArgumentException exc) { values.Add(unknown + exc.Message); }
 
             names.Add("isSingular");
-            try { values.Add(isSingular(A).ToString()); }
+            try { values.Add(IsSingular(A).ToString()); }
             catch (ArgumentException exc) { values.Add(unknown + exc.Message); }
 
             names.Add("isSkewSymmetric");
-            try { values.Add(isSkewSymmetric(A).ToString()); }
+            try { values.Add(IsSkewSymmetric(A).ToString()); }
             catch (ArgumentException exc) { values.Add(unknown + exc.Message); }
 
             names.Add("isSquare");
-            try { values.Add(isSquare(A).ToString()); }
+            try { values.Add(IsSquare(A).ToString()); }
             catch (ArgumentException exc) { values.Add(unknown + exc.Message); }
 
             names.Add("isStrictlyLowerTriangular");
-            try { values.Add(isStrictlyLowerTriangular(A).ToString()); }
+            try { values.Add(IsStrictlyLowerTriangular(A).ToString()); }
             catch (ArgumentException exc) { values.Add(unknown + exc.Message); }
 
             names.Add("isStrictlyTriangular");
-            try { values.Add(isStrictlyTriangular(A).ToString()); }
+            try { values.Add(IsStrictlyTriangular(A).ToString()); }
             catch (ArgumentException exc) { values.Add(unknown + exc.Message); }
 
             names.Add("isStrictlyUpperTriangular");
-            try { values.Add(isStrictlyUpperTriangular(A).ToString()); }
+            try { values.Add(IsStrictlyUpperTriangular(A).ToString()); }
             catch (ArgumentException exc) { values.Add(unknown + exc.Message); }
 
             names.Add("isSymmetric");
@@ -1019,39 +1019,39 @@ upperBandwidth               : Illegal operation or error: Matrix must be square
             catch (ArgumentException exc) { values.Add(unknown + exc.Message); }
 
             names.Add("isTriangular");
-            try { values.Add(isTriangular(A).ToString()); }
+            try { values.Add(IsTriangular(A).ToString()); }
             catch (ArgumentException exc) { values.Add(unknown + exc.Message); }
 
             names.Add("isTridiagonal");
-            try { values.Add(isTridiagonal(A).ToString()); }
+            try { values.Add(IsTridiagonal(A).ToString()); }
             catch (ArgumentException exc) { values.Add(unknown + exc.Message); }
 
             names.Add("isUnitTriangular");
-            try { values.Add(isUnitTriangular(A).ToString()); }
+            try { values.Add(IsUnitTriangular(A).ToString()); }
             catch (ArgumentException exc) { values.Add(unknown + exc.Message); }
 
             names.Add("isUpperBidiagonal");
-            try { values.Add(isUpperBidiagonal(A).ToString()); }
+            try { values.Add(IsUpperBidiagonal(A).ToString()); }
             catch (ArgumentException exc) { values.Add(unknown + exc.Message); }
 
             names.Add("isUpperTriangular");
-            try { values.Add(isUpperTriangular(A).ToString()); }
+            try { values.Add(IsUpperTriangular(A).ToString()); }
             catch (ArgumentException exc) { values.Add(unknown + exc.Message); }
 
             names.Add("isZero");
-            try { values.Add(isZero(A).ToString()); }
+            try { values.Add(IsZero(A).ToString()); }
             catch (ArgumentException exc) { values.Add(unknown + exc.Message); }
 
             names.Add("lowerBandwidth");
-            try { values.Add(lowerBandwidth(A).ToString()); }
+            try { values.Add(LowerBandwidth(A).ToString()); }
             catch (ArgumentException exc) { values.Add(unknown + exc.Message); }
 
             names.Add("semiBandwidth");
-            try { values.Add(semiBandwidth(A).ToString()); }
+            try { values.Add(SemiBandwidth(A).ToString()); }
             catch (ArgumentException exc) { values.Add(unknown + exc.Message); }
 
             names.Add("upperBandwidth");
-            try { values.Add(upperBandwidth(A).ToString()); }
+            try { values.Add(UpperBandwidth(A).ToString()); }
             catch (ArgumentException exc) { values.Add(unknown + exc.Message); }
 
 
@@ -1065,61 +1065,60 @@ upperBandwidth               : Illegal operation or error: Matrix must be square
             Cern.Colt.Swapper swapper = new Cern.Colt.Swapper((a, b) =>
         {
             Object tmp;
-            tmp = names[a]; names[a] =  names[b]; names[b] = tmp;
-            tmp = values[a]; values[a] =  values[b]; values[b] = tmp;
+            tmp = names[a]; names[a] = names[b]; names[b] = tmp;
+            tmp = values[a]; values[a] = values[b]; values[b] = tmp;
         });
 
-    Cern.Colt.GenericSorting.QuickSort(0,names.Count,comp,swapper);
-	
-	// determine padding for nice formatting
-	int maxLength = 0;
-	for (int i = 0; i<names.Count; i++) {
-		int Length = ((String)names[i]).Length;
-    maxLength = System.Math.Max(Length, maxLength);
-	}
+            Cern.Colt.GenericSorting.QuickSort(0, names.Count, comp, swapper);
 
-// finally, format properties
-StringBuilder buf = new StringBuilder();
-	for (int i = 0; i<names.Count; i++) {
-		String name = ((String)names[i]);
-buf.Append(name);
-		buf.Append(Blanks(maxLength - name.Length));
-		buf.Append(" : ");
-		buf.Append(values[i]);
-		if (i<names.Count - 1)
-			buf.Append('\n');
-	}
-	
-	return buf.ToString();
-}
-/**
-The <i>upper bandwidth</i> of a square matrix <i>A</i> is the 
-maximum <i>j-i</i> for which <i>A[i,j]</i> is nonzero and <i>j &gt; i</i>.
-A <i>banded</i> matrix has a "band" about the diagonald 
-Diagonal, tridiagonal and triangular matrices are special cases.
+            // determine padding for nice formatting
+            int maxLength = 0;
+            for (int i = 0; i < names.Count; i++) {
+                int Length = ((String)names[i]).Length;
+                maxLength = System.Math.Max(Length, maxLength);
+            }
 
-@param A the square matrix to analyze.
-@return the upper bandwith.
-@throws ArgumentException if <i>!isSquare(A)</i>.
-@see #semiBandwidth(DoubleMatrix2D)
-@see #lowerBandwidth(DoubleMatrix2D)
-*/
-public int upperBandwidth(DoubleMatrix2D A)
-{
-    CheckSquare(A);
-    double epsilon = Tolerance;
-    int rows = A.Rows;
+            // finally, format properties
+            StringBuilder buf = new StringBuilder();
+            for (int i = 0; i < names.Count; i++) {
+                String name = ((String)names[i]);
+                buf.Append(name);
+                buf.Append(Blanks(maxLength - name.Length));
+                buf.Append(" : ");
+                buf.Append(values[i]);
+                if (i < names.Count - 1)
+                    buf.Append('\n');
+            }
 
-    for (int k = rows; --k >= 0;)
-    {
-        for (int i = rows - k; --i >= 0;)
-        {
-            int j = i + k;
-            //if (A.getQuick(i,j) != 0) return k;
-            if (!(System.Math.Abs(A[i, j]) <= epsilon)) return k;
+            return buf.ToString();
         }
-    }
-    return 0;
-}
+        /// <summary>
+        /// The<i> upper bandwidth</i> of a square matrix<i> A</i> is the
+        /// maximum <i>j-i</i> for which<i> A[i, j]</i> is nonzero and <i>j &gt; i</i>.
+        ///  A<i> banded</i> matrix has a "band" about the diagonald
+        ///  Diagonal, tridiagonal and triangular matrices are special cases.
+        /// <summary>
+        /// <param name = "A" > the square matrix to analyze.</param>
+        /// <returns>the upper bandwith.</returns>
+        /// <exception cref = "ArgumentException" >if <i>!isSquare(A)</i>. </exception>
+        /// <see cref = "#semiBandwidth(DoubleMatrix2D)" ></see>
+        /// <see cref= "#lowerBandwidth(DoubleMatrix2D)" ></see>
+        public int UpperBandwidth(DoubleMatrix2D A)
+        {
+            CheckSquare(A);
+            double epsilon = Tolerance;
+            int rows = A.Rows;
+
+            for (int k = rows; --k >= 0;)
+            {
+                for (int i = rows - k; --i >= 0;)
+                {
+                    int j = i + k;
+                    //if (A.getQuick(i,j) != 0) return k;
+                    if (!(System.Math.Abs(A[i, j]) <= epsilon)) return k;
+                }
+            }
+            return 0;
+        }
     }
 }

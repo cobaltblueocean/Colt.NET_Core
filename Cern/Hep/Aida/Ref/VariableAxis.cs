@@ -57,7 +57,7 @@ namespace Cern.Hep.Aida.Ref
             {
                 if (edges[i + 1] <= edges[i])
                 {
-                    throw new ArgumentException("edges must be sorted ascending and must not contain multiple identical values");
+                    throw new ArgumentException(Cern.LocalizedResources.Instance().Exception_EdgesMustBeSorted);
                 }
             }
 

@@ -93,8 +93,8 @@
             if (A.IsSquare && A.IsDiagonal)
             {
                 DoubleMatrix2D inv = A.Copy();
-                Boolean isNonSingular = Diagonal.Inverse(inv);
-                if (!isNonSingular) throw new ArgumentException("A is singular.");
+                Boolean IsNonSingular = Diagonal.Inverse(inv);
+                if (!IsNonSingular) throw new ArgumentException(Cern.LocalizedResources.Instance().Exception_MatrixIsSingular);
                 return inv;
             }
             return Solve(A, DoubleFactory2D.Dense.Identity(A.Rows));
@@ -287,12 +287,12 @@
         {
             // check validity
             int size = A.Size;
-            if (indexes.Length != size) throw new IndexOutOfRangeException("invalid permutation");
+            if (indexes.Length != size) throw new IndexOutOfRangeException(Cern.LocalizedResources.Instance().Exception_InvalidPermutation);
 
             /*
             int i=size;
             int a;
-            while (--i >= 0 && (a=indexes[i])==i) if (a < 0 || a >= size) throw new IndexOutOfRangeException("invalid permutation");
+            while (--i >= 0 && (a=indexes[i])==i) if (a < 0 || a >= size) throw new IndexOutOfRangeException(Cern.LocalizedResources.Instance().Exception_InvalidPermutation);
             if (i<0) return; // nothing to permute
             */
 
@@ -322,12 +322,12 @@
         {
             // check validity
             int size = A.Rows;
-            if (indexes.Length != size) throw new IndexOutOfRangeException("invalid permutation");
+            if (indexes.Length != size) throw new IndexOutOfRangeException(Cern.LocalizedResources.Instance().Exception_InvalidPermutation);
 
             /*
             int i=size;
             int a;
-            while (--i >= 0 && (a=indexes[i])==i) if (a < 0 || a >= size) throw new IndexOutOfRangeException("invalid permutation");
+            while (--i >= 0 && (a=indexes[i])==i) if (a < 0 || a >= size) throw new IndexOutOfRangeException(Cern.LocalizedResources.Instance().Exception_InvalidPermutation);
             if (i<0) return; // nothing to permute
             */
 
@@ -345,7 +345,7 @@
         }
     );
 
-            Cern.Colt.GenericPermuting.permute(indexes, swapper, work, null);
+            Cern.Colt.GenericPermuting.Permute(indexes, swapper, work, null);
             return A;
         }
 
@@ -476,7 +476,7 @@
             {
                 int row = rowIndexes[r];
                 if (row < 0 || row >= rows)
-                    throw new IndexOutOfRangeException("Illegal Index");
+                    throw new IndexOutOfRangeException(Cern.LocalizedResources.Instance().Exception_IllegalIndex);
                 sub.ViewRow(r).Assign(A.ViewRow(row));
             }
             return sub;
@@ -495,7 +495,7 @@
         /// <exception cref="IndexOutOfRangeException">if <i>rowFrom &lt; 0 || rowTo-rowFrom + 1 &lt; 0 || rowTo + 1 > matrix.Rows || for any col = columnIndexes[i]: col &lt; 0 || col >= matrix.Columns</i>.</exception>
         private static DoubleMatrix2D SubMatrix(DoubleMatrix2D A, int rowFrom, int rowTo, int[] columnIndexes)
         {
-            if (rowTo - rowFrom >= A.Rows) throw new IndexOutOfRangeException("Too many rows");
+            if (rowTo - rowFrom >= A.Rows) throw new IndexOutOfRangeException(Cern.LocalizedResources.Instance().Exception_TooManyRows);
             int height = rowTo - rowFrom + 1;
             int columns = A.Columns;
             A = A.ViewPart(rowFrom, 0, height, columns);
@@ -505,7 +505,7 @@
             {
                 int column = columnIndexes[c];
                 if (column < 0 || column >= columns)
-                    throw new IndexOutOfRangeException("Illegal Index");
+                    throw new IndexOutOfRangeException(Cern.LocalizedResources.Instance().Exception_IllegalIndex);
                 sub.ViewColumn(c).Assign(A.ViewColumn(column));
             }
             return sub;
@@ -787,7 +787,7 @@
                 buf.Append("------------------------------------------------------------------\n");
             */
 
-            String constructionException = "Illegal operation or error upon construction of ";
+            String constructionException = Cern.LocalizedResources.Instance().Exception_IllegalOperationOrErrorUponConstructionOf;
             StringBuilder buf = new StringBuilder();
 
             buf.Append("A = ");

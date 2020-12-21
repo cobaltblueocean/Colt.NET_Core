@@ -96,7 +96,7 @@ namespace Cern.Colt.Bitvector
         /// <exception cref="ArgumentException">if <i>columns() != other.Columns || rows() != other.Rows</i>.</exception>
         public void And(BitMatrix other)
         {
-            checkDimensionCompatibility(other);
+            CheckDimensionCompatibility(other);
             ToBitVector().And(other.ToBitVector());
         }
 
@@ -109,7 +109,7 @@ namespace Cern.Colt.Bitvector
         /// <exception cref="ArgumentException">if <i>columns() != other.Columns || rows() != other.Rows</i>.</exception>
         public void AndNot(BitMatrix other)
         {
-            checkDimensionCompatibility(other);
+            CheckDimensionCompatibility(other);
             ToBitVector().AndNot(other.ToBitVector());
         }
 
@@ -127,9 +127,9 @@ namespace Cern.Colt.Bitvector
         /// Sanity check for operations requiring matrices with the same number of columns and rows.
         /// </summary>
         /// <param name="other"></param>
-        protected void checkDimensionCompatibility(BitMatrix other)
+        protected void CheckDimensionCompatibility(BitMatrix other)
         {
-            if (Columns != other.Columns || Rows != other.Rows) throw new ArgumentException("Incompatible dimensions: (columns,rows)=(" + _columns + "," + _rows + "), (other.columns,other.rows)=(" + other.Columns + "," + other.Rows + ")");
+            if (Columns != other.Columns || Rows != other.Rows) throw new ArgumentException(String.Format(Cern.LocalizedResources.Instance().Exception_IncompatibleDimensions, _columns, _rows, +other.Columns, other.Rows));
         }
 
         /// <summary>
@@ -400,7 +400,7 @@ namespace Cern.Colt.Bitvector
         /// <exception cref="ArgumentException">if <i>columns() != other.Columns || rows() != other.Rows</i>.</exception>
         public void Or(BitMatrix other)
         {
-            checkDimensionCompatibility(other);
+            CheckDimensionCompatibility(other);
             ToBitVector().Or(other.ToBitVector());
         }
 
@@ -556,7 +556,7 @@ namespace Cern.Colt.Bitvector
         /// <exception cref="ArgumentException">if <i>columns() != other.Columns || rows() != other.Rows</i>.</exception>
         public void Xor(BitMatrix other)
         {
-            checkDimensionCompatibility(other);
+            CheckDimensionCompatibility(other);
             ToBitVector().Xor(other.ToBitVector());
         }
     }

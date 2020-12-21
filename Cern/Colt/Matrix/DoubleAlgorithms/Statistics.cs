@@ -288,7 +288,7 @@ namespace Cern.Colt.Matrix.DoubleAlgorithms
         /// </example>
         public static Hep.Aida.IHistogram2D Cube(DoubleMatrix1D x, DoubleMatrix1D y, DoubleMatrix1D weights)
         {
-            if (x.Size != y.Size || y.Size != weights.Size) throw new ArgumentException("vectors must have same size");
+            if (x.Size != y.Size || y.Size != weights.Size) throw new ArgumentException(Cern.LocalizedResources.Instance().Matrix_VectorsMustHaveSameSize);
 
             var epsilon = 1.0E-9;
             var distinct = new DoubleArrayList();
@@ -333,7 +333,7 @@ namespace Cern.Colt.Matrix.DoubleAlgorithms
         /// <excption cref="ArgumentException">if <i>x.Count != y.Count || x.Count != z.Count || x.Count != weights.Count</i>.</excption>
         public static Hep.Aida.IHistogram3D cube(DoubleMatrix1D x, DoubleMatrix1D y, DoubleMatrix1D z, DoubleMatrix1D weights)
         {
-            if (x.Size != y.Size || x.Size != z.Size || x.Size != weights.Size) throw new ArgumentException("vectors must have same size");
+            if (x.Size != y.Size || x.Size != z.Size || x.Size != weights.Size) throw new ArgumentException(Cern.LocalizedResources.Instance().Matrix_VectorsMustHaveSameSize);
 
             var epsilon = 1.0E-9;
             var distinct = new DoubleArrayList();
@@ -431,7 +431,7 @@ namespace Cern.Colt.Matrix.DoubleAlgorithms
         /// <exception cref="ArgumentException">if <i>x.Count != y.Count</i>.</exception>
         public static Hep.Aida.IHistogram2D Histogram(Hep.Aida.IHistogram2D histo, DoubleMatrix1D x, DoubleMatrix1D y)
         {
-            if (x.Size != y.Size) throw new ArgumentException("vectors must have same size");
+            if (x.Size != y.Size) throw new ArgumentException(Cern.LocalizedResources.Instance().Matrix_VectorsMustHaveSameSize);
             for (int i = x.Size; --i >= 0;)
             {
                 histo.Fill(x[i], y[i]);
@@ -450,7 +450,7 @@ namespace Cern.Colt.Matrix.DoubleAlgorithms
         /// <exception cref="ArgumentException">if <i>x.Count != y.Count || y.Count != weights.Count</i>.</exception>
         public static Hep.Aida.IHistogram2D Histogram(Hep.Aida.IHistogram2D histo, DoubleMatrix1D x, DoubleMatrix1D y, DoubleMatrix1D weights)
         {
-            if (x.Size != y.Size || y.Size != weights.Size) throw new ArgumentException("vectors must have same size");
+            if (x.Size != y.Size || y.Size != weights.Size) throw new ArgumentException(Cern.LocalizedResources.Instance().Matrix_VectorsMustHaveSameSize);
             for (int i = x.Size; --i >= 0;)
             {
                 histo.Fill(x[i], y[i], weights[i]);
@@ -470,7 +470,7 @@ namespace Cern.Colt.Matrix.DoubleAlgorithms
         /// <exception cref="ArgumentException">if <i>x.Count != y.Count || x.Count != z.Count || x.Count != weights.Count</i>.</exception>
         public static Hep.Aida.IHistogram3D Histogram(Hep.Aida.IHistogram3D histo, DoubleMatrix1D x, DoubleMatrix1D y, DoubleMatrix1D z, DoubleMatrix1D weights)
         {
-            if (x.Size != y.Size || x.Size != z.Size || x.Size != weights.Size) throw new ArgumentException("vectors must have same size");
+            if (x.Size != y.Size || x.Size != z.Size || x.Size != weights.Size) throw new ArgumentException(Cern.LocalizedResources.Instance().Matrix_VectorsMustHaveSameSize);
             for (int i = x.Size; --i >= 0;)
             {
                 histo.Fill(x[i], y[i], z[i], weights[i]);

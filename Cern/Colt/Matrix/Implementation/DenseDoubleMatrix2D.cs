@@ -613,11 +613,11 @@ namespace Cern.Colt.Matrix.Implementation
             if (c == null) c = new DenseDoubleMatrix2D(m, p);
             if (!(c is DenseDoubleMatrix2D)) return base.ZMult(b, c, alpha, beta, false, false);
             if (b.Rows != n)
-                throw new ArgumentOutOfRangeException("b", "Matrix2D inner dimensions must agree:" + this + ", " + b);
+                throw new ArgumentOutOfRangeException("b", String.Format(Cern.LocalizedResources.Instance().Exception_Matrix2DInnerDimensionMustAgree , this , b));
             if (c.Rows != m || c.Columns != p)
                 throw new ArgumentException("Incompatible result matrix: " + this + ", " + b + ", " + c);
             if (this == c || b == c)
-                throw new ArgumentException("Matrices must not be identical");
+                throw new ArgumentException(Cern.LocalizedResources.Instance().Exception_MatricesMustNotBeIdentical);
 
             var bb = (DenseDoubleMatrix2D)b;
             var cc = (DenseDoubleMatrix2D)c;

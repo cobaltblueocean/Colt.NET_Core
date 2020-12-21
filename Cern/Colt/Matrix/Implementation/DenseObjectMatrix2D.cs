@@ -147,12 +147,12 @@ namespace Cern.Colt.Matrix.Implementation
         {
             if (!this.IsView)
             {
-                if (values.Length != Rows) throw new ArgumentException("Must have same number of rows: Rows = " + values.Length + ", Rows = " + Rows);
+                if (values.Length != Rows) throw new ArgumentException(String.Format(Cern.LocalizedResources.Instance().Matrix_MustHaveSameNumberOfRows, values.Length, Rows));
                 int i = Columns * (Rows - 1);
                 for (int row = Rows; --row >= 0;)
                 {
                     Object[] currentRow = values[row];
-                    if (currentRow.Length != Columns) throw new ArgumentException("Must have same number of columns in every row: Columns = " + currentRow.Length + ", Columns = " + Columns);
+                    if (currentRow.Length != Columns) throw new ArgumentException(String.Format(Cern.LocalizedResources.Instance().Matrix_MustHaveSameNumberOfColumnsInEveryRow, currentRow.Length , Columns));
                     Array.Copy(currentRow, 0, this.Elements, i, Columns);
                     i -= Columns;
                 }

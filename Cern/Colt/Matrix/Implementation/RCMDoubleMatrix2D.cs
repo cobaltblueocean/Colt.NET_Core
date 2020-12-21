@@ -22,7 +22,7 @@ namespace Cern.Colt.Matrix.Implementation
     /// @author wolfgang.hoschek@cern.ch
     /// @version 0.9, 04/14/2000
     /// </summary>
-    public class RCMDoubleMatrix2D: WrapperDoubleMatrix2D
+    public class RCMDoubleMatrix2D : WrapperDoubleMatrix2D
     {
 
         /// <summary>
@@ -109,7 +109,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// </summary>
         /// <param name="values">The values to be filled into the new matrix.</param>
         /// <exception cref="ArgumentException">if <i>for any 1 &lt;= row &lt; values.Length: values[row].Length != values[row-1].Length</i>.</exception>
-        public RCMDoubleMatrix2D(double[][] values): this(values.Length, values.Length == 0 ? 0 : values.GetLength(1))
+        public RCMDoubleMatrix2D(double[][] values) : this(values.Length, values.Length == 0 ? 0 : values.GetLength(1))
         {
             base.Assign(values);
         }
@@ -121,9 +121,9 @@ namespace Cern.Colt.Matrix.Implementation
         /// <param name="rows">the number of rows the matrix shall have.</param>
         /// <param name="columns">the number of columns the matrix shall have.</param>
         /// <exception cref="ArgumentException">if <i>rows &lt; 0 || columns &lt; 0 || (double)columns * rows > int.MaxValue</i>.</exception>
-        public RCMDoubleMatrix2D(int rows, int columns): base(null)
+        public RCMDoubleMatrix2D(int rows, int columns) : base(null)
         {
-            
+
             Setup(rows, columns);
             indexes = new IntArrayList[rows];
             values = new List<Double>[rows];
@@ -279,7 +279,7 @@ namespace Cern.Colt.Matrix.Implementation
         protected void ZMult(DoubleMatrix1D y, DoubleMatrix1D z, IntArrayList nonZeroIndexes, DoubleMatrix1D[] allRows, double alpha, double beta)
         {
             if (Columns != y.Size || Rows > z.Size)
-                throw new ArgumentException("Incompatible args: " + ToStringShort() + ", " + y.ToStringShort() + ", " + z.ToStringShort());
+                throw new ArgumentException(String.Format(Cern.LocalizedResources.Instance().Exception_IncompatibleArgs, ToStringShort(), y.ToStringShort(), z.ToStringShort()));
 
             z.Assign(Cern.Jet.Math.Functions.DoubleFunctions.Mult(beta / alpha));
             for (int i = indexes.Length; --i >= 0;)

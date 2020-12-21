@@ -22,7 +22,7 @@ namespace Cern.Hep.Aida.Ref
         private double binWidth;
         
         // Package private for ease of use in Histogram1D and Histogram2D
-        private int xunder, xover;
+        private int xunder = 0, xover = 0;
 
         public int Bins
         {

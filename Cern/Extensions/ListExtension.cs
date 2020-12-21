@@ -178,7 +178,7 @@ namespace System
         {
             if (to == from - 1) return;
             if (from < 0 || from > to || to >= theSize)
-                throw new IndexOutOfRangeException("from: " + from + ", to: " + to + ", size=" + theSize);
+                throw new IndexOutOfRangeException(String.Format(Cern.LocalizedResources.Instance().Exception_FromToSize,  from, to , theSize));
         }
     }
 }

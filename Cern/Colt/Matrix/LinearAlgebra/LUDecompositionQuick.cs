@@ -277,7 +277,7 @@ namespace Cern.Colt.Matrix.LinearAlgebra
         {
             int m = M;
             int n = N;
-            if (m != n) throw new ArgumentException("Matrix must be square.");
+            if (m != n) throw new ArgumentException(Cern.LocalizedResources.Instance().Exception_MatrixMustBeSquare);
 
             if (!IsNonsingular) return 0; // avoid rounding errors
 
@@ -295,8 +295,8 @@ namespace Cern.Colt.Matrix.LinearAlgebra
            
             int m = M;
             int n = N;
-            if (B.Count() != m) throw new ArgumentException("Matrix dimensions must agree.");
-            if (!this.IsNonsingular) throw new ArgumentException("Matrix is singular.");
+            if (B.Count() != m) throw new ArgumentException(Cern.LocalizedResources.Instance().Exception_MatrixDimensionsMustAgree);
+            if (!this.IsNonsingular) throw new ArgumentException(Cern.LocalizedResources.Instance().Exception_MatrixIsSingular);
 
 
             // right hand side with pivoting
@@ -345,8 +345,8 @@ namespace Cern.Colt.Matrix.LinearAlgebra
             //algebra.property().checkRectangular(LU);
             int m = M;
             int n = N;
-            if (B.Rows != m) throw new ArgumentException("Matrix row dimensions must agree.");
-            if (!this.IsNonsingular) throw new ArgumentException("Matrix is singular.");
+            if (B.Rows != m) throw new ArgumentException(Cern.LocalizedResources.Instance().Exception_MatrixRowDimensionsMustAgree);
+            if (!this.IsNonsingular) throw new ArgumentException(Cern.LocalizedResources.Instance().Exception_MatrixIsSingular);
 
 
             // right hand side with pivoting

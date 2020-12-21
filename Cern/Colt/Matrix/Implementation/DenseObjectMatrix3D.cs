@@ -168,16 +168,16 @@ namespace Cern.Colt.Matrix.Implementation
         {
             if (!this.IsView)
             {
-                if (values.Length != Slices) throw new ArgumentException("Must have same number of Slices: Slices=" + values.Length + "Slices=" + Slices);
+                if (values.Length != Slices) throw new ArgumentException(String.Format(Cern.LocalizedResources.Instance().Matrix_MustHaveSameNumberOfSlices, values.Length , Slices));
                 int i = Slices * Rows * Columns - Columns;
                 for (int slice = Slices; --slice >= 0;)
                 {
                     Object[][] currentSlice = values[slice];
-                    if (currentSlice.Length != Rows) throw new ArgumentException("Must have same number of Rows in every slice: Rows=" + currentSlice.Length + "Rows=" + Rows);
+                    if (currentSlice.Length != Rows) throw new ArgumentException(String.Format(Cern.LocalizedResources.Instance().Matrix_MustHaveSameNumberOfRowsInEverySlice, currentSlice.Length , Rows));
                     for (int row = Rows; --row >= 0;)
                     {
                         Object[] currentRow = currentSlice[row];
-                        if (currentRow.Length != Columns) throw new ArgumentException("Must have same number of Columns in every row: Columns=" + currentRow.Length + "Columns=" + Columns);
+                        if (currentRow.Length != Columns) throw new ArgumentException(String.Format(Cern.LocalizedResources.Instance().Matrix_MustHaveSameNumberOfColumnsInEveryRow, currentRow.Length , Columns));
                         Array.Copy(currentRow, 0, this.Elements, i, Columns);
                         i -= Columns;
                     }

@@ -85,7 +85,7 @@ namespace Cern.Jet.Stat.Quantile
                 index -= -1; // index = -index-1; now index is the insertion point.
                 if (index == 0 || index == binBoundaries.Length)
                 {
-                    throw new ArgumentException("Element=" + element + " not contained in any bin.");
+                    throw new ArgumentException(String.Format(Cern.LocalizedResources.Instance().Exception_ElementNotContainedInAnyBin, element));
                 }
                 index--;
             }

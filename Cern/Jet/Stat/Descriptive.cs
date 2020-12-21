@@ -47,7 +47,7 @@ namespace Cern.Jet.Stat
         public static double AutoCorrelation(DoubleArrayList data, int lag, double mean, double variance)
         {
             int N = data.Size;
-            if (lag >= N) throw new ArgumentException("Lag is too large");
+            if (lag >= N) throw new ArgumentException(Cern.LocalizedResources.Instance().Exception_LagIsTooLarge);
 
             double[] elements = data.ToArray();
             double run = 0;
@@ -107,7 +107,7 @@ namespace Cern.Jet.Stat
         public static double DurbinWatson(DoubleArrayList data)
         {
             int size = data.Size;
-            if (size < 2) throw new ArgumentException("data sequence must contain at least two values.");
+            if (size < 2) throw new ArgumentException(Cern.LocalizedResources.Instance().Exception_DataSequence);
 
             double[] elements = data.ToArray();
             double run = 0;
@@ -1298,8 +1298,8 @@ namespace Cern.Jet.Stat
         public static double TrimmedMean(DoubleArrayList sortedData, double mean, int left, int right)
         {
             int N = sortedData.Size;
-            if (N == 0) throw new ArgumentException("Empty data.");
-            if (left + right >= N) throw new ArgumentException("Not enough data.");
+            if (N == 0) throw new ArgumentException(Cern.LocalizedResources.Instance().Exception_EmptyData);
+            if (left + right >= N) throw new ArgumentException(Cern.LocalizedResources.Instance().Exception_NotEnoughData);
 
             double[] sortedElements = sortedData.ToArray();
             int N0 = N;
@@ -1384,8 +1384,8 @@ namespace Cern.Jet.Stat
         public static double WinsorizedMean(DoubleArrayList sortedData, double mean, int left, int right)
         {
             int N = sortedData.Size;
-            if (N == 0) throw new ArgumentException("Empty data.");
-            if (left + right >= N) throw new ArgumentException("Not enough data.");
+            if (N == 0) throw new ArgumentException(Cern.LocalizedResources.Instance().Exception_EmptyData);
+            if (left + right >= N) throw new ArgumentException(Cern.LocalizedResources.Instance().Exception_NotEnoughData);
 
             double[] sortedElements = sortedData.ToArray();
 

@@ -207,7 +207,7 @@ namespace Cern.Colt.Matrix.LinearAlgebra
         /// <param name="x">the first source vector.</param>
         /// <param name="beta">scaling factor.</param>
         /// <param name="y">the second vector holding source and destination.</param>
-        void Dsymv(Boolean isUpperTriangular, double alpha, DoubleMatrix2D A, DoubleMatrix1D x, double beta, DoubleMatrix1D y);
+        void Dsymv(Boolean IsUpperTriangular, double alpha, DoubleMatrix2D A, DoubleMatrix1D x, double beta, DoubleMatrix1D y);
 
         /// <summary>
         /// Triangular matrix-vector multiplication; <i>x = A*x</i> or <i>x = A'*x</i>.
@@ -219,7 +219,7 @@ namespace Cern.Colt.Matrix.LinearAlgebra
         /// <param name="isUnitTriangular">true --> A is assumed to be unit triangular; false --> A is not assumed to be unit triangular</param>
         /// <param name="A">the source matrix.</param>
         /// <param name="x">the vector holding source and destination.</param>
-        void Dtrmv(Boolean isUpperTriangular, Boolean transposeA, Boolean isUnitTriangular, DoubleMatrix2D A, DoubleMatrix1D x);
+        void Dtrmv(Boolean IsUpperTriangular, Boolean transposeA, Boolean IsUnitTriangular, DoubleMatrix2D A, DoubleMatrix1D x);
 
         /// <summary>
         /// Returns the index of largest absolute value; <i>i such that |x[i]| == max(|x[0]|,|x[1]|,..d).</i>.

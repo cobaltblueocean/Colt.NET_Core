@@ -24,7 +24,7 @@ namespace Cern.Colt.List
         /// <summary>
         private long[] _elements;
 
-        public long[] Elements
+        public override long[] Elements
         {
             get { return _elements; }
             set

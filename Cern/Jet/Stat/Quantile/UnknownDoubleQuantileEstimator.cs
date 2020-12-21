@@ -67,7 +67,7 @@ namespace Cern.Jet.Stat.Quantile
         protected override void NewBuffer()
         {
             CurrentBufferToFill = BufferSet.GetFirstEmptyBuffer();
-            if (CurrentBufferToFill == null) throw new NullReferenceException("Oops, no empty buffer.");
+            if (CurrentBufferToFill == null) throw new NullReferenceException(Cern.LocalizedResources.Instance().Exception_NoEmptyBuffer);
 
             CurrentBufferToFill.Level = (currentTreeHeight - 1);
             CurrentBufferToFill.Weight = (sampler.Weight);
@@ -83,7 +83,6 @@ namespace Cern.Jet.Stat.Quantile
                     sampler.Weight = (sampler.Weight * 2);
                 }
             }
-
         }
 
         protected override bool SampleNextElement()

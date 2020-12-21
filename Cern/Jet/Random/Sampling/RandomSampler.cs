@@ -131,8 +131,8 @@ namespace Cern.Jet.Random.Sampling
         /// <param name="randomGenerator">a random number generator. Set this parameter to <tt>null</tt> to use the default random number generator.</param>
         public RandomSampler(long n, long N, long low, RandomEngine randomGenerator)
         {
-            if (n < 0) throw new ArgumentException("n must be >= 0");
-            if (n > N) throw new ArgumentException("n must by <= N");
+            if (n < 0) throw new ArgumentException(Cern.LocalizedResources.Instance().Exception_NMustBeGraterThanOrEqualToZero);
+            if (n > N) throw new ArgumentException(Cern.LocalizedResources.Instance().Exception_NMustBeLessThanOrEqualToN);
             this.my_n = n;
             this.my_N = N;
             this.my_low = low;
@@ -186,8 +186,8 @@ namespace Cern.Jet.Random.Sampling
         /// <param name="fromIndex">the first index within <tt>values</tt> to be filled with numbers (inclusive).</param>
         public void NextBlock(int count, long[] values, int fromIndex)
         {
-            if (count > my_n) throw new ArgumentException("Random sample exhausted.");
-            if (count < 0) throw new ArgumentException("Negative count.");
+            if (count > my_n) throw new ArgumentException(Cern.LocalizedResources.Instance().Exception_RandomSampleExhausted);
+            if (count < 0) throw new ArgumentException(Cern.LocalizedResources.Instance().Exception_NegativeCount);
 
             if (count == 0) return; //nothing to do
 
@@ -212,7 +212,7 @@ namespace Cern.Jet.Random.Sampling
         public static void Sample(long n, long N, int count, long low, long[] values, int fromIndex, RandomEngine randomGenerator)
         {
             if (n <= 0 || count <= 0) return;
-            if (count > n) throw new ArgumentException("count must not be greater than n");
+            if (count > n) throw new ArgumentException(Cern.LocalizedResources.Instance().Exception_CountMustNotBeGreaterThanN);
             if (randomGenerator == null) randomGenerator = Cern.Jet.Random.AbstractDistribution.MakeDefaultGenerator();
 
             if (count == N)
@@ -273,7 +273,7 @@ namespace Cern.Jet.Random.Sampling
             long S;
             long chosen = -1 + low;
 
-            long negalphainv = -13;  //tuning paramter, determines when to switch from method D to method Ad Dependent on programming language, platform, etc.
+            //long negalphainv = -13;  //tuning paramter, determines when to switch from method D to method Ad Dependent on programming language, platform, etc.
 
             nreal = n; ninv = 1.0 / nreal; Nreal = N;
             Vprime = System.Math.Exp(System.Math.Log(randomGenerator.Raw()) * ninv);

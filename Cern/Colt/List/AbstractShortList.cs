@@ -41,7 +41,7 @@ namespace Cern.Colt.List
             get { return _size; }
         }
 
-        public short[] Elements
+        public virtual short[] Elements
         {
             get
             {
@@ -894,6 +894,10 @@ namespace Cern.Colt.List
         public override String ToString()
         {
             return PartFromTo(0, Size - 1).ToArray().ToString();
+        }
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
         }
     }
 }

@@ -1104,5 +1104,9 @@ namespace Cern.Colt.List
             foreach (var item in _elements)
                 yield return item;
         }
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
     }
 }

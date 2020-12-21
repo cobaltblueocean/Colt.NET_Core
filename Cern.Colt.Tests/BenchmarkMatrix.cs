@@ -861,10 +861,10 @@ namespace Cern.Colt.Tests
             {
                 if (k < 0)
                 { // must be nonsingular for inversion
-                    if (!Cern.Colt.Matrix.LinearAlgebra.Property.ZERO.isDiagonallyDominantByRow(A) ||
-                        !Cern.Colt.Matrix.LinearAlgebra.Property.ZERO.isDiagonallyDominantByColumn(A))
+                    if (!Cern.Colt.Matrix.LinearAlgebra.Property.ZERO.IsDiagonallyDominantByRow(A) ||
+                        !Cern.Colt.Matrix.LinearAlgebra.Property.ZERO.IsDiagonallyDominantByColumn(A))
                     {
-                        Cern.Colt.Matrix.LinearAlgebra.Property.ZERO.generateNonSingular(A);
+                        Cern.Colt.Matrix.LinearAlgebra.Property.ZERO.GenerateNonSingular(A);
                     }
                     base.SetParameters(A, B);
                 }
@@ -1198,10 +1198,10 @@ namespace Cern.Colt.Tests
             public override void SetParameters(DoubleMatrix2D A, DoubleMatrix2D B)
             {
                 lu = null;
-                if (!Cern.Colt.Matrix.LinearAlgebra.Property.ZERO.isDiagonallyDominantByRow(A) ||
-                    !Cern.Colt.Matrix.LinearAlgebra.Property.ZERO.isDiagonallyDominantByColumn(A))
+                if (!Cern.Colt.Matrix.LinearAlgebra.Property.ZERO.IsDiagonallyDominantByRow(A) ||
+                    !Cern.Colt.Matrix.LinearAlgebra.Property.ZERO.IsDiagonallyDominantByColumn(A))
                 {
-                    Cern.Colt.Matrix.LinearAlgebra.Property.ZERO.generateNonSingular(A);
+                    Cern.Colt.Matrix.LinearAlgebra.Property.ZERO.GenerateNonSingular(A);
                 }
                 base.SetParameters(A, B);
                 lu = new Cern.Colt.Matrix.LinearAlgebra.LUDecompositionQuick(0);

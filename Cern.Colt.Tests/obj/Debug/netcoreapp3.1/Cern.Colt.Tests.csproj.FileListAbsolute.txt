@@ -1,3 +1,7 @@
+C:\Users\Mercury21\Source\Repos\Colt.NET_Core\Cern.Colt.Tests\obj\Debug\netcoreapp3.1\Cern.Colt.Tests.csprojAssemblyReference.cache
+C:\Users\Mercury21\Source\Repos\Colt.NET_Core\Cern.Colt.Tests\obj\Debug\netcoreapp3.1\Cern.Colt.Tests.AssemblyInfoInputs.cache
+C:\Users\Mercury21\Source\Repos\Colt.NET_Core\Cern.Colt.Tests\obj\Debug\netcoreapp3.1\Cern.Colt.Tests.AssemblyInfo.cs
+C:\Users\Mercury21\Source\Repos\Colt.NET_Core\Cern.Colt.Tests\obj\Debug\netcoreapp3.1\Cern.Colt.Tests.csproj.CoreCompileInputs.cache
 C:\Users\Mercury21\Source\Repos\Colt.NET_Core\Cern.Colt.Tests\bin\Debug\netcoreapp3.1\NUnit3.TestAdapter.dll
 C:\Users\Mercury21\Source\Repos\Colt.NET_Core\Cern.Colt.Tests\bin\Debug\netcoreapp3.1\NUnit3.TestAdapter.pdb
 C:\Users\Mercury21\Source\Repos\Colt.NET_Core\Cern.Colt.Tests\bin\Debug\netcoreapp3.1\nunit.engine.dll
@@ -91,9 +95,7 @@ C:\Users\Mercury21\Source\Repos\Colt.NET_Core\Cern.Colt.Tests\bin\Debug\netcorea
 C:\Users\Mercury21\Source\Repos\Colt.NET_Core\Cern.Colt.Tests\bin\Debug\netcoreapp3.1\runtimes\win\lib\netcoreapp2.0\System.Management.dll
 C:\Users\Mercury21\Source\Repos\Colt.NET_Core\Cern.Colt.Tests\bin\Debug\netcoreapp3.1\Cern.Colt.dll
 C:\Users\Mercury21\Source\Repos\Colt.NET_Core\Cern.Colt.Tests\bin\Debug\netcoreapp3.1\Cern.Colt.pdb
-C:\Users\Mercury21\Source\Repos\Colt.NET_Core\Cern.Colt.Tests\obj\Debug\netcoreapp3.1\Cern.Colt.Tests.csprojAssemblyReference.cache
-C:\Users\Mercury21\Source\Repos\Colt.NET_Core\Cern.Colt.Tests\obj\Debug\netcoreapp3.1\Cern.Colt.Tests.AssemblyInfoInputs.cache
-C:\Users\Mercury21\Source\Repos\Colt.NET_Core\Cern.Colt.Tests\obj\Debug\netcoreapp3.1\Cern.Colt.Tests.AssemblyInfo.cs
 C:\Users\Mercury21\Source\Repos\Colt.NET_Core\Cern.Colt.Tests\obj\Debug\netcoreapp3.1\Cern.Colt.Tests.csproj.CopyComplete
 C:\Users\Mercury21\Source\Repos\Colt.NET_Core\Cern.Colt.Tests\obj\Debug\netcoreapp3.1\Cern.Colt.Tests.dll
 C:\Users\Mercury21\Source\Repos\Colt.NET_Core\Cern.Colt.Tests\obj\Debug\netcoreapp3.1\Cern.Colt.Tests.pdb
+C:\Users\Mercury21\Source\Repos\Colt.NET_Core\Cern.Colt.Tests\obj\Debug\netcoreapp3.1\Cern.Colt.Tests.genruntimeconfig.cache

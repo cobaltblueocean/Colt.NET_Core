@@ -17,6 +17,7 @@ namespace Cern.Colt.Matrix.Implementation
 {
     using System;
     using System.Collections.Generic;
+    using System.Threading.Tasks;
     using Cern.Colt.List;
 
     using Function;
@@ -124,7 +125,7 @@ namespace Cern.Colt.Matrix.Implementation
         {
             double result = double.NaN;
             bool first = true;
-            foreach (var e in Elements.Values)
+            AutoParallel.AutoParallelForEach(Elements.Values, (e) =>
             {
                 if (first)
                 {
@@ -135,7 +136,7 @@ namespace Cern.Colt.Matrix.Implementation
                 {
                     result = aggr(result, f(e));
                 }
-            }
+            });
 
             return result;
         }
@@ -171,8 +172,10 @@ namespace Cern.Colt.Matrix.Implementation
         {
             var indices = new int[Elements.Count];
             Elements.Keys.CopyTo(indices, 0);
-            foreach (var i in indices)
-                Elements[i] = function(Elements[i]);
+            AutoParallel.AutoParallelForEach(indices, (i) =>
+                    {
+                        Elements[i] = function(Elements[i]);
+                    });
             return this;
         }
 
@@ -204,11 +207,11 @@ namespace Cern.Colt.Matrix.Implementation
             bool fillValueList = valueList != null;
             if (fillIndexList) indexList.Clear();
             if (fillValueList) valueList.Clear();
-            foreach (var e in Elements)
+            AutoParallel.AutoParallelForEach(Elements, (e) =>
             {
                 if (fillIndexList) indexList.Add(e.Key);
                 if (fillValueList) valueList.Add(e.Value);
-            }
+            });
         }
 
         /// <summary>

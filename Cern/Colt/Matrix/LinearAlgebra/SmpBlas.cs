@@ -166,11 +166,11 @@ namespace Cern.Colt.Matrix.LinearAlgebra
             int p = B.Columns;
 
             if (B.Rows != n)
-                throw new ArgumentException("Matrix2D inner dimensions must agree:" + A.ToStringShort() + ", " + B.ToStringShort());
+                throw new ArgumentException(String.Format(Cern.LocalizedResources.Instance().Exception_Matrix2DInnerDimensionMustAgree, A.ToStringShort() , B.ToStringShort()));
             if (C.Rows != m || C.Columns != p)
-                throw new ArgumentException("Incompatibel result matrix: " + A.ToStringShort() + ", " + B.ToStringShort() + ", " + C.ToStringShort());
+                throw new ArgumentException(String.Format(Cern.LocalizedResources.Instance().Exception_IncompatibleResultMatrix,  A.ToStringShort() ,B.ToStringShort(), C.ToStringShort()));
             if (A == C || B == C)
-                throw new ArgumentException("Matrices must not be identical");
+                throw new ArgumentException(Cern.LocalizedResources.Instance().Exception_MatricesMustNotBeIdentical);
 
             long flops = 2L * m * n * p;
             int noOfTasks = (int)System.Math.Min(flops / 30000, this.maxThreads); // each thread should process at least 30000 flops
@@ -220,7 +220,10 @@ namespace Cern.Colt.Matrix.LinearAlgebra
                 {
                     this.smp.TaskGroup.QueueTask(() => task());
                 }
-                catch (TaskCanceledException exc) { }
+                catch (TaskCanceledException exc)
+                {
+                    Console.Write(exc.Message);
+                }
             }
 
         }
@@ -293,7 +296,10 @@ namespace Cern.Colt.Matrix.LinearAlgebra
                 {
                     this.smp.TaskGroup.QueueTask(() => task());
                 }
-                catch (TaskCanceledException exc) { }
+                catch (TaskCanceledException exc)
+                {
+                    Console.Write(exc.Message);
+                }
 
             }
         }

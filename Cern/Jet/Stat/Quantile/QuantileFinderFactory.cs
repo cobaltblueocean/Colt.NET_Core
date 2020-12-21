@@ -72,7 +72,8 @@ namespace Cern.Jet.Stat.Quantile
             if (quantiles < 1) quantiles = 1;
             if (quantiles > N) N = quantiles;
 
-            KnownDoubleQuantileEstimator finder;
+            //KnownDoubleQuantileEstimator finder;
+
             if (known_N)
             {
                 double[] samplingRate = new double[1];
@@ -91,35 +92,41 @@ namespace Cern.Jet.Stat.Quantile
                 double preComputeEpsilon = -1.0;
                 if (resultUnknown[3] == 1) preComputeEpsilon = epsilon;
 
-                //if (N==long.MaxValue) { // no maximum N provided by user.
-
-                // if (true) fixes bug reported by LarryPeranich@fairisaac.com
+                // if (true) fixes bug reported by LarryPeranich@fairisaac.com ---------
                 if (true)
                 { // no maximum N provided by user.
                     if (b1 == 1) return new ExactDoubleQuantileFinder();
                     return new UnknownDoubleQuantileEstimator((int)b1, (int)k1, (int)h1, preComputeEpsilon, generator);
                 }
 
-                // determine whether UnknownFinder or KnownFinder with maximum N requires less memory.
-                double[] samplingRate = new double[1];
+                #region code below is no longer use
+                //if (N==long.MaxValue) { // no maximum N provided by user.
+                //{ // no maximum N provided by user.
+                //    if (b1 == 1) return new ExactDoubleQuantileFinder();
+                //    return new UnknownDoubleQuantileEstimator((int)b1, (int)k1, (int)h1, preComputeEpsilon, generator);
+                //}
 
-                // IMPORTANT: for known finder, switch sampling off (delta == 0) !!!
-                // with knownN-sampling we can only guarantee the errors if the input sequence has EXACTLY N elements.
-                // with knownN-no sampling we can also guarantee the errors for sequences SMALLER than N elements.
-                long[] resultKnown = known_N_compute_B_and_K(N, epsilon, 0, quantiles, samplingRate);
+                //// determine whether UnknownFinder or KnownFinder with maximum N requires less memory.
+                //double[] samplingRate = new double[1];
 
-                long b2 = resultKnown[0];
-                long k2 = resultKnown[1];
+                //// IMPORTANT: for known finder, switch sampling off (delta == 0) !!!
+                //// with knownN-sampling we can only guarantee the errors if the input sequence has EXACTLY N elements.
+                //// with knownN-no sampling we can also guarantee the errors for sequences SMALLER than N elements.
+                //long[] resultKnown = known_N_compute_B_and_K(N, epsilon, 0, quantiles, samplingRate);
 
-                if (b2 * k2 < b1 * k1)
-                { // the KnownFinder is smaller
-                    if (b2 == 1) return new ExactDoubleQuantileFinder();
-                    return new KnownDoubleQuantileEstimator((int)b2, (int)k2, N, samplingRate[0], generator);
-                }
+                //long b2 = resultKnown[0];
+                //long k2 = resultKnown[1];
 
-                // the UnknownFinder is smaller
-                if (b1 == 1) return new ExactDoubleQuantileFinder();
-                return new UnknownDoubleQuantileEstimator((int)b1, (int)k1, (int)h1, preComputeEpsilon, generator);
+                //if (b2 * k2 < b1 * k1)
+                //{ // the KnownFinder is smaller
+                //    if (b2 == 1) return new ExactDoubleQuantileFinder();
+                //    return new KnownDoubleQuantileEstimator((int)b2, (int)k2, N, samplingRate[0], generator);
+                //}
+
+                //// the UnknownFinder is smaller
+                //if (b1 == 1) return new ExactDoubleQuantileFinder();
+                //return new UnknownDoubleQuantileEstimator((int)b1, (int)k1, (int)h1, preComputeEpsilon, generator);
+                #endregion
             }
         }
 

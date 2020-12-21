@@ -213,7 +213,7 @@ namespace Cern.Hep.Aida.Bin
         {
             lock (syncLock)
             {
-                if (Size != other.Size) throw new ArgumentException("both bins must have same Size");
+                if (Size != other.Size) throw new ArgumentException(Cern.LocalizedResources.Instance().Exception_BothBinsMustHaveSameSize);
                 double s = 0;
                 for (int i = Size; --i >= 0;)
                 {
@@ -550,7 +550,7 @@ namespace Cern.Hep.Aida.Bin
 
             if (!withReplacement)
             { // without
-                if (n > Size) throw new ArgumentException("n must be less than or equal to Size()");
+                if (n > Size) throw new ArgumentException(Cern.LocalizedResources.Instance().Exception_NMustBeLessThanOrEqualToSize);
                 Cern.Jet.Random.Sampling.RandomSamplingAssistant sampler = new Cern.Jet.Random.Sampling.RandomSamplingAssistant(n, Size, randomGenerator);
                 for (int i = n; --i >= 0;)
                 {

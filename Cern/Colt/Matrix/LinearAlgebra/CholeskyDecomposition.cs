@@ -182,11 +182,11 @@ namespace Cern.Colt.Matrix.LinearAlgebra
 
             if (B.Rows != n)
             {
-                throw new ArgumentException("Matrix row dimensions must agree.");
+                throw new ArgumentException(Cern.LocalizedResources.Instance().Exception_MatrixRowDimensionsMustAgree);
             }
             if (!isSymmetricPositiveDefinite)
             {
-                throw new ArgumentException("Matrix is not symmetric positive definite.");
+                throw new ArgumentException(Cern.LocalizedResources.Instance().Exception_MatrixIsNotSymmetricPositiveDefinite);
             }
 
             // Copy right hand side.

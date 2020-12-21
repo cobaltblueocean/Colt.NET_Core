@@ -32,10 +32,10 @@ namespace Cern.Colt
         #endregion
 
         #region Local Public Methods
-        public static int[] permutation(long p, int N)
+        public static int[] Permutation(long p, int N)
         {
-            if (p < 1) throw new ArgumentException("Permutations are enumerated 1 .d N!");
-            if (N < 0) throw new ArgumentException("Must satisfy N >= 0");
+            if (p < 1) throw new ArgumentException(Cern.LocalizedResources.Instance().Exception_PermutationsAreEnumerated);
+            if (N < 0) throw new ArgumentException(Cern.LocalizedResources.Instance().Exception_MustSatisfyNGraterThanOrEqualsToZero);
 
             int[] permutation = new int[N];
 
@@ -60,7 +60,7 @@ namespace Cern.Colt
 
             // the normal case - exact enumeration
             if (p > Cern.Jet.Math.Arithmetic.LongFactorial(N))
-                throw new ArgumentException("N too large (a sequence of N elements only has N! permutations).");
+                throw new ArgumentException(Cern.LocalizedResources.Instance().Exception_NTooLarge);
 
             var tmp2 = new int[N];
             for (int i = 1; i <= N; i++) tmp2[i - 1] = i;
@@ -81,18 +81,18 @@ namespace Cern.Colt
             return permutation;
         }
 
-        public static void permute(int[] list, int[] indexes)
+        public static void Permute(int[] list, int[] indexes)
         {
             int[] copy = (int[])list.Clone();
             for (int i = list.Length; --i >= 0;) list[i] = copy[indexes[i]];
         }
 
-        public static void permute(int[] indexes, Cern.Colt.Swapper swapper, int[] work)
+        public static void Permute(int[] indexes, Cern.Colt.Swapper swapper, int[] work)
         {
-            permute(indexes, swapper, work, null);
+            Permute(indexes, swapper, work, null);
         }
 
-        public static void permute(int[] indexes, Cern.Colt.Swapper swapper, int[] work1, int[] work2)
+        public static void Permute(int[] indexes, Cern.Colt.Swapper swapper, int[] work1, int[] work2)
         {
             // "tracks" and "pos" keeps track of the current indexes of the elements
             // Example: We have a list==[A,B,C,D,E], indexes==[0,4,1,2,3] and swap B and E we need to know that the element formlerly at index 1 is now at index 4, and the one formerly at index 4 is now at index 1.
@@ -125,7 +125,7 @@ namespace Cern.Colt
             }
         }
 
-        public static void permute(Object[] list, int[] indexes)
+        public static void Permute(Object[] list, int[] indexes)
         {
             Object[] copy = (Object[])list.Clone();
             for (int i = list.Length; --i >= 0;) list[i] = copy[indexes[i]];

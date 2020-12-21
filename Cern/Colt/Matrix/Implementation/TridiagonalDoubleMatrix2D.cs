@@ -112,8 +112,7 @@ namespace Cern.Colt.Matrix.Implementation
                     return;
                 }
 
-                if (!isZero) throw new ArgumentException("Can't store non-zero value to non-tridiagonal coordinate: row=" + row + ", column=" + column + ", value=" + value);
-
+                if (!isZero) throw new ArgumentException(String.Format(Cern.LocalizedResources.Instance().Exception_CannotStoreNonZeroValueToNonTridiagonalCoordinate, row, column, value));
             }
         }
 
@@ -439,7 +438,7 @@ namespace Cern.Colt.Matrix.Implementation
             }
 
             if (n != y.Size || m > z.Size)
-                throw new ArgumentException("Incompatible args: " + ((transposeA ? ViewDice() : this).ToStringShort()) + ", " + y.ToStringShort() + ", " + z.ToStringShort());
+                throw new ArgumentException(String.Format(Cern.LocalizedResources.Instance().Exception_IncompatibleArgs, ((transposeA ? ViewDice() : this).ToStringShort()) , y.ToStringShort() ,z.ToStringShort()));
 
             if (!ignore) z.Assign(F1.Mult(beta / alpha));
 
@@ -486,11 +485,11 @@ namespace Cern.Colt.Matrix.Implementation
             if (C == null) C = new DenseDoubleMatrix2D(m, p);
 
             if (B.Rows != n)
-                throw new ArgumentException("Matrix2D inner dimensions must agree:" + ToStringShort() + ", " + (transposeB ? B.ViewDice() : B).ToStringShort());
+                throw new ArgumentException(String.Format(Cern.LocalizedResources.Instance().Exception_Matrix2DInnerDimensionMustAgree ,ToStringShort() , (transposeB ? B.ViewDice() : B).ToStringShort()));
             if (C.Rows != m || C.Columns != p)
-                throw new ArgumentException("Incompatibel result matrix: " + ToStringShort() + ", " + (transposeB ? B.ViewDice() : B).ToStringShort() + ", " + C.ToStringShort());
+                throw new ArgumentException(String.Format(Cern.LocalizedResources.Instance().Exception_IncompatibleResultMatrix, ToStringShort() , (transposeB ? B.ViewDice() : B).ToStringShort(), C.ToStringShort()));
             if (this == C || B == C)
-                throw new ArgumentException("Matrices must not be identical");
+                throw new ArgumentException(Cern.LocalizedResources.Instance().Exception_MatricesMustNotBeIdentical);
 
             if (!ignore) C.Assign(F1.Mult(beta));
 

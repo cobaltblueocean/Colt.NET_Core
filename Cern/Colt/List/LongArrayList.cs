@@ -30,7 +30,7 @@ namespace Cern.Colt.List
         /// <summary>
         private long[] _elements;
 
-        public long[] Elements
+        public override long[] Elements
         {
             get { return _elements; }
             set
@@ -580,6 +580,11 @@ namespace Cern.Colt.List
         {
             foreach (var item in _elements)
                 yield return item;
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
         }
     }
 }

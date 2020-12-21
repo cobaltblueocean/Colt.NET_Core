@@ -17,6 +17,7 @@ namespace Cern.Colt.Matrix.Implementation
 {
     using System;
     using System.Collections.Generic;
+    using System.Threading.Tasks;
 
     using Function;
 
@@ -228,13 +229,13 @@ namespace Cern.Colt.Matrix.Implementation
             if (IsView) base.ForEachNonZero(function);
             else
             {
-                foreach (var e in Elements)
+                AutoParallel.AutoParallelForEach(Elements, (e) =>
                 {
                     int i = e.Key / Columns;
                     int j = e.Key & Columns;
                     double r = function(i, j, e.Value);
                     if (r != e.Value) Elements[e.Key] = e.Value;
-                }
+                });
             }
 
             return this;

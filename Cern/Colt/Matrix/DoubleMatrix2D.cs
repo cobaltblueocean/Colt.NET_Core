@@ -150,11 +150,11 @@ namespace Cern.Colt.Matrix
         /// </exception>
         public virtual DoubleMatrix2D Assign(double[][] values)
         {
-            if (values.Length != Rows) throw new ArgumentException("Must have same number of rows: rows=" + values.Length + "rows()=" + Rows);
+            if (values.Length != Rows) throw new ArgumentException(String.Format(Cern.LocalizedResources.Instance().Matrix_MustHaveSameNumberOfRows, values.Length, Rows));
             for (int row = Rows; --row >= 0;)
             {
                 double[] currentRow = values[row];
-                if (currentRow.Length != Columns) throw new ArgumentException("Must have same number of columns in every row: columns=" + currentRow.Length + "columns()=" + Columns);
+                if (currentRow.Length != Columns) throw new ArgumentException(String.Format(Cern.LocalizedResources.Instance().Matrix_MustHaveSameNumberOfColumnsInEveryRow, currentRow.Length , Columns));
                 for (int column = Columns; --column >= 0;)
                     this[row, column] = currentRow[column];
             }
@@ -778,7 +778,7 @@ namespace Cern.Colt.Matrix
         /// </exception>
         public virtual void ZAssign8Neighbors(DoubleMatrix2D b, Double9Function function)
         {
-            if (function == null) throw new ArgumentNullException("function", "function must not be null.");
+            if (function == null) throw new ArgumentNullException("function", Cern.LocalizedResources.Instance().Exception_FuncionMustNotBeNull);
             CheckShape(b);
             if (Rows < 3 || Columns < 3) return; // nothing to do
             int r = Rows - 1;
@@ -934,11 +934,11 @@ namespace Cern.Colt.Matrix
 
             if (c == null) c = new DenseDoubleMatrix2D(m, p);
             if (b.Rows != n)
-                throw new ArgumentOutOfRangeException("b", "Matrix2D inner dimensions must agree:" + this + ", " + b);
+                throw new ArgumentOutOfRangeException("b", String.Format(Cern.LocalizedResources.Instance().Exception_Matrix2DInnerDimensionMustAgree, this, b));
             if (c.Rows != m || c.Columns != p)
-                throw new ArgumentException("Incompatible result matrix: " + this + ", " + b + ", " + c);
+                throw new ArgumentException(String.Format(Cern.LocalizedResources.Instance().Exception_IncompatibleResultMatrix, this , b , c));
             if (this == c || b == c)
-                throw new ArithmeticException("Matrices must not be identical");
+                throw new ArithmeticException(Cern.LocalizedResources.Instance().Exception_MatricesMustNotBeIdentical);
 
             for (int j = p; --j >= 0;)
             {

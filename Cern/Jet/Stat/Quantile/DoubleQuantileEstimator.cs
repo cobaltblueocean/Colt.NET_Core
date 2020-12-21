@@ -249,12 +249,12 @@ namespace Cern.Jet.Stat.Quantile
         {
             /*
             //check parameter
-            List<Double> sortedPhiList = phis.copy();
-            sortedPhiList.sort();
-            if (! phis.Equals(sortedPhiList)) {
-                throw new ArgumentException("Phis must be sorted ascending.");
-            }
             */
+            List<Double> sortedPhiList = phis.Copy().ToList();
+            sortedPhiList.Sort();
+            if (! phis.Equals(sortedPhiList)) {
+                throw new ArgumentException(Cern.LocalizedResources.Instance().Exception_PhisMustBeAscending);
+            }
 
             //System.out.println("starting to augment missing values, if necessary...");
 
@@ -349,7 +349,7 @@ namespace Cern.Jet.Stat.Quantile
         {
             if (!(b >= 2 && k >= 1))
             {
-                throw new ArgumentException("Assertion: b>=2 && k>=1");
+                throw new ArgumentException(Cern.LocalizedResources.Instance().Exception_AssertionB_K);
             }
             this.bufferSet = new DoubleBufferSet(b, k);
             this.Clear();

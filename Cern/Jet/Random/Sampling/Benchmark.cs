@@ -79,7 +79,7 @@ namespace Cern.Jet.Random.Sampling
             Console.WriteLine("Generating " + size + " random numbers per distribution...\n");
 
             //int large = 100000000;
-            int largeVariance = 100;
+            //int largeVariance = 100;
             RandomEngine gen; // = new MersenneTwister();
             gen = (RandomEngine)Activator.CreateInstance(Type.GetType(generatorName)); //(RandomEngine)Class.forName(generatorName).newInstance();
         }

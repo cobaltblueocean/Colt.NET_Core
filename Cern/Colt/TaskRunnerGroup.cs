@@ -25,12 +25,12 @@ namespace Cern.Colt
         public TaskRunnerGroup(int size)
         {
             this._workers = new LinkedList<Thread>();
-            for (var i = 0; i < size; ++i)
-            {
-                var worker = new Thread(this.Worker) { Name = string.Concat("Worker ", i) };
-                worker.Start();
-                this._workers.AddLast(worker);
-            }
+            AutoParallel.AutoParallelFor(0, size, (i) =>
+             {
+                 var worker = new Thread(this.Worker) { Name = string.Concat("Worker ", i) };
+                 worker.Start();
+                 this._workers.AddLast(worker);
+             });
         }
 
         public void Dispose()
@@ -55,10 +55,10 @@ namespace Cern.Colt
             }
             if (waitForThreads)
             {
-                foreach (var worker in this._workers)
-                {
-                    worker.Join();
-                }
+                AutoParallel.AutoParallelForEach(this._workers, (worker) =>
+               {
+                   worker.Join();
+               });
             }
         }
 
@@ -66,8 +66,8 @@ namespace Cern.Colt
         {
             lock (this._tasks)
             {
-                if (this._disallowAdd) { throw new InvalidOperationException("This Pool instance is in the process of being disposed, can't add anymore"); }
-                if (this._disposed) { throw new ObjectDisposedException("This Pool instance has already been disposed"); }
+                if (this._disallowAdd) { throw new InvalidOperationException(Cern.LocalizedResources.Instance().Exception_ThisPoolInstanceIsInTheProcess); }
+                if (this._disposed) { throw new ObjectDisposedException(Cern.LocalizedResources.Instance().Exception_ThisPoolProcessHasAlreadyBeenDisposed); }
                 this._tasks.AddLast(task);
                 Monitor.PulseAll(this._tasks); // pulse because tasks count changed
             }

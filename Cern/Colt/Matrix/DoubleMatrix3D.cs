@@ -259,15 +259,15 @@ namespace Cern.Colt.Matrix
         /// <exception cref="ArgumentException">if <i>for any 0 &lt;= column &lt; Columns: values[slice][row].Length != Columns</i>.</exception>
         public virtual DoubleMatrix3D Assign(double[][][] values)
         {
-            if (values.Length != Slices) throw new ArgumentException("Must have same number of Slices: Slices=" + values.Length + "Slices=" + Slices);
+            if (values.Length != Slices) throw new ArgumentException(String.Format(Cern.LocalizedResources.Instance().Matrix_MustHaveSameNumberOfSlices, values.Length , Slices));
             for (int slice = Slices; --slice >= 0;)
             {
                 double[][] currentSlice = values[slice];
-                if (currentSlice.Length != Rows) throw new ArgumentException("Must have same number of Rows in every slice: Rows=" + currentSlice.Length + "Rows=" + Rows);
+                if (currentSlice.Length != Rows) throw new ArgumentException(String.Format(Cern.LocalizedResources.Instance().Matrix_MustHaveSameNumberOfRowsInEverySlice, currentSlice.Length , Rows));
                 for (int row = Rows; --row >= 0;)
                 {
                     double[] currentRow = currentSlice[row];
-                    if (currentRow.Length != Columns) throw new ArgumentException("Must have same number of Columns in every row: Columns=" + currentRow.Length + "Columns=" + Columns);
+                    if (currentRow.Length != Columns) throw new ArgumentException(String.Format(Cern.LocalizedResources.Instance().Matrix_MustHaveSameNumberOfColumnsInEveryRow, currentRow.Length , Columns));
                     for (int column = Columns; --column >= 0;)
                     {
                         this[slice, row, column] = currentRow[column];
@@ -890,7 +890,7 @@ namespace Cern.Colt.Matrix
         /// <exception cref="ArgumentException">if <i>Rows != B.Rows || Columns != B.Columns || Slices != B.Slices </i>.</exception>
         public virtual void ZAssign27Neighbors(DoubleMatrix3D B, Cern.Colt.Function.Double27Function function)
         {
-            if (function == null) throw new NullReferenceException("function must not be null.");
+            if (function == null) throw new NullReferenceException(Cern.LocalizedResources.Instance().Exception_FuncionMustNotBeNull);
             CheckShape(B);
             if (Rows < 3 || Columns < 3 || Slices < 3) return; // nothing to do
             int r = Rows - 1;

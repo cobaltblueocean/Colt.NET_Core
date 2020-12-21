@@ -162,7 +162,7 @@ namespace Cern.Colt.Matrix
         /// <exception cref="ArgumentException">if <i>values.Length != Size</i>.</exception>
         public virtual ObjectMatrix1D Assign(Object[] values)
         {
-            if (values.Length != Size) throw new ArgumentException("Must have same number of cells: Length=" + values.Length + ", Size=" + Size);
+            if (values.Length != Size) throw new ArgumentException(String.Format(Cern.LocalizedResources.Instance().Matrix_MustHaveSameNumberOfCell, values.Length , Size));
             for (int i = Size; --i >= 0;)
             {
                 this[i] = values[i];
@@ -172,22 +172,22 @@ namespace Cern.Colt.Matrix
 
         /// <summary>
         /// Assigns the result of a function to each cell; <i>x[i] = function(x[i])</i>.
-        /// (Iterates downwards from<i>[Size-1]</i> to<i>[0]</i>).
-        /// <p>
-        /// <b>Example:</b>
-        /// <pre>
-        /// // change each cell to its sine
-        /// matrix =   0.5      1.5      2.5       3.5 
-        /// matrix.assign(Cern.jet.math.Functions.sin);
-        /// -->
-        /// matrix ==  0.479426 0.997495 0.598472 -0.350783
-        /// </pre>
-        /// For further examples, see the <see cref="Function.ObjectFunction{C}"/> doc</a>.
-        /// </summary>
-        /// <param name="function">a function object taking as argument the current cell's value.</param>
-        /// <returns><i>this</i> (for convenience only).</returns>
-        /// <see cref="Cern.Jet.Math.Functions"/>
-        /// <exception cref=""></exception>
+                                                                               /// (Iterates downwards from<i>[Size-1]</i> to<i>[0]</i>).
+                                                                               /// <p>
+                                                                               /// <b>Example:</b>
+                                                                               /// <pre>
+                                                                               /// // change each cell to its sine
+                                                                               /// matrix =   0.5      1.5      2.5       3.5 
+                                                                               /// matrix.assign(Cern.jet.math.Functions.sin);
+                                                                               /// -->
+                                                                               /// matrix ==  0.479426 0.997495 0.598472 -0.350783
+                                                                               /// </pre>
+                                                                               /// For further examples, see the <see cref="Function.ObjectFunction{C}"/> doc</a>.
+                                                                               /// </summary>
+                                                                               /// <param name="function">a function object taking as argument the current cell's value.</param>
+                                                                               /// <returns><i>this</i> (for convenience only).</returns>
+                                                                               /// <see cref="Cern.Jet.Math.Functions"/>
+                                                                               /// <exception cref=""></exception>
         public virtual ObjectMatrix1D Assign(Cern.Colt.Function.ObjectFunction<Object> function)
         {
             for (int i = Size; --i >= 0;)

@@ -101,7 +101,7 @@ namespace Cern.Jet.Stat
                 if (x < 0.0)
                 {
                     p = System.Math.Floor(q);
-                    if (p == q) throw new ArithmeticException("gamma: overflow");
+                    if (p == q) throw new ArithmeticException(Cern.LocalizedResources.Instance().Exception_GammaOverflow);
                     i = (int)p;
                     z = q - p;
                     if (z > 0.5)
@@ -110,7 +110,7 @@ namespace Cern.Jet.Stat
                         z = q - p;
                     }
                     z = q * System.Math.Sin(System.Math.PI * z);
-                    if (z == 0.0) throw new ArithmeticException("gamma: overflow");
+                    if (z == 0.0) throw new ArithmeticException(Cern.LocalizedResources.Instance().Exception_GammaOverflow);
                     z = System.Math.Abs(z);
                     z = System.Math.PI / (z * StirlingFormula(q));
 
@@ -133,7 +133,7 @@ namespace Cern.Jet.Stat
             {
                 if (x == 0.0)
                 {
-                    throw new ArithmeticException("gamma: singular");
+                    throw new ArithmeticException(Cern.LocalizedResources.Instance().Exception_GammaSingular);
                 }
                 else
                 if (x > -1E-9)
@@ -148,7 +148,7 @@ namespace Cern.Jet.Stat
             {
                 if (x == 0.0)
                 {
-                    throw new ArithmeticException("gamma: singular");
+                    throw new ArithmeticException(Cern.LocalizedResources.Instance().Exception_GammaSingular);
                 }
                 else
                 if (x < 1E-9)
@@ -183,13 +183,13 @@ namespace Cern.Jet.Stat
 
             if (aa <= 0.0 || bb <= 0.0) throw new
 
-                             ArithmeticException("ibeta: Domain error!");
+                             ArithmeticException(Cern.LocalizedResources.Instance().Exception_IBetaDomainError);
 
             if ((xx <= 0.0) || (xx >= 1.0))
             {
                 if (xx == 0.0) return 0.0;
                 if (xx == 1.0) return 1.0;
-                throw new ArithmeticException("ibeta: Domain error!");
+                throw new ArithmeticException(Cern.LocalizedResources.Instance().Exception_IBetaDomainError);
             }
 
             flag = false;
@@ -416,7 +416,7 @@ namespace Cern.Jet.Stat
                 q = -x;
                 w = LogGamma(q);
                 p = System.Math.Floor(q);
-                if (p == q) throw new ArithmeticException("lgam: Overflow");
+                if (p == q) throw new ArithmeticException(Cern.LocalizedResources.Instance().Exception_LogGammaOverflow);
                 z = q - p;
                 if (z > 0.5)
                 {
@@ -426,7 +426,7 @@ namespace Cern.Jet.Stat
                 z = q * System.Math.Sin(System.Math.PI * z);
                 if (z == 0.0) throw new
 
-                                       ArithmeticException("lgamma: Overflow");
+                                       ArithmeticException(Cern.LocalizedResources.Instance().Exception_LogGammaOverflow);
                 z = LOGPI - System.Math.Log(z) - w;
                 return z;
             }
@@ -443,7 +443,7 @@ namespace Cern.Jet.Stat
                 {
                     if (x == 0.0) throw new
 
-                                           ArithmeticException("lgamma: Overflow");
+                                           ArithmeticException(Cern.LocalizedResources.Instance().Exception_LogGammaOverflow);
                     z /= x;
                     x += 1.0;
                 }
@@ -456,7 +456,7 @@ namespace Cern.Jet.Stat
 
             if (x > 2.556348e305) throw new
 
-                            ArithmeticException("lgamma: Overflow");
+                            ArithmeticException(Cern.LocalizedResources.Instance().Exception_LogGammaOverflow);
 
             q = (x - 0.5) * System.Math.Log(x) - x + 0.91893853320467274178;
             //if( x > 1.0e8 ) return( q );

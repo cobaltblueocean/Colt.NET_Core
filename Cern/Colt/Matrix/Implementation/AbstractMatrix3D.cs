@@ -153,7 +153,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <exception cref="IndexOutOfRangeException">if <i>column  %lt; 0 || column  %gt;= Columns()</i>.</exception>
         protected virtual void CheckColumn(int column)
         {
-            if (column < 0 || column >= Columns) throw new IndexOutOfRangeException("Attempted to access " + ToStringShort() + " at column=" + column);
+            if (column < 0 || column >= Columns) throw new IndexOutOfRangeException(String.Format(Cern.LocalizedResources.Instance().Exception_AttemptedToAccessAtColumn, ToStringShort(), column));
         }
 
         /// <summary>
@@ -175,7 +175,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <exception cref="IndexOutOfRangeException">if <i>row %lt; 0 || row %gt;= Rows()</i>.</exception>
         protected virtual void CheckRow(int row)
         {
-            if (row < 0 || row >= Rows) throw new IndexOutOfRangeException("Attempted to access " + ToStringShort() + " at row=" + row);
+            if (row < 0 || row >= Rows) throw new IndexOutOfRangeException(String.Format(Cern.LocalizedResources.Instance().Exception_AttemptedToAccessAtRow, ToStringShort(), row));
         }
 
         /// <summary>
@@ -197,7 +197,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <exception cref="ArgumentException">if <i>Slices() != B.Slices() || Rows() != B.Rows() || Columns() != B.Columns()</i>.</exception>
         public virtual void CheckShape(AbstractMatrix3D B)
         {
-            if (Slices != B.Slices || Rows != B.Rows || Columns != B.Columns) throw new ArgumentException("Incompatible dimensions: " + ToStringShort() + " and " + B.ToStringShort());
+            if (Slices != B.Slices || Rows != B.Rows || Columns != B.Columns) throw new ArgumentException(String.Format(Cern.LocalizedResources.Instance().Exception_IncompatibleDimensions2, ToStringShort(), B.ToStringShort()));
         }
 
         /// <summary>
@@ -206,7 +206,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <exception cref="ArgumentException">if <i>Slices() != B.Slices() || Rows() != B.Rows() || Columns() != B.Columns() || Slices() != C.Slices() || Rows() != C.Rows() || Columns() != C.Columns()</i>.</exception>
         public virtual void CheckShape(AbstractMatrix3D B, AbstractMatrix3D C)
         {
-            if (Slices != B.Slices || Rows != B.Rows || Columns != B.Columns || Slices != C.Slices || Rows != C.Rows || Columns != C.Columns) throw new ArgumentException("Incompatible dimensions: " + ToStringShort() + ", " + B.ToStringShort() + ", " + C.ToStringShort());
+            if (Slices != B.Slices || Rows != B.Rows || Columns != B.Columns || Slices != C.Slices || Rows != C.Rows || Columns != C.Columns) throw new ArgumentException(String.Format(Cern.LocalizedResources.Instance().Exception_IncompatibleDimensions3, ToStringShort() , B.ToStringShort() , C.ToStringShort()));
         }
 
         /// <summary>
@@ -215,7 +215,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <exception cref="IndexOutOfRangeException">if <i>slice %lt; 0 || slice %gt;= Slices()</i>.</exception>
         protected virtual void CheckSlice(int slice)
         {
-            if (slice < 0 || slice >= Slices) throw new IndexOutOfRangeException("Attempted to access " + ToStringShort() + " at slice=" + slice);
+            if (slice < 0 || slice >= Slices) throw new IndexOutOfRangeException(String.Format(Cern.LocalizedResources.Instance().Exception_AttemptedToAccessAtSlice, ToStringShort(), slice));
         }
 
         /// <summary>
@@ -274,8 +274,8 @@ namespace Cern.Colt.Matrix.Implementation
         /// <exception cref="ArgumentException">if <i>Slices %lt; 0 || Rows %lt; 0 || Columns %lt; 0</i>.</exception>
         protected virtual void Setup(int Slices, int Rows, int Columns, int sliceZero, int rowZero, int columnZero, int Slicestride, int Rowstride, int Columnstride)
         {
-            if (Slices < 0 || Rows < 0 || Columns < 0) throw new ArgumentException("negative size");
-            if ((double)Slices * Rows * Columns > int.MaxValue) throw new ArgumentException("matrix too large");
+            if (Slices < 0 || Rows < 0 || Columns < 0) throw new ArgumentException(Cern.LocalizedResources.Instance().Exception_NegativeSize);
+            if ((double)Slices * Rows * Columns > int.MaxValue) throw new ArgumentException(Cern.LocalizedResources.Instance().Exception_MatrixTooLarge);
 
             this.Slices = Slices;
             this.Rows = Rows;
@@ -333,7 +333,7 @@ namespace Cern.Colt.Matrix.Implementation
             if (axis0 < 0 || axis0 >= d || axis1 < 0 || axis1 >= d || axis2 < 0 || axis2 >= d ||
                 axis0 == axis1 || axis0 == axis2 || axis1 == axis2)
             {
-                throw new ArgumentException("Illegal Axes: " + axis0 + ", " + axis1 + ", " + axis2);
+                throw new ArgumentException(String.Format(Cern.LocalizedResources.Instance().Exception_IllegalAxes3, axis0, axis1, axis2));
             }
 
             // swap shape
@@ -412,7 +412,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <exception cref="IndexOutOfRangeException">if <i>Slicestride %lt;= 0 || Rowstride %lt;= 0 || Columnstride %lt;= 0</i>.</exception>
         protected virtual AbstractMatrix3D VStrides(int Slicestride, int Rowstride, int Columnstride)
         {
-            if (Slicestride <= 0 || Rowstride <= 0 || Columnstride <= 0) throw new IndexOutOfRangeException("illegal strides: " + Slicestride + ", " + Rowstride + ", " + Columnstride);
+            if (Slicestride <= 0 || Rowstride <= 0 || Columnstride <= 0) throw new IndexOutOfRangeException(String.Format(Cern.LocalizedResources.Instance().Exception_IllegalStrides3, Slicestride, Rowstride, Columnstride));
 
             this.SliceStride *= Slicestride;
             this.RowStride *= Rowstride;

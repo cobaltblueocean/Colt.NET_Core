@@ -24,7 +24,7 @@ namespace Cern.Jet.Random
         protected double min;
         protected double max;
 
-        private object syncLock;
+        //private object syncLock;
 
         // The uniform random number generated shared by all <b>static</b> methodsd 
         protected static Uniform shared = new Uniform(MakeDefaultGenerator());

@@ -266,7 +266,7 @@ namespace Cern.Jet.Random
         {
             if (pdf == null || pdf.Length == 0)
             {
-                throw new ArgumentException("Non-existing pdf");
+                throw new ArgumentException(Cern.LocalizedResources.Instance().Exception_NonExistingPdf);
             }
 
             // compute cumulative distribution function (cdf) from probability distribution function (pdf)
@@ -276,10 +276,10 @@ namespace Cern.Jet.Random
             _cdf[0] = 0;
             for (int i = 0; i < nBins; i++)
             {
-                if (pdf[i] < 0.0) throw new ArgumentException("Negative probability");
+                if (pdf[i] < 0.0) throw new ArgumentException(Cern.LocalizedResources.Instance().Exception_NegativeProbability);
                 _cdf[i + 1] = _cdf[i] + pdf[i];
             }
-            if (_cdf[nBins] <= 0.0) throw new ArgumentException("At leat one probability must be > 0.0");
+            if (_cdf[nBins] <= 0.0) throw new ArgumentException(Cern.LocalizedResources.Instance().Exception_AtLeastOneProbabilityMustBePositive);
             // now normalize to 1 (relative probabilities).
             for (int i = 0; i < nBins + 1; i++)
             {

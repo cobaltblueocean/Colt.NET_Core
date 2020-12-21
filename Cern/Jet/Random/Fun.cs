@@ -9,14 +9,14 @@ namespace Cern.Jet.Random
     /// <summary>
     /// Contains various mathematical helper methods.
     /// </summary>
-    class Fun
+    public class Fun
     {
         /// <summary>
         /// Makes this class non instantiable, but still let's others inherit from it.
         /// </summary>
         protected Fun()
         {
-            throw new NotSupportedException("Non instantiable");
+            throw new NotSupportedException(Cern.LocalizedResources.Instance().Exception_NonInstantiable);
         }
 
         private static double _fkt_value(double lambda, double z1, double z2, double x_value)

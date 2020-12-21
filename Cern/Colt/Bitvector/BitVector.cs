@@ -200,7 +200,7 @@ namespace Cern.Colt.Bitvector
         /// <param name="other"></param>
         protected void CheckSize(BitVector other)
         {
-            if (nbits > other.Size) throw new ArgumentException("Incompatible sizes: size=" + nbits + ", other.Size=" + other.Size);
+            if (nbits > other.Size) throw new ArgumentException(String.Format(Cern.LocalizedResources.Instance().Exception_IncompatibleSizes, nbits, other.Size));
         }
 
         /// <summary>

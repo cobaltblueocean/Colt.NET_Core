@@ -151,7 +151,7 @@ namespace Cern.Colt.Matrix
         /// </exception>
         public virtual DoubleMatrix1D Assign(double[] values)
         {
-            if (values.Length != Size) throw new ArgumentOutOfRangeException("Must have same number of cells: length = " + values.Length + ", Size = " + Size);
+            if (values.Length != Size) throw new ArgumentOutOfRangeException(String.Format(Cern.LocalizedResources.Instance().Matrix_MustHaveSameNumberOfCell, values.Length, Size));
             for (int i = Size; --i >= 0;)
                 this[i] = values[i];
             return this;
@@ -586,7 +586,7 @@ namespace Cern.Colt.Matrix
         /// </exception>
         public virtual void ToArray(ref double[] values)
         {
-            if (values.Length < Size) throw new ArgumentOutOfRangeException("values", "values too small");
+            if (values.Length < Size) throw new ArgumentOutOfRangeException("values", Cern.LocalizedResources.Instance().Exception_ValuesTooSmall);
             for (int i = Size; --i >= 0;)
             {
                 values[i] = this[i];

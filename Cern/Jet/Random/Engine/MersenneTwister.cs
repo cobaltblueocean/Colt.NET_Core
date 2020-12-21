@@ -30,10 +30,7 @@ namespace Cern.Jet.Random.Engine
         #endregion
 
         #region Property
-        public static int DefaultSeed
-        {
-            get { return DEFAULT_SEED; }
-        }
+
         #endregion
 
         #region Constructor

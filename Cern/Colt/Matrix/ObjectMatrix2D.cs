@@ -210,11 +210,11 @@ namespace Cern.Colt.Matrix
         /// <exception cref="ArgumentException">if <i>values.Length != Rows || for any 0 &lt;= row &lt; Rows: values[row].Length != Columns</i>.</exception>
         public virtual ObjectMatrix2D Assign(Object[][] values)
         {
-            if (values.Length != Rows) throw new ArgumentException("Must have same number of Rows: Rows=" + values.Length + "Rows=" + Rows);
+            if (values.Length != Rows) throw new ArgumentException(String.Format(Cern.LocalizedResources.Instance().Matrix_MustHaveSameNumberOfRows, values.Length , Rows));
             for (int row = Rows; --row >= 0;)
             {
                 Object[] currentRow = values[row];
-                if (currentRow.Length != Columns) throw new ArgumentException("Must have same number of Columns in every row: Columns=" + currentRow.Length + "Columns=" + Columns);
+                if (currentRow.Length != Columns) throw new ArgumentException(String.Format(Cern.LocalizedResources.Instance().Matrix_MustHaveSameNumberOfCell, currentRow.Length , Columns));
                 for (int column = Columns; --column >= 0;)
                 {
                     this[row, column] = currentRow[column];

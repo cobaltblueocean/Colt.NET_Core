@@ -498,10 +498,10 @@ namespace Cern.Jet.Math
         /// <returns></returns>
         static public long LongFactorial(int k)
         {
-            if (k < 0) throw new ArgumentException("Negative k");
+            if (k < 0) throw new ArgumentException(Cern.LocalizedResources.Instance().Exception_NegativeK);
 
             if (k < _longFactorials.Length) return _longFactorials[k];
-            throw new ArgumentException("Overflow");
+            throw new ArgumentException(Cern.LocalizedResources.Instance().Exception_Overflow);
         }
 
         /// <summary>
