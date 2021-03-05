@@ -228,7 +228,12 @@ namespace System
             return array;
         }
 
-        private static int GetMaxColumnLength<T>(this T[][] array)
+        public static int GetMaxColumnLength<T>(this T[, ] array)
+        {
+            return array.GetLength(1);
+        }
+
+        public static int GetMaxColumnLength<T>(this T[][] array)
         {
             int length = 0;
             foreach (T[] row in array)
@@ -238,6 +243,5 @@ namespace System
             }
             return length;
         }
-
     }
 }
