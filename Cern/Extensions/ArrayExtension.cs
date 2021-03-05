@@ -30,205 +30,6 @@ namespace System
             return newArray;
         }
 
-        //public static byte[] EnsureCapacity(this byte[] array, int minCapacity)
-        //{
-        //    int oldCapacity = array.Length;
-        //    byte[] newArray;
-        //    if (minCapacity > oldCapacity)
-        //    {
-        //        int newCapacity = (oldCapacity * 3) / 2 + 1;
-        //        if (newCapacity < minCapacity)
-        //        {
-        //            newCapacity = minCapacity;
-        //        }
-
-        //        newArray = new byte[newCapacity];
-        //        Array.Copy(array, 0, newArray, 0, oldCapacity);
-        //    }
-        //    else
-        //    {
-        //        newArray = array;
-        //    }
-        //    return newArray;
-        //}
-
-        //public static char[] EnsureCapacity(this char[] array, int minCapacity)
-        //{
-        //    int oldCapacity = array.Length;
-        //    char[] newArray;
-        //    if (minCapacity > oldCapacity)
-        //    {
-        //        int newCapacity = (oldCapacity * 3) / 2 + 1;
-        //        if (newCapacity < minCapacity)
-        //        {
-        //            newCapacity = minCapacity;
-        //        }
-
-        //        newArray = new char[newCapacity];
-        //        Array.Copy(array, 0, newArray, 0, oldCapacity);
-        //    }
-        //    else
-        //    {
-        //        newArray = array;
-        //    }
-        //    return newArray;
-        //}
-
-        //public static double[] EnsureCapacity(this double[] array, int minCapacity)
-        //{
-        //    int oldCapacity = array.Length;
-        //    double[] newArray;
-        //    if (minCapacity > oldCapacity)
-        //    {
-        //        int newCapacity = (oldCapacity * 3) / 2 + 1;
-        //        if (newCapacity < minCapacity)
-        //        {
-        //            newCapacity = minCapacity;
-        //        }
-
-        //        newArray = new double[newCapacity];
-        //        //for (int i = oldCapacity; --i >= 0; ) newArray[i] = array[i];
-        //        Array.Copy(array, 0, newArray, 0, oldCapacity);
-        //    }
-        //    else
-        //    {
-        //        newArray = array;
-        //    }
-        //    return newArray;
-        //}
-
-        //public static float[] EnsureCapacity(this float[] array, int minCapacity)
-        //{
-        //    int oldCapacity = array.Length;
-        //    float[] newArray;
-        //    if (minCapacity > oldCapacity)
-        //    {
-        //        int newCapacity = (oldCapacity * 3) / 2 + 1;
-        //        if (newCapacity < minCapacity)
-        //        {
-        //            newCapacity = minCapacity;
-        //        }
-
-        //        newArray = new float[newCapacity];
-        //        Array.Copy(array, 0, newArray, 0, oldCapacity);
-        //    }
-        //    else
-        //    {
-        //        newArray = array;
-        //    }
-        //    return newArray;
-        //}
-
-        //public static int[] EnsureCapacity(this int[] array, int minCapacity)
-        //{
-        //    int oldCapacity = array.Length;
-        //    int[] newArray;
-        //    if (minCapacity > oldCapacity)
-        //    {
-        //        int newCapacity = (oldCapacity * 3) / 2 + 1;
-        //        if (newCapacity < minCapacity)
-        //        {
-        //            newCapacity = minCapacity;
-        //        }
-
-        //        newArray = new int[newCapacity];
-        //        Array.Copy(array, 0, newArray, 0, oldCapacity);
-        //    }
-        //    else
-        //    {
-        //        newArray = array;
-        //    }
-        //    return newArray;
-        //}
-
-        //public static long[] EnsureCapacity(this long[] array, int minCapacity)
-        //{
-        //    int oldCapacity = array.Length;
-        //    long[] newArray;
-        //    if (minCapacity > oldCapacity)
-        //    {
-        //        int newCapacity = (oldCapacity * 3) / 2 + 1;
-        //        if (newCapacity < minCapacity)
-        //        {
-        //            newCapacity = minCapacity;
-        //        }
-
-        //        newArray = new long[newCapacity];
-        //        Array.Copy(array, 0, newArray, 0, oldCapacity);
-        //    }
-        //    else
-        //    {
-        //        newArray = array;
-        //    }
-        //    return newArray;
-        //}
-
-        //public static Object[] EnsureCapacity(this Object[] array, int minCapacity)
-        //{
-        //    int oldCapacity = array.Length;
-        //    Object[] newArray;
-        //    if (minCapacity > oldCapacity)
-        //    {
-        //        int newCapacity = (oldCapacity * 3) / 2 + 1;
-        //        if (newCapacity < minCapacity)
-        //        {
-        //            newCapacity = minCapacity;
-        //        }
-
-        //        newArray = new Object[newCapacity];
-        //        Array.Copy(array, 0, newArray, 0, oldCapacity);
-        //    }
-        //    else
-        //    {
-        //        newArray = array;
-        //    }
-        //    return newArray;
-        //}
-
-        //public static short[] EnsureCapacity(this short[] array, int minCapacity)
-        //{
-        //    int oldCapacity = array.Length;
-        //    short[] newArray;
-        //    if (minCapacity > oldCapacity)
-        //    {
-        //        int newCapacity = (oldCapacity * 3) / 2 + 1;
-        //        if (newCapacity < minCapacity)
-        //        {
-        //            newCapacity = minCapacity;
-        //        }
-
-        //        newArray = new short[newCapacity];
-        //        Array.Copy(array, 0, newArray, 0, oldCapacity);
-        //    }
-        //    else
-        //    {
-        //        newArray = array;
-        //    }
-        //    return newArray;
-        //}
-
-        //public static Boolean[] EnsureCapacity(this Boolean[] array, int minCapacity)
-        //{
-        //    int oldCapacity = array.Length;
-        //    Boolean[] newArray;
-        //    if (minCapacity > oldCapacity)
-        //    {
-        //        int newCapacity = (oldCapacity * 3) / 2 + 1;
-        //        if (newCapacity < minCapacity)
-        //        {
-        //            newCapacity = minCapacity;
-        //        }
-
-        //        newArray = new Boolean[newCapacity];
-        //        Array.Copy(array, 0, newArray, 0, oldCapacity);
-        //    }
-        //    else
-        //    {
-        //        newArray = array;
-        //    }
-        //    return newArray;
-        //}
-
         public static T[] SafeCopy<T>(this T[] array)
         {
             if (array != null)
@@ -286,18 +87,34 @@ namespace System
             return array;
         }
 
-        public static T[][] ToJagged<T>(this T[,] array)
+        public static T[][] ToJagged<T>(this T[,] array, bool transpose = false)
         {
             int row = array.GetLength(0);
+            int col = array.GetLength(1);
+            T[][] jagary;
 
-            T[][] jagary = new T[row][];
-            for (int i = 0; i < row; i++)
+            if (transpose)
             {
-                int col = array.GetLength(1);
-                jagary[i] = new T[col];
-                for (int j = 0; j < col; j++)
+                jagary = new T[col][];
+                for (int i = 0; i < col; i++)
                 {
-                    jagary[i][j] = array[i, j];
+                    jagary[i] = new T[row];
+                    for (int j = 0; j < row; j++)
+                    {
+                        jagary[i][j] = array[i, j];
+                    }
+                }
+            }
+            else
+            {
+                jagary = new T[row][];
+                for (int i = 0; i < row; i++)
+                {
+                    jagary[i] = new T[col];
+                    for (int j = 0; j < col; j++)
+                    {
+                        jagary[i][j] = array[i, j];
+                    }
                 }
             }
 
@@ -327,21 +144,41 @@ namespace System
             return jagary;
         }
 
-        public static T[,] ToMultidimensional<T>(this T[][] array)
+        public static T[,] ToMultidimensional<T>(this T[][] array, bool transpose = false)
         {
-            T[,] mult = new T[array.GetLength(0), array.GetLength(1)];
-            int row = array.GetLength(0);
-            int col = array.GetLength(1);
+            int row = array.Length;
+            int col = array.GetMaxColumnLength();
 
-            for (int i = 0; i < row; i++)
+            if (transpose)
             {
-                for (int j = 0; j < col; j++)
-                {
-                    mult[i, j] = array[i][j];
-                }
-            }
+                T[,] mult = new T[col, row];
 
-            return mult;
+                for (int i = 0; i < col; i++)
+                {
+                    for (int j = 0; j < row; j++)
+                    {
+                        if (j < array[i].Length)
+                            mult[i, j] = array[i][j];
+                    }
+                }
+
+                return mult;
+            }
+            else
+            {
+                T[,] mult = new T[row, col];
+
+                for (int i = 0; i < row; i++)
+                {
+                    for (int j = 0; j < col; j++)
+                    {
+                        if (j < array[i].Length)
+                            mult[i, j] = array[i][j];
+                    }
+                }
+
+                return mult;
+            }
         }
 
         public static T[,,] ToMultidimensional<T>(this T[][][] array)
@@ -390,5 +227,17 @@ namespace System
 
             return array;
         }
+
+        private static int GetMaxColumnLength<T>(this T[][] array)
+        {
+            int length = 0;
+            foreach (T[] row in array)
+            {
+                if (length < row.Length)
+                    length = row.Length;
+            }
+            return length;
+        }
+
     }
 }

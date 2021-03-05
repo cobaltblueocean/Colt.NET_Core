@@ -15,7 +15,7 @@ namespace System
             list.AddRange(tmp);
         }
 
-        public static Boolean ForEach<T>(this List<Double> list, Cern.Colt.Function.DoubleProcedure procedure)
+        public static Boolean ForEach<T>(this IList<Double> list, Cern.Colt.Function.DoubleProcedure procedure)
         {
             Double[] theElements = list.ToArray();
             int theSize = list.Count;
@@ -53,7 +53,7 @@ namespace System
             return buf.ToList();
         }
 
-        public static String[] ToStringArray<T>(this List<T> list)
+        public static String[] ToStringArray<T>(this IList<T> list)
         {
             return Array.ConvertAll<T, string>(list.ToArray(), ConvertObjectToString);
         }
@@ -82,7 +82,7 @@ namespace System
             list.AddRange(items);
         }
 
-        public static Boolean RemoveAll<T>(this List<T> list, List<T> items)
+        public static Boolean RemoveAll<T>(this IList<T> list, IList<T> items)
         {
             var change = list.Any(x => items.Contains(x));
             if (change)
@@ -147,7 +147,7 @@ namespace System
         public static void ReplaceFromToWithFrom<T>(this List<T> list, int from, int to, List<T> other, int otherFrom)
         {
             // overridden for performance only.
-            //if (!(other is List<T>)) {
+            //if (!(other is IList<T>)) {
             //    // slower
             //    base.ReplaceFromToWithFrom(from, to, other, otherFrom);
             //    return;
@@ -157,7 +157,7 @@ namespace System
             {
                 list.CheckRangeFromTo(from, to, list.Count);
                 other.CheckRangeFromTo(otherFrom, otherFrom + Length - 1, other.Count);
-                //Array.Copy(((List<T>)other).Elements, otherFrom, Elements, from, Length);
+                //Array.Copy(((IList<T>)other).Elements, otherFrom, Elements, from, Length);
                 int count = to - from;
                 list.RemoveRange(from, count);
                 list.InsertRange(from, other.GetRange(otherFrom, count));
@@ -174,7 +174,7 @@ namespace System
         /// <param name="to"></param>
         /// <param name="theSize"></param>
         /// <exception cref="IndexOutOfRangeException">if <i>to!=from-1 || from&lt;0 || from&gt;to || to&gt;=size()</i>.</exception>
-        public static void CheckRangeFromTo<T>(this List<T> list, int from, int to, int theSize)
+        public static void CheckRangeFromTo<T>(this IList<T> list, int from, int to, int theSize)
         {
             if (to == from - 1) return;
             if (from < 0 || from > to || to >= theSize)
