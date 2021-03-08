@@ -87,6 +87,46 @@ namespace System
             return array;
         }
 
+        public static T[,] ToTransposedArray<T>(this T[,] array)
+        {
+            var rows = array.GetLength(0);
+            var columns = array.GetLength(1);
+
+            var result = new T[columns, rows];
+
+            for (var i = 0; i < columns; i++)
+            {
+                for (var j = 0; j < rows; j++)
+                {
+                    result[i, j] = array[j, i];
+                }
+            }
+
+            return result;
+        }
+
+        public static T[,,] ToTransposedArray<T>(this T[,,] array)
+        {
+            var rows = array.GetLength(0);
+            var columns = array.GetLength(1);
+            var width = array.GetLength(3);
+
+            var result = new T[width, rows, columns];
+
+            for (var i = 0; i < width; i++)
+            {
+                for (var j = 0; j < rows; j++)
+                {
+                    for (var k = 0; k < columns; k++)
+                    {
+                        result[i, j, k] = array[k, j, i];
+                    }
+                }
+            }
+
+            return result;
+        }
+
         public static T[][] ToJagged<T>(this T[,] array, bool transpose = false)
         {
             int row = array.GetLength(0);
@@ -171,6 +211,7 @@ namespace System
                 for (int i = 0; i < row; i++)
                 {
                     for (int j = 0; j < col; j++)
+            
                     {
                         if (j < array[i].Length)
                             mult[i, j] = array[i][j];

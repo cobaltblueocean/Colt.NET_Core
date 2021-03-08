@@ -28,33 +28,46 @@ namespace System.Collections.Generic
 
         public static void AddOrUpdate<T1, T2>(this IDictionary<T1, T2> originalDictionary, T1 key, T2 value)
         {
-            if (originalDictionary.ContainsKey(key))
-                originalDictionary[key] = value;
-            else
-                originalDictionary.Add(key, value);
+            if (key != null)
+            {
+                if (originalDictionary.ContainsKey(key))
+                    originalDictionary[key] = value;
+                else
+                    originalDictionary.Add(key, value);
+            }
         }
 
         public static void AddOrUpdateAll<T1, T2>(this IDictionary<T1, T2> originalDictionary, IEnumerable<KeyValuePair<T1, T2>> items)
         {
-            foreach (var item in items)
+            if (items != null)
             {
-                AddOrUpdate(originalDictionary, item.Key, item.Value);
+                foreach (var item in items)
+                {
+                    AddOrUpdate(originalDictionary, item.Key, item.Value);
+                }
             }
         }
 
         public static T2 GetValueAtKey<T1, T2>(this IDictionary<T1, T2> originalDictionary, T1 key)
         {
-            if (originalDictionary.Any(x => x.Key.AreObjectsEqual(key)))
+            if (key != null)
             {
-                return originalDictionary.FirstOrDefault(x => x.Key.AreObjectsEqual(key)).Value;
+                if (originalDictionary.Any(x => x.Key.AreObjectsEqual(key)))
+                {
+                    return originalDictionary.FirstOrDefault(x => x.Key.AreObjectsEqual(key)).Value;
+                }
+                else
+                {
+                    throw new KeyNotFoundException();
+                }
             }
             else
             {
-                throw new KeyNotFoundException();
+                throw new ArgumentNullException();
             }
         }
 
-        public static IDictionary<T1, T2> Head<T1, T2>(this IDictionary<T1, T2> originalDictionary, T1 key, Boolean inclusive = false)
+public static IDictionary<T1, T2> Head<T1, T2>(this IDictionary<T1, T2> originalDictionary, T1 key, Boolean inclusive = false)
         {
             var keys = originalDictionary.Keys.ToArray<T1>();
             var tmp = new List<T1>();

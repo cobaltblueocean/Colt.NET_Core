@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -16,30 +17,72 @@ namespace System
             return BitConverter.ToInt32(BitConverter.GetBytes(value), 0);
         }
 
-        public static Boolean AlmostEquals(this Double x, Double y, Double Esp)
+        public static Boolean AlmostEquals<T>(T x, T y, T Esp) where T : struct, IComparable, IFormattable, IConvertible, IComparable<T>, IEquatable<T>
         {
-            return System.Math.Abs(x - y) < Esp;
+            if (Esp.Equals(0))
+                return x.Equals(y);
+            else
+            {
+                // Declare the parameters
+                var paramX = Expression.Parameter(typeof(T), "x");
+                var paramY = Expression.Parameter(typeof(T), "y");
+
+                // Condition
+                var greaterThan = Expression.GreaterThan(paramX, paramY);
+
+                // True clause
+                var trueClause = Expression.Subtract(paramX, paramY);
+
+                // False claise
+                var falseClause = Expression.Subtract(paramY, paramX);
+
+                var conditional = Expression.Condition(greaterThan, trueClause, falseClause);
+
+                // Compile it
+                Func<T, T, T> subtractAbs = Expression.Lambda<Func<T, T, T>>(conditional, paramX, paramY).Compile();
+
+                // Call it
+                T abs = subtractAbs(x, y);
+
+                var paramAbs = Expression.Parameter(typeof(T), "abs");
+                var paramEsp = Expression.Parameter(typeof(T), "Esp");
+
+                BinaryExpression body = Expression.LessThan(paramAbs, paramEsp);
+                Func<T, T, bool> compare = Expression.Lambda<Func<T, T, bool>>(body, paramAbs, paramEsp).Compile();
+
+                return compare(abs, Esp);
+            }
         }
 
-        public static Boolean AlmostEquals(this int x, int y, int Esp)
+        public static T Zero<T>()
         {
-            return System.Math.Abs(x - y) < Esp;
+            return (T)(Object)0;
         }
 
-        public static Boolean AlmostEquals(this float x, float y, float Esp)
-        {
-            return System.Math.Abs(x - y) < Esp;
-        }
+        //public static Boolean AlmostEquals(this Double x, Double y, Double Esp)
+        //{
+        //    return System.Math.Abs(x - y) < Esp;
+        //}
 
-        public static Boolean AlmostEquals(this long x, long y, long Esp)
-        {
-            return System.Math.Abs(x - y) < Esp;
-        }
+        //public static Boolean AlmostEquals(this int x, int y, int Esp)
+        //{
+        //    return System.Math.Abs(x - y) < Esp;
+        //}
 
-        public static Boolean AlmostEquals(this decimal x, decimal y, decimal Esp)
-        {
-            return System.Math.Abs(x - y) < Esp;
-        }
+        //public static Boolean AlmostEquals(this float x, float y, float Esp)
+        //{
+        //    return System.Math.Abs(x - y) < Esp;
+        //}
+
+        //public static Boolean AlmostEquals(this long x, long y, long Esp)
+        //{
+        //    return System.Math.Abs(x - y) < Esp;
+        //}
+
+        //public static Boolean AlmostEquals(this decimal x, decimal y, decimal Esp)
+        //{
+        //    return System.Math.Abs(x - y) < Esp;
+        //}
 
 
         public static T[] ToArray<T>(this T val) where T : struct, IComparable, IFormattable, IConvertible, IComparable<T>, IEquatable<T>
