@@ -12,12 +12,19 @@ namespace System
     /// </summary>
     public static class PremitiveExtension
     {
+        private static double EPSILON = 10e-15;
+
         public static int FloatToIntBits(this float value)
         {
             return BitConverter.ToInt32(BitConverter.GetBytes(value), 0);
         }
 
-        public static Boolean AlmostEquals<T>(T x, T y, T Esp) where T : struct, IComparable, IFormattable, IConvertible, IComparable<T>, IEquatable<T>
+        public static Boolean AlmostEquals<T>(this T x, T y) where T : struct, IComparable, IFormattable, IConvertible, IComparable<T>, IEquatable<T>
+        {
+            return AlmostEquals<T>(x, y, Epsilon<T>());
+        }
+
+        public static Boolean AlmostEquals<T>(this T x, T y, T Esp) where T : struct, IComparable, IFormattable, IConvertible, IComparable<T>, IEquatable<T>
         {
             if (Esp.Equals(0))
                 return x.Equals(y);
@@ -57,6 +64,11 @@ namespace System
         public static T Zero<T>()
         {
             return (T)(Object)0;
+        }
+
+        public static T Epsilon<T>()
+        {
+            return (T)(Object)EPSILON;
         }
 
         //public static Boolean AlmostEquals(this Double x, Double y, Double Esp)
