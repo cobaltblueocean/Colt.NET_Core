@@ -742,7 +742,10 @@ namespace Cern.Colt.List
             int index = from;
             int limit = System.Math.Min(Size - from, other.Count);
             for (int i = 0; i < limit; i++)
-                Set(index++, (e.Next())); //delta
+            {
+                e.MoveNext();
+                Set(index++, (e.Current)); //delta
+            }
         }
         /// <summary>
         /// Retains (keeps) only the elements in the receiver that are contained in the specified other list.

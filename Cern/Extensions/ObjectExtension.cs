@@ -13,6 +13,22 @@ namespace System
     {
         static bool IsNullable(Type type) => Nullable.GetUnderlyingType(type) != null;
 
+        public static bool IsList<T>(this Object o)
+        {
+            if (o == null) return false;
+            return o is IList<T> &&
+                   o.GetType().IsGenericType &&
+                   o.GetType().GetGenericTypeDefinition().IsAssignableFrom(typeof(List<>));
+        }
+
+        public static bool IsDictionary<TKey, TValue>(this Object o)
+        {
+            if (o == null) return false;
+            return o is IDictionary<TKey, TValue> &&
+                   o.GetType().IsGenericType &&
+                   o.GetType().GetGenericTypeDefinition().IsAssignableFrom(typeof(Dictionary<,>));
+        }
+
         public static String ValueOf<T>(this T target)
         {
             if (IsNullable(typeof(T)))
@@ -41,7 +57,9 @@ namespace System
 
             try
             {
-                if (objectA != null && objectB != null)
+                if (typeof(T) == typeof(String))
+                    result = object.Equals(objectA, objectB);
+                else if (objectA != null && objectB != null)
                 {
                     Type objectType;
 

@@ -1,0 +1,507 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ApplicationExcpetion_UnableToDetermineInstallRoot" xml:space="preserve">
+    <value>.NET Framework のインストール ルート パスを特定できません。</value>
+  </data>
+  <data name="ArgumentNull_String" xml:space="preserve">
+    <value>文字列参照が文字列のインスタンスに設定されていません。</value>
+  </data>
+  <data name="ArgumentOutOfRange_IndexLessThanLength" xml:space="preserve">
+    <value>インデックスは文字列の長さ未満である必要があります。</value>
+  </data>
+  <data name="ArgumentOutOfRange_IndexLessThanZero" xml:space="preserve">
+    <value>インデックスは非負でなければなりません。</value>
+  </data>
+  <data name="ArgumentOutOfRange_IndexString" xml:space="preserve">
+    <value>インデックスが範囲外でした。負ではなく、文字列の長さ未満である必要があります。</value>
+  </data>
+  <data name="Argument_EnumIllegalVal" xml:space="preserve">
+    <value>不正な列挙値: {0}です。</value>
+  </data>
+  <data name="Argument_InvalidEnumValue" xml:space="preserve">
+    <value>値 '{0}' は、タイプ {1} のこの使用法では無効です。</value>
+  </data>
+  <data name="Argument_InvalidFlag" xml:space="preserve">
+    <value>フラグの値が無効です。</value>
+  </data>
+  <data name="Argument_InvalidIndexValuesString" xml:space="preserve">
+    <value>開始インデックスと終了インデックスは、文字列内の同じ場所を参照します。</value>
+  </data>
+  <data name="Argument_MustBeAttribute" xml:space="preserve">
+    <value>引数は、属性であるか、属性から派生したものである必要があります。</value>
+  </data>
+  <data name="Argument_MustBeDateTime" xml:space="preserve">
+    <value>オブジェクトは DateTime 型である必要があります。</value>
+  </data>
+  <data name="Argument_MustBeIsoDateTime" xml:space="preserve">
+    <value>引数は IsoDateTime である必要があります。</value>
+  </data>
+  <data name="Argument_MustBeString" xml:space="preserve">
+    <value>オブジェクトは文字列型である必要があります。</value>
+  </data>
+  <data name="Argument_NotSerializable" xml:space="preserve">
+    <value>渡された引数はシリアル化できません。</value>
+  </data>
+  <data name="Argument_StartIndexGreaterThanEndIndexString" xml:space="preserve">
+    <value>開始インデックスは、終了インデックスの後にある文字列内の位置を参照します。</value>
+  </data>
+  <data name="Argument_StringZeroLength" xml:space="preserve">
+    <value>文字列の長さをゼロにすることはできません。</value>
+  </data>
+  <data name="AutoParallel_ThresholdValueNegative" xml:space="preserve">
+    <value>しきい値を負またはゼロにすることはできません。</value>
+  </data>
+  <data name="DownloadInfoConnectionClosed" xml:space="preserve">
+    <value>{0} をダウンロードできませんでした - FTP サーバーが接続を閉じました。</value>
+  </data>
+  <data name="DownloadInfoInvalidResponseReceived" xml:space="preserve">
+    <value>{0} をダウンロードできませんでした - Web サーバーから Web ページが返されました。</value>
+  </data>
+  <data name="Exception_AllRowsOfArrayMustHaveSameNumberOfColumns" xml:space="preserve">
+    <value>配列のすべての行には、同じ数の列が必要です。</value>
+  </data>
+  <data name="Exception_ArrayLengthMustBeAMultipleOfM" xml:space="preserve">
+    <value>配列の長さは m の倍数でなければなりません。</value>
+  </data>
+  <data name="Exception_AssertionB_K" xml:space="preserve">
+    <value>アサーション: b&gt;=2 &amp;&amp; k&gt;=1</value>
+  </data>
+  <data name="Exception_AtLeastOneProbabilityMustBePositive" xml:space="preserve">
+    <value>少なくとも 1 つの確率は &gt; 0.0 でなければなりません</value>
+  </data>
+  <data name="Exception_AttemptedToAccessAtColumn" xml:space="preserve">
+    <value>column={1} で {0} にアクセスしようとしました</value>
+  </data>
+  <data name="Exception_AttemptedToAccessAtRow" xml:space="preserve">
+    <value>行 = {1} で {0} にアクセスしようとしました</value>
+  </data>
+  <data name="Exception_AttemptedToAccessAtSlice" xml:space="preserve">
+    <value>スライス={1}で{0}にアクセスしようとしました</value>
+  </data>
+  <data name="Exception_BadWeight" xml:space="preserve">
+    <value>ウェイトが間違っています。</value>
+  </data>
+  <data name="Exception_BothBinsMustHaveSameSize" xml:space="preserve">
+    <value>両方のビンは同じサイズでなければなりません</value>
+  </data>
+  <data name="Exception_BufferLengthIsZero" xml:space="preserve">
+    <value>おおっと！バッファ長が0です。</value>
+  </data>
+  <data name="Exception_CannotStoreNonZeroValueToNonTridiagonalCoordinate" xml:space="preserve">
+    <value>非ゼロ値を非三重対角座標に保存できません: 行={0}、列={1}、値={2}</value>
+  </data>
+  <data name="Exception_CountMustNotBeGreaterThanN" xml:space="preserve">
+    <value>カウントは n を超えてはなりません。</value>
+  </data>
+  <data name="Exception_DataSequence" xml:space="preserve">
+    <value>データ シーケンスには、少なくとも 2 つの値が含まれている必要があります。</value>
+  </data>
+  <data name="Exception_DifferentNumberOfColumns" xml:space="preserve">
+    <value>列の数が異なります。</value>
+  </data>
+  <data name="Exception_DifferentNumberOfRows" xml:space="preserve">
+    <value>行数が異なります。</value>
+  </data>
+  <data name="Exception_EdgesMustBeSorted" xml:space="preserve">
+    <value>エッジは昇順で並べ替える必要があり、複数の同一の値を含んではなりません。</value>
+  </data>
+  <data name="Exception_ElementIsNotContainedInDistinctElements" xml:space="preserve">
+    <value>Element={0} は個別の要素に含まれていません。</value>
+  </data>
+  <data name="Exception_ElementNotContainedInAnyBin" xml:space="preserve">
+    <value>要素={0}はどのビンにも含まれていません。</value>
+  </data>
+  <data name="Exception_EmptyData" xml:space="preserve">
+    <value>空のデータ。</value>
+  </data>
+  <data name="Exception_FromIndexNegative" xml:space="preserve">
+    <value>fromIndex が負です。</value>
+  </data>
+  <data name="Exception_fromK_MustBeLessOrEqualTo_toK" xml:space="preserve">
+    <value>fromK は toK 以下でなければなりません</value>
+  </data>
+  <data name="Exception_FromToSize" xml:space="preserve">
+    <value>から: {0}, へ: {1}, サイズ={2}</value>
+  </data>
+  <data name="Exception_FuncionMustNotBeNull" xml:space="preserve">
+    <value>関数は null であってはなりません。</value>
+  </data>
+  <data name="Exception_GammaOverflow" xml:space="preserve">
+    <value>ガンマ: オーバーフロー</value>
+  </data>
+  <data name="Exception_GammaSingular" xml:space="preserve">
+    <value>ガンマ: 単数形</value>
+  </data>
+  <data name="Exception_IBetaDomainError" xml:space="preserve">
+    <value>ibeta: ドメインエラー！</value>
+  </data>
+  <data name="Exception_IllegalAxes2" xml:space="preserve">
+    <value>不正な軸: {0}、{1}</value>
+  </data>
+  <data name="Exception_IllegalAxes3" xml:space="preserve">
+    <value>不正な軸: {0}、{1}、{2}</value>
+  </data>
+  <data name="Exception_IllegalIndex" xml:space="preserve">
+    <value>不正なインデックス</value>
+  </data>
+  <data name="Exception_IllegalInterpolationType" xml:space="preserve">
+    <value>不正な補間タイプ</value>
+  </data>
+  <data name="Exception_IllegalOperationOrErrorUponConstructionOf" xml:space="preserve">
+    <value>不正な操作または構築時のエラー</value>
+  </data>
+  <data name="Exception_IllegalStride" xml:space="preserve">
+    <value>不正な歩幅</value>
+  </data>
+  <data name="Exception_IllegalStrides" xml:space="preserve">
+    <value>不正なストライド: {0}、{1}</value>
+  </data>
+  <data name="Exception_IllegalStrides3" xml:space="preserve">
+    <value>不正なストライド: {0}、{1}、{2}</value>
+  </data>
+  <data name="Exception_IlligalMissingValues" xml:space="preserve">
+    <value>おおっと！無効な欠損値です。</value>
+  </data>
+  <data name="Exception_IncompatibleArgs" xml:space="preserve">
+    <value>互換性のない引数: {0}、{1}、{2}</value>
+  </data>
+  <data name="Exception_IncompatibleDimensions" xml:space="preserve">
+    <value>互換性のないディメンション: (columns,rows)=({0},{1}), (other.columns,other.rows)=({2},{3})</value>
+  </data>
+  <data name="Exception_IncompatibleDimensions2" xml:space="preserve">
+    <value>互換性のない次元: {0} および {1}</value>
+  </data>
+  <data name="Exception_IncompatibleDimensions3" xml:space="preserve">
+    <value>互換性のない次元: {0}、{1}、{2}</value>
+  </data>
+  <data name="Exception_IncompatibleDimensionsAandB" xml:space="preserve">
+    <value>互換性のない次元: {0} および {1}</value>
+  </data>
+  <data name="Exception_IncompatibleDimensionsAandBandC" xml:space="preserve">
+    <value>互換性のない次元: {0}、{1}、{2}</value>
+  </data>
+  <data name="Exception_IncompatibleResultMatrix" xml:space="preserve">
+    <value>互換性のない結果マトリックス:{0}、{1}、{2}</value>
+  </data>
+  <data name="Exception_IncompatibleSizes" xml:space="preserve">
+    <value>互換性のないサイズ: size={0}, other.Size={1}</value>
+  </data>
+  <data name="Exception_InvalidBinRange" xml:space="preserve">
+    <value>ビンの範囲が無効です。</value>
+  </data>
+  <data name="Exception_InvalidPermutation" xml:space="preserve">
+    <value>無効な順列</value>
+  </data>
+  <data name="Exception_KMustBePositive" xml:space="preserve">
+    <value>k は &gt;= 0 でなければなりません。</value>
+  </data>
+  <data name="Exception_LagIsTooLarge" xml:space="preserve">
+    <value>ラグが大きすぎます。</value>
+  </data>
+  <data name="Exception_LogGammaOverflow" xml:space="preserve">
+    <value>lgam: オーバーフロー</value>
+  </data>
+  <data name="Exception_MatricesMustNotBeIdentical" xml:space="preserve">
+    <value>行列は同一であってはなりません</value>
+  </data>
+  <data name="Exception_Matrix2DInnerDimensionMustAgree" xml:space="preserve">
+    <value>Matrix2D の内部次元は一致する必要があります: {0}、{1}</value>
+  </data>
+  <data name="Exception_MatrixDimensionsMustAgree" xml:space="preserve">
+    <value>マトリックスの寸法が同意しなければなりません。</value>
+  </data>
+  <data name="Exception_MatrixIsNotSymmetricPositiveDefinite" xml:space="preserve">
+    <value>行列が対称正定ではありません。</value>
+  </data>
+  <data name="Exception_MatrixIsRankDeficient" xml:space="preserve">
+    <value>マトリックスはランク不足です。</value>
+  </data>
+  <data name="Exception_MatrixIsSingular" xml:space="preserve">
+    <value>行列は特異です。</value>
+  </data>
+  <data name="Exception_MatrixMustBeRectangular" xml:space="preserve">
+    <value>行列は長方形でなければなりません: {0}</value>
+  </data>
+  <data name="Exception_MatrixMustBeSquare" xml:space="preserve">
+    <value>行列は正方でなければなりません。</value>
+  </data>
+  <data name="Exception_MatrixRowDimensionsMustAgree" xml:space="preserve">
+    <value>行列の行の次元は一致している必要があります。</value>
+  </data>
+  <data name="Exception_MatrixTooLarge" xml:space="preserve">
+    <value>行列が大きすぎます</value>
+  </data>
+  <data name="Exception_MustSatisfyNGraterThanOrEqualsToZero" xml:space="preserve">
+    <value>N &gt;= 0 を満たす必要があります</value>
+  </data>
+  <data name="Exception_NegativeCount" xml:space="preserve">
+    <value>負の数。</value>
+  </data>
+  <data name="Exception_NegativeK" xml:space="preserve">
+    <value>負のk</value>
+  </data>
+  <data name="Exception_NegativeProbability" xml:space="preserve">
+    <value>負の確率</value>
+  </data>
+  <data name="Exception_NegativeSize" xml:space="preserve">
+    <value>マイナスサイズ</value>
+  </data>
+  <data name="Exception_NMustBeGraterThanOrEqualToZero" xml:space="preserve">
+    <value>n は &gt;= 0 でなければなりません</value>
+  </data>
+  <data name="Exception_NMustBeLessThanOrEqualToN" xml:space="preserve">
+    <value>n は &lt;= N でなければなりません</value>
+  </data>
+  <data name="Exception_NMustBeLessThanOrEqualToSize" xml:space="preserve">
+    <value>n は Size() 以下でなければなりません</value>
+  </data>
+  <data name="Exception_NoEmptyBuffer" xml:space="preserve">
+    <value>おっと、空のバッファがありません。</value>
+  </data>
+  <data name="Exception_NonExistingPdf" xml:space="preserve">
+    <value>存在しない確率分布関数。</value>
+  </data>
+  <data name="Exception_NonInstantiable" xml:space="preserve">
+    <value>インスタンス化できない</value>
+  </data>
+  <data name="Exception_NotEnoughData" xml:space="preserve">
+    <value>データが不足しています。</value>
+  </data>
+  <data name="Exception_NTooLarge" xml:space="preserve">
+    <value>N が大きすぎます (N 個の要素のシーケンスには N! 個の順列しかありません)。</value>
+  </data>
+  <data name="Exception_Overflow" xml:space="preserve">
+    <value>オーバーフロー</value>
+  </data>
+  <data name="Exception_PartsLargerThanMatrix" xml:space="preserve">
+    <value>マトリックスより大きいパーツ。</value>
+  </data>
+  <data name="Exception_PermutationsAreEnumerated" xml:space="preserve">
+    <value>順列は 1 .d N!</value>
+  </data>
+  <data name="Exception_PhisMustBeAscending" xml:space="preserve">
+    <value>Phis は昇順にソートする必要があります。</value>
+  </data>
+  <data name="Exception_RandomSampleExhausted" xml:space="preserve">
+    <value>ランダムなサンプルが使い果たされました。</value>
+  </data>
+  <data name="Exception_RankingFromTo" xml:space="preserve">
+    <value>fromIndex({0}) &gt; toIndex({1})</value>
+  </data>
+  <data name="Exception_ThisPoolInstanceIsInTheProcess" xml:space="preserve">
+    <value>このプール インスタンスは破棄中のため、追加できません。</value>
+  </data>
+  <data name="Exception_ThisPoolProcessHasAlreadyBeenDisposed" xml:space="preserve">
+    <value>このプール インスタンスは既に破棄されています。</value>
+  </data>
+  <data name="Exception_ToIndexExceedSize" xml:space="preserve">
+    <value>toIndex が配列の長さを超えています</value>
+  </data>
+  <data name="Exception_TooManyRows" xml:space="preserve">
+    <value>行が多すぎます</value>
+  </data>
+  <data name="Exception_ValuesTooSmall" xml:space="preserve">
+    <value>値が小さすぎる</value>
+  </data>
+  <data name="FileDownloaderCancelled" xml:space="preserve">
+    <value>ダウンロードはキャンセルされました。</value>
+  </data>
+  <data name="FileDownloaderDownloadLocation" xml:space="preserve">
+    <value>ファイルを {0} にダウンロードしています。</value>
+  </data>
+  <data name="Format_BadDatePattern" xml:space="preserve">
+    <value>'{0}' からの年、月、および日付の順序を決定できませんでした。</value>
+  </data>
+  <data name="Format_BadDateTime" xml:space="preserve">
+    <value>文字列が有効な DateTime として認識されませんでした。</value>
+  </data>
+  <data name="Format_BadDateTimeCalendar" xml:space="preserve">
+    <value>文字列で表される DateTime は、カレンダー {0} ではサポートされていません。</value>
+  </data>
+  <data name="Format_BadDayOfWeek" xml:space="preserve">
+    <value>曜日が正しくないため、文字列は有効な DateTime として認識されませんでした。</value>
+  </data>
+  <data name="Format_BadFormatSpecifier" xml:space="preserve">
+    <value>フォーマット指定子が無効です。</value>
+  </data>
+  <data name="Format_BadQuote" xml:space="preserve">
+    <value>文字 '{0}' に一致する引用文字が見つかりません。</value>
+  </data>
+  <data name="Format_DateOutOfRange" xml:space="preserve">
+    <value>文字列で表される DateTime が範囲外です。</value>
+  </data>
+  <data name="Format_Dns_Bad_Ip_Address" xml:space="preserve">
+    <value>無効な IP アドレスが指定されました。</value>
+  </data>
+  <data name="Format_EmptyInputString" xml:space="preserve">
+    <value>入力文字列が空であるか、空白のみが含まれていました。</value>
+  </data>
+  <data name="Format_ExtraJunkAtEnd" xml:space="preserve">
+    <value>追加の解析不能文字は、文字列の最後にあります。</value>
+  </data>
+  <data name="Format_InvalidLen" xml:space="preserve">
+    <value>文字列の長さが正しくありませんでした。</value>
+  </data>
+  <data name="Format_InvalidString" xml:space="preserve">
+    <value>入力文字列は、正しい形式ではありませんでした。</value>
+  </data>
+  <data name="Format_NeedSingleChar" xml:space="preserve">
+    <value>文字列は正確に 1 文字の長さである必要があります。</value>
+  </data>
+  <data name="Format_RepeatDateTimePattern" xml:space="preserve">
+    <value>DateTime パターン '{0}' が異なる値で複数回表示されます。</value>
+  </data>
+  <data name="Format_TwoTimeZoneSpecifiers" xml:space="preserve">
+    <value>解析対象の String には、2 つの TimeZone 指定子を含めることはできません。</value>
+  </data>
+  <data name="Format_UnknowDateTimeWord" xml:space="preserve">
+    <value>文字列が有効な DateTime として認識されませんでした。インデックス {0} から始まる不明な単語があります。</value>
+  </data>
+  <data name="InvalidCast_FromTo" xml:space="preserve">
+    <value>'{0}' から '{1}' への無効なキャスト。</value>
+  </data>
+  <data name="Matrix_MustHaveSameNumberOfCell" xml:space="preserve">
+    <value>同じ数のセルが必要です: 長さ={0}、サイズ={1}</value>
+  </data>
+  <data name="Matrix_MustHaveSameNumberOfColumnsInEveryRow" xml:space="preserve">
+    <value>すべての行に同じ数の列が必要です: 列={0}、列={1}</value>
+  </data>
+  <data name="Matrix_MustHaveSameNumberOfRows" xml:space="preserve">
+    <value>同じ数の行が必要です: 行={0}、行={1}</value>
+  </data>
+  <data name="Matrix_MustHaveSameNumberOfRowsInEverySlice" xml:space="preserve">
+    <value>すべてのスライスに同じ数の行が必要です: 行={0}、行={1}</value>
+  </data>
+  <data name="Matrix_MustHaveSameNumberOfSlices" xml:space="preserve">
+    <value>同じ数のスライスが必要です: スライス={0}、スライス={1}</value>
+  </data>
+  <data name="Matrix_VectorsMustHaveSameSize" xml:space="preserve">
+    <value>ベクトルは同じサイズでなければなりません</value>
+  </data>
+  <data name="MDA_InvalidFormatForLocal" xml:space="preserve">
+    <value>日付はすでに現地時間であるため、フォーマット "{0}" を日付 "{1}" に適用できません。</value>
+  </data>
+  <data name="MDA_InvalidFormatForUtc" xml:space="preserve">
+    <value>日付はすでに世界時であるため、日付 "{1}" に形式 "{0}" を適用できません。</value>
+  </data>
+  <data name="PlatformNotSupportedMessage" xml:space="preserve">
+    <value>プラットフォームがサポートされていません。 </value>
+  </data>
+</root>

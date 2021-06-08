@@ -227,17 +227,38 @@ namespace Cern.Colt.List
         public override Boolean Equals(Object otherObj)
         { //delta
           // overridden for performance only.
-            if (!(otherObj is DoubleArrayList)) return base.Equals(otherObj);
+            if ((otherObj is AbstractDoubleList))
+            {
+                return base.Equals(otherObj);
+            }
             if (this == otherObj) return true;
             if (otherObj == null) return false;
-            DoubleArrayList other = (DoubleArrayList)otherObj;
-            if (Size != other.Size) return false;
 
-            double[] theElements = GetElements();
-            double[] otherElements = other.ToArray();
-            for (int i = Size; --i >= 0;)
+            double[] otherElements = null;
+
+            if (otherObj is DoubleArrayList)
             {
-                if (theElements[i] != otherElements[i]) return false;
+                DoubleArrayList other = (DoubleArrayList)otherObj;
+                if (Size != other.Size) return false;
+
+                otherElements = other.ToArray();
+            }
+            else if (otherObj.IsList<Double>())
+            {
+                otherElements = ((List<Double>)otherObj).ToArray<Double>();
+            }
+            else if (otherObj.GetType().IsArray)
+            {
+                otherElements = (double[])otherObj;
+            }
+
+            if (otherElements != null)
+            {
+                double[] theElements = GetElements();
+                for (int i = Size; --i >= 0;)
+                {
+                    if (theElements[i] != otherElements[i]) return false;
+                }
             }
             return true;
         }
