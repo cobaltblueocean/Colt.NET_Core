@@ -8,3 +8,4 @@
 *.dll
 *.dll
 *.nuspec
+/Cern/obj/Debug/netstandard2.1
