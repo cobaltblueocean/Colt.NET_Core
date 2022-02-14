@@ -3,3 +3,8 @@
 ################################################################################
 
 /.vs
+/Cern/bin/Debug/netstandard2.1/ja-JP/Cern.Colt.resources.dll
+*.nupkg
+*.dll
+*.dll
+*.nuspec
