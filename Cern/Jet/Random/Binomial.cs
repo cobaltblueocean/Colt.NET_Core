@@ -66,7 +66,7 @@ namespace Cern.Jet.Random
         /// </example>
         public Binomial(int n, double p, RandomEngine randomGenerator)
         {
-            RandomGenerator = randomGenerator;
+            base.RandomGenerator = randomGenerator;
             SetNandP(n, p);
         }
 
@@ -192,13 +192,13 @@ namespace Cern.Jet.Random
 
                 K = 0;
                 pk = p0;
-                U = randomGenerator.Raw();
+                U = RandomGenerator.Raw();
                 while (U > pk)
                 {
                     ++K;
                     if (K > b)
                     {
-                        U = randomGenerator.Raw();
+                        U = RandomGenerator.Raw();
                         K = 0;
                         pk = p0;
                     }
@@ -213,8 +213,8 @@ namespace Cern.Jet.Random
 
             for (; ; )
             {
-                V = randomGenerator.Raw();
-                if ((U = randomGenerator.Raw() * p4) <= p1)
+                V = RandomGenerator.Raw();
+                if ((U = RandomGenerator.Raw() * p4) <= p1)
                 {    // triangular region
                     K = (int)(xm - U + p1 * V);
                     return (p > 0.5) ? (n - K) : K;  // immediate accept

@@ -82,7 +82,7 @@ namespace Cern.Jet.Random
         /// <param name="randomGenerator"></param>
         public Poisson(double mean, RandomEngine randomGenerator)
         {
-            RandomGenerator = randomGenerator;
+            base.RandomGenerator = randomGenerator;
             SetMean(mean);
         }
 

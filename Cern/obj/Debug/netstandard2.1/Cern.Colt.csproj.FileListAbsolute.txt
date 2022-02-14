@@ -8,3 +8,8 @@ C:\Users\Mercury21\Source\Repos\Colt.NET_Core\Cern\obj\Debug\netstandard2.1\Cern
 C:\Users\Mercury21\Source\Repos\Colt.NET_Core\Cern\obj\Debug\netstandard2.1\Cern.Colt.csproj.CoreCompileInputs.cache
 C:\Users\Mercury21\Source\Repos\Colt.NET_Core\Cern\obj\Debug\netstandard2.1\Cern.Colt.dll
 C:\Users\Mercury21\Source\Repos\Colt.NET_Core\Cern\obj\Debug\netstandard2.1\Cern.Colt.pdb
+C:\Users\Mercury21\Source\Repos\Colt.NET_Core\Cern\bin\Debug\netstandard2.1\ja-JP\Cern.Colt.resources.dll
+C:\Users\Mercury21\Source\Repos\Colt.NET_Core\Cern\obj\Debug\netstandard2.1\Cern.Colt.Properties.Resource.ja-JP.resources
+C:\Users\Mercury21\Source\Repos\Colt.NET_Core\Cern\obj\Debug\netstandard2.1\ja-JP\Cern.Colt.resources.dll
+C:\Users\Mercury21\Source\Repos\Colt.NET_Core\Cern\obj\Debug\netstandard2.1\Cern.Colt.csproj.AssemblyReference.cache
+C:\Users\Mercury21\Source\Repos\Colt.NET_Core\Cern\obj\Debug\netstandard2.1\Cern.Colt.GeneratedMSBuildEditorConfig.editorconfig

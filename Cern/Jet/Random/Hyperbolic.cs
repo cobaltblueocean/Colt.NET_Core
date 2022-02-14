@@ -62,7 +62,7 @@ namespace Cern.Jet.Random
         /// <param name="randomGenerator"></param>
         public Hyperbolic(double alpha, double beta, RandomEngine randomGenerator)
         {
-            RandomGenerator = randomGenerator;
+            base.RandomGenerator = randomGenerator;
             SetState(alpha, beta);
         }
 
@@ -137,8 +137,8 @@ namespace Cern.Jet.Random
             // GENERATOR 
             for (; ; )
             {
-                u = randomGenerator.Raw();
-                v = randomGenerator.Raw();
+                u = RandomGenerator.Raw();
+                v = RandomGenerator.Raw();
                 if (u <= pm)
                 { // Rejection with a uniform majorizing function
                   // over the body of the distribution 

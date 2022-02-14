@@ -2,7 +2,7 @@
   "version": 3,
   "targets": {
     ".NETCoreApp,Version=v3.1": {
-      "Microsoft.CodeCoverage/16.5.0": {
+      "Microsoft.CodeCoverage/16.9.1": {
         "type": "package",
         "compile": {
           "lib/netcoreapp1.0/Microsoft.VisualStudio.CodeCoverage.Shim.dll": {}
@@ -61,11 +61,17 @@
           "lib/netstandard1.3/Microsoft.DotNet.InternalAbstractions.dll": {}
         }
       },
-      "Microsoft.NET.Test.Sdk/16.5.0": {
+      "Microsoft.NET.Test.Sdk/16.9.1": {
         "type": "package",
         "dependencies": {
-          "Microsoft.CodeCoverage": "16.5.0",
-          "Microsoft.TestPlatform.TestHost": "16.5.0"
+          "Microsoft.CodeCoverage": "16.9.1",
+          "Microsoft.TestPlatform.TestHost": "16.9.1"
+        },
+        "compile": {
+          "lib/netcoreapp2.1/_._": {}
+        },
+        "runtime": {
+          "lib/netcoreapp2.1/_._": {}
         },
         "build": {
           "build/netcoreapp2.1/Microsoft.NET.Test.Sdk.props": {},
@@ -75,7 +81,7 @@
           "buildMultiTargeting/Microsoft.NET.Test.Sdk.props": {}
         }
       },
-      "Microsoft.NETCore.Platforms/3.1.0": {
+      "Microsoft.NETCore.Platforms/5.0.0": {
         "type": "package",
         "compile": {
           "lib/netstandard1.0/_._": {}
@@ -93,10 +99,11 @@
           "lib/netstandard1.0/_._": {}
         }
       },
-      "Microsoft.TestPlatform.ObjectModel/16.5.0": {
+      "Microsoft.TestPlatform.ObjectModel/16.9.1": {
         "type": "package",
         "dependencies": {
-          "NuGet.Frameworks": "5.0.0"
+          "NuGet.Frameworks": "5.0.0",
+          "System.Reflection.Metadata": "1.6.0"
         },
         "compile": {
           "lib/netstandard2.0/Microsoft.TestPlatform.CoreUtilities.dll": {},
@@ -189,24 +196,30 @@
           }
         }
       },
-      "Microsoft.TestPlatform.TestHost/16.5.0": {
+      "Microsoft.TestPlatform.TestHost/16.9.1": {
         "type": "package",
         "dependencies": {
-          "Microsoft.TestPlatform.ObjectModel": "16.5.0",
+          "Microsoft.TestPlatform.ObjectModel": "16.9.1",
           "Newtonsoft.Json": "9.0.1"
         },
         "compile": {
           "lib/netcoreapp2.1/Microsoft.TestPlatform.CommunicationUtilities.dll": {},
+          "lib/netcoreapp2.1/Microsoft.TestPlatform.CoreUtilities.dll": {},
           "lib/netcoreapp2.1/Microsoft.TestPlatform.CrossPlatEngine.dll": {},
+          "lib/netcoreapp2.1/Microsoft.TestPlatform.PlatformAbstractions.dll": {},
           "lib/netcoreapp2.1/Microsoft.TestPlatform.Utilities.dll": {},
           "lib/netcoreapp2.1/Microsoft.VisualStudio.TestPlatform.Common.dll": {},
+          "lib/netcoreapp2.1/Microsoft.VisualStudio.TestPlatform.ObjectModel.dll": {},
           "lib/netcoreapp2.1/testhost.dll": {}
         },
         "runtime": {
           "lib/netcoreapp2.1/Microsoft.TestPlatform.CommunicationUtilities.dll": {},
+          "lib/netcoreapp2.1/Microsoft.TestPlatform.CoreUtilities.dll": {},
           "lib/netcoreapp2.1/Microsoft.TestPlatform.CrossPlatEngine.dll": {},
+          "lib/netcoreapp2.1/Microsoft.TestPlatform.PlatformAbstractions.dll": {},
           "lib/netcoreapp2.1/Microsoft.TestPlatform.Utilities.dll": {},
           "lib/netcoreapp2.1/Microsoft.VisualStudio.TestPlatform.Common.dll": {},
+          "lib/netcoreapp2.1/Microsoft.VisualStudio.TestPlatform.ObjectModel.dll": {},
           "lib/netcoreapp2.1/testhost.dll": {}
         },
         "resource": {
@@ -343,11 +356,11 @@
           "ref/netstandard1.3/_._": {}
         }
       },
-      "Microsoft.Win32.Registry/4.7.0": {
+      "Microsoft.Win32.Registry/5.0.0": {
         "type": "package",
         "dependencies": {
-          "System.Security.AccessControl": "4.7.0",
-          "System.Security.Principal.Windows": "4.7.0"
+          "System.Security.AccessControl": "5.0.0",
+          "System.Security.Principal.Windows": "5.0.0"
         },
         "compile": {
           "ref/netstandard2.0/Microsoft.Win32.Registry.dll": {}
@@ -356,10 +369,6 @@
           "lib/netstandard2.0/Microsoft.Win32.Registry.dll": {}
         },
         "runtimeTargets": {
-          "runtimes/unix/lib/netstandard2.0/Microsoft.Win32.Registry.dll": {
-            "assetType": "runtime",
-            "rid": "unix"
-          },
           "runtimes/win/lib/netstandard2.0/Microsoft.Win32.Registry.dll": {
             "assetType": "runtime",
             "rid": "win"
@@ -423,7 +432,7 @@
           "lib/netstandard2.0/NuGet.Frameworks.dll": {}
         }
       },
-      "NUnit/3.12.0": {
+      "NUnit/3.13.1": {
         "type": "package",
         "dependencies": {
           "NETStandard.Library": "2.0.0"
@@ -438,7 +447,7 @@
           "build/NUnit.props": {}
         }
       },
-      "NUnit3TestAdapter/3.16.1": {
+      "NUnit3TestAdapter/3.17.0": {
         "type": "package",
         "dependencies": {
           "Microsoft.DotNet.InternalAbstractions": "1.0.0",
@@ -480,7 +489,7 @@
           "lib/netstandard1.6/System.AppContext.dll": {}
         }
       },
-      "System.CodeDom/4.7.0": {
+      "System.CodeDom/5.0.0": {
         "type": "package",
         "compile": {
           "ref/netstandard2.0/System.CodeDom.dll": {}
@@ -813,12 +822,12 @@
           "lib/netstandard1.6/System.Linq.Expressions.dll": {}
         }
       },
-      "System.Management/4.7.0": {
+      "System.Management/5.0.0": {
         "type": "package",
         "dependencies": {
-          "Microsoft.NETCore.Platforms": "3.1.0",
-          "Microsoft.Win32.Registry": "4.7.0",
-          "System.CodeDom": "4.7.0"
+          "Microsoft.NETCore.Platforms": "5.0.0",
+          "Microsoft.Win32.Registry": "5.0.0",
+          "System.CodeDom": "5.0.0"
         },
         "compile": {
           "ref/netstandard2.0/System.Management.dll": {}
@@ -917,6 +926,15 @@
         },
         "compile": {
           "ref/netstandard1.0/System.Reflection.Extensions.dll": {}
+        }
+      },
+      "System.Reflection.Metadata/1.6.0": {
+        "type": "package",
+        "compile": {
+          "lib/netstandard2.0/System.Reflection.Metadata.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/System.Reflection.Metadata.dll": {}
         }
       },
       "System.Reflection.Primitives/4.3.0": {
@@ -1043,11 +1061,11 @@
           "lib/netstandard1.3/System.Runtime.Serialization.Primitives.dll": {}
         }
       },
-      "System.Security.AccessControl/4.7.0": {
+      "System.Security.AccessControl/5.0.0": {
         "type": "package",
         "dependencies": {
-          "Microsoft.NETCore.Platforms": "3.1.0",
-          "System.Security.Principal.Windows": "4.7.0"
+          "Microsoft.NETCore.Platforms": "5.0.0",
+          "System.Security.Principal.Windows": "5.0.0"
         },
         "compile": {
           "ref/netstandard2.0/System.Security.AccessControl.dll": {}
@@ -1062,7 +1080,7 @@
           }
         }
       },
-      "System.Security.Principal.Windows/4.7.0": {
+      "System.Security.Principal.Windows/5.0.0": {
         "type": "package",
         "compile": {
           "ref/netcoreapp3.0/System.Security.Principal.Windows.dll": {}
@@ -1290,12 +1308,12 @@
           "lib/netstandard1.3/System.Xml.XPath.XmlDocument.dll": {}
         }
       },
-      "Cern.Colt.NET/0.9.0": {
+      "Cern.Colt.NET/0.9.1.2": {
         "type": "project",
         "framework": ".NETStandard,Version=v2.1",
         "dependencies": {
-          "Microsoft.Win32.Registry": "4.7.0",
-          "System.Management": "4.7.0"
+          "Microsoft.Win32.Registry": "5.0.0",
+          "System.Management": "5.0.0"
         },
         "compile": {
           "bin/placeholder/Cern.Colt.NET.dll": {}
@@ -1307,39 +1325,71 @@
     }
   },
   "libraries": {
-    "Microsoft.CodeCoverage/16.5.0": {
-      "sha512": "PM5YLtyN45EyUGePJpaNogndlaQPrMgQQXHKMhMESC6KfSVvt+j7+dxBi8NYC6X6dZVysf7ngwhSW3wwvPJRSQ==",
+    "Microsoft.CodeCoverage/16.9.1": {
+      "sha512": "OEIMvld3rabmyc1L4VvHWOMTEOYrGLbgoVxwAaD8RwX8GT3a1Aal7QpJXLV22f47LpMhSz0uOBerKAd8eI9wNA==",
       "type": "package",
-      "path": "microsoft.codecoverage/16.5.0",
+      "path": "microsoft.codecoverage/16.9.1",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
+        "Icon.png",
+        "LICENSE_NET.txt",
         "build/netstandard1.0/CodeCoverage/CodeCoverage.config",
         "build/netstandard1.0/CodeCoverage/CodeCoverage.exe",
+        "build/netstandard1.0/CodeCoverage/VanguardInstrumentationProfiler_x86.config",
+        "build/netstandard1.0/CodeCoverage/amd64/CodeCoverage.exe",
+        "build/netstandard1.0/CodeCoverage/amd64/VanguardInstrumentationProfiler_x64.config",
         "build/netstandard1.0/CodeCoverage/amd64/covrun64.dll",
         "build/netstandard1.0/CodeCoverage/amd64/msdia140.dll",
+        "build/netstandard1.0/CodeCoverage/amd64/msvcdis140.dll",
+        "build/netstandard1.0/CodeCoverage/amd64/msvcp140.dll",
+        "build/netstandard1.0/CodeCoverage/amd64/msvcp140_atomic_wait.dll",
+        "build/netstandard1.0/CodeCoverage/amd64/vcruntime140.dll",
+        "build/netstandard1.0/CodeCoverage/amd64/vcruntime140_1.dll",
         "build/netstandard1.0/CodeCoverage/codecoveragemessages.dll",
+        "build/netstandard1.0/CodeCoverage/coreclr/Microsoft.VisualStudio.CodeCoverage.Shim.dll",
         "build/netstandard1.0/CodeCoverage/covrun32.dll",
         "build/netstandard1.0/CodeCoverage/msdia140.dll",
+        "build/netstandard1.0/CodeCoverage/msvcdis140.dll",
+        "build/netstandard1.0/CodeCoverage/msvcp140.dll",
+        "build/netstandard1.0/CodeCoverage/msvcp140_atomic_wait.dll",
+        "build/netstandard1.0/CodeCoverage/vcruntime140.dll",
+        "build/netstandard1.0/InstrumentationEngine/x64/MicrosoftInstrumentationEngine_x64.dll",
+        "build/netstandard1.0/InstrumentationEngine/x86/MicrosoftInstrumentationEngine_x86.dll",
         "build/netstandard1.0/Microsoft.CodeCoverage.props",
         "build/netstandard1.0/Microsoft.CodeCoverage.targets",
+        "build/netstandard1.0/Microsoft.VisualStudio.Coverage.CoreLib.Net.dll",
+        "build/netstandard1.0/Microsoft.VisualStudio.Coverage.Interprocess.dll",
         "build/netstandard1.0/Microsoft.VisualStudio.TraceDataCollector.dll",
+        "build/netstandard1.0/cs/Microsoft.VisualStudio.Coverage.CoreLib.Net.resources.dll",
         "build/netstandard1.0/cs/Microsoft.VisualStudio.TraceDataCollector.resources.dll",
+        "build/netstandard1.0/de/Microsoft.VisualStudio.Coverage.CoreLib.Net.resources.dll",
         "build/netstandard1.0/de/Microsoft.VisualStudio.TraceDataCollector.resources.dll",
+        "build/netstandard1.0/es/Microsoft.VisualStudio.Coverage.CoreLib.Net.resources.dll",
         "build/netstandard1.0/es/Microsoft.VisualStudio.TraceDataCollector.resources.dll",
+        "build/netstandard1.0/fr/Microsoft.VisualStudio.Coverage.CoreLib.Net.resources.dll",
         "build/netstandard1.0/fr/Microsoft.VisualStudio.TraceDataCollector.resources.dll",
+        "build/netstandard1.0/it/Microsoft.VisualStudio.Coverage.CoreLib.Net.resources.dll",
         "build/netstandard1.0/it/Microsoft.VisualStudio.TraceDataCollector.resources.dll",
+        "build/netstandard1.0/ja/Microsoft.VisualStudio.Coverage.CoreLib.Net.resources.dll",
         "build/netstandard1.0/ja/Microsoft.VisualStudio.TraceDataCollector.resources.dll",
+        "build/netstandard1.0/ko/Microsoft.VisualStudio.Coverage.CoreLib.Net.resources.dll",
         "build/netstandard1.0/ko/Microsoft.VisualStudio.TraceDataCollector.resources.dll",
+        "build/netstandard1.0/pl/Microsoft.VisualStudio.Coverage.CoreLib.Net.resources.dll",
         "build/netstandard1.0/pl/Microsoft.VisualStudio.TraceDataCollector.resources.dll",
+        "build/netstandard1.0/pt-BR/Microsoft.VisualStudio.Coverage.CoreLib.Net.resources.dll",
         "build/netstandard1.0/pt-BR/Microsoft.VisualStudio.TraceDataCollector.resources.dll",
+        "build/netstandard1.0/ru/Microsoft.VisualStudio.Coverage.CoreLib.Net.resources.dll",
         "build/netstandard1.0/ru/Microsoft.VisualStudio.TraceDataCollector.resources.dll",
+        "build/netstandard1.0/tr/Microsoft.VisualStudio.Coverage.CoreLib.Net.resources.dll",
         "build/netstandard1.0/tr/Microsoft.VisualStudio.TraceDataCollector.resources.dll",
+        "build/netstandard1.0/zh-Hans/Microsoft.VisualStudio.Coverage.CoreLib.Net.resources.dll",
         "build/netstandard1.0/zh-Hans/Microsoft.VisualStudio.TraceDataCollector.resources.dll",
+        "build/netstandard1.0/zh-Hant/Microsoft.VisualStudio.Coverage.CoreLib.Net.resources.dll",
         "build/netstandard1.0/zh-Hant/Microsoft.VisualStudio.TraceDataCollector.resources.dll",
         "lib/net45/Microsoft.VisualStudio.CodeCoverage.Shim.dll",
         "lib/netcoreapp1.0/Microsoft.VisualStudio.CodeCoverage.Shim.dll",
-        "microsoft.codecoverage.16.5.0.nupkg.sha512",
+        "microsoft.codecoverage.16.9.1.nupkg.sha512",
         "microsoft.codecoverage.nuspec"
       ]
     },
@@ -1414,15 +1464,24 @@
         "microsoft.dotnet.internalabstractions.nuspec"
       ]
     },
-    "Microsoft.NET.Test.Sdk/16.5.0": {
-      "sha512": "yHZOhVSPuGqgHi+KhHiAZqNY08avkQraXKvgKgDU8c/ztmGzw7gmukkv49EaTq6T3xmp4XroWk3gAlbJHMxl8w==",
+    "Microsoft.NET.Test.Sdk/16.9.1": {
+      "sha512": "9acz3fExifstaoKTAvHVwRGMFrtb1QLlT6KfxOFTYM4dksuzwpkApjt0xP+yJcuRsPcf14F1b0Du3GgfKZWHJw==",
       "type": "package",
-      "path": "microsoft.net.test.sdk/16.5.0",
+      "path": "microsoft.net.test.sdk/16.9.1",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
+        "Icon.png",
+        "LICENSE_NET.txt",
         "build/net40/Microsoft.NET.Test.Sdk.props",
         "build/net40/Microsoft.NET.Test.Sdk.targets",
+        "build/net45/Microsoft.NET.Test.Sdk.props",
+        "build/net45/Microsoft.NET.Test.Sdk.targets",
+        "build/netcoreapp1.0/Microsoft.NET.Test.Sdk.Program.cs",
+        "build/netcoreapp1.0/Microsoft.NET.Test.Sdk.Program.fs",
+        "build/netcoreapp1.0/Microsoft.NET.Test.Sdk.Program.vb",
+        "build/netcoreapp1.0/Microsoft.NET.Test.Sdk.props",
+        "build/netcoreapp1.0/Microsoft.NET.Test.Sdk.targets",
         "build/netcoreapp2.1/Microsoft.NET.Test.Sdk.Program.cs",
         "build/netcoreapp2.1/Microsoft.NET.Test.Sdk.Program.fs",
         "build/netcoreapp2.1/Microsoft.NET.Test.Sdk.Program.vb",
@@ -1430,21 +1489,27 @@
         "build/netcoreapp2.1/Microsoft.NET.Test.Sdk.targets",
         "build/uap10.0/Microsoft.NET.Test.Sdk.props",
         "buildMultiTargeting/Microsoft.NET.Test.Sdk.props",
-        "microsoft.net.test.sdk.16.5.0.nupkg.sha512",
+        "lib/net40/_._",
+        "lib/net45/_._",
+        "lib/netcoreapp1.0/_._",
+        "lib/netcoreapp2.1/_._",
+        "lib/uap10.0/_._",
+        "microsoft.net.test.sdk.16.9.1.nupkg.sha512",
         "microsoft.net.test.sdk.nuspec"
       ]
     },
-    "Microsoft.NETCore.Platforms/3.1.0": {
-      "sha512": "z7aeg8oHln2CuNulfhiLYxCVMPEwBl3rzicjvIX+4sUuCwvXw5oXQEtbiU2c0z4qYL5L3Kmx0mMA/+t/SbY67w==",
+    "Microsoft.NETCore.Platforms/5.0.0": {
+      "sha512": "VyPlqzH2wavqquTcYpkIIAQ6WdenuKoFN0BdYBbCWsclXacSOHNQn66Gt4z5NBqEYW0FAPm5rlvki9ZiCij5xQ==",
       "type": "package",
-      "path": "microsoft.netcore.platforms/3.1.0",
+      "path": "microsoft.netcore.platforms/5.0.0",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
+        "Icon.png",
         "LICENSE.TXT",
         "THIRD-PARTY-NOTICES.TXT",
         "lib/netstandard1.0/_._",
-        "microsoft.netcore.platforms.3.1.0.nupkg.sha512",
+        "microsoft.netcore.platforms.5.0.0.nupkg.sha512",
         "microsoft.netcore.platforms.nuspec",
         "runtime.json",
         "useSharedDesignerContext.txt",
@@ -1465,13 +1530,44 @@
         "runtime.json"
       ]
     },
-    "Microsoft.TestPlatform.ObjectModel/16.5.0": {
-      "sha512": "NnLFxmFBCAS6kye2JFszD5WKgj4Zve5KX/R0mhYwh6BVnSeybI2unRnjEPtLyY3CAVhwrY4bh/8LNFtslAcGZg==",
+    "Microsoft.TestPlatform.ObjectModel/16.9.1": {
+      "sha512": "UuS6HBi6pVJDGS5pmf6Mi38oSQVQ4vE5AOmNJzA5WgOUlFmvg9fTq9KCSd5o+UPSVH420t9wthj2Q0M9Yfb+HA==",
       "type": "package",
-      "path": "microsoft.testplatform.objectmodel/16.5.0",
+      "path": "microsoft.testplatform.objectmodel/16.9.1",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
+        "Icon.png",
+        "LICENSE_NET.txt",
+        "lib/net45/Microsoft.TestPlatform.CoreUtilities.dll",
+        "lib/net45/Microsoft.TestPlatform.PlatformAbstractions.dll",
+        "lib/net45/Microsoft.VisualStudio.TestPlatform.ObjectModel.dll",
+        "lib/net45/cs/Microsoft.TestPlatform.CoreUtilities.resources.dll",
+        "lib/net45/cs/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
+        "lib/net45/de/Microsoft.TestPlatform.CoreUtilities.resources.dll",
+        "lib/net45/de/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
+        "lib/net45/es/Microsoft.TestPlatform.CoreUtilities.resources.dll",
+        "lib/net45/es/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
+        "lib/net45/fr/Microsoft.TestPlatform.CoreUtilities.resources.dll",
+        "lib/net45/fr/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
+        "lib/net45/it/Microsoft.TestPlatform.CoreUtilities.resources.dll",
+        "lib/net45/it/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
+        "lib/net45/ja/Microsoft.TestPlatform.CoreUtilities.resources.dll",
+        "lib/net45/ja/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
+        "lib/net45/ko/Microsoft.TestPlatform.CoreUtilities.resources.dll",
+        "lib/net45/ko/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
+        "lib/net45/pl/Microsoft.TestPlatform.CoreUtilities.resources.dll",
+        "lib/net45/pl/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
+        "lib/net45/pt-BR/Microsoft.TestPlatform.CoreUtilities.resources.dll",
+        "lib/net45/pt-BR/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
+        "lib/net45/ru/Microsoft.TestPlatform.CoreUtilities.resources.dll",
+        "lib/net45/ru/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
+        "lib/net45/tr/Microsoft.TestPlatform.CoreUtilities.resources.dll",
+        "lib/net45/tr/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
+        "lib/net45/zh-Hans/Microsoft.TestPlatform.CoreUtilities.resources.dll",
+        "lib/net45/zh-Hans/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
+        "lib/net45/zh-Hant/Microsoft.TestPlatform.CoreUtilities.resources.dll",
+        "lib/net45/zh-Hant/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
         "lib/net451/Microsoft.TestPlatform.CoreUtilities.dll",
         "lib/net451/Microsoft.TestPlatform.PlatformAbstractions.dll",
         "lib/net451/Microsoft.VisualStudio.TestPlatform.ObjectModel.dll",
@@ -1501,6 +1597,64 @@
         "lib/net451/zh-Hans/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
         "lib/net451/zh-Hant/Microsoft.TestPlatform.CoreUtilities.resources.dll",
         "lib/net451/zh-Hant/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
+        "lib/netstandard1.0/Microsoft.TestPlatform.CoreUtilities.dll",
+        "lib/netstandard1.0/Microsoft.TestPlatform.PlatformAbstractions.dll",
+        "lib/netstandard1.0/Microsoft.VisualStudio.TestPlatform.ObjectModel.dll",
+        "lib/netstandard1.0/cs/Microsoft.TestPlatform.CoreUtilities.resources.dll",
+        "lib/netstandard1.0/cs/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
+        "lib/netstandard1.0/de/Microsoft.TestPlatform.CoreUtilities.resources.dll",
+        "lib/netstandard1.0/de/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
+        "lib/netstandard1.0/es/Microsoft.TestPlatform.CoreUtilities.resources.dll",
+        "lib/netstandard1.0/es/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
+        "lib/netstandard1.0/fr/Microsoft.TestPlatform.CoreUtilities.resources.dll",
+        "lib/netstandard1.0/fr/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
+        "lib/netstandard1.0/it/Microsoft.TestPlatform.CoreUtilities.resources.dll",
+        "lib/netstandard1.0/it/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
+        "lib/netstandard1.0/ja/Microsoft.TestPlatform.CoreUtilities.resources.dll",
+        "lib/netstandard1.0/ja/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
+        "lib/netstandard1.0/ko/Microsoft.TestPlatform.CoreUtilities.resources.dll",
+        "lib/netstandard1.0/ko/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
+        "lib/netstandard1.0/pl/Microsoft.TestPlatform.CoreUtilities.resources.dll",
+        "lib/netstandard1.0/pl/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
+        "lib/netstandard1.0/pt-BR/Microsoft.TestPlatform.CoreUtilities.resources.dll",
+        "lib/netstandard1.0/pt-BR/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
+        "lib/netstandard1.0/ru/Microsoft.TestPlatform.CoreUtilities.resources.dll",
+        "lib/netstandard1.0/ru/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
+        "lib/netstandard1.0/tr/Microsoft.TestPlatform.CoreUtilities.resources.dll",
+        "lib/netstandard1.0/tr/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
+        "lib/netstandard1.0/zh-Hans/Microsoft.TestPlatform.CoreUtilities.resources.dll",
+        "lib/netstandard1.0/zh-Hans/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
+        "lib/netstandard1.0/zh-Hant/Microsoft.TestPlatform.CoreUtilities.resources.dll",
+        "lib/netstandard1.0/zh-Hant/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
+        "lib/netstandard1.3/Microsoft.TestPlatform.CoreUtilities.dll",
+        "lib/netstandard1.3/Microsoft.TestPlatform.PlatformAbstractions.dll",
+        "lib/netstandard1.3/Microsoft.VisualStudio.TestPlatform.ObjectModel.dll",
+        "lib/netstandard1.3/cs/Microsoft.TestPlatform.CoreUtilities.resources.dll",
+        "lib/netstandard1.3/cs/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
+        "lib/netstandard1.3/de/Microsoft.TestPlatform.CoreUtilities.resources.dll",
+        "lib/netstandard1.3/de/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
+        "lib/netstandard1.3/es/Microsoft.TestPlatform.CoreUtilities.resources.dll",
+        "lib/netstandard1.3/es/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
+        "lib/netstandard1.3/fr/Microsoft.TestPlatform.CoreUtilities.resources.dll",
+        "lib/netstandard1.3/fr/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
+        "lib/netstandard1.3/it/Microsoft.TestPlatform.CoreUtilities.resources.dll",
+        "lib/netstandard1.3/it/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
+        "lib/netstandard1.3/ja/Microsoft.TestPlatform.CoreUtilities.resources.dll",
+        "lib/netstandard1.3/ja/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
+        "lib/netstandard1.3/ko/Microsoft.TestPlatform.CoreUtilities.resources.dll",
+        "lib/netstandard1.3/ko/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
+        "lib/netstandard1.3/pl/Microsoft.TestPlatform.CoreUtilities.resources.dll",
+        "lib/netstandard1.3/pl/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
+        "lib/netstandard1.3/pt-BR/Microsoft.TestPlatform.CoreUtilities.resources.dll",
+        "lib/netstandard1.3/pt-BR/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
+        "lib/netstandard1.3/ru/Microsoft.TestPlatform.CoreUtilities.resources.dll",
+        "lib/netstandard1.3/ru/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
+        "lib/netstandard1.3/tr/Microsoft.TestPlatform.CoreUtilities.resources.dll",
+        "lib/netstandard1.3/tr/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
+        "lib/netstandard1.3/zh-Hans/Microsoft.TestPlatform.CoreUtilities.resources.dll",
+        "lib/netstandard1.3/zh-Hans/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
+        "lib/netstandard1.3/zh-Hant/Microsoft.TestPlatform.CoreUtilities.resources.dll",
+        "lib/netstandard1.3/zh-Hant/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
         "lib/netstandard2.0/Microsoft.TestPlatform.CoreUtilities.dll",
         "lib/netstandard2.0/Microsoft.TestPlatform.PlatformAbstractions.dll",
         "lib/netstandard2.0/Microsoft.VisualStudio.TestPlatform.ObjectModel.dll",
@@ -1530,21 +1684,63 @@
         "lib/netstandard2.0/zh-Hans/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
         "lib/netstandard2.0/zh-Hant/Microsoft.TestPlatform.CoreUtilities.resources.dll",
         "lib/netstandard2.0/zh-Hant/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
-        "microsoft.testplatform.objectmodel.16.5.0.nupkg.sha512",
+        "lib/uap10.0/Microsoft.TestPlatform.CoreUtilities.dll",
+        "lib/uap10.0/Microsoft.TestPlatform.PlatformAbstractions.dll",
+        "lib/uap10.0/Microsoft.VisualStudio.TestPlatform.ObjectModel.dll",
+        "lib/uap10.0/cs/Microsoft.TestPlatform.CoreUtilities.resources.dll",
+        "lib/uap10.0/cs/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
+        "lib/uap10.0/de/Microsoft.TestPlatform.CoreUtilities.resources.dll",
+        "lib/uap10.0/de/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
+        "lib/uap10.0/es/Microsoft.TestPlatform.CoreUtilities.resources.dll",
+        "lib/uap10.0/es/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
+        "lib/uap10.0/fr/Microsoft.TestPlatform.CoreUtilities.resources.dll",
+        "lib/uap10.0/fr/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
+        "lib/uap10.0/it/Microsoft.TestPlatform.CoreUtilities.resources.dll",
+        "lib/uap10.0/it/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
+        "lib/uap10.0/ja/Microsoft.TestPlatform.CoreUtilities.resources.dll",
+        "lib/uap10.0/ja/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
+        "lib/uap10.0/ko/Microsoft.TestPlatform.CoreUtilities.resources.dll",
+        "lib/uap10.0/ko/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
+        "lib/uap10.0/pl/Microsoft.TestPlatform.CoreUtilities.resources.dll",
+        "lib/uap10.0/pl/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
+        "lib/uap10.0/pt-BR/Microsoft.TestPlatform.CoreUtilities.resources.dll",
+        "lib/uap10.0/pt-BR/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
+        "lib/uap10.0/ru/Microsoft.TestPlatform.CoreUtilities.resources.dll",
+        "lib/uap10.0/ru/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
+        "lib/uap10.0/tr/Microsoft.TestPlatform.CoreUtilities.resources.dll",
+        "lib/uap10.0/tr/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
+        "lib/uap10.0/zh-Hans/Microsoft.TestPlatform.CoreUtilities.resources.dll",
+        "lib/uap10.0/zh-Hans/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
+        "lib/uap10.0/zh-Hant/Microsoft.TestPlatform.CoreUtilities.resources.dll",
+        "lib/uap10.0/zh-Hant/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
+        "microsoft.testplatform.objectmodel.16.9.1.nupkg.sha512",
         "microsoft.testplatform.objectmodel.nuspec"
       ]
     },
-    "Microsoft.TestPlatform.TestHost/16.5.0": {
-      "sha512": "ytGymboQIvjNX5pLC0yp/Bz9sGDHqSnLQgBRtd4VrqOUgKmmcfxMYZ6p0TBZgAT1oijdC6xqUZ7rl8mbaaXTJw==",
+    "Microsoft.TestPlatform.TestHost/16.9.1": {
+      "sha512": "j/lZDlkuoUJ+lRJXOXLJpwUGXmko5/woAPo/hN6QhFRo0J5wscQPoPJ1isvXpB4Iw7x7A3jYllxR5QjV3cMlRw==",
       "type": "package",
-      "path": "microsoft.testplatform.testhost/16.5.0",
+      "path": "microsoft.testplatform.testhost/16.9.1",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
+        "Icon.png",
+        "LICENSE_NET.txt",
         "ThirdPartyNotices.txt",
+        "build/netcoreapp1.0/Microsoft.TestPlatform.PlatformAbstractions.dll",
+        "build/netcoreapp1.0/Microsoft.TestPlatform.TestHost.props",
+        "build/netcoreapp1.0/x64/Microsoft.TestPlatform.PlatformAbstractions.dll",
+        "build/netcoreapp1.0/x64/testhost.dll",
+        "build/netcoreapp1.0/x64/testhost.exe",
+        "build/netcoreapp1.0/x86/Microsoft.TestPlatform.PlatformAbstractions.dll",
+        "build/netcoreapp1.0/x86/testhost.x86.dll",
+        "build/netcoreapp1.0/x86/testhost.x86.exe",
+        "build/netcoreapp2.1/Microsoft.TestPlatform.PlatformAbstractions.dll",
         "build/netcoreapp2.1/Microsoft.TestPlatform.TestHost.props",
+        "build/netcoreapp2.1/x64/Microsoft.TestPlatform.PlatformAbstractions.dll",
         "build/netcoreapp2.1/x64/testhost.dll",
         "build/netcoreapp2.1/x64/testhost.exe",
+        "build/netcoreapp2.1/x86/Microsoft.TestPlatform.PlatformAbstractions.dll",
         "build/netcoreapp2.1/x86/testhost.x86.dll",
         "build/netcoreapp2.1/x86/testhost.x86.exe",
         "build/uap10.0/Microsoft.TestPlatform.TestHost.props",
@@ -1630,10 +1826,63 @@
         "build/uap10.0/zh-Hant/Microsoft.VisualStudio.TestPlatform.Common.resources.dll",
         "build/uap10.0/zh-Hant/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
         "lib/net45/_._",
+        "lib/netcoreapp1.0/Microsoft.TestPlatform.CommunicationUtilities.dll",
+        "lib/netcoreapp1.0/Microsoft.TestPlatform.CoreUtilities.dll",
+        "lib/netcoreapp1.0/Microsoft.TestPlatform.CrossPlatEngine.dll",
+        "lib/netcoreapp1.0/Microsoft.TestPlatform.PlatformAbstractions.dll",
+        "lib/netcoreapp1.0/Microsoft.TestPlatform.Utilities.dll",
+        "lib/netcoreapp1.0/Microsoft.VisualStudio.TestPlatform.Common.dll",
+        "lib/netcoreapp1.0/Microsoft.VisualStudio.TestPlatform.ObjectModel.dll",
+        "lib/netcoreapp1.0/cs/Microsoft.TestPlatform.CommunicationUtilities.resources.dll",
+        "lib/netcoreapp1.0/cs/Microsoft.TestPlatform.CrossPlatEngine.resources.dll",
+        "lib/netcoreapp1.0/cs/Microsoft.VisualStudio.TestPlatform.Common.resources.dll",
+        "lib/netcoreapp1.0/de/Microsoft.TestPlatform.CommunicationUtilities.resources.dll",
+        "lib/netcoreapp1.0/de/Microsoft.TestPlatform.CrossPlatEngine.resources.dll",
+        "lib/netcoreapp1.0/de/Microsoft.VisualStudio.TestPlatform.Common.resources.dll",
+        "lib/netcoreapp1.0/es/Microsoft.TestPlatform.CommunicationUtilities.resources.dll",
+        "lib/netcoreapp1.0/es/Microsoft.TestPlatform.CrossPlatEngine.resources.dll",
+        "lib/netcoreapp1.0/es/Microsoft.VisualStudio.TestPlatform.Common.resources.dll",
+        "lib/netcoreapp1.0/fr/Microsoft.TestPlatform.CommunicationUtilities.resources.dll",
+        "lib/netcoreapp1.0/fr/Microsoft.TestPlatform.CrossPlatEngine.resources.dll",
+        "lib/netcoreapp1.0/fr/Microsoft.VisualStudio.TestPlatform.Common.resources.dll",
+        "lib/netcoreapp1.0/it/Microsoft.TestPlatform.CommunicationUtilities.resources.dll",
+        "lib/netcoreapp1.0/it/Microsoft.TestPlatform.CrossPlatEngine.resources.dll",
+        "lib/netcoreapp1.0/it/Microsoft.VisualStudio.TestPlatform.Common.resources.dll",
+        "lib/netcoreapp1.0/ja/Microsoft.TestPlatform.CommunicationUtilities.resources.dll",
+        "lib/netcoreapp1.0/ja/Microsoft.TestPlatform.CrossPlatEngine.resources.dll",
+        "lib/netcoreapp1.0/ja/Microsoft.VisualStudio.TestPlatform.Common.resources.dll",
+        "lib/netcoreapp1.0/ko/Microsoft.TestPlatform.CommunicationUtilities.resources.dll",
+        "lib/netcoreapp1.0/ko/Microsoft.TestPlatform.CrossPlatEngine.resources.dll",
+        "lib/netcoreapp1.0/ko/Microsoft.VisualStudio.TestPlatform.Common.resources.dll",
+        "lib/netcoreapp1.0/pl/Microsoft.TestPlatform.CommunicationUtilities.resources.dll",
+        "lib/netcoreapp1.0/pl/Microsoft.TestPlatform.CrossPlatEngine.resources.dll",
+        "lib/netcoreapp1.0/pl/Microsoft.VisualStudio.TestPlatform.Common.resources.dll",
+        "lib/netcoreapp1.0/pt-BR/Microsoft.TestPlatform.CommunicationUtilities.resources.dll",
+        "lib/netcoreapp1.0/pt-BR/Microsoft.TestPlatform.CrossPlatEngine.resources.dll",
+        "lib/netcoreapp1.0/pt-BR/Microsoft.VisualStudio.TestPlatform.Common.resources.dll",
+        "lib/netcoreapp1.0/ru/Microsoft.TestPlatform.CommunicationUtilities.resources.dll",
+        "lib/netcoreapp1.0/ru/Microsoft.TestPlatform.CrossPlatEngine.resources.dll",
+        "lib/netcoreapp1.0/ru/Microsoft.VisualStudio.TestPlatform.Common.resources.dll",
+        "lib/netcoreapp1.0/testhost.deps.json",
+        "lib/netcoreapp1.0/testhost.dll",
+        "lib/netcoreapp1.0/tr/Microsoft.TestPlatform.CommunicationUtilities.resources.dll",
+        "lib/netcoreapp1.0/tr/Microsoft.TestPlatform.CrossPlatEngine.resources.dll",
+        "lib/netcoreapp1.0/tr/Microsoft.VisualStudio.TestPlatform.Common.resources.dll",
+        "lib/netcoreapp1.0/x64/msdia140.dll",
+        "lib/netcoreapp1.0/x86/msdia140.dll",
+        "lib/netcoreapp1.0/zh-Hans/Microsoft.TestPlatform.CommunicationUtilities.resources.dll",
+        "lib/netcoreapp1.0/zh-Hans/Microsoft.TestPlatform.CrossPlatEngine.resources.dll",
+        "lib/netcoreapp1.0/zh-Hans/Microsoft.VisualStudio.TestPlatform.Common.resources.dll",
+        "lib/netcoreapp1.0/zh-Hant/Microsoft.TestPlatform.CommunicationUtilities.resources.dll",
+        "lib/netcoreapp1.0/zh-Hant/Microsoft.TestPlatform.CrossPlatEngine.resources.dll",
+        "lib/netcoreapp1.0/zh-Hant/Microsoft.VisualStudio.TestPlatform.Common.resources.dll",
         "lib/netcoreapp2.1/Microsoft.TestPlatform.CommunicationUtilities.dll",
+        "lib/netcoreapp2.1/Microsoft.TestPlatform.CoreUtilities.dll",
         "lib/netcoreapp2.1/Microsoft.TestPlatform.CrossPlatEngine.dll",
+        "lib/netcoreapp2.1/Microsoft.TestPlatform.PlatformAbstractions.dll",
         "lib/netcoreapp2.1/Microsoft.TestPlatform.Utilities.dll",
         "lib/netcoreapp2.1/Microsoft.VisualStudio.TestPlatform.Common.dll",
+        "lib/netcoreapp2.1/Microsoft.VisualStudio.TestPlatform.ObjectModel.dll",
         "lib/netcoreapp2.1/cs/Microsoft.TestPlatform.CommunicationUtilities.resources.dll",
         "lib/netcoreapp2.1/cs/Microsoft.TestPlatform.CrossPlatEngine.resources.dll",
         "lib/netcoreapp2.1/cs/Microsoft.VisualStudio.TestPlatform.Common.resources.dll",
@@ -1678,11 +1927,14 @@
         "lib/netcoreapp2.1/zh-Hant/Microsoft.TestPlatform.CrossPlatEngine.resources.dll",
         "lib/netcoreapp2.1/zh-Hant/Microsoft.VisualStudio.TestPlatform.Common.resources.dll",
         "lib/uap10.0/Microsoft.TestPlatform.CommunicationUtilities.dll",
+        "lib/uap10.0/Microsoft.TestPlatform.CoreUtilities.dll",
         "lib/uap10.0/Microsoft.TestPlatform.CrossPlatEngine.dll",
+        "lib/uap10.0/Microsoft.TestPlatform.PlatformAbstractions.dll",
         "lib/uap10.0/Microsoft.TestPlatform.Utilities.dll",
         "lib/uap10.0/Microsoft.VisualStudio.TestPlatform.Common.dll",
+        "lib/uap10.0/Microsoft.VisualStudio.TestPlatform.ObjectModel.dll",
         "lib/uap10.0/testhost.dll",
-        "microsoft.testplatform.testhost.16.5.0.nupkg.sha512",
+        "microsoft.testplatform.testhost.16.9.1.nupkg.sha512",
         "microsoft.testplatform.testhost.nuspec"
       ]
     },
@@ -1723,13 +1975,14 @@
         "ref/xamarinwatchos10/_._"
       ]
     },
-    "Microsoft.Win32.Registry/4.7.0": {
-      "sha512": "KSrRMb5vNi0CWSGG1++id2ZOs/1QhRqROt+qgbEAdQuGjGrFcl4AOl4/exGPUYz2wUnU42nvJqon1T3U0kPXLA==",
+    "Microsoft.Win32.Registry/5.0.0": {
+      "sha512": "dDoKi0PnDz31yAyETfRntsLArTlVAVzUzCIvvEDsDsucrl33Dl8pIJG06ePTJTI3tGpeyHS9Cq7Foc/s4EeKcg==",
       "type": "package",
-      "path": "microsoft.win32.registry/4.7.0",
+      "path": "microsoft.win32.registry/5.0.0",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
+        "Icon.png",
         "LICENSE.TXT",
         "THIRD-PARTY-NOTICES.TXT",
         "lib/net46/Microsoft.Win32.Registry.dll",
@@ -1738,13 +1991,11 @@
         "lib/netstandard1.3/Microsoft.Win32.Registry.dll",
         "lib/netstandard2.0/Microsoft.Win32.Registry.dll",
         "lib/netstandard2.0/Microsoft.Win32.Registry.xml",
-        "microsoft.win32.registry.4.7.0.nupkg.sha512",
+        "microsoft.win32.registry.5.0.0.nupkg.sha512",
         "microsoft.win32.registry.nuspec",
         "ref/net46/Microsoft.Win32.Registry.dll",
         "ref/net461/Microsoft.Win32.Registry.dll",
         "ref/net461/Microsoft.Win32.Registry.xml",
-        "ref/net472/Microsoft.Win32.Registry.dll",
-        "ref/net472/Microsoft.Win32.Registry.xml",
         "ref/netstandard1.3/Microsoft.Win32.Registry.dll",
         "ref/netstandard1.3/Microsoft.Win32.Registry.xml",
         "ref/netstandard1.3/de/Microsoft.Win32.Registry.xml",
@@ -1758,8 +2009,6 @@
         "ref/netstandard1.3/zh-hant/Microsoft.Win32.Registry.xml",
         "ref/netstandard2.0/Microsoft.Win32.Registry.dll",
         "ref/netstandard2.0/Microsoft.Win32.Registry.xml",
-        "runtimes/unix/lib/netstandard2.0/Microsoft.Win32.Registry.dll",
-        "runtimes/unix/lib/netstandard2.0/Microsoft.Win32.Registry.xml",
         "runtimes/win/lib/net46/Microsoft.Win32.Registry.dll",
         "runtimes/win/lib/net461/Microsoft.Win32.Registry.dll",
         "runtimes/win/lib/net461/Microsoft.Win32.Registry.xml",
@@ -1943,10 +2192,10 @@
         "nuget.frameworks.nuspec"
       ]
     },
-    "NUnit/3.12.0": {
-      "sha512": "3oJTrcUcT9wmweBUwgUf0f1XIYy6RZq2ziV+RM95HMKAJGsHPN2i3MKK1dAPvDPMRLz799Llj4eyu/STB9Q7OA==",
+    "NUnit/3.13.1": {
+      "sha512": "vWBvrSelmTYwqHWvO3dA63z7cOpaFR/3nJ9MMVLBkWeaWa7oiglPPm5g1h96B4i2XXqjFexxhR5MyMjmIJYPfg==",
       "type": "package",
-      "path": "nunit/3.12.0",
+      "path": "nunit/3.13.1",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -1954,29 +2203,23 @@
         "LICENSE.txt",
         "NOTICES.txt",
         "build/NUnit.props",
+        "icon.png",
         "lib/net35/nunit.framework.dll",
-        "lib/net35/nunit.framework.pdb",
         "lib/net35/nunit.framework.xml",
         "lib/net40/nunit.framework.dll",
-        "lib/net40/nunit.framework.pdb",
         "lib/net40/nunit.framework.xml",
         "lib/net45/nunit.framework.dll",
-        "lib/net45/nunit.framework.pdb",
         "lib/net45/nunit.framework.xml",
-        "lib/netstandard1.4/nunit.framework.dll",
-        "lib/netstandard1.4/nunit.framework.pdb",
-        "lib/netstandard1.4/nunit.framework.xml",
         "lib/netstandard2.0/nunit.framework.dll",
-        "lib/netstandard2.0/nunit.framework.pdb",
         "lib/netstandard2.0/nunit.framework.xml",
-        "nunit.3.12.0.nupkg.sha512",
+        "nunit.3.13.1.nupkg.sha512",
         "nunit.nuspec"
       ]
     },
-    "NUnit3TestAdapter/3.16.1": {
-      "sha512": "wKuxi7G9Gs2I9gnckwtMVzbPIy7vkNj+FafrmQPaYCUguT+se5kmzI3XwsVCXEalWk9pSYZW7roBkNu4ogn3DA==",
+    "NUnit3TestAdapter/3.17.0": {
+      "sha512": "I9MNvK+GM2yXrHPitwZkAZKU9sYI2OO/8wKC+VuBD7V3z+ySQ1pSopX/urr0ooedI8/TIcajYPRO4vGRr7AM8A==",
       "type": "package",
-      "path": "nunit3testadapter/3.16.1",
+      "path": "nunit3testadapter/3.17.0",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -1985,13 +2228,15 @@
         "build/net35/NUnit3.TestAdapter.pdb",
         "build/net35/NUnit3TestAdapter.props",
         "build/net35/nunit.engine.api.dll",
+        "build/net35/nunit.engine.core.dll",
         "build/net35/nunit.engine.dll",
         "build/netcoreapp2.1/NUnit3.TestAdapter.dll",
         "build/netcoreapp2.1/NUnit3.TestAdapter.pdb",
         "build/netcoreapp2.1/NUnit3TestAdapter.props",
         "build/netcoreapp2.1/nunit.engine.api.dll",
+        "build/netcoreapp2.1/nunit.engine.core.dll",
         "build/netcoreapp2.1/nunit.engine.dll",
-        "nunit3testadapter.3.16.1.nupkg.sha512",
+        "nunit3testadapter.3.17.0.nupkg.sha512",
         "nunit3testadapter.nuspec"
       ]
     },
@@ -2062,13 +2307,14 @@
         "system.appcontext.nuspec"
       ]
     },
-    "System.CodeDom/4.7.0": {
-      "sha512": "Hs9pw/kmvH3lXaZ1LFKj3pLQsiGfj2xo3sxSzwiLlRL6UcMZUTeCfoJ9Udalvn3yq5dLlPEZzYegrTQ1/LhPOQ==",
+    "System.CodeDom/5.0.0": {
+      "sha512": "JPJArwA1kdj8qDAkY2XGjSWoYnqiM7q/3yRNkt6n28Mnn95MuEGkZXUbPBf7qc3IjwrGY5ttQon7yqHZyQJmOQ==",
       "type": "package",
-      "path": "system.codedom/4.7.0",
+      "path": "system.codedom/5.0.0",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
+        "Icon.png",
         "LICENSE.TXT",
         "THIRD-PARTY-NOTICES.TXT",
         "lib/net461/System.CodeDom.dll",
@@ -2079,7 +2325,7 @@
         "ref/net461/System.CodeDom.xml",
         "ref/netstandard2.0/System.CodeDom.dll",
         "ref/netstandard2.0/System.CodeDom.xml",
-        "system.codedom.4.7.0.nupkg.sha512",
+        "system.codedom.5.0.0.nupkg.sha512",
         "system.codedom.nuspec",
         "useSharedDesignerContext.txt",
         "version.txt"
@@ -3111,13 +3357,14 @@
         "system.linq.expressions.nuspec"
       ]
     },
-    "System.Management/4.7.0": {
-      "sha512": "IY+uuGhgzWiCg21i8IvQeY/Z7m1tX8VuPF+ludfn7iTCaccTtJo5HkjZbBEL8kbBubKhAKKtNXr7uMtmAc28Pw==",
+    "System.Management/5.0.0": {
+      "sha512": "MF1CHaRcC+MLFdnDthv4/bKWBZnlnSpkGqa87pKukQefgEdwtb9zFW6zs0GjPp73qtpYYg4q6PEKbzJbxCpKfw==",
       "type": "package",
-      "path": "system.management/4.7.0",
+      "path": "system.management/5.0.0",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
+        "Icon.png",
         "LICENSE.TXT",
         "THIRD-PARTY-NOTICES.TXT",
         "lib/net45/_._",
@@ -3129,7 +3376,7 @@
         "runtimes/win/lib/net45/_._",
         "runtimes/win/lib/netcoreapp2.0/System.Management.dll",
         "runtimes/win/lib/netcoreapp2.0/System.Management.xml",
-        "system.management.4.7.0.nupkg.sha512",
+        "system.management.5.0.0.nupkg.sha512",
         "system.management.nuspec",
         "useSharedDesignerContext.txt",
         "version.txt"
@@ -3433,6 +3680,27 @@
         "ref/xamarinwatchos10/_._",
         "system.reflection.extensions.4.3.0.nupkg.sha512",
         "system.reflection.extensions.nuspec"
+      ]
+    },
+    "System.Reflection.Metadata/1.6.0": {
+      "sha512": "COC1aiAJjCoA5GBF+QKL2uLqEBew4JsCkQmoHKbN3TlOZKa2fKLz5CpiRQKDz0RsAOEGsVKqOD5bomsXq/4STQ==",
+      "type": "package",
+      "path": "system.reflection.metadata/1.6.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE.TXT",
+        "THIRD-PARTY-NOTICES.TXT",
+        "lib/netstandard1.1/System.Reflection.Metadata.dll",
+        "lib/netstandard1.1/System.Reflection.Metadata.xml",
+        "lib/netstandard2.0/System.Reflection.Metadata.dll",
+        "lib/netstandard2.0/System.Reflection.Metadata.xml",
+        "lib/portable-net45+win8/System.Reflection.Metadata.dll",
+        "lib/portable-net45+win8/System.Reflection.Metadata.xml",
+        "system.reflection.metadata.1.6.0.nupkg.sha512",
+        "system.reflection.metadata.nuspec",
+        "useSharedDesignerContext.txt",
+        "version.txt"
       ]
     },
     "System.Reflection.Primitives/4.3.0": {
@@ -4008,13 +4276,14 @@
         "system.runtime.serialization.primitives.nuspec"
       ]
     },
-    "System.Security.AccessControl/4.7.0": {
-      "sha512": "JECvTt5aFF3WT3gHpfofL2MNNP6v84sxtXxpqhLBCcDRzqsPBmHhQ6shv4DwwN2tRlzsUxtb3G9M3763rbXKDg==",
+    "System.Security.AccessControl/5.0.0": {
+      "sha512": "dagJ1mHZO3Ani8GH0PHpPEe/oYO+rVdbQjvjJkBRNQkX4t0r1iaeGn8+/ybkSLEan3/slM0t59SVdHzuHf2jmw==",
       "type": "package",
-      "path": "system.security.accesscontrol/4.7.0",
+      "path": "system.security.accesscontrol/5.0.0",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
+        "Icon.png",
         "LICENSE.TXT",
         "THIRD-PARTY-NOTICES.TXT",
         "lib/net46/System.Security.AccessControl.dll",
@@ -4048,19 +4317,20 @@
         "runtimes/win/lib/netcoreapp2.0/System.Security.AccessControl.xml",
         "runtimes/win/lib/netstandard1.3/System.Security.AccessControl.dll",
         "runtimes/win/lib/uap10.0.16299/_._",
-        "system.security.accesscontrol.4.7.0.nupkg.sha512",
+        "system.security.accesscontrol.5.0.0.nupkg.sha512",
         "system.security.accesscontrol.nuspec",
         "useSharedDesignerContext.txt",
         "version.txt"
       ]
     },
-    "System.Security.Principal.Windows/4.7.0": {
-      "sha512": "ojD0PX0XhneCsUbAZVKdb7h/70vyYMDYs85lwEI+LngEONe/17A0cFaRFqZU+sOEidcVswYWikYOQ9PPfjlbtQ==",
+    "System.Security.Principal.Windows/5.0.0": {
+      "sha512": "t0MGLukB5WAVU9bO3MGzvlGnyJPgUlcwerXn1kzBRjwLKixT96XV0Uza41W49gVd8zEMFu9vQEFlv0IOrytICA==",
       "type": "package",
-      "path": "system.security.principal.windows/4.7.0",
+      "path": "system.security.principal.windows/5.0.0",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
+        "Icon.png",
         "LICENSE.TXT",
         "THIRD-PARTY-NOTICES.TXT",
         "lib/net46/System.Security.Principal.Windows.dll",
@@ -4102,7 +4372,7 @@
         "runtimes/win/lib/netcoreapp2.1/System.Security.Principal.Windows.xml",
         "runtimes/win/lib/netstandard1.3/System.Security.Principal.Windows.dll",
         "runtimes/win/lib/uap10.0.16299/_._",
-        "system.security.principal.windows.4.7.0.nupkg.sha512",
+        "system.security.principal.windows.5.0.0.nupkg.sha512",
         "system.security.principal.windows.nuspec",
         "useSharedDesignerContext.txt",
         "version.txt"
@@ -4810,7 +5080,7 @@
         "system.xml.xpath.xmldocument.nuspec"
       ]
     },
-    "Cern.Colt.NET/0.9.0": {
+    "Cern.Colt.NET/0.9.1.2": {
       "type": "project",
       "path": "../Cern/Cern.Colt.csproj",
       "msbuildProject": "../Cern/Cern.Colt.csproj"
@@ -4818,16 +5088,14 @@
   },
   "projectFileDependencyGroups": {
     ".NETCoreApp,Version=v3.1": [
-      "Cern.Colt.NET >= 0.9.0",
-      "Microsoft.NET.Test.Sdk >= 16.5.0",
-      "NUnit3TestAdapter >= 3.16.1",
-      "nunit >= 3.12.0"
+      "Cern.Colt.NET >= 0.9.1.2",
+      "Microsoft.NET.Test.Sdk >= 16.9.1",
+      "NUnit3TestAdapter >= 3.17.0",
+      "nunit >= 3.13.1"
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Mercury21\\.nuget\\packages\\": {},
-    "C:\\Microsoft\\Xamarin\\NuGet\\": {},
-    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
+    "C:\\Users\\Mercury21\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
@@ -4838,20 +5106,16 @@
       "packagesPath": "C:\\Users\\Mercury21\\.nuget\\packages\\",
       "outputPath": "C:\\Users\\Mercury21\\Source\\Repos\\Colt.NET_Core\\Cern.Colt.Tests\\obj\\",
       "projectStyle": "PackageReference",
-      "fallbackFolders": [
-        "C:\\Microsoft\\Xamarin\\NuGet\\",
-        "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
-      ],
       "configFilePaths": [
         "C:\\Users\\Mercury21\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "netcoreapp3.1"
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "\\\\winserver2016\\Software\\NuGet": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -4876,17 +5140,17 @@
         "dependencies": {
           "Microsoft.NET.Test.Sdk": {
             "target": "Package",
-            "version": "[16.5.0, )"
+            "version": "[16.9.1, )"
           },
           "NUnit3TestAdapter": {
             "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
             "suppressParent": "All",
             "target": "Package",
-            "version": "[3.16.1, )"
+            "version": "[3.17.0, )"
           },
           "nunit": {
             "target": "Package",
-            "version": "[3.12.0, )"
+            "version": "[3.13.1, )"
           }
         },
         "imports": [
@@ -4904,7 +5168,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.101\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.404\\RuntimeIdentifierGraph.json"
       }
     }
   }

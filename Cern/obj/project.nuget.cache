@@ -1,18 +1,18 @@
 {
   "version": 2,
-  "dgSpecHash": "A/qh7dbwH1R3Hv0rANTGnpkXPDBcJyoEDGHmALho1ccN6z6F24EnRM8VpvOYc7EJh69I62J8WF8VFlCmaIinZQ==",
+  "dgSpecHash": "YhJuYBxQnj1cn2IgGTenRiDX8wAJ+3B+ELnhGJhiNUAYtbv9RU0onX0GpVu8iJZLrGzdzat2aY3YRjY1HEvywg==",
   "success": true,
   "projectFilePath": "C:\\Users\\Mercury21\\Source\\Repos\\Colt.NET_Core\\Cern\\Cern.Colt.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\Mercury21\\.nuget\\packages\\microsoft.win32.registry\\4.7.0\\microsoft.win32.registry.4.7.0.nupkg.sha512",
-    "C:\\Users\\Mercury21\\.nuget\\packages\\system.buffers\\4.5.0\\system.buffers.4.5.0.nupkg.sha512",
-    "C:\\Users\\Mercury21\\.nuget\\packages\\system.codedom\\4.7.0\\system.codedom.4.7.0.nupkg.sha512",
-    "C:\\Users\\Mercury21\\.nuget\\packages\\system.management\\4.7.0\\system.management.4.7.0.nupkg.sha512",
-    "C:\\Users\\Mercury21\\.nuget\\packages\\system.memory\\4.5.3\\system.memory.4.5.3.nupkg.sha512",
+    "C:\\Users\\Mercury21\\.nuget\\packages\\microsoft.win32.registry\\5.0.0\\microsoft.win32.registry.5.0.0.nupkg.sha512",
+    "C:\\Users\\Mercury21\\.nuget\\packages\\system.buffers\\4.5.1\\system.buffers.4.5.1.nupkg.sha512",
+    "C:\\Users\\Mercury21\\.nuget\\packages\\system.codedom\\5.0.0\\system.codedom.5.0.0.nupkg.sha512",
+    "C:\\Users\\Mercury21\\.nuget\\packages\\system.management\\5.0.0\\system.management.5.0.0.nupkg.sha512",
+    "C:\\Users\\Mercury21\\.nuget\\packages\\system.memory\\4.5.4\\system.memory.4.5.4.nupkg.sha512",
     "C:\\Users\\Mercury21\\.nuget\\packages\\system.numerics.vectors\\4.4.0\\system.numerics.vectors.4.4.0.nupkg.sha512",
-    "C:\\Users\\Mercury21\\.nuget\\packages\\system.runtime.compilerservices.unsafe\\4.5.2\\system.runtime.compilerservices.unsafe.4.5.2.nupkg.sha512",
-    "C:\\Users\\Mercury21\\.nuget\\packages\\system.security.accesscontrol\\4.7.0\\system.security.accesscontrol.4.7.0.nupkg.sha512",
-    "C:\\Users\\Mercury21\\.nuget\\packages\\system.security.principal.windows\\4.7.0\\system.security.principal.windows.4.7.0.nupkg.sha512"
+    "C:\\Users\\Mercury21\\.nuget\\packages\\system.runtime.compilerservices.unsafe\\4.5.3\\system.runtime.compilerservices.unsafe.4.5.3.nupkg.sha512",
+    "C:\\Users\\Mercury21\\.nuget\\packages\\system.security.accesscontrol\\5.0.0\\system.security.accesscontrol.5.0.0.nupkg.sha512",
+    "C:\\Users\\Mercury21\\.nuget\\packages\\system.security.principal.windows\\5.0.0\\system.security.principal.windows.5.0.0.nupkg.sha512"
   ],
   "logs": []
 }

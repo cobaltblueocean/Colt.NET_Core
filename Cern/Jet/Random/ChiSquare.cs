@@ -63,7 +63,7 @@ namespace Cern.Jet.Random
         /// <exception cref="ArgumentException">if <i>freedom &lt; 1.0</i>.</exception>
         public ChiSquare(double freedom, RandomEngine randomGenerator)
         {
-            RandomGenerator = randomGenerator;
+            base.RandomGenerator = randomGenerator;
             SetState(freedom);
         }
 
@@ -118,8 +118,8 @@ namespace Cern.Jet.Random
             {
                 for (; ; )
                 {
-                    u = randomGenerator.Raw();
-                    v = randomGenerator.Raw() * 0.857763884960707;
+                    u = RandomGenerator.Raw();
+                    v = RandomGenerator.Raw() * 0.857763884960707;
                     z = v / u;
                     if (z < 0) continue;
                     zz = z * z;
@@ -143,8 +143,8 @@ namespace Cern.Jet.Random
                 }
                 for (; ; )
                 {
-                    u = randomGenerator.Raw();
-                    v = randomGenerator.Raw() * vd + vm;
+                    u = RandomGenerator.Raw();
+                    v = RandomGenerator.Raw() * vd + vm;
                     z = v / u;
                     if (z < -b) continue;
                     zz = z * z;

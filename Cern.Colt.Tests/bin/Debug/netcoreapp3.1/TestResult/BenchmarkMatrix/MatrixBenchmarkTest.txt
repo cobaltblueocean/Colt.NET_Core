@@ -2,7 +2,7 @@ Colt Matrix benchmark running on
 
 System.String[]
 
-Colt Version is 1.0.0.0
+Colt Version is 0.9.1.1
 
 
 
@@ -11,10 +11,10 @@ Executing command = [dgemm,dense,2,2,0.99,false,true,5,5,50,100,300,500,1000] ..
 Performance of Blas matrix-matrix mult dgemm(False, True, 1, A, B, 0, C)
 type=dense
        | size
-       | 5           5           50             100          300           500               1000           
-------------------------------------------------------------------------------------------------------------
-d 0.99 | %136424173G -%12359113G %132954246003G %1523143313G %16951233003G -%12400999936003G %1170799264003G
+       | 5        5         50           100           300            500              1000             
+--------------------------------------------------------------------------------------------------------
+d 0.99 | %183663G %1259433G -%137280983G -%1739601193G -%13300028753G -%1165033856003G -%11248264448003G
 Run took a total of Cern.Colt.Timerd End of run.
 
-Program execution took a total of -1061969701 minutes.
+Program execution took a total of -1062645985 minutes.
 Good bye.

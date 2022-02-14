@@ -39,7 +39,7 @@ namespace Cern.Jet.Random
         /// <exception cref="ArgumentException">if <i>freedom &lt;= 0.0</i>.</exception>
         public StudentT(double freedom, RandomEngine randomGenerator)
         {
-            RandomGenerator = randomGenerator;
+            base.RandomGenerator = randomGenerator;
             SetState(freedom);
         }
 
@@ -85,8 +85,8 @@ namespace Cern.Jet.Random
 
             do
             {
-                u = 2.0 * randomGenerator.Raw() - 1.0;
-                v = 2.0 * randomGenerator.Raw() - 1.0;
+                u = 2.0 * RandomGenerator.Raw() - 1.0;
+                v = 2.0 * RandomGenerator.Raw() - 1.0;
             }
             while ((w = u * u + v * v) > 1.0);
 

@@ -2,13 +2,13 @@
   "version": 3,
   "targets": {
     ".NETStandard,Version=v2.1": {
-      "Microsoft.Win32.Registry/4.7.0": {
+      "Microsoft.Win32.Registry/5.0.0": {
         "type": "package",
         "dependencies": {
-          "System.Buffers": "4.5.0",
-          "System.Memory": "4.5.3",
-          "System.Security.AccessControl": "4.7.0",
-          "System.Security.Principal.Windows": "4.7.0"
+          "System.Buffers": "4.5.1",
+          "System.Memory": "4.5.4",
+          "System.Security.AccessControl": "5.0.0",
+          "System.Security.Principal.Windows": "5.0.0"
         },
         "compile": {
           "ref/netstandard2.0/Microsoft.Win32.Registry.dll": {}
@@ -17,17 +17,13 @@
           "lib/netstandard2.0/Microsoft.Win32.Registry.dll": {}
         },
         "runtimeTargets": {
-          "runtimes/unix/lib/netstandard2.0/Microsoft.Win32.Registry.dll": {
-            "assetType": "runtime",
-            "rid": "unix"
-          },
           "runtimes/win/lib/netstandard2.0/Microsoft.Win32.Registry.dll": {
             "assetType": "runtime",
             "rid": "win"
           }
         }
       },
-      "System.Buffers/4.5.0": {
+      "System.Buffers/4.5.1": {
         "type": "package",
         "compile": {
           "ref/netstandard2.0/_._": {}
@@ -36,7 +32,7 @@
           "lib/netstandard2.0/System.Buffers.dll": {}
         }
       },
-      "System.CodeDom/4.7.0": {
+      "System.CodeDom/5.0.0": {
         "type": "package",
         "compile": {
           "ref/netstandard2.0/System.CodeDom.dll": {}
@@ -45,10 +41,10 @@
           "lib/netstandard2.0/System.CodeDom.dll": {}
         }
       },
-      "System.Management/4.7.0": {
+      "System.Management/5.0.0": {
         "type": "package",
         "dependencies": {
-          "System.CodeDom": "4.7.0"
+          "System.CodeDom": "5.0.0"
         },
         "compile": {
           "ref/netstandard2.0/System.Management.dll": {}
@@ -57,12 +53,12 @@
           "lib/netstandard2.0/System.Management.dll": {}
         }
       },
-      "System.Memory/4.5.3": {
+      "System.Memory/4.5.4": {
         "type": "package",
         "dependencies": {
-          "System.Buffers": "4.4.0",
+          "System.Buffers": "4.5.1",
           "System.Numerics.Vectors": "4.4.0",
-          "System.Runtime.CompilerServices.Unsafe": "4.5.2"
+          "System.Runtime.CompilerServices.Unsafe": "4.5.3"
         },
         "compile": {
           "lib/netstandard2.0/_._": {}
@@ -80,7 +76,7 @@
           "lib/netstandard2.0/System.Numerics.Vectors.dll": {}
         }
       },
-      "System.Runtime.CompilerServices.Unsafe/4.5.2": {
+      "System.Runtime.CompilerServices.Unsafe/4.5.3": {
         "type": "package",
         "compile": {
           "ref/netstandard2.0/_._": {}
@@ -89,10 +85,10 @@
           "lib/netstandard2.0/System.Runtime.CompilerServices.Unsafe.dll": {}
         }
       },
-      "System.Security.AccessControl/4.7.0": {
+      "System.Security.AccessControl/5.0.0": {
         "type": "package",
         "dependencies": {
-          "System.Security.Principal.Windows": "4.7.0"
+          "System.Security.Principal.Windows": "5.0.0"
         },
         "compile": {
           "ref/netstandard2.0/System.Security.AccessControl.dll": {}
@@ -107,7 +103,7 @@
           }
         }
       },
-      "System.Security.Principal.Windows/4.7.0": {
+      "System.Security.Principal.Windows/5.0.0": {
         "type": "package",
         "compile": {
           "ref/netstandard2.0/System.Security.Principal.Windows.dll": {}
@@ -125,13 +121,14 @@
     }
   },
   "libraries": {
-    "Microsoft.Win32.Registry/4.7.0": {
-      "sha512": "KSrRMb5vNi0CWSGG1++id2ZOs/1QhRqROt+qgbEAdQuGjGrFcl4AOl4/exGPUYz2wUnU42nvJqon1T3U0kPXLA==",
+    "Microsoft.Win32.Registry/5.0.0": {
+      "sha512": "dDoKi0PnDz31yAyETfRntsLArTlVAVzUzCIvvEDsDsucrl33Dl8pIJG06ePTJTI3tGpeyHS9Cq7Foc/s4EeKcg==",
       "type": "package",
-      "path": "microsoft.win32.registry/4.7.0",
+      "path": "microsoft.win32.registry/5.0.0",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
+        "Icon.png",
         "LICENSE.TXT",
         "THIRD-PARTY-NOTICES.TXT",
         "lib/net46/Microsoft.Win32.Registry.dll",
@@ -140,13 +137,11 @@
         "lib/netstandard1.3/Microsoft.Win32.Registry.dll",
         "lib/netstandard2.0/Microsoft.Win32.Registry.dll",
         "lib/netstandard2.0/Microsoft.Win32.Registry.xml",
-        "microsoft.win32.registry.4.7.0.nupkg.sha512",
+        "microsoft.win32.registry.5.0.0.nupkg.sha512",
         "microsoft.win32.registry.nuspec",
         "ref/net46/Microsoft.Win32.Registry.dll",
         "ref/net461/Microsoft.Win32.Registry.dll",
         "ref/net461/Microsoft.Win32.Registry.xml",
-        "ref/net472/Microsoft.Win32.Registry.dll",
-        "ref/net472/Microsoft.Win32.Registry.xml",
         "ref/netstandard1.3/Microsoft.Win32.Registry.dll",
         "ref/netstandard1.3/Microsoft.Win32.Registry.xml",
         "ref/netstandard1.3/de/Microsoft.Win32.Registry.xml",
@@ -160,8 +155,6 @@
         "ref/netstandard1.3/zh-hant/Microsoft.Win32.Registry.xml",
         "ref/netstandard2.0/Microsoft.Win32.Registry.dll",
         "ref/netstandard2.0/Microsoft.Win32.Registry.xml",
-        "runtimes/unix/lib/netstandard2.0/Microsoft.Win32.Registry.dll",
-        "runtimes/unix/lib/netstandard2.0/Microsoft.Win32.Registry.xml",
         "runtimes/win/lib/net46/Microsoft.Win32.Registry.dll",
         "runtimes/win/lib/net461/Microsoft.Win32.Registry.dll",
         "runtimes/win/lib/net461/Microsoft.Win32.Registry.xml",
@@ -172,15 +165,17 @@
         "version.txt"
       ]
     },
-    "System.Buffers/4.5.0": {
-      "sha512": "pL2ChpaRRWI/p4LXyy4RgeWlYF2sgfj/pnVMvBqwNFr5cXg7CXNnWZWxrOONLg8VGdFB8oB+EG2Qw4MLgTOe+A==",
+    "System.Buffers/4.5.1": {
+      "sha512": "Rw7ijyl1qqRS0YQD/WycNst8hUUMgrMH4FCn1nNm27M4VxchZ1js3fVjQaANHO5f3sN4isvP4a+Met9Y4YomAg==",
       "type": "package",
-      "path": "system.buffers/4.5.0",
+      "path": "system.buffers/4.5.1",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "LICENSE.TXT",
         "THIRD-PARTY-NOTICES.TXT",
+        "lib/net461/System.Buffers.dll",
+        "lib/net461/System.Buffers.xml",
         "lib/netcoreapp2.0/_._",
         "lib/netstandard1.1/System.Buffers.dll",
         "lib/netstandard1.1/System.Buffers.xml",
@@ -195,19 +190,20 @@
         "ref/netstandard2.0/System.Buffers.dll",
         "ref/netstandard2.0/System.Buffers.xml",
         "ref/uap10.0.16299/_._",
-        "system.buffers.4.5.0.nupkg.sha512",
+        "system.buffers.4.5.1.nupkg.sha512",
         "system.buffers.nuspec",
         "useSharedDesignerContext.txt",
         "version.txt"
       ]
     },
-    "System.CodeDom/4.7.0": {
-      "sha512": "Hs9pw/kmvH3lXaZ1LFKj3pLQsiGfj2xo3sxSzwiLlRL6UcMZUTeCfoJ9Udalvn3yq5dLlPEZzYegrTQ1/LhPOQ==",
+    "System.CodeDom/5.0.0": {
+      "sha512": "JPJArwA1kdj8qDAkY2XGjSWoYnqiM7q/3yRNkt6n28Mnn95MuEGkZXUbPBf7qc3IjwrGY5ttQon7yqHZyQJmOQ==",
       "type": "package",
-      "path": "system.codedom/4.7.0",
+      "path": "system.codedom/5.0.0",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
+        "Icon.png",
         "LICENSE.TXT",
         "THIRD-PARTY-NOTICES.TXT",
         "lib/net461/System.CodeDom.dll",
@@ -218,19 +214,20 @@
         "ref/net461/System.CodeDom.xml",
         "ref/netstandard2.0/System.CodeDom.dll",
         "ref/netstandard2.0/System.CodeDom.xml",
-        "system.codedom.4.7.0.nupkg.sha512",
+        "system.codedom.5.0.0.nupkg.sha512",
         "system.codedom.nuspec",
         "useSharedDesignerContext.txt",
         "version.txt"
       ]
     },
-    "System.Management/4.7.0": {
-      "sha512": "IY+uuGhgzWiCg21i8IvQeY/Z7m1tX8VuPF+ludfn7iTCaccTtJo5HkjZbBEL8kbBubKhAKKtNXr7uMtmAc28Pw==",
+    "System.Management/5.0.0": {
+      "sha512": "MF1CHaRcC+MLFdnDthv4/bKWBZnlnSpkGqa87pKukQefgEdwtb9zFW6zs0GjPp73qtpYYg4q6PEKbzJbxCpKfw==",
       "type": "package",
-      "path": "system.management/4.7.0",
+      "path": "system.management/5.0.0",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
+        "Icon.png",
         "LICENSE.TXT",
         "THIRD-PARTY-NOTICES.TXT",
         "lib/net45/_._",
@@ -242,28 +239,30 @@
         "runtimes/win/lib/net45/_._",
         "runtimes/win/lib/netcoreapp2.0/System.Management.dll",
         "runtimes/win/lib/netcoreapp2.0/System.Management.xml",
-        "system.management.4.7.0.nupkg.sha512",
+        "system.management.5.0.0.nupkg.sha512",
         "system.management.nuspec",
         "useSharedDesignerContext.txt",
         "version.txt"
       ]
     },
-    "System.Memory/4.5.3": {
-      "sha512": "3oDzvc/zzetpTKWMShs1AADwZjQ/36HnsufHRPcOjyRAAMLDlu2iD33MBI2opxnezcVUtXyqDXXjoFMOU9c7SA==",
+    "System.Memory/4.5.4": {
+      "sha512": "1MbJTHS1lZ4bS4FmsJjnuGJOu88ZzTT2rLvrhW7Ygic+pC0NWA+3hgAen0HRdsocuQXCkUTdFn9yHJJhsijDXw==",
       "type": "package",
-      "path": "system.memory/4.5.3",
+      "path": "system.memory/4.5.4",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "LICENSE.TXT",
         "THIRD-PARTY-NOTICES.TXT",
+        "lib/net461/System.Memory.dll",
+        "lib/net461/System.Memory.xml",
         "lib/netcoreapp2.1/_._",
         "lib/netstandard1.1/System.Memory.dll",
         "lib/netstandard1.1/System.Memory.xml",
         "lib/netstandard2.0/System.Memory.dll",
         "lib/netstandard2.0/System.Memory.xml",
         "ref/netcoreapp2.1/_._",
-        "system.memory.4.5.3.nupkg.sha512",
+        "system.memory.4.5.4.nupkg.sha512",
         "system.memory.nuspec",
         "useSharedDesignerContext.txt",
         "version.txt"
@@ -312,38 +311,43 @@
         "version.txt"
       ]
     },
-    "System.Runtime.CompilerServices.Unsafe/4.5.2": {
-      "sha512": "wprSFgext8cwqymChhrBLu62LMg/1u92bU+VOwyfBimSPVFXtsNqEWC92Pf9ofzJFlk4IHmJA75EDJn1b2goAQ==",
+    "System.Runtime.CompilerServices.Unsafe/4.5.3": {
+      "sha512": "3TIsJhD1EiiT0w2CcDMN/iSSwnNnsrnbzeVHSKkaEgV85txMprmuO+Yq2AdSbeVGcg28pdNDTPK87tJhX7VFHw==",
       "type": "package",
-      "path": "system.runtime.compilerservices.unsafe/4.5.2",
+      "path": "system.runtime.compilerservices.unsafe/4.5.3",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "LICENSE.TXT",
         "THIRD-PARTY-NOTICES.TXT",
+        "lib/net461/System.Runtime.CompilerServices.Unsafe.dll",
+        "lib/net461/System.Runtime.CompilerServices.Unsafe.xml",
         "lib/netcoreapp2.0/System.Runtime.CompilerServices.Unsafe.dll",
         "lib/netcoreapp2.0/System.Runtime.CompilerServices.Unsafe.xml",
         "lib/netstandard1.0/System.Runtime.CompilerServices.Unsafe.dll",
         "lib/netstandard1.0/System.Runtime.CompilerServices.Unsafe.xml",
         "lib/netstandard2.0/System.Runtime.CompilerServices.Unsafe.dll",
         "lib/netstandard2.0/System.Runtime.CompilerServices.Unsafe.xml",
+        "ref/net461/System.Runtime.CompilerServices.Unsafe.dll",
+        "ref/net461/System.Runtime.CompilerServices.Unsafe.xml",
         "ref/netstandard1.0/System.Runtime.CompilerServices.Unsafe.dll",
         "ref/netstandard1.0/System.Runtime.CompilerServices.Unsafe.xml",
         "ref/netstandard2.0/System.Runtime.CompilerServices.Unsafe.dll",
         "ref/netstandard2.0/System.Runtime.CompilerServices.Unsafe.xml",
-        "system.runtime.compilerservices.unsafe.4.5.2.nupkg.sha512",
+        "system.runtime.compilerservices.unsafe.4.5.3.nupkg.sha512",
         "system.runtime.compilerservices.unsafe.nuspec",
         "useSharedDesignerContext.txt",
         "version.txt"
       ]
     },
-    "System.Security.AccessControl/4.7.0": {
-      "sha512": "JECvTt5aFF3WT3gHpfofL2MNNP6v84sxtXxpqhLBCcDRzqsPBmHhQ6shv4DwwN2tRlzsUxtb3G9M3763rbXKDg==",
+    "System.Security.AccessControl/5.0.0": {
+      "sha512": "dagJ1mHZO3Ani8GH0PHpPEe/oYO+rVdbQjvjJkBRNQkX4t0r1iaeGn8+/ybkSLEan3/slM0t59SVdHzuHf2jmw==",
       "type": "package",
-      "path": "system.security.accesscontrol/4.7.0",
+      "path": "system.security.accesscontrol/5.0.0",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
+        "Icon.png",
         "LICENSE.TXT",
         "THIRD-PARTY-NOTICES.TXT",
         "lib/net46/System.Security.AccessControl.dll",
@@ -377,19 +381,20 @@
         "runtimes/win/lib/netcoreapp2.0/System.Security.AccessControl.xml",
         "runtimes/win/lib/netstandard1.3/System.Security.AccessControl.dll",
         "runtimes/win/lib/uap10.0.16299/_._",
-        "system.security.accesscontrol.4.7.0.nupkg.sha512",
+        "system.security.accesscontrol.5.0.0.nupkg.sha512",
         "system.security.accesscontrol.nuspec",
         "useSharedDesignerContext.txt",
         "version.txt"
       ]
     },
-    "System.Security.Principal.Windows/4.7.0": {
-      "sha512": "ojD0PX0XhneCsUbAZVKdb7h/70vyYMDYs85lwEI+LngEONe/17A0cFaRFqZU+sOEidcVswYWikYOQ9PPfjlbtQ==",
+    "System.Security.Principal.Windows/5.0.0": {
+      "sha512": "t0MGLukB5WAVU9bO3MGzvlGnyJPgUlcwerXn1kzBRjwLKixT96XV0Uza41W49gVd8zEMFu9vQEFlv0IOrytICA==",
       "type": "package",
-      "path": "system.security.principal.windows/4.7.0",
+      "path": "system.security.principal.windows/5.0.0",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
+        "Icon.png",
         "LICENSE.TXT",
         "THIRD-PARTY-NOTICES.TXT",
         "lib/net46/System.Security.Principal.Windows.dll",
@@ -431,7 +436,7 @@
         "runtimes/win/lib/netcoreapp2.1/System.Security.Principal.Windows.xml",
         "runtimes/win/lib/netstandard1.3/System.Security.Principal.Windows.dll",
         "runtimes/win/lib/uap10.0.16299/_._",
-        "system.security.principal.windows.4.7.0.nupkg.sha512",
+        "system.security.principal.windows.5.0.0.nupkg.sha512",
         "system.security.principal.windows.nuspec",
         "useSharedDesignerContext.txt",
         "version.txt"
@@ -440,17 +445,15 @@
   },
   "projectFileDependencyGroups": {
     ".NETStandard,Version=v2.1": [
-      "Microsoft.Win32.Registry >= 4.7.0",
-      "System.Management >= 4.7.0"
+      "Microsoft.Win32.Registry >= 5.0.0",
+      "System.Management >= 5.0.0"
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Mercury21\\.nuget\\packages\\": {},
-    "C:\\Microsoft\\Xamarin\\NuGet\\": {},
-    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
+    "C:\\Users\\Mercury21\\.nuget\\packages\\": {}
   },
   "project": {
-    "version": "0.9.0",
+    "version": "0.9.1.2",
     "restore": {
       "projectUniqueName": "C:\\Users\\Mercury21\\Source\\Repos\\Colt.NET_Core\\Cern\\Cern.Colt.csproj",
       "projectName": "Cern.Colt.NET",
@@ -458,20 +461,16 @@
       "packagesPath": "C:\\Users\\Mercury21\\.nuget\\packages\\",
       "outputPath": "C:\\Users\\Mercury21\\Source\\Repos\\Colt.NET_Core\\Cern\\obj\\",
       "projectStyle": "PackageReference",
-      "fallbackFolders": [
-        "C:\\Microsoft\\Xamarin\\NuGet\\",
-        "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
-      ],
       "configFilePaths": [
         "C:\\Users\\Mercury21\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "netstandard2.1"
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "\\\\winserver2016\\Software\\NuGet": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -492,11 +491,11 @@
         "dependencies": {
           "Microsoft.Win32.Registry": {
             "target": "Package",
-            "version": "[4.7.0, )"
+            "version": "[5.0.0, )"
           },
           "System.Management": {
             "target": "Package",
-            "version": "[4.7.0, )"
+            "version": "[5.0.0, )"
           }
         },
         "imports": [
@@ -514,7 +513,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.101\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.404\\RuntimeIdentifierGraph.json"
       }
     }
   }

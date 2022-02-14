@@ -70,7 +70,7 @@ namespace Cern.Jet.Random
         /// <param name="randomGenerator"></param>
         public Normal(double mean, double standardDeviation, RandomEngine randomGenerator)
         {
-            RandomGenerator = randomGenerator;
+            this.RandomGenerator = randomGenerator;
             SetState(mean, standardDeviation);
         }
 
@@ -111,8 +111,8 @@ namespace Cern.Jet.Random
             double x, y, r, z;
             do
             {
-                x = 2.0 * randomGenerator.Raw() - 1.0;
-                y = 2.0 * randomGenerator.Raw() - 1.0;
+                x = 2.0 * RandomGenerator.Raw() - 1.0;
+                y = 2.0 * RandomGenerator.Raw() - 1.0;
                 r = x * x + y * y;
             } while (r >= 1.0);
 
@@ -145,7 +145,7 @@ namespace Cern.Jet.Random
             }
             set
             {
-                base.RandomGenerator = randomGenerator;
+                base.RandomGenerator = value;
                 this.cacheFilled = false;
             }
         }

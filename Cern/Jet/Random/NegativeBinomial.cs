@@ -56,7 +56,7 @@ namespace Cern.Jet.Random
         /// <param name="randomGenerator">a uniform random number generator.</param>
         public NegativeBinomial(int n, double p, RandomEngine randomGenerator)
         {
-            RandomGenerator = randomGenerator;
+            base.RandomGenerator = randomGenerator;
             SetNandP(n, p);
             this.gamma = new Gamma(n, 1.0, randomGenerator);
             this.poisson = new Poisson(0.0, randomGenerator);

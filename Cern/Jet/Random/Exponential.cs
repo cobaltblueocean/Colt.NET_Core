@@ -48,7 +48,7 @@ namespace Cern.Jet.Random
         /// <param name="randomGenerator"></param>
         public Exponential(double lambda, RandomEngine randomGenerator)
         {
-            RandomGenerator = randomGenerator;
+            base.RandomGenerator = randomGenerator;
             SetState(lambda);
         }
 
@@ -79,7 +79,7 @@ namespace Cern.Jet.Random
         /// <returns></returns>
         public double NextDouble(double lambda)
         {
-            return -System.Math.Log(randomGenerator.Raw()) / lambda;
+            return -System.Math.Log(RandomGenerator.Raw()) / lambda;
         }
 
         /// <summary>

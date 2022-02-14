@@ -50,7 +50,7 @@ namespace Cern.Jet.Random
         /// <param name="randomGenerator"></param>
         public BreitWigner(double mean, double gamma, double cut, RandomEngine randomGenerator)
         {
-            RandomGenerator = randomGenerator;
+            base.RandomGenerator = randomGenerator;
             SetState(mean, gamma, cut);
         }
 
@@ -77,14 +77,14 @@ namespace Cern.Jet.Random
             if (gamma == 0.0) return mean;
             if (cut == Double.NegativeInfinity)
             { // don't cut
-                rval = 2.0 * randomGenerator.Raw() - 1.0;
+                rval = 2.0 * RandomGenerator.Raw() - 1.0;
                 displ = 0.5 * gamma * System.Math.Tan(rval * (System.Math.PI / 2.0));
                 return mean + displ;
             }
             else
             {
                 val = System.Math.Atan(2.0 * cut / gamma);
-                rval = 2.0 * randomGenerator.Raw() - 1.0;
+                rval = 2.0 * RandomGenerator.Raw() - 1.0;
                 displ = 0.5 * gamma * System.Math.Tan(rval * val);
 
                 return mean + displ;

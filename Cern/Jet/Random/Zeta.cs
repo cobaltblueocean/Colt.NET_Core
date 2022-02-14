@@ -63,7 +63,7 @@ namespace Cern.Jet.Random
         /// <param name="randomGenerator"></param>
         public Zeta(double ro, double pk, RandomEngine randomGenerator)
         {
-            RandomGenerator = randomGenerator;
+            base.RandomGenerator = randomGenerator;
             SetState(ro, pk);
         }
 
@@ -154,7 +154,7 @@ namespace Cern.Jet.Random
         /// <returns></returns>
         public override int NextInt()
         {
-            return (int)GenerateZeta(ro, pk, randomGenerator);
+            return (int)GenerateZeta(ro, pk, RandomGenerator);
         }
 
         /// <summary>

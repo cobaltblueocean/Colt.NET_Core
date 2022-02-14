@@ -67,7 +67,7 @@ namespace Cern.Jet.Random
         /// <param name="randomGenerator"></param>
         public PoissonSlow(double mean, RandomEngine randomGenerator)
         {
-            RandomGenerator = randomGenerator;
+            base.RandomGenerator = randomGenerator;
             SetMean(mean);
         }
 
@@ -124,7 +124,7 @@ namespace Cern.Jet.Random
                 do
                 {
                     poisson++;
-                    product *= randomGenerator.Raw();
+                    product *= RandomGenerator.Raw();
                 } while (product >= g);
                 // bug in CLHEP 1.4.0: was "} while ( product > g );"
                 return poisson;
@@ -167,7 +167,7 @@ namespace Cern.Jet.Random
             double product;
             for (product = 1.0; product >= bound && product > 0.0; count++)
             {
-                product *= randomGenerator.Raw();
+                product *= RandomGenerator.Raw();
             }
             if (product <= 0.0 && bound > 0.0) return (int)System.Math.Round(mean); // detected endless loop due to rounding errors
             return count - 1;

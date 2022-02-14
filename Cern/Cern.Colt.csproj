@@ -5,7 +5,7 @@
     <AssemblyName>Cern.Colt</AssemblyName>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageId>Cern.Colt.NET</PackageId>
-    <Version>0.9.1.1</Version>
+    <Version>0.9.1.2</Version>
     <Authors>Kei Nakai</Authors>
     <Company />
     <Product>Cern.Colt.NET Library</Product>
@@ -14,14 +14,10 @@ Some code such as Matrix, etc. are based on code written by Mauro Mazzieri.
 The files based on Mauro are clearly states as based on his work.</Description>
     <Copyright>Kei Nakai</Copyright>
     <PackageProjectUrl>https://github.com/cobaltblueocean/Colt.NET_Core</PackageProjectUrl>
-    <AssemblyVersion>0.9.1.1</AssemblyVersion>
+    <AssemblyVersion>0.9.1.2</AssemblyVersion>
     <RepositoryUrl>https://github.com/cobaltblueocean/Colt.NET_Core</RepositoryUrl>
     <RepositoryType>GitHub</RepositoryType>
-    <PackageReleaseNotes>- Implemented Colt library.
-- Added Extension methods to support IDictionary, Premitive Type, Object type, IEnumerable type, IList and Array classes/structs
-- Bug fix
-- Added Array transpose methods
-- Changed AlmostEqual method to be ExpressionTree logic.</PackageReleaseNotes>
+    <PackageReleaseNotes>- Bug fix for RandomEngine implementation for Distribution classes</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>

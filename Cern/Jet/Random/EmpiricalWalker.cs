@@ -179,7 +179,7 @@ namespace Cern.Jet.Random
         /// <exception cref="ArgumentException">if at least one of the three conditions above is violated.</exception>
         public EmpiricalWalker(double[] pdf, int interpolationType, RandomEngine randomGenerator)
         {
-            RandomGenerator = randomGenerator;
+            base.RandomGenerator = randomGenerator;
             SetState(pdf, interpolationType);
             SetState2(pdf);
         }
@@ -218,7 +218,7 @@ namespace Cern.Jet.Random
         {
             int c = 0;
             double u, f;
-            u = this.randomGenerator.Raw();
+            u = this.RandomGenerator.Raw();
             //#if KNUTH_CONVENTION
             //    c = (int)(u*(g->K));
             //#else

@@ -57,7 +57,7 @@ namespace Cern.Jet.Random
         /// <param name="randomGenerator"></param>
         public Logarithmic(double p, RandomEngine randomGenerator)
         {
-            RandomGenerator = randomGenerator;
+            base.RandomGenerator = randomGenerator;
             SetState(p);
         }
 
@@ -120,7 +120,7 @@ namespace Cern.Jet.Random
                 else h = System.Math.Log(1.0 - a);
             }
 
-            u = randomGenerator.Raw();
+            u = RandomGenerator.Raw();
             if (a < 0.97)
             {                        // Inversion/Chop-down 
                 k = 1;
@@ -136,7 +136,7 @@ namespace Cern.Jet.Random
             }
 
             if (u > a) return 1;                 // Transformation
-            u = randomGenerator.Raw();
+            u = RandomGenerator.Raw();
             v = u;
             q = 1.0 - System.Math.Exp(v * h);
             if (u <= q * q)

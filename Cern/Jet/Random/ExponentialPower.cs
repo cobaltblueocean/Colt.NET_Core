@@ -58,7 +58,7 @@ namespace Cern.Jet.Random
         /// <exception cref="ArgumentException">if <i>tau &lt; 1.0</i>.</exception>
         public ExponentialPower(double tau, RandomEngine randomGenerator)
         {
-            RandomGenerator = randomGenerator;
+            base.RandomGenerator = randomGenerator;
             SetState(tau);
         }
 
@@ -92,10 +92,10 @@ namespace Cern.Jet.Random
             // GENERATOR 
             do
             {
-                u = randomGenerator.Raw();                             // U(0/1)      
+                u = RandomGenerator.Raw();                             // U(0/1)      
                 u = (2.0 * u) - 1.0;                                     // U(-1.0/1.0) 
                 u1 = System.Math.Abs(u);                                      // u1=|u|     
-                v = randomGenerator.Raw();                             // U(0/1) 
+                v = RandomGenerator.Raw();                             // U(0/1) 
 
                 if (u1 <= sm1)
                 { // Uniform hat-function for x <= (1-1/tau)   

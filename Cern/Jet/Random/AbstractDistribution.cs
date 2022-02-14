@@ -40,7 +40,7 @@ namespace Cern.Jet.Random
     {
 
         #region Local Variables
-        protected RandomEngine randomGenerator;
+        private RandomEngine _randomGenerator;
 
         #endregion
 
@@ -50,8 +50,8 @@ namespace Cern.Jet.Random
         /// </summary>
         public virtual RandomEngine RandomGenerator
         {
-            get { return randomGenerator; }
-            set { randomGenerator = value; }
+            get { return _randomGenerator; }
+            set { _randomGenerator = value; }
         }
         #endregion
 
@@ -113,7 +113,7 @@ namespace Cern.Jet.Random
         public virtual Object Clone()
         {
             AbstractDistribution copy = (AbstractDistribution)base.MemberwiseClone();
-            if (this.randomGenerator != null) copy.randomGenerator = (RandomEngine)this.randomGenerator.Clone();
+            if (this.RandomGenerator != null) copy.RandomGenerator = (RandomEngine)this.RandomGenerator.Clone();
             return copy;
         }
 

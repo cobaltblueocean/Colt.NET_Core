@@ -58,7 +58,7 @@ namespace Cern.Jet.Random
         public override Object Clone()
         {
             BreitWignerMeanSquare copy = (BreitWignerMeanSquare)base.Clone();
-            if (this.uniform != null) copy.uniform = new Uniform(copy.randomGenerator);
+            if (this.uniform != null) copy.uniform = new Uniform(copy.RandomGenerator);
             return copy;
         }
 

@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>Cern.Colt.NET</id>
+    <version>0.9.1.2</version>
+    <authors>Kei Nakai</authors>
+    <projectUrl>https://github.com/cobaltblueocean/Colt.NET_Core</projectUrl>
+    <description>Ported CERN Colt Library from Java to .NET Core.
+Some code such as Matrix, etc. are based on code written by Mauro Mazzieri.
+The files based on Mauro are clearly states as based on his work.</description>
+    <releaseNotes>- Bug fix for RandomEngine implementation for Distribution classes</releaseNotes>
+    <copyright>Kei Nakai</copyright>
+    <repository type="GitHub" url="https://github.com/cobaltblueocean/Colt.NET_Core" />
+    <dependencies>
+      <group targetFramework=".NETStandard2.1">
+        <dependency id="Microsoft.Win32.Registry" version="5.0.0" exclude="Build,Analyzers" />
+        <dependency id="System.Management" version="5.0.0" exclude="Build,Analyzers" />
+      </group>
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="C:\Users\Mercury21\Source\Repos\Colt.NET_Core\Cern\bin\Debug\netstandard2.1\ja-JP\Cern.Colt.resources.dll" target="lib\netstandard2.1\ja-JP\Cern.Colt.resources.dll" />
+    <file src="C:\Users\Mercury21\Source\Repos\Colt.NET_Core\Cern\bin\Debug\netstandard2.1\Cern.Colt.dll" target="lib\netstandard2.1\Cern.Colt.dll" />
+  </files>
+</package>

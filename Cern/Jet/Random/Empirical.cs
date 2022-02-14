@@ -67,7 +67,7 @@ namespace Cern.Jet.Random
         /// <exception cref="ArgumentException">if at least one of the three conditions above is violated.</exception>
         public Empirical(double[] pdf, int interpolationType, RandomEngine randomGenerator)
         {
-            RandomGenerator = randomGenerator;
+            base.RandomGenerator = randomGenerator;
             SetState(pdf, interpolationType);
         }
 
@@ -102,7 +102,7 @@ namespace Cern.Jet.Random
         /// <returns></returns>
         public override double NextDouble()
         {
-            double rand = randomGenerator.Raw();
+            double rand = RandomGenerator.Raw();
             if (this._cdf == null) return rand; // Non-existing pdf
 
             // binary search in cumulative distribution function:
