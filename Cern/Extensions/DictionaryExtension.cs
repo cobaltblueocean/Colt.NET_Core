@@ -52,9 +52,9 @@ namespace System.Collections.Generic
         {
             if (key != null)
             {
-                if (originalDictionary.Any(x => x.Key.AreObjectsEqual(key)))
+                if (originalDictionary.ContainsKey(key))
                 {
-                    return originalDictionary.FirstOrDefault(x => x.Key.AreObjectsEqual(key)).Value;
+                    return originalDictionary.FirstOrDefault(x => x.Key.Equals(key)).Value;
                 }
                 else
                 {
@@ -67,7 +67,7 @@ namespace System.Collections.Generic
             }
         }
 
-public static IDictionary<T1, T2> Head<T1, T2>(this IDictionary<T1, T2> originalDictionary, T1 key, Boolean inclusive = false)
+        public static IDictionary<T1, T2> Head<T1, T2>(this IDictionary<T1, T2> originalDictionary, T1 key, Boolean inclusive = false)
         {
             var keys = originalDictionary.Keys.ToArray<T1>();
             var tmp = new List<T1>();
@@ -290,7 +290,7 @@ public static IDictionary<T1, T2> Head<T1, T2>(this IDictionary<T1, T2> original
         {
             var kv = new KeyValuePair<TKey, TValue>[dic.Count];
             dic.CopyTo(kv, 0);
-            List < KeyValuePair < TKey, TValue >> l = kv.ToList();
+            List<KeyValuePair<TKey, TValue>> l = kv.ToList();
             l.TrimExcess();
             var newDic = new Dictionary<TKey, TValue>(l.Count);
             AutoParallel.AutoParallelForEach(l, (p) =>

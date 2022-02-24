@@ -6,10 +6,12 @@ using System.Threading.Tasks;
 using System.ComponentModel;
 using System.Globalization;
 using System.Runtime.CompilerServices;
-using Cern.Properties;
+using Cern.Colt.Properties;
 
 namespace Cern
 {
+    using Properties = Cern.Colt.Properties;
+
     public class LocalizedResources : INotifyPropertyChanged
     {
         #region Singleton Class Implementation
@@ -708,6 +710,31 @@ namespace Cern
         public String PlatformNotSupportedMessage
         {
             get { return Properties.Resources.PlatformNotSupportedMessage; }
+        }
+
+        public String CannotCompareValues
+        {
+            get { return Properties.Resources.CannotCompareValues; }
+        }
+
+        public String CannotCompareProperty
+        {
+            get { return Properties.Resources.CannotCompareProperty; }
+        }
+
+        public String MismatchWithPropertyFound
+        {
+            get { return Properties.Resources.MismatchWithPropertyFound; }
+        }
+
+        public String ItemInPropertyCollectionDoesNotMatch
+        {
+            get { return Properties.Resources.ItemInPropertyCollectionDoesNotMatch; }
+        }
+
+        public String CollectionCountsForPropertyDoNotMatch
+        {
+            get { return Properties.Resources.CollectionCountsForPropertyDoNotMatch; }
         }
     }
 }

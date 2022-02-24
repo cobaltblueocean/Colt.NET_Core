@@ -168,6 +168,15 @@
   <data name="AutoParallel_ThresholdValueNegative" xml:space="preserve">
     <value>The threshold value cannot be negative or zero.</value>
   </data>
+  <data name="CannotCompareProperty" xml:space="preserve">
+    <value>Cannot compare property '{0}.{1}'.</value>
+  </data>
+  <data name="CannotCompareValues" xml:space="preserve">
+    <value>Cannot compare values. {0}</value>
+  </data>
+  <data name="CollectionCountsForPropertyDoNotMatch" xml:space="preserve">
+    <value>Collection counts for property '{0}.{1}' do not match.</value>
+  </data>
   <data name="DownloadInfoConnectionClosed" xml:space="preserve">
     <value>Could not download {0} - FTP server closed the connection.</value>
   </data>
@@ -477,6 +486,9 @@
   <data name="InvalidCast_FromTo" xml:space="preserve">
     <value>Invalid cast from '{0}' to '{1}'.</value>
   </data>
+  <data name="ItemInPropertyCollectionDoesNotMatch" xml:space="preserve">
+    <value>Item {0} in property collection '{1}.{2}' does not match.</value>
+  </data>
   <data name="Matrix_MustHaveSameNumberOfCell" xml:space="preserve">
     <value>Must have same number of cells: length={0}, Size={1}</value>
   </data>
@@ -500,6 +512,9 @@
   </data>
   <data name="MDA_InvalidFormatForUtc" xml:space="preserve">
     <value>Cannot apply format "{0}" to the date "{1}" as the date is already in universal time.</value>
+  </data>
+  <data name="MismatchWithPropertyFound" xml:space="preserve">
+    <value>Mismatch with property '{0}.{1}' found.</value>
   </data>
   <data name="PlatformNotSupportedMessage" xml:space="preserve">
     <value>Platform is not supported.</value>

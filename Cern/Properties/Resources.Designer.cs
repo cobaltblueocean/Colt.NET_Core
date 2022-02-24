@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Cern.Properties {
+namespace Cern.Colt.Properties {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace Cern.Properties {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Cern.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Cern.Colt.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -210,6 +210,33 @@ namespace Cern.Properties {
         internal static string AutoParallel_ThresholdValueNegative {
             get {
                 return ResourceManager.GetString("AutoParallel_ThresholdValueNegative", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cannot compare property &apos;{0}.{1}&apos;..
+        /// </summary>
+        internal static string CannotCompareProperty {
+            get {
+                return ResourceManager.GetString("CannotCompareProperty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cannot compare values. {0}.
+        /// </summary>
+        internal static string CannotCompareValues {
+            get {
+                return ResourceManager.GetString("CannotCompareValues", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Collection counts for property &apos;{0}.{1}&apos; do not match..
+        /// </summary>
+        internal static string CollectionCountsForPropertyDoNotMatch {
+            get {
+                return ResourceManager.GetString("CollectionCountsForPropertyDoNotMatch", resourceCulture);
             }
         }
         
@@ -1141,6 +1168,15 @@ namespace Cern.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Item {0} in property collection &apos;{1}.{2}&apos; does not match..
+        /// </summary>
+        internal static string ItemInPropertyCollectionDoesNotMatch {
+            get {
+                return ResourceManager.GetString("ItemInPropertyCollectionDoesNotMatch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Must have same number of cells: length={0}, Size={1}.
         /// </summary>
         internal static string Matrix_MustHaveSameNumberOfCell {
@@ -1209,6 +1245,15 @@ namespace Cern.Properties {
         internal static string MDA_InvalidFormatForUtc {
             get {
                 return ResourceManager.GetString("MDA_InvalidFormatForUtc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mismatch with property &apos;{0}.{1}&apos; found..
+        /// </summary>
+        internal static string MismatchWithPropertyFound {
+            get {
+                return ResourceManager.GetString("MismatchWithPropertyFound", resourceCulture);
             }
         }
         

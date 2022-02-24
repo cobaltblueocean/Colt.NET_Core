@@ -168,6 +168,15 @@
   <data name="AutoParallel_ThresholdValueNegative" xml:space="preserve">
     <value>しきい値を負またはゼロにすることはできません。</value>
   </data>
+  <data name="CannotCompareProperty" xml:space="preserve">
+    <value>プロパティを比較できません。 '{0}.{1}'.</value>
+  </data>
+  <data name="CannotCompareValues" xml:space="preserve">
+    <value>値を比較できません。 {0}</value>
+  </data>
+  <data name="CollectionCountsForPropertyDoNotMatch" xml:space="preserve">
+    <value>プロパティ '{0}.{1}' 中のコレクションの数が違います。</value>
+  </data>
   <data name="DownloadInfoConnectionClosed" xml:space="preserve">
     <value>{0} をダウンロードできませんでした - FTP サーバーが接続を閉じました。</value>
   </data>
@@ -477,6 +486,9 @@
   <data name="InvalidCast_FromTo" xml:space="preserve">
     <value>'{0}' から '{1}' への無効なキャスト。</value>
   </data>
+  <data name="ItemInPropertyCollectionDoesNotMatch" xml:space="preserve">
+    <value>プロパティ・コレクション '{1}.{2}' 中のアイテム {0} が違います。</value>
+  </data>
   <data name="Matrix_MustHaveSameNumberOfCell" xml:space="preserve">
     <value>同じ数のセルが必要です: 長さ={0}、サイズ={1}</value>
   </data>
@@ -500,6 +512,9 @@
   </data>
   <data name="MDA_InvalidFormatForUtc" xml:space="preserve">
     <value>日付はすでに世界時であるため、日付 "{1}" に形式 "{0}" を適用できません。</value>
+  </data>
+  <data name="MismatchWithPropertyFound" xml:space="preserve">
+    <value>プロパティ '{0}.{1}' の違いが見つかりました。</value>
   </data>
   <data name="PlatformNotSupportedMessage" xml:space="preserve">
     <value>プラットフォームがサポートされていません。 </value>
