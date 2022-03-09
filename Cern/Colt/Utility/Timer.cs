@@ -26,7 +26,7 @@ namespace Cern.Colt
         {
             get
             {
-                return _endDateTime.GetTime() - _initialDateTime.GetTime();
+                return DateTimeUtility.GetTime(_endDateTime) - DateTimeUtility.GetTime(_initialDateTime);
             }
         }
 

@@ -55,7 +55,7 @@ namespace Cern.Jet.Random.Engine
         /// Constructs and returns a random number generator seeded with the given date.
         /// </summary>
         /// <param name="d">typically <see cref="System.DateTime.Now"/></param>
-        public DRand(DateTime d): this((int)d.GetTime())
+        public DRand(DateTime d): this((int)DateTimeUtility.GetTime(d))
         {
         }
         #endregion

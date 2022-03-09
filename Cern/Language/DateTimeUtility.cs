@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace System
 {
-    public static class DateTimeExtension
+    internal static class DateTimeUtility
     {
-        public static Int64 GetTime(this DateTime d)
+        public static Int64 GetTime(DateTime d)
         {
             Int64 retval = 0;
             var st = new DateTime(1970, 1, 1);
