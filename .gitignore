@@ -23,3 +23,10 @@
 /Cern.Colt.Tests/obj/Debug/netcoreapp3.1/Cern.Colt.Tests.dll
 /Cern.Colt.Tests/obj/Cern.Colt.Tests.csproj.nuget.dgspec.json
 /Cern.Colt.Tests/obj/project.assets.json
+Cern/obj/Debug/netstandard2.1/Cern.Colt.Properties.Resources.resources
+Cern/obj/Debug/netstandard2.1/Cern.Colt.Properties.Resource.ja-JP.resources
+Cern/obj/Debug/netstandard2.1/Cern.Colt.GeneratedMSBuildEditorConfig.editorconfig
+Cern/obj/Debug/netstandard2.1/Cern.Colt.csproj.FileListAbsolute.txt
+Cern/obj/Debug/netstandard2.1/Cern.Colt.AssemblyInfo.cs
+Cern/obj/Debug/netstandard2.1/.NETStandard,Version=v2.1.AssemblyAttributes.cs
+Cern/bin/Debug/netstandard2.1/Cern.Colt.deps.json
