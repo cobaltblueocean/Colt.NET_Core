@@ -130,10 +130,17 @@ namespace Cern.Jet.Random.Engine
         /// <returns></returns>
         public virtual double NextDouble()
         {
-            long r1, r2;
-            r1 = NextLong();
-            r2 = NextLong();
-            return (r1 * (double)(2 << 11) + r2) / (double)(2 << 53);
+            //long r1, r2;
+            //r1 = NextLong();
+            //r2 = NextLong();
+            //return (r1 * (double)(2 << 11) + r2) / (double)(2 << 53);
+            double var1;
+            do
+            {
+                var1 = ((double)this.NextLong() - -9.223372036854776E18D) * 5.421010862427522E-20D;
+            } while (!(var1 > 0.0D) || !(var1 < 1.0D));
+
+            return var1;
         }
 
         /// <summary>
