@@ -162,7 +162,20 @@ namespace System
                                 result = false;
                             }
                         }
+                        catch (NotImplementedException ne)
+                        {
+                            continue;
+                        }
+
                         catch (System.Reflection.TargetParameterCountException te)
+                        {
+                            continue;
+                        }
+                        catch (Exception ex) when (ex.InnerException is NotImplementedException)
+                        {
+                            continue;
+                        }
+                        catch (Exception ex) when (ex.InnerException is NotSupportedException)
                         {
                             continue;
                         }

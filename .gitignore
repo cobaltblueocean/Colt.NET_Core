@@ -30,3 +30,13 @@ Cern/obj/Debug/netstandard2.1/Cern.Colt.csproj.FileListAbsolute.txt
 Cern/obj/Debug/netstandard2.1/Cern.Colt.AssemblyInfo.cs
 Cern/obj/Debug/netstandard2.1/.NETStandard,Version=v2.1.AssemblyAttributes.cs
 Cern/bin/Debug/netstandard2.1/Cern.Colt.deps.json
+Cern.Colt.Tests/bin/Debug/netcoreapp3.1/Cern.Colt.Tests.deps.json
+Cern.Colt.Tests/bin/Debug/netcoreapp3.1/Cern.Colt.Tests.runtimeconfig.dev.json
+Cern.Colt.Tests/bin/Debug/netcoreapp3.1/Cern.Colt.Tests.runtimeconfig.json
+Cern.Colt.Tests/obj/Cern.Colt.Tests.csproj.nuget.g.props
+Cern.Colt.Tests/obj/Cern.Colt.Tests.csproj.nuget.g.targets
+Cern.Colt.Tests/obj/Debug/netcoreapp3.1/.NETCoreApp,Version=v3.1.AssemblyAttributes.cs
+Cern.Colt.Tests/obj/Debug/netcoreapp3.1/Cern.Colt.Tests.AssemblyInfo.cs
+Cern.Colt.Tests/obj/Debug/netcoreapp3.1/Cern.Colt.Tests.csproj.CopyComplete
+Cern.Colt.Tests/obj/Debug/netcoreapp3.1/Cern.Colt.Tests.csproj.FileListAbsolute.txt
+Cern.Colt.Tests/obj/Debug/netcoreapp3.1/Cern.Colt.Tests.GeneratedMSBuildEditorConfig.editorconfig
