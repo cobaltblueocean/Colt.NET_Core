@@ -16,6 +16,7 @@ namespace Cern.Colt.Tests
 
     using NUnit.Framework;
     using Cern.Colt.Function;
+    using _algebra = Cern.Colt.Matrix.LinearAlgebra.Algebra;
 
     /// <summary>
     /// Test for 2-d matrix of doubles.
@@ -79,6 +80,23 @@ namespace Cern.Colt.Tests
                 new DenseDoubleMatrix2D(new[] { new[] { 2d, 9d }, new[] { 5d, 12d }, new[] { 8d, 10d } });
             Assert.AreEqual(
                 new DenseDoubleMatrix2D(new[] { new[] { 85d, 138d }, new[] { 86d, 158d }, new[] { 69d, 149d }, new[] { 168d, 339d } }), Algebra.Mult(c, d));
+        }
+
+
+        [Test]
+        public void TestInverse()
+        {
+            double[][] indep = new double[2][]{ new double[2]{ 1000d, 4.534295808307033d }, new double[2]{ 4.534295808307033d, 83.9744901410694d } };
+            DoubleMatrix2D matrix = DoubleFactory2D.Dense.Make(indep);
+
+            Assert.IsTrue(Diagonal.Inverse(matrix));
+
+            //DoubleMatrix2D invExpected = DoubleFactory2D.Dense.Make(new double[2][] { new double[2] { -380765.17865137121d, 1727501.9535081913d }, new double[2] { 83.9744901410694d, -380.76517865137123d } });
+            DoubleMatrix2D invExpected = DoubleFactory2D.Dense.Make(new double[2][] { new double[2] { -5.792061672297568E-4, 0.22054153974121438 }, new double[2] { 0.22054153974121438, -4.863854257968181E-5 } });
+
+            DoubleMatrix2D invResult = _algebra.Inverse(matrix);
+
+            Assert.AreEqual(invResult.ToArray(), invExpected.ToArray());
         }
     }
 }

@@ -340,10 +340,10 @@
             }
 
             var swapper = new Cern.Colt.Swapper((a, b) =>
-        {
-            A.ViewRow(a).Swap(A.ViewRow(b));
-        }
-    );
+                {
+                    A.ViewRow(a).Swap(A.ViewRow(b));
+                }
+            );
 
             Cern.Colt.GenericPermuting.Permute(indexes, swapper, work, null);
             return A;
@@ -437,10 +437,7 @@
 
         public static DoubleMatrix2D Solve(DoubleMatrix2D A, DoubleMatrix2D B)
         {
-            LUDecomposition lu = new LUDecomposition(A);
-            QRDecomposition qr = new QRDecomposition(B);
-
-            return (A.Rows == A.Columns ? (lu.Solve(B)) : (qr.Solve(B)));
+            return (A.Rows == A.Columns ? (Lu(A).Solve(B)) : (QR(A).Solve(B)));
         }
 
         /// <summary>
@@ -930,7 +927,7 @@
         /// </summary>
         /// <param name="matrix"></param>
         /// <returns></returns>
-        private static QRDecomposition Qr(DoubleMatrix2D matrix)
+        private static QRDecomposition QR(DoubleMatrix2D matrix)
         {
             return new QRDecomposition(matrix);
         }

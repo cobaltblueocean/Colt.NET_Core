@@ -23,6 +23,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Cern.Colt.List;
+using Cern.Colt.Matrix.Implementation;
 
 namespace Cern.Colt.Matrix.LinearAlgebra
 {
@@ -41,6 +42,7 @@ namespace Cern.Colt.Matrix.LinearAlgebra
 
         //protected Algebra algebra;
 
+        protected double _tolerance;
         protected double[] workDouble;
         protected int[] work1;
         protected int[] work2;
@@ -54,7 +56,7 @@ namespace Cern.Colt.Matrix.LinearAlgebra
 
         public DoubleMatrix2D LU
         {
-            get { return _lu.Copy();}
+            get { return _lu;}
             set { _lu = value; }
         }
 
@@ -107,6 +109,7 @@ namespace Cern.Colt.Matrix.LinearAlgebra
 
         public LUDecompositionQuick(double tolerance)
         {
+            _tolerance = tolerance;
             //this.algebra = new Algebra(tolerance);
         }
         #endregion
@@ -144,7 +147,7 @@ namespace Cern.Colt.Matrix.LinearAlgebra
 
             if (m * n == 0)
             {
-                LU = LU;
+                SetLU(LU);
                 return; // nothing to do
             }
 
@@ -222,16 +225,37 @@ namespace Cern.Colt.Matrix.LinearAlgebra
                     pivsign = -pivsign;
                 }
 
+                var array = ((DenseDoubleMatrix1D)LUrows[0]).ToJaggedArray();
+                for (int r = 0; r < array.Length; r++)
+                {
+                    for (int c = 0; c < array[0].Length; c++)
+                    {
+                        LU[r, c] =  array[r][c];
+                    }
+                }
+                //LU[]
+
                 // Compute multipliers.
                 double jj;
                 if (j < m && (jj = LU[j, j]) != 0.0)
                 {
                     multFunction.Multiplicator = 1 / jj;
-                    LU.ViewColumn(j).ViewPart(j + 1, m - (j + 1)).Assign(multFunction);
+                    var LUv = ((DenseDoubleMatrix1D)LU.ViewColumn(j).ViewPart(j + 1, m - (j + 1)).Assign(multFunction));
+                    LUv.Stride = LUrows[0].Stride;
+                    LUv.Zero = LUrows[0].Zero;
+                    LUv.Size = LUrows[0].Size;
+                    
+                    var result = LUv.ToJaggedArray();
+                    for (int r = 0; r < result.Length; r++)
+                    {
+                        for (int c = 0; c < result[0].Length; c++)
+                        {
+                            LU[r, c] = result[r][c];
+                        }
+                    }
                 }
-
             }
-            LU = LU;
+            SetLU(LU);
         }
 
         public void Decompose(DoubleMatrix2D A, int semiBandwidth)
@@ -253,7 +277,7 @@ namespace Cern.Colt.Matrix.LinearAlgebra
 
             if (m * n == 0)
             {
-                LU = A;
+                SetLU(A);
                 return; // nothing to do
             }
 
@@ -270,7 +294,7 @@ namespace Cern.Colt.Matrix.LinearAlgebra
                     if (i < n - 1) A[i + 1, i] = A[i + 1, i] / ei;
                 }
             }
-            LU = A;
+            SetLU(A);
         }
 
         public double Det()
@@ -515,10 +539,36 @@ namespace Cern.Colt.Matrix.LinearAlgebra
             return A;
         }
 
+        /// <summary>
+        /// Sets the combined lower and upper triangular factor, <tt>LU</tt>.
+        /// The parameter is not checked; make sure it is indeed a proper LU decomposition.
+        /// </summary>
+        /// <param name="LU"></param>
+        public void SetLU(DoubleMatrix2D LU)
+        {
+            this.LU = LU;
+            this.isNonSingular = GetIsNonsingular(LU);
+        }
         #endregion
 
         #region Local Protected Methods
-
+        /// <summary>
+        /// Returns whether the matrix is nonsingular.
+        /// </summary>
+        /// <param name="matrix"></param>
+        /// <returns>true if <tt>matrix</tt> is nonsingular; false otherwise.</returns>
+        protected Boolean GetIsNonsingular(DoubleMatrix2D matrix)
+        {
+            int m = matrix.Rows;
+            int n = matrix.Columns;
+            double epsilon = _tolerance;  //Algebra.property().tolerance(); // consider numerical instability
+            for (int j = Math.Min(n, m); --j >= 0;)
+            {
+                //if (matrix.getQuick(j,j) == 0) return false;
+                if (Math.Abs(matrix[j, j]) <= epsilon) return false;
+            }
+            return true;
+        }
         #endregion
 
         #region Local Private Methods

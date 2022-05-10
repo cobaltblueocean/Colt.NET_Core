@@ -16,6 +16,8 @@
 namespace Cern.Colt.Matrix.Implementation
 {
     using System;
+    using System.Collections;
+    using System.Collections.Generic;
 
     using Function;
 
@@ -348,9 +350,9 @@ namespace Cern.Colt.Matrix.Implementation
             if (y == this) return;
             CheckSize(y);
 
-            double[] elems = Elements;
-            double[] otherElems = y.Elements;
-            if (Elements == null || otherElems == null) throw new ApplicationException();
+            //double[] elems = Elements;
+            //double[] otherElems = y.Elements;
+            if (Elements == null || y.Elements == null) throw new ApplicationException();
             int s = Stride;
             int ys = y.Stride;
 
@@ -358,9 +360,12 @@ namespace Cern.Colt.Matrix.Implementation
             int otherIndex = y.Index(0);
             for (int k = Size; --k >= 0;)
             {
-                double tmp = elems[index];
-                elems[index] = otherElems[otherIndex];
-                otherElems[otherIndex] = tmp;
+                double tmp = Elements[index];
+                double tmp2 = Elements[otherIndex];
+                Elements[index] = y.Elements[otherIndex];
+                Elements[otherIndex] = y.Elements[index];
+                y.Elements[otherIndex] = tmp;
+                y.Elements[index] = tmp2;
                 index += s;
                 otherIndex += ys;
             }
@@ -567,6 +572,36 @@ namespace Cern.Colt.Matrix.Implementation
         protected override DoubleMatrix1D ViewSelectionLike(int[] offsets)
         {
             return new SelectedDenseDoubleMatrix1D(Elements, offsets);
+        }
+
+        public virtual double[][] ToJaggedArray()
+        {
+            return ToJaggedArray(this.Size);
+        }
+
+        public virtual double[][] ToJaggedArray(int size)
+        {
+            var rows = this.Elements.Length / size;
+            var cols = this.Size;
+
+            var result = new double[rows, cols];
+            int r = 0, c = 0;
+            for (int i = 0; i < this.Elements.Length; i++)
+            {
+                result[r, c] = this[i];
+
+                if (c < cols - 1)
+                {
+                    c++;
+                }
+                else
+                {
+                    r++;
+                    c = 0;
+                }
+            }
+
+            return result.ToJagged();
         }
 
         public override string ToString(int index)

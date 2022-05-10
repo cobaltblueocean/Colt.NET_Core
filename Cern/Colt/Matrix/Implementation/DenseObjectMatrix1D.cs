@@ -380,9 +380,9 @@ namespace Cern.Colt.Matrix.Implementation
             if (y == this) return;
             CheckSize(y);
 
-            Object[] elems = this.Elements;
-            Object[] otherElems = y.Elements;
-            if (Elements == null || otherElems == null) throw new NullReferenceException();
+            //Object[] elems = this.Elements;
+            //Object[] otherElems = y.Elements;
+            if (Elements == null || y.Elements == null) throw new NullReferenceException();
             int s = this.Stride;
             int ys = y.Stride;
 
@@ -390,9 +390,12 @@ namespace Cern.Colt.Matrix.Implementation
             int otherIndex = y.Index(0);
             for (int k = Size; --k >= 0;)
             {
-                Object tmp = elems[index];
-                elems[index] = otherElems[otherIndex];
-                otherElems[otherIndex] = tmp;
+                Object tmp = Elements[index];
+                Object tmp2 = Elements[otherIndex];
+                Elements[index] = y.Elements[otherIndex];
+                Elements[otherIndex] = y.Elements[index];
+                y.Elements[otherIndex] = tmp;
+                y.Elements[index] = tmp2;
                 index += s;
                 otherIndex += ys;
             }
@@ -422,6 +425,33 @@ namespace Cern.Colt.Matrix.Implementation
         protected override ObjectMatrix1D ViewSelectionLike(int[] offsets)
         {
             return new SelectedDenseObjectMatrix1D(this.Elements, offsets);
+        }
+
+        public virtual object[][] ToJaggedArray()
+        {
+            return ToJaggedArray(this.Size);
+        }
+
+        public virtual object[][] ToJaggedArray(int size)
+        {
+            var rows = this.Elements.Length / size;
+            var cols = this.Size;
+
+            var result = new object[rows, cols];
+            int r = 0, c = 0;
+            for (int i = 0; i < this.Elements.Length; i++)
+            {
+                result[r, c] = this[i];
+                c++;
+
+                if (c > cols)
+                {
+                    r++;
+                    c = 0;
+                }
+            }
+
+            return result.ToJagged();
         }
 
         public override string ToString(int index)

@@ -5,7 +5,7 @@
     <AssemblyName>Cern.Colt</AssemblyName>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageId>Cern.Colt.NET</PackageId>
-    <Version>0.9.1.15</Version>
+    <Version>0.9.1.17</Version>
     <Authors>Kei Nakai</Authors>
     <Company />
     <Product>Cern.Colt.NET Library</Product>
@@ -15,11 +15,13 @@ The files based on Mauro are clearly states as based on his work.
 Bug fix for RandomEngine.NextDouble() method.</Description>
     <Copyright>Kei Nakai</Copyright>
     <PackageProjectUrl>https://github.com/cobaltblueocean/Colt.NET_Core</PackageProjectUrl>
-    <AssemblyVersion>0.9.1.15</AssemblyVersion>
+    <AssemblyVersion>0.9.1.17</AssemblyVersion>
     <RepositoryUrl>https://github.com/cobaltblueocean/Colt.NET_Core</RepositoryUrl>
     <RepositoryType>GitHub</RepositoryType>
     <PackageReleaseNotes>- Bug fix for RandomEngine implementation for Distribution classes
-- Bug fix for AreObjectsEquals() method</PackageReleaseNotes>
+- Bug fix for AreObjectsEquals() method
+- Bug fix for LUDemonpositionQiock for setting up and detect IsNonSingular
+- Bug fix for Inverse(), Swap() methods of DenseDoubleMatrix1D and DenseObjectMatrix1D</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>
