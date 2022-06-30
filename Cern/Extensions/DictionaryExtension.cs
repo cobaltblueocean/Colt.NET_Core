@@ -20,24 +20,40 @@ namespace System.Collections.Generic
             return new HashSet<TValue>(originalDictionary.Values.ToList());
         }
 
-        #region Extension for IDictionary<T1, T2>
-        public static Boolean IsEmpty<T1, T2>(this IDictionary<T1, T2> originalDictionary)
+        #region Extension for IDictionary<TKey, TValue>
+        public static Boolean IsEmpty<TKey, TValue>(this IDictionary<TKey, TValue> originalDictionary)
         {
             return originalDictionary.Count == 0 ? true : false;
         }
 
-        public static void AddOrUpdate<T1, T2>(this IDictionary<T1, T2> originalDictionary, T1 key, T2 value)
+        public static void AddOrUpdate<TKey, TValue>(this IDictionary<TKey, TValue> originalDictionary, TKey key, TValue value)
         {
             if (key != null)
             {
-                if (originalDictionary.ContainsKey(key))
-                    originalDictionary[key] = value;
-                else
+                if (originalDictionary.Count == 0)
+                {
                     originalDictionary.Add(key, value);
+                }
+                else
+                {
+                    if (originalDictionary.ContainsKey(key))
+                        originalDictionary[key] = value;
+                    else
+                        originalDictionary.Add(key, value);
+                }
             }
         }
 
-        public static void AddOrUpdateAll<T1, T2>(this IDictionary<T1, T2> originalDictionary, IEnumerable<KeyValuePair<T1, T2>> items)
+
+        public static void AddRange<TKey, TValue>(this IDictionary<TKey, TValue> originalDictionary, IEnumerable<KeyValuePair<TKey, TValue>> items)
+        {
+            foreach (var item in items)
+            {
+                originalDictionary.Add(item);
+            }
+        }
+
+        public static void AddOrUpdateAll<TKey, TValue>(this IDictionary<TKey, TValue> originalDictionary, IEnumerable<KeyValuePair<TKey, TValue>> items)
         {
             if (items != null)
             {
@@ -48,7 +64,7 @@ namespace System.Collections.Generic
             }
         }
 
-        public static T2 GetValueAtKey<T1, T2>(this IDictionary<T1, T2> originalDictionary, T1 key)
+        public static TValue GetValueAtKey<TKey, TValue>(this IDictionary<TKey, TValue> originalDictionary, TKey key)
         {
             if (key != null)
             {
@@ -67,10 +83,10 @@ namespace System.Collections.Generic
             }
         }
 
-        public static IDictionary<T1, T2> Head<T1, T2>(this IDictionary<T1, T2> originalDictionary, T1 key, Boolean inclusive = false)
+        public static IDictionary<TKey, TValue> Head<TKey, TValue>(this IDictionary<TKey, TValue> originalDictionary, TKey key, Boolean inclusive = false)
         {
-            var keys = originalDictionary.Keys.ToArray<T1>();
-            var tmp = new List<T1>();
+            var keys = originalDictionary.Keys.ToArray<TKey>();
+            var tmp = new List<TKey>();
 
             for (int i = 0; i < keys.Count(); i++)
             {
@@ -88,13 +104,13 @@ namespace System.Collections.Generic
                 }
             }
 
-            return (IDictionary<T1, T2>)originalDictionary.Where(x => tmp.Contains(x.Key));
+            return (IDictionary<TKey, TValue>)originalDictionary.Where(x => tmp.Contains(x.Key));
         }
 
-        public static IDictionary<T1, T2> Tail<T1, T2>(this IDictionary<T1, T2> originalDictionary, T1 key, Boolean inclusive = false)
+        public static IDictionary<TKey, TValue> Tail<TKey, TValue>(this IDictionary<TKey, TValue> originalDictionary, TKey key, Boolean inclusive = false)
         {
-            var keys = originalDictionary.Keys.ToArray<T1>();
-            var tmp = new List<T1>();
+            var keys = originalDictionary.Keys.ToArray<TKey>();
+            var tmp = new List<TKey>();
 
             for (int i = keys.Count() - 1; i >= 0; i++)
             {
@@ -112,10 +128,10 @@ namespace System.Collections.Generic
                 }
             }
 
-            return (IDictionary<T1, T2>)originalDictionary.Where(x => tmp.Contains(x.Key));
+            return (IDictionary<TKey, TValue>)originalDictionary.Where(x => tmp.Contains(x.Key));
         }
 
-        public static void Remove<T1, T2>(this IDictionary<T1, T2> originalDictionary, T1[] keysRemove)
+        public static void Remove<TKey, TValue>(this IDictionary<TKey, TValue> originalDictionary, TKey[] keysRemove)
         {
             foreach (var key in keysRemove)
             {
@@ -123,48 +139,48 @@ namespace System.Collections.Generic
             }
         }
 
-        public static IDictionary<T1, T2> SubDictionary<T1, T2>(this IDictionary<T1, T2> originalDictionary, T1 startKey, Boolean inclusiveStartKey, T1 endKey, Boolean inclusiveEndKey)
+        public static IDictionary<TKey, TValue> SubDictionary<TKey, TValue>(this IDictionary<TKey, TValue> originalDictionary, TKey startKey, Boolean inclusiveStartKey, TKey endKey, Boolean inclusiveEndKey)
         {
             var head = originalDictionary.Head(startKey, inclusiveStartKey);
             var tail = originalDictionary.Tail(endKey, inclusiveEndKey);
             var tmp = originalDictionary.Clone();
 
-            tmp.Remove(head.Keys.ToArray<T1>());
-            tmp.Remove(tail.Keys.ToArray<T1>());
+            tmp.Remove(head.Keys.ToArray<TKey>());
+            tmp.Remove(tail.Keys.ToArray<TKey>());
 
             return tmp;
         }
 
-        public static IDictionary<T1, T2> SubDictionary<T1, T2>(this IDictionary<T1, T2> originalDictionary, T1 startKeyInclusive, T1 endKeyInclusive)
+        public static IDictionary<TKey, TValue> SubDictionary<TKey, TValue>(this IDictionary<TKey, TValue> originalDictionary, TKey startKeyInclusive, TKey endKeyInclusive)
         {
             var head = originalDictionary.Head(startKeyInclusive, false);
             var tail = originalDictionary.Tail(endKeyInclusive, false);
             var tmp = originalDictionary.Clone();
 
-            tmp.Remove(head.Keys.ToArray<T1>());
-            tmp.Remove(tail.Keys.ToArray<T1>());
+            tmp.Remove(head.Keys.ToArray<TKey>());
+            tmp.Remove(tail.Keys.ToArray<TKey>());
 
             return tmp;
         }
 
-        public static IDictionary<T1, T2> Clone<T1, T2>(this IDictionary<T1, T2> originalDictionary)
+        public static IDictionary<TKey, TValue> Clone<TKey, TValue>(this IDictionary<TKey, TValue> originalDictionary)
         {
             return originalDictionary.ToDictionary(entry => entry.Key, entry => entry.Value);
         }
 
-        public static IDictionary<T1, T2> DeepClone<T1, T2>(this IDictionary<T1, T2> originalDictionary) where T2 : ICloneable
+        public static IDictionary<TKey, TValue> DeepClone<TKey, TValue>(this IDictionary<TKey, TValue> originalDictionary) where TValue : ICloneable
         {
-            return originalDictionary.ToDictionary(entry => entry.Key, entry => (T2)entry.Value.Clone());
+            return originalDictionary.ToDictionary(entry => entry.Key, entry => (TValue)entry.Value.Clone());
         }
 
-        public static List<T1> ToKeysList<T1, T2>(this IDictionary<T1, T2> originalDictionary)
+        public static List<TKey> ToKeysList<TKey, TValue>(this IDictionary<TKey, TValue> originalDictionary)
         {
-            return new List<T1>(originalDictionary.Keys);
+            return new List<TKey>(originalDictionary.Keys);
         }
 
-        public static List<T2> ToValuesList<T1, T2>(this IDictionary<T1, T2> originalDictionary)
+        public static List<TValue> ToValuesList<TKey, TValue>(this IDictionary<TKey, TValue> originalDictionary)
         {
-            return new List<T2>(originalDictionary.Values);
+            return new List<TValue>(originalDictionary.Values);
         }
         #endregion
 
