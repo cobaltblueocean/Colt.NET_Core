@@ -10,6 +10,11 @@ namespace System
     {
         public static T[] EnsureCapacity<T>(this T[] array, int minCapacity)
         {
+            if (array == null)
+            {
+                return null;
+            }
+
             int oldCapacity = array.Length;
             T[] newArray;
             if (minCapacity > oldCapacity)
@@ -78,6 +83,11 @@ namespace System
         /// <param name=""> maxCapacity   the desired maximum capacity.</param>
         public static T[] TrimToCapacity<T>(this T[] array, int maxCapacity)
         {
+            if (array == null)
+            {
+                return null;
+            }
+
             if (array.Length > maxCapacity)
             {
                 T[] oldArray = array;
@@ -89,6 +99,11 @@ namespace System
 
         public static T[,] ToTransposedArray<T>(this T[,] array)
         {
+            if (array == null)
+            {
+                return null;
+            }
+
             var rows = array.GetLength(0);
             var columns = array.GetLength(1);
 
@@ -107,6 +122,11 @@ namespace System
 
         public static T[,,] ToTransposedArray<T>(this T[,,] array)
         {
+            if (array == null)
+            {
+                return null;
+            }
+
             var rows = array.GetLength(0);
             var columns = array.GetLength(1);
             var width = array.GetLength(3);
@@ -129,6 +149,11 @@ namespace System
 
         public static T[][] ToJagged<T>(this T[,] array, bool transpose = false)
         {
+            if (array == null)
+            {
+                return null;
+            }
+
             int row = array.GetLength(0);
             int col = array.GetLength(1);
             T[][] jagary;
@@ -163,6 +188,11 @@ namespace System
 
         public static T[][][] ToJagged<T>(this T[,,] array)
         {
+            if (array == null)
+            {
+                return null;
+            }
+
             int slice = array.GetLength(0);
 
             T[][][] jagary = new T[slice][][];
@@ -186,6 +216,11 @@ namespace System
 
         public static T[,] ToMultidimensional<T>(this T[][] array, bool transpose = false)
         {
+            if (array == null)
+            {
+                return null;
+            }
+
             int row = array.Length;
             int col = array.GetMaxColumnLength();
 
@@ -224,6 +259,11 @@ namespace System
 
         public static T[,,] ToMultidimensional<T>(this T[][][] array)
         {
+            if (array == null)
+            {
+                return null;
+            }
+
             T[,,] mult = new T[array.GetLength(0), array.GetLength(1), array.GetLength(2)];
             int slice = array.GetLength(0);
             int row = array.GetLength(1);

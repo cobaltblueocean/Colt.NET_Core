@@ -64,6 +64,21 @@ namespace System.Collections.Generic
             }
         }
 
+        public static TKey GetKeyAtIndex<TKey, TValue>(this IDictionary<TKey, TValue> originalDictionary, int index)
+        {
+            int count = 0;
+
+            foreach(var entry in originalDictionary)
+            {
+                if (count == index)
+                {
+                    return entry.Key;
+                }
+                count++;
+            }
+            return default;
+        }
+
         public static TValue GetValueAtKey<TKey, TValue>(this IDictionary<TKey, TValue> originalDictionary, TKey key)
         {
             if (key != null)
