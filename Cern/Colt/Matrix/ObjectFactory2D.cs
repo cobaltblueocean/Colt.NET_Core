@@ -285,6 +285,11 @@ namespace Cern.Colt.Matrix
             return diag;
         }
 
+        public ObjectMatrix2D Make(Object[,] values)
+        {
+            return Make(values.ToJagged());
+        }
+
         public ObjectMatrix2D Make(Object[][] values)
         {
             if (this == Sparse) return new SparseObjectMatrix2D(values);

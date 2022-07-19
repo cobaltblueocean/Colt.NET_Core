@@ -142,6 +142,30 @@ namespace Cern.Colt.Matrix
         /// <exception cref="ArgumentOutOfRangeException">
         /// If the parts are not subject to the conditions outlined above.
         /// </exception>
+        public DoubleMatrix2D Compose(DoubleMatrix2D[,] parts)
+        {
+            return Compose(parts.ToJagged());
+        }
+
+        /// <summary>
+        /// Constructs a block matrix made from the given parts.
+        /// <para>
+        /// All matrices of a given column within <tt>parts</tt> must have the same number of columns.
+        /// All matrices of a given row within <tt>parts</tt> must have the same number of rows.
+        /// Otherwise an <tt>IllegalArgumentException</tt> is thrown. 
+        /// <tt>null</tt>s within <tt>parts[row,col]</tt> are an exception to this rule: they are ignored.
+        /// Cells are copied.
+        /// </para>
+        /// </summary>
+        /// <param name="parts">
+        /// The parts.
+        /// </param>
+        /// <returns>
+        /// A block matrix.
+        /// </returns>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// If the parts are not subject to the conditions outlined above.
+        /// </exception>
         public DoubleMatrix2D Compose(DoubleMatrix2D[][] parts)
         {
             checkRectangularShape(parts);
@@ -154,10 +178,10 @@ namespace Cern.Colt.Matrix
 
             // determine maximum column width of each column
             var maxWidths = new int[columns];
-            for (int column = columns; --column >= 0; )
+            for (int column = columns; --column >= 0;)
             {
                 int maxWidth = 0;
-                for (int row = rows; --row >= 0; )
+                for (int row = rows; --row >= 0;)
                 {
                     DoubleMatrix2D part = parts[row][column];
                     if (part != null)
@@ -173,10 +197,10 @@ namespace Cern.Colt.Matrix
 
             // determine row height of each row
             var maxHeights = new int[rows];
-            for (int row = rows; --row >= 0; )
+            for (int row = rows; --row >= 0;)
             {
                 int maxHeight = 0;
-                for (int column = columns; --column >= 0; )
+                for (int column = columns; --column >= 0;)
                 {
                     DoubleMatrix2D part = parts[row][column];
                     if (part != null)
@@ -192,9 +216,9 @@ namespace Cern.Colt.Matrix
 
             // shape of result 
             int resultRows = 0;
-            for (int row = rows; --row >= 0; ) resultRows += maxHeights[row];
+            for (int row = rows; --row >= 0;) resultRows += maxHeights[row];
             int resultCols = 0;
-            for (int column = columns; --column >= 0; ) resultCols += maxWidths[column];
+            for (int column = columns; --column >= 0;) resultCols += maxWidths[column];
 
             DoubleMatrix2D matrix = Make(resultRows, resultCols);
 
@@ -284,6 +308,96 @@ namespace Cern.Colt.Matrix
         /// <exception cref="ArgumentException">
         /// subject to the conditions outlined above.
         /// </exception>
+        public void Decompose(DoubleMatrix2D[,] parts, DoubleMatrix2D matrix)
+        {
+            checkRectangularShape(parts.ToJagged());
+            int rows = parts.Length;
+            int columns = 0;
+            if (parts.Length > 0) columns = parts.GetMaxColumnLength();
+            if (rows == 0 || columns == 0) return;
+
+            // determine maximum column width of each column
+            var maxWidths = new int[columns];
+            for (int column = columns; --column >= 0;)
+            {
+                int maxWidth = 0;
+                for (int row = rows; --row >= 0;)
+                {
+                    DoubleMatrix2D part = parts[row, column];
+                    if (part != null)
+                    {
+                        int width = part.Columns;
+                        if (maxWidth > 0 && width > 0 && width != maxWidth) throw new ArgumentException(Cern.LocalizedResources.Instance().Exception_DifferentNumberOfColumns);
+                        maxWidth = Math.Max(maxWidth, width);
+                    }
+                }
+
+                maxWidths[column] = maxWidth;
+            }
+
+            // determine row height of each row
+            var maxHeights = new int[rows];
+            for (int row = rows; --row >= 0;)
+            {
+                int maxHeight = 0;
+                for (int column = columns; --column >= 0;)
+                {
+                    DoubleMatrix2D part = parts[row, column];
+                    if (part != null)
+                    {
+                        int height = part.Rows;
+                        if (maxHeight > 0 && height > 0 && height != maxHeight) throw new ArgumentException(Cern.LocalizedResources.Instance().Exception_DifferentNumberOfRows);
+                        maxHeight = Math.Max(maxHeight, height);
+                    }
+                }
+
+                maxHeights[row] = maxHeight;
+            }
+
+            // shape of result parts
+            int resultRows = 0;
+            for (int row = rows; --row >= 0;) resultRows += maxHeights[row];
+            int resultCols = 0;
+            for (int column = columns; --column >= 0;) resultCols += maxWidths[column];
+
+            if (matrix.Rows < resultRows || matrix.Columns < resultCols) throw new ArgumentException(Cern.LocalizedResources.Instance().Exception_PartsLargerThanMatrix);
+
+            // copy
+            int r = 0;
+            for (int row = 0; row < rows; row++)
+            {
+                int c = 0;
+                for (int column = 0; column < columns; column++)
+                {
+                    DoubleMatrix2D part = parts[row, column];
+                    if (part != null)
+                        part.Assign(matrix.ViewPart(r, c, part.Rows, part.Columns));
+                    c += maxWidths[column];
+                }
+
+                r += maxHeights[row];
+            }
+        }
+
+        /// <summary>
+        /// Splits a block matrix into its constituent blocks; Copies blocks of a matrix into the given parts.
+        /// <para>
+        /// All matrices of a given column within <tt>parts</tt> must have the same number of columns.
+        /// All matrices of a given row within <tt>parts</tt> must have the same number of rows.
+        /// Otherwise an <tt>IllegalArgumentException</tt> is thrown. 
+        /// <tt>null</tt>s within <tt>parts[row,col]</tt> are an exception to this rule: they are ignored.
+        /// Cells are copied.
+        /// </para>
+        /// </summary>
+        /// <param name="parts">
+        /// The parts.
+        /// </param>
+        /// <param name="matrix">
+        /// The matrix.
+        /// </param>
+        /// <exception cref="ArgumentException">
+        /// subject to the conditions outlined above.
+        /// </exception>
         public void Decompose(DoubleMatrix2D[][] parts, DoubleMatrix2D matrix)
         {
             checkRectangularShape(parts);
@@ -294,10 +408,10 @@ namespace Cern.Colt.Matrix
 
             // determine maximum column width of each column
             var maxWidths = new int[columns];
-            for (int column = columns; --column >= 0; )
+            for (int column = columns; --column >= 0;)
             {
                 int maxWidth = 0;
-                for (int row = rows; --row >= 0; )
+                for (int row = rows; --row >= 0;)
                 {
                     DoubleMatrix2D part = parts[row][column];
                     if (part != null)
@@ -313,10 +427,10 @@ namespace Cern.Colt.Matrix
 
             // determine row height of each row
             var maxHeights = new int[rows];
-            for (int row = rows; --row >= 0; )
+            for (int row = rows; --row >= 0;)
             {
                 int maxHeight = 0;
-                for (int column = columns; --column >= 0; )
+                for (int column = columns; --column >= 0;)
                 {
                     DoubleMatrix2D part = parts[row][column];
                     if (part != null)
@@ -332,9 +446,9 @@ namespace Cern.Colt.Matrix
 
             // shape of result parts
             int resultRows = 0;
-            for (int row = rows; --row >= 0; ) resultRows += maxHeights[row];
+            for (int row = rows; --row >= 0;) resultRows += maxHeights[row];
             int resultCols = 0;
-            for (int column = columns; --column >= 0; ) resultCols += maxWidths[column];
+            for (int column = columns; --column >= 0;) resultCols += maxWidths[column];
 
             if (matrix.Rows < resultRows || matrix.Columns < resultCols) throw new ArgumentException(Cern.LocalizedResources.Instance().Exception_PartsLargerThanMatrix);
 
@@ -372,8 +486,8 @@ namespace Cern.Colt.Matrix
         {
             DoubleMatrix2D matrix = Make(rows, columns);
             int v = 0;
-            for (int row = rows; --row >= 0; )
-                for (int column = columns; --column >= 0; )
+            for (int row = rows; --row >= 0;)
+                for (int column = columns; --column >= 0;)
                     matrix[row, column] = v++;
             return matrix;
         }
@@ -392,7 +506,7 @@ namespace Cern.Colt.Matrix
         {
             int size = vector.Size;
             DoubleMatrix2D diag = Make(size, size);
-            for (int i = size; --i >= 0; )
+            for (int i = size; --i >= 0;)
                 diag[i, i] = vector[i];
             return diag;
         }
@@ -411,7 +525,7 @@ namespace Cern.Colt.Matrix
         {
             int min = Math.Min(a.Rows, a.Columns);
             DoubleMatrix1D diag = make1D(min);
-            for (int i = min; --i >= 0; )
+            for (int i = min; --i >= 0;)
                 diag[i] = a[i, i];
             return diag;
         }
@@ -428,9 +542,27 @@ namespace Cern.Colt.Matrix
         public DoubleMatrix2D Identity(int rowsAndColumns)
         {
             DoubleMatrix2D matrix = Make(rowsAndColumns, rowsAndColumns);
-            for (int i = rowsAndColumns; --i >= 0; )
+            for (int i = rowsAndColumns; --i >= 0;)
                 matrix[i, i] = 1;
             return matrix;
+        }
+
+
+        /// <summary>
+        /// Constructs a matrix with the given cell values.
+        /// </summary>
+        /// <param name="values">
+        /// The values to be filled into the new matrix.
+        /// </param>
+        /// <returns>
+        /// A matrix with the given cell values.
+        /// </returns>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// If <tt>for any 1 &lt;= row &lt; values.length: values[row].length != values[row-1].length</tt>.
+        /// </exception>
+        public DoubleMatrix2D Make(double[,] values)
+        {
+            return Make(values.ToJagged());
         }
 
         /// <summary>
@@ -564,6 +696,42 @@ namespace Cern.Colt.Matrix
             
             return matrix;
         }
+
+        /// <summary>
+        /// Checks whether the given array is rectangular, that is, whether all rows have the same number of columns.
+        /// </summary>
+        /// <param name="array">
+        /// The array.
+        /// </param>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// If the array is not rectangular.
+        /// </exception>
+        protected static void checkRectangularShape(double[, ] array)
+        {
+            int columns = -1;
+            for (int row = array.Length; --row >= 0;)
+            {
+                double[] rowArray = GetRow(array, row);
+
+                if (rowArray != null)
+                {
+                    if (columns == -1) columns = rowArray.Length;
+                    if (rowArray.Length != columns) throw new ArgumentOutOfRangeException("array", Cern.LocalizedResources.Instance().Exception_AllRowsOfArrayMustHaveSameNumberOfColumns);
+                }
+            }
+        }
+
+
+        private static T[] GetRow<T>(T[,] originalArray, int Index)
+        {
+            T[] data = new T[originalArray.GetLength(1)];
+
+            for (int i = 0; i < originalArray.GetLength(1); i++)
+                data[i] = originalArray[Index, i];
+
+            return data;
+        }
+
 
         /// <summary>
         /// Checks whether the given array is rectangular, that is, whether all rows have the same number of columns.

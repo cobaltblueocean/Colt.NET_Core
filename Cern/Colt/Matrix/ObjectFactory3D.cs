@@ -36,15 +36,15 @@ F.make(4,4,4);
 @author wolfgang.hoschek@cern.ch
 @version 1.0, 09/24/99
 */
-/// <summary>
-      /// 
-      /// </summary>
+    /// <summary>
+    /// 
+    /// </summary>
     public class ObjectFactory3D
     {
         /// <summary>
         /// A factory producing dense matrices.
         /// </summary>
-        private static ObjectFactory3D _dense  = new ObjectFactory3D();
+        private static ObjectFactory3D _dense = new ObjectFactory3D();
 
         public static ObjectFactory3D Dense
         {
@@ -65,6 +65,23 @@ F.make(4,4,4);
         /// Makes this class non instantiable, but still let's others inherit from it.
         /// </summary>
         protected ObjectFactory3D() { }
+
+
+        /// <summary>
+        /// Constructs a matrix with the given cell values.
+        /// <i>values</i> is required to have the form <i>values[slice][row][column]</i>
+        /// and have exactly the same number of slices, rows and columns as the receiver.
+        /// <p>
+        /// The values are copiedd So subsequent changes in <i>values</i> are not reflected in the matrix, and vice-versa.
+        /// </summary>
+        /// <param name="values">the values to be filled into the cells.</param>
+        /// <returns><i>this</i> (for convenience only).</returns>
+        /// <exception cref="ArgumentException">if <i>values.Length != slices() || for any 0 &lt;= slice &lt; slices(): values[slice].Length != rows()</i>.</exception>
+        /// <exception cref="ArgumentException">if <i>for any 0 &lt;= column &lt; columns(): values[slice][row].Length != columns()</i>.</exception>
+        public ObjectMatrix3D Make(Object[,,] values)
+        {
+            return Make(values.ToJagged());
+        }
 
         /// <summary>
         /// Constructs a matrix with the given cell values.
