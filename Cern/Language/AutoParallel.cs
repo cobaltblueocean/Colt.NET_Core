@@ -173,12 +173,23 @@ namespace System.Threading.Tasks
 
         public static void AutoParallelFor(int fromInclusice, int toExclusive, Action<int> action)
         {
-            AutoParallelFor(fromInclusice, toExclusive, action, ParallelMode.Auto);
+            AutoParallelFor(fromInclusice, toExclusive, action, false);
+        }
+
+        public static void AutoParallelFor(int fromInclusice, int toExclusive, Action<int> action, Boolean includeToExclusive)
+        {
+            AutoParallelFor(fromInclusice, toExclusive, action, includeToExclusive, ParallelMode.Auto);
         }
 
         public static void AutoParallelFor(int fromInclusice, int toExclusive, Action<int> action, ParallelMode parallelMode)
         {
+            AutoParallelFor(fromInclusice, toExclusive, action, false, parallelMode);
+        }
+
+        public static void AutoParallelFor(int fromInclusice, int toExclusive, Action<int> action, Boolean includeToExclusive, ParallelMode parallelMode)
+        {
             Boolean doParallel = false;
+            Boolean reverseProcess = false;
 
             if ((toExclusive - fromInclusice) > _threshold)
                 doParallel = true;
@@ -188,27 +199,84 @@ namespace System.Threading.Tasks
             else if (parallelMode == ParallelMode.NonParallel)
                 doParallel = false;
 
+            if (includeToExclusive)
+                toExclusive++;
+
+            if (fromInclusice > toExclusive)
+            {
+                reverseProcess = true;
+                int temp = toExclusive;
+                toExclusive = fromInclusice + 1;
+                fromInclusice = temp;
+
+                if (includeToExclusive)
+                    fromInclusice--;
+            }
+
             if (doParallel)
             {
-                Parallel.For(fromInclusice, toExclusive, action);
+                if (!reverseProcess)
+                {
+                    Parallel.For(fromInclusice, toExclusive, action);
+                }
+                else
+                {
+                    Action<int> revAction = ((x) =>
+                    {
+
+                        action(x);
+                    });
+
+                    Parallel.For(fromInclusice, toExclusive, (x) =>
+                    {
+                        int y = toExclusive - x;
+                        action(y);
+                    });
+                }
             }
             else
             {
-                for (int i = fromInclusice; i < toExclusive; i++)
+                if (!reverseProcess)
                 {
-                    action(i);
+                    for (int i = fromInclusice; i < toExclusive; i++)
+                    {
+                        action(i);
+                    }
+                }
+                else
+                {
+                    for (int i = fromInclusice; i < toExclusive; i++)
+                    {
+                        int y = toExclusive - i;
+
+                        if (includeToExclusive)
+                            y++;
+
+                            action(y);
+                    }
                 }
             }
         }
 
         public static void AutoParallelFor<T>(IEnumerable<T> source, int fromInclusice, int toExclusive, Action<int> action)
         {
-            AutoParallelFor(source, fromInclusice, toExclusive, action, ParallelMode.Auto);
+            AutoParallelFor(source, fromInclusice, toExclusive, action, false);
+        }
+
+        public static void AutoParallelFor<T>(IEnumerable<T> source, int fromInclusice, int toExclusive, Action<int> action, Boolean includeToExclusive)
+        {
+            AutoParallelFor(source, fromInclusice, toExclusive, action, includeToExclusive, ParallelMode.Auto);
         }
 
         public static void AutoParallelFor<T>(IEnumerable<T> source, int fromInclusice, int toExclusive, Action<int> action, ParallelMode parallelMode)
         {
+            AutoParallelFor(source, fromInclusice, toExclusive, action, false, parallelMode);
+        }
+
+        public static void AutoParallelFor<T>(IEnumerable<T> source, int fromInclusice, int toExclusive, Action<int> action, Boolean includeToExclusive, ParallelMode parallelMode)
+        {
             Boolean doParallel = false;
+            Boolean reverseProcess = false;
 
             if (source.Count() > _threshold)
                 doParallel = true;
@@ -218,18 +286,62 @@ namespace System.Threading.Tasks
             else if (parallelMode == ParallelMode.NonParallel)
                 doParallel = false;
 
+            if (includeToExclusive)
+                toExclusive++;
+
+            if (fromInclusice > toExclusive)
+            {
+                reverseProcess = true;
+                int temp = toExclusive;
+                toExclusive = fromInclusice + 1;
+                fromInclusice = temp;
+
+                if (includeToExclusive)
+                    fromInclusice--;
+            }
+
             if (doParallel)
             {
-                Parallel.For(fromInclusice, toExclusive, action);
+                if(!reverseProcess)
+                {
+                    Parallel.For(fromInclusice, toExclusive, action);
+                }
+                else
+                {
+                    Action<int> revAction = ((x) =>
+                    {
+
+                        action(x);
+                    });
+
+                    Parallel.For(fromInclusice, toExclusive, (x) =>
+                    {
+                        int y = toExclusive - x;
+                        action(y);
+                    });
+                }
             }
             else
             {
-                for (int i = fromInclusice; i < toExclusive; i++)
+                if (!reverseProcess)
+                { 
+                    for (int i = fromInclusice; i < toExclusive; i++)
+                    {
+                        action(i);
+                    }
+                }
+                else
                 {
-                    action(i);
+                    for (int i = fromInclusice; i < toExclusive; i++)
+                    {
+                        int y = toExclusive - i;
+                        action(y);
+                    }
                 }
             }
         }
+
+
 
         public static void AutoParallelFor(int fromInclusice, int toExclusive, Action<int, ParallelLoopState> action)
         {

@@ -5,7 +5,7 @@
     <AssemblyName>Cern.Colt</AssemblyName>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <PackageId>Cern.Colt.NET</PackageId>
-    <Version>0.9.1.26</Version>
+    <Version>0.9.1.29</Version>
     <Authors>Kei Nakai</Authors>
     <Company />
     <Product>Cern.Colt.NET Library</Product>
@@ -16,7 +16,7 @@ Bug fix for RandomEngine.NextDouble() method.
 Added Dictionary extension method of GetKeyAtIndex() method</Description>
     <Copyright>Kei Nakai</Copyright>
     <PackageProjectUrl>https://github.com/cobaltblueocean/Colt.NET_Core</PackageProjectUrl>
-    <AssemblyVersion>0.9.1.26</AssemblyVersion>
+    <AssemblyVersion>0.9.1.27</AssemblyVersion>
     <RepositoryUrl>https://github.com/cobaltblueocean/Colt.NET_Core</RepositoryUrl>
     <RepositoryType>GitHub</RepositoryType>
     <PackageReleaseNotes>- Bug fix for RandomEngine implementation for Distribution classes
@@ -27,8 +27,10 @@ Added Dictionary extension method of GetKeyAtIndex() method</Description>
 - Separated the object comparison logic to independent package
 - Fixed ArrayExtension methods for null argument
 - Referenced package updated
-- Added Make() functions for multi-dimention matrix</PackageReleaseNotes>
-    <FileVersion>0.9.1.26</FileVersion>
+- Added Make() functions for multi-dimention matrix
+- Added including toExclusive and reverse process for AutoParallel methods
+- Bug fix for AutoParallel method with reverse mode</PackageReleaseNotes>
+    <FileVersion>0.9.1.29</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>
