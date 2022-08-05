@@ -370,7 +370,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <returns>a new view.</returns>
         protected override DoubleMatrix3D ViewSelectionLike(int[] sliceOffsets, int[] rowOffsets, int[] columnOffsets)
         {
-            throw new NotImplementedException();
+            return new SelectedSparseDoubleMatrix3D(this.Elements, sliceOffsets, rowOffsets, columnOffsets, this.Offset);
         }
 
         /// <summary>

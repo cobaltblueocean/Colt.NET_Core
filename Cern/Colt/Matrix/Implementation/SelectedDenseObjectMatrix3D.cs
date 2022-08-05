@@ -240,10 +240,11 @@ namespace Cern.Colt.Matrix.Implementation
         /// <param name="Rowstride">the number of elements between two rows, i.ed <i>index(i+1,j)-index(i,j)</i>.</param>
         /// <param name="Columnstride">the number of elements between two columns, i.ed <i>index(i,j+1)-index(i,j)</i>.</param>
         /// <returns>a new matrix of the corresponding dynamic type.</returns>
-        protected override ObjectMatrix2D Like2D(int Rows, int Columns, int RowZero, int columnZero, int Rowstride, int Columnstride)
+        protected override ObjectMatrix2D Like2D(int rows, int columns, int rowZero, int columnZero, int rowStride, int columnStride)
         {
             //throw new InternalError(); // this method is never called since viewRow() and viewColumn are overridden properly.
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
+            return new DenseObjectMatrix2D(rows, columns, this.Elements, rowZero, columnZero, rowStride, columnStride);
         }
 
         /// <summary>

@@ -138,9 +138,9 @@ namespace Cern.Colt.Matrix.Implementation
         /// <param name="rows">the number of rows the matrix shall have.</param>
         /// <param name="columns">the number of columns the matrix shall have.</param>
         /// <returns>a new empty matrix of the same dynamic type.</returns>
-        public override DoubleMatrix3D Like(int Slices, int Rows, int Columns)
+        public override DoubleMatrix3D Like(int slices, int rows, int columns)
         {
-            throw new NotImplementedException();
+            return new DenseDoubleMatrix3D(slices, rows, columns);
         }
 
         /// <summary>
@@ -155,9 +155,9 @@ namespace Cern.Colt.Matrix.Implementation
         /// <param name="RowStride">the number of elements between two rows, i.ed <i>index(i+1,j)-index(i,j)</i>.</param>
         /// <param name="ColumnStride">the number of elements between two columns, i.ed <i>index(i,j+1)-index(i,j)</i>.</param>
         /// <returns>a new matrix of the corresponding dynamic type.</returns>
-        protected override DoubleMatrix2D Like2D(int Rows, int Columns, int RowZero, int ColumnZero, int Rowstride, int Columnstride)
+        protected override DoubleMatrix2D Like2D(int rows, int columns, int rowZero, int columnZero, int rowStride, int columnStride)
         {
-            throw new NotImplementedException();
+            return new DenseDoubleMatrix2D(rows, columns, this.Elements, rowZero, columnZero, rowStride, columnStride);
         }
 
         /// <summary>
@@ -169,7 +169,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <returns>a new view.</returns>
         protected override DoubleMatrix3D ViewSelectionLike(int[] sliceOffsets, int[] rowOffsets, int[] columnOffsets)
         {
-            throw new NotImplementedException();
+            return new SelectedDenseDoubleMatrix3D(this.Elements, sliceOffsets, rowOffsets, columnOffsets, 0);
         }
         #endregion
 

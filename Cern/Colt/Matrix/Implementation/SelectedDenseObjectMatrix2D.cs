@@ -247,7 +247,8 @@ namespace Cern.Colt.Matrix.Implementation
         protected override ObjectMatrix1D Like1D(int size, int zero, int stride)
         {
             //throw new InternalError(); // this method is never called since viewRow() and viewColumn are overridden properly.
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
+            return new DenseObjectMatrix1D(size);
         }
 
         /// <summary>

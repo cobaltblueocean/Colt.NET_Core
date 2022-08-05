@@ -50,7 +50,8 @@ namespace Cern.Jet.Random
     {
 
         #region Local Variables
-
+        protected double _alpha;
+        protected double _lambda;
         #endregion
 
         #region Property
@@ -65,7 +66,7 @@ namespace Cern.Jet.Random
 
         public override double NextDouble()
         {
-            throw new NotImplementedException();
+            return NextDouble(_alpha, _lambda);
         }
 
         #endregion
@@ -77,10 +78,6 @@ namespace Cern.Jet.Random
         #region Local Private Methods
 
         #endregion
-
-        protected double alpha;
-        protected double lambda;
-
         // The uniform random number generated shared by all <b>static</b> methods.
         protected static Gamma shared = new Gamma(1.0, 1.0, MakeDefaultGenerator());
         /// <summary>
@@ -96,9 +93,9 @@ namespace Cern.Jet.Random
         /// <summary>
         /// Returns the cumulative distribution function.
         /// </summary>
-        public double cdf(double x)
+        public double Cdf(double x)
         {
-            return Probability.Gamma(alpha, lambda, x);
+            return Probability.Gamma(_alpha, _lambda, x);
         }
         /// <summary>
         /// Returns a random number from the distribution; bypasses the internal state.
@@ -274,17 +271,17 @@ namespace Cern.Jet.Random
         /// <summary>
         /// Returns the probability distribution function.
         /// </summary>
-        public double pdf(double x)
+        public double Pdf(double x)
         {
             if (x < 0) throw new ArgumentException();
             if (x == 0)
             {
-                if (alpha == 1.0) return 1.0 / lambda;
+                if (_alpha == 1.0) return 1.0 / _lambda;
                 else return 0.0;
             }
-            if (alpha == 1.0) return System.Math.Exp(-x / lambda) / lambda;
+            if (_alpha == 1.0) return System.Math.Exp(-x / _lambda) / _lambda;
 
-            return System.Math.Exp((alpha - 1.0) * System.Math.Log(x / lambda) - x / lambda - Fun.LogGamma(alpha)) / lambda;
+            return System.Math.Exp((_alpha - 1.0) * System.Math.Log(x / _lambda) - x / _lambda - Fun.LogGamma(_alpha)) / _lambda;
         }
         /// <summary>
         /// Sets the mean and variance.
@@ -294,8 +291,8 @@ namespace Cern.Jet.Random
         {
             if (alpha <= 0.0) throw new ArgumentException();
             if (lambda <= 0.0) throw new ArgumentException();
-            this.alpha = alpha;
-            this.lambda = lambda;
+            this._alpha = alpha;
+            this._lambda = lambda;
         }
         /// <summary>
         /// Returns a random number from the distribution.
@@ -311,7 +308,7 @@ namespace Cern.Jet.Random
         /// </summary>
         public override String ToString()
         {
-            return this.GetType().Name + "(" + alpha + "," + lambda + ")";
+            return this.GetType().Name + "(" + _alpha + "," + _lambda + ")";
         }
         /// <summary>
         /// Sets the uniform random number generated shared by all <b>static</b> methods.

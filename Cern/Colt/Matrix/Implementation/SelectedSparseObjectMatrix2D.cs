@@ -246,7 +246,8 @@ namespace Cern.Colt.Matrix.Implementation
         protected override ObjectMatrix1D Like1D(int size, int zero, int stride)
         {
             // this method is never called since viewRow() and viewColumn are overridden properly.
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
+            return new SparseObjectMatrix1D(size);
         }
 
         /// <summary>
