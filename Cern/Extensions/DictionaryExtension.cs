@@ -89,7 +89,7 @@ namespace System.Collections.Generic
                 }
                 else
                 {
-                    throw new KeyNotFoundException();
+                    return default;
                 }
             }
             else
