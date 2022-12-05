@@ -64,6 +64,17 @@ namespace System.Collections.Generic
             }
         }
 
+        public static void AddOrUpdateAll<TKey, TValue>(this IDictionary<TKey, TValue> originalDictionary, IDictionary<TKey, TValue> items)
+        {
+            if (items != null)
+            {
+                foreach (var item in items)
+                {
+                    AddOrUpdate(originalDictionary, item.Key, item.Value);
+                }
+            }
+        }
+
         public static TKey GetKeyAtIndex<TKey, TValue>(this IDictionary<TKey, TValue> originalDictionary, int index)
         {
             int count = 0;
