@@ -5,7 +5,7 @@
     <AssemblyName>Cern.Colt</AssemblyName>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <PackageId>Cern.Colt.NET</PackageId>
-    <Version>0.9.1.42</Version>
+    <Version>0.9.1.45</Version>
     <Authors>Kei Nakai</Authors>
     <Company />
     <Product>Cern.Colt.NET Library</Product>
@@ -17,7 +17,7 @@ Added Dictionary extension method of GetKeyAtIndex() method
 Bug fixed Matrixs methods</Description>
     <Copyright>Kei Nakai</Copyright>
     <PackageProjectUrl>https://github.com/cobaltblueocean/Colt.NET_Core</PackageProjectUrl>
-    <AssemblyVersion>0.9.1.42</AssemblyVersion>
+    <AssemblyVersion>0.9.1.45</AssemblyVersion>
     <RepositoryUrl>https://github.com/cobaltblueocean/Colt.NET_Core</RepositoryUrl>
     <RepositoryType>GitHub</RepositoryType>
     <PackageReleaseNotes>- Updated the referenced package
@@ -32,11 +32,11 @@ Bug fixed Matrixs methods</Description>
 - Added Make() functions for multi-dimention matrix
 - Added including toExclusive and reverse process for AutoParallel methods
 - Bug fix for AutoParallel method with reverse mode</PackageReleaseNotes>
-    <FileVersion>0.9.1.42</FileVersion>
+    <FileVersion>0.9.1.45</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Mercury.Language.Core" Version="0.8.0.13" />
+    <PackageReference Include="Mercury.Language.Core" Version="0.8.0.16" />
     <PackageReference Include="Microsoft.Win32.Registry" Version="5.0.0" />
     <PackageReference Include="System.Management" Version="7.0.0" />
   </ItemGroup>
