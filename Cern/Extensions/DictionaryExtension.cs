@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -67,52 +68,66 @@ namespace System.Collections.Generic
             }
         }
 
-public static IDictionary<T1, T2> Head<T1, T2>(this IDictionary<T1, T2> originalDictionary, T1 key, Boolean inclusive = false)
+        public static IDictionary<T1, T2> Head<T1, T2>(this IDictionary<T1, T2> originalDictionary, T1 key, Boolean inclusive = false)
         {
-            var keys = originalDictionary.Keys.ToArray<T1>();
-            var tmp = new List<T1>();
+            T1[] array = Enumerable.ToArray(originalDictionary.Keys);
+            List<T1> tmp = new List<T1>();
+            Comparer comparer = new Comparer(CultureInfo.InvariantCulture);
 
-            for (int i = 0; i < keys.Count(); i++)
+            int count = array.Count();
+            for (int i = 0; i < count; i++)
             {
-                if (!keys[i].Equals(key))
+                int result = comparer.Compare(array[i], key);
+                if ((result < 0) || (inclusive && result == 0))
                 {
-                    tmp.Add(keys[i]);
-                }
-                else
-                {
-                    if (inclusive)
-                    {
-                        tmp.Add(keys[i]);
-                    }
-                    break;
+                    tmp.Add(array[i]);
+                    continue;
                 }
             }
 
-            return (IDictionary<T1, T2>)originalDictionary.Where(x => tmp.Contains(x.Key));
+
+            var resultDictionary = originalDictionary.Clone();
+            resultDictionary.Clear();
+
+            foreach (var k in tmp)
+            {
+                T2 v;
+                _ = originalDictionary.TryGetValue(k, out v);
+                resultDictionary.Add(k, v);
+            }
+
+            return (IDictionary<T1, T2>)resultDictionary;
         }
 
         public static IDictionary<T1, T2> Tail<T1, T2>(this IDictionary<T1, T2> originalDictionary, T1 key, Boolean inclusive = false)
         {
-            var keys = originalDictionary.Keys.ToArray<T1>();
-            var tmp = new List<T1>();
+            T1[] array = Enumerable.ToArray(originalDictionary.Keys);
+            List<T1> tmp = new List<T1>();
+            Comparer comparer = new Comparer(CultureInfo.InvariantCulture);
 
-            for (int i = keys.Count() - 1; i >= 0; i++)
+            int count = array.Count();
+            for (int i = 0; i < count; i++)
             {
-                if (!keys[i].Equals(key))
+                int result = comparer.Compare(array[i], key);
+                if ((result > 0) || (inclusive && result == 0))
                 {
-                    tmp.Add(keys[i]);
-                }
-                else
-                {
-                    if (inclusive)
-                    {
-                        tmp.Add(keys[i]);
-                    }
-                    break;
+                    tmp.Add(array[i]);
+                    continue;
                 }
             }
 
-            return (IDictionary<T1, T2>)originalDictionary.Where(x => tmp.Contains(x.Key));
+
+            var resultDictionary = originalDictionary.Clone();
+            resultDictionary.Clear();
+
+            foreach (var k in tmp)
+            {
+                T2 v;
+                _ = originalDictionary.TryGetValue(k, out v);
+                resultDictionary.Add(k, v);
+            }
+
+            return (IDictionary<T1, T2>)resultDictionary;
         }
 
         public static void Remove<T1, T2>(this IDictionary<T1, T2> originalDictionary, T1[] keysRemove)
@@ -290,7 +305,7 @@ public static IDictionary<T1, T2> Head<T1, T2>(this IDictionary<T1, T2> original
         {
             var kv = new KeyValuePair<TKey, TValue>[dic.Count];
             dic.CopyTo(kv, 0);
-            List < KeyValuePair < TKey, TValue >> l = kv.ToList();
+            List<KeyValuePair<TKey, TValue>> l = kv.ToList();
             l.TrimExcess();
             var newDic = new Dictionary<TKey, TValue>(l.Count);
             AutoParallel.AutoParallelForEach(l, (p) =>

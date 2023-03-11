@@ -1,11 +1,11 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.1</TargetFramework>
+    <TargetFramework>net7.0</TargetFramework>
     <AssemblyName>Cern.Colt</AssemblyName>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageId>Cern.Colt.NET</PackageId>
-    <Version>0.9.0.7</Version>
+    <Version>0.9.2.2</Version>
     <Authors>Kei Nakai</Authors>
     <Company />
     <Product>Cern.Colt.NET Library</Product>
@@ -21,12 +21,16 @@ The files based on Mauro are clearly states as based on his work.</Description>
 - Added Extension methods to support IDictionary, Premitive Type, Object type, IEnumerable type, IList and Array classes/structs
 - Bug fix
 - Added Array transpose methods
-- Changed AlmostEqual method to be ExpressionTree logic.</PackageReleaseNotes>
+- Changed AlmostEqual method to be ExpressionTree logic.
+- Updated the Target framework to .NET 7.0
+- Fixed duplicated classes using Mercury.Language.Core library</PackageReleaseNotes>
+    <Title>Colt Library for .NET</Title>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Mercury.Language.Core" Version="0.8.1.1" />
     <PackageReference Include="Microsoft.Win32.Registry" Version="5.0.0" />
-    <PackageReference Include="System.Management" Version="5.0.0" />
+    <PackageReference Include="System.Management" Version="7.0.0" />
   </ItemGroup>
 
   <ItemGroup>
