@@ -96,10 +96,11 @@ namespace Cern.Jet.Random
         /// <summary>
         /// Returns the cumulative distribution function.
         /// </summary>
-        public double cdf(double x)
+        public double Cdf(double x)
         {
             return Probability.Gamma(alpha, lambda, x);
         }
+
         /// <summary>
         /// Returns a random number from the distribution; bypasses the internal state.
         /// </summary>
@@ -274,7 +275,7 @@ namespace Cern.Jet.Random
         /// <summary>
         /// Returns the probability distribution function.
         /// </summary>
-        public double pdf(double x)
+        public double Pdf(double x)
         {
             if (x < 0) throw new ArgumentException();
             if (x == 0)
@@ -302,7 +303,7 @@ namespace Cern.Jet.Random
         /// @throws ArgumentException if <i>alpha &lt;= 0.0 || lambda &lt;= 0.0</i>.
         /// </summary>
         [MethodImpl(MethodImplOptions.Synchronized)]
-        public static double staticNextDouble(double alpha, double lambda)
+        public static double StaticNextDouble(double alpha, double lambda)
         {
             return shared.NextDouble(alpha, lambda);
         }

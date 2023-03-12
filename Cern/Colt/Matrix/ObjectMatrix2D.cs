@@ -224,6 +224,21 @@ namespace Cern.Colt.Matrix
         }
 
         /// <summary>
+        /// Sets all cells to the state specified by <i>values</i>.
+        /// <i>values</i> is required to have the form <i>values[row][column]</i>
+        /// and have exactly the same number of Rows and Columns as the receiver.
+        /// <p>
+        /// The values are copiedd So subsequent changes in <i>values</i> are not reflected in the matrix, and vice-versa.
+        /// </summary>
+        /// <param name="values">the values to be filled into the cells.</param>
+        /// <returns><i>this</i> (for convenience only).</returns>
+        /// <exception cref="ArgumentException">if <i>values.Length != Rows || for any 0 &lt;= row &lt; Rows: values[row].Length != Columns</i>.</exception>
+        public virtual ObjectMatrix2D Assign(Object[,] values)
+        {
+            return Assign(values.ToJagged());
+        }
+
+        /// <summary>
         /// Assigns the result of a function to each cell; <i>x[row,col] = function(x[row,col])</i>.
         /// <p>
         /// <b>Example:</b>

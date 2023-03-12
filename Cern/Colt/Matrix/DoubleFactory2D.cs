@@ -452,6 +452,23 @@ namespace Cern.Colt.Matrix
         }
 
         /// <summary>
+        /// Constructs a matrix with the given cell values.
+        /// </summary>
+        /// <param name="values">
+        /// The values to be filled into the new matrix.
+        /// </param>
+        /// <returns>
+        /// A matrix with the given cell values.
+        /// </returns>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// If <tt>for any 1 &lt;= row &lt; values.length: values[row].length != values[row-1].length</tt>.
+        /// </exception>
+        public DoubleMatrix2D Make(double[, ] values)
+        {
+            return Make(values.ToJagged());
+        }
+
+        /// <summary>
         /// Construct a matrix from a one-dimensional column-major packed array, ala Fortran.
         /// </summary>
         /// <param name="values">

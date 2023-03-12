@@ -163,6 +163,28 @@ namespace Cern.Colt.Matrix
         }
 
         /// <summary>
+        /// Sets all cells to the state specified by <tt>values</tt>.
+        /// <tt>values</tt> is required to have the form <tt>values[row][column]</tt>
+        /// and have exactly the same number of rows and columns as the receiver.
+        /// <para>
+        /// The values are copiedd So subsequent changes in <tt>values</tt> are not reflected in the matrix, and vice-versa.
+        /// </para>
+        /// </summary>
+        /// <param name="values">
+        /// The values to be filled into the cells.
+        /// </param>
+        /// <returns>
+        /// <tt>this</tt> (for convenience only).
+        /// </returns>
+        /// <exception cref="ArgumentException">
+        /// If <tt>values.Length != rows() || for any 0 &lt;= row &lt; rows(): values[row].Length != columns()</tt>.
+        /// </exception>
+        public virtual DoubleMatrix2D Assign(double[,] values)
+        {
+            return Assign(values.ToJagged());
+        }
+
+        /// <summary>
         /// Sets all cells to the state specified by <tt>value</tt>.
         /// </summary>
         /// <param name="value">

@@ -291,6 +291,11 @@ namespace Cern.Colt.Matrix
             else return new DenseObjectMatrix2D(values);
         }
 
+        public ObjectMatrix2D Make(Object[,] values)
+        {
+            return Make(values.ToJagged());
+        }
+
         public ObjectMatrix2D Make(Object[] values, int rows)
         {
             int columns = (rows != 0 ? values.Length / rows : 0);

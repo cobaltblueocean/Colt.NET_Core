@@ -259,15 +259,15 @@ namespace Cern.Colt.Matrix
         /// <exception cref="ArgumentException">if <i>for any 0 &lt;= column &lt; Columns: values[slice][row].Length != Columns</i>.</exception>
         public virtual DoubleMatrix3D Assign(double[][][] values)
         {
-            if (values.Length != Slices) throw new ArgumentException(String.Format(Cern.LocalizedResources.Instance().Matrix_MustHaveSameNumberOfSlices, values.Length , Slices));
+            if (values.Length != Slices) throw new ArgumentException(String.Format(Cern.LocalizedResources.Instance().Matrix_MustHaveSameNumberOfSlices, values.Length, Slices));
             for (int slice = Slices; --slice >= 0;)
             {
                 double[][] currentSlice = values[slice];
-                if (currentSlice.Length != Rows) throw new ArgumentException(String.Format(Cern.LocalizedResources.Instance().Matrix_MustHaveSameNumberOfRowsInEverySlice, currentSlice.Length , Rows));
+                if (currentSlice.Length != Rows) throw new ArgumentException(String.Format(Cern.LocalizedResources.Instance().Matrix_MustHaveSameNumberOfRowsInEverySlice, currentSlice.Length, Rows));
                 for (int row = Rows; --row >= 0;)
                 {
                     double[] currentRow = currentSlice[row];
-                    if (currentRow.Length != Columns) throw new ArgumentException(String.Format(Cern.LocalizedResources.Instance().Matrix_MustHaveSameNumberOfColumnsInEveryRow, currentRow.Length , Columns));
+                    if (currentRow.Length != Columns) throw new ArgumentException(String.Format(Cern.LocalizedResources.Instance().Matrix_MustHaveSameNumberOfColumnsInEveryRow, currentRow.Length, Columns));
                     for (int column = Columns; --column >= 0;)
                     {
                         this[slice, row, column] = currentRow[column];
@@ -275,6 +275,22 @@ namespace Cern.Colt.Matrix
                 }
             }
             return this;
+        }
+
+        /// <summary>
+        /// Sets all cells to the state specified by <i>values</i>.
+        /// <i>values</i> is required to have the form <i>values[slice][row][column]</i>
+        /// and have exactly the same number of Slices, Rows and Columns as the receiver.
+        /// <p>
+        /// The values are copiedd So subsequent changes in <i>values</i> are not reflected in the matrix, and vice-versa.
+        /// </summary>
+        /// <param name="values">the values to be filled into the cells.</param>
+        /// <returns><i>this</i> (for convenience only).</returns>
+        /// <exception cref="ArgumentException">if <i>values.Length != Slices || for any 0 &lt;= slice &lt; Slices: values[slice].Length != Rows</exception>
+        /// <exception cref="ArgumentException">if <i>for any 0 &lt;= column &lt; Columns: values[slice][row].Length != Columns</i>.</exception>
+        public virtual DoubleMatrix3D Assign(double[,,] values)
+        {
+            return Assign(values.ToJagged());
         }
 
         /// <summary>

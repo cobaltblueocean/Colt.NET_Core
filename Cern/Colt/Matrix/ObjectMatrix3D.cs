@@ -212,7 +212,7 @@ namespace Cern.Colt.Matrix
         /// <exception cref="">if <i>for any 0 &lt;= column &lt; Columns: values[slice][row].Length != Columns</i>.</exception>
         public virtual ObjectMatrix3D Assign(Object[][][] values)
         {
-            if (values.Length != Slices) throw new ArgumentException(String.Format(Cern.LocalizedResources.Instance().Matrix_MustHaveSameNumberOfSlices, values.Length ,Slices));
+            if (values.Length != Slices) throw new ArgumentException(String.Format(Cern.LocalizedResources.Instance().Matrix_MustHaveSameNumberOfSlices, values.Length, Slices));
             for (int slice = Slices; --slice >= 0;)
             {
                 Object[][] currentSlice = values[slice];
@@ -220,7 +220,7 @@ namespace Cern.Colt.Matrix
                 for (int row = Rows; --row >= 0;)
                 {
                     Object[] currentRow = currentSlice[row];
-                    if (currentRow.Length != Columns) throw new ArgumentException(String.Format(Cern.LocalizedResources.Instance().Matrix_MustHaveSameNumberOfColumnsInEveryRow, currentRow.Length , Columns));
+                    if (currentRow.Length != Columns) throw new ArgumentException(String.Format(Cern.LocalizedResources.Instance().Matrix_MustHaveSameNumberOfColumnsInEveryRow, currentRow.Length, Columns));
                     for (int column = Columns; --column >= 0;)
                     {
                         this[slice, row, column] = currentRow[column];
@@ -228,6 +228,22 @@ namespace Cern.Colt.Matrix
                 }
             }
             return this;
+        }
+
+        /// <summary>
+        /// Sets all cells to the state specified by <i>values</i>.
+        /// <i>values</i> is required to have the form <i>values[slice][row][column]</i>
+        /// and have exactly the same number of Slices, Rows and Columns as the receiver.
+        /// <p>
+        /// The values are copiedd So subsequent changes in <i>values</i> are not reflected in the matrix, and vice-versa.
+        /// </summary>
+        /// <param name="values">the values to be filled into the cells.</param>
+        /// <returns><i>this</i> (for convenience only).</returns>
+        /// <exception cref="">if <i>values.Length != Slices || for any 0 &lt;= slice &lt; Slices: values[slice].Length != Rows</i>.</exception>
+        /// <exception cref="">if <i>for any 0 &lt;= column &lt; Columns: values[slice][row].Length != Columns</i>.</exception>
+        public virtual ObjectMatrix3D Assign(Object[,,] values)
+        {
+            return Assign(values.ToJagged());
         }
 
         /// <summary>

@@ -120,6 +120,22 @@ namespace Cern.Colt.Matrix
         }
 
         /// <summary>
+        /// Constructs a matrix with the given cell values.
+        /// <i>values</i> is required to have the form <i>values[slice][row][column]</i>
+        /// and have exactly the same number of slices, rows and columns as the receiver.
+        /// <p>
+        /// The values are copiedd So subsequent changes in <i>values</i> are not reflected in the matrix, and vice-versa.
+        /// </summary>
+        /// <param name="values">the values to be filled into the cells.</param>
+        /// <returns><i>this</i> (for convenience only).</returns>
+        /// <exception cref="ArgumentException">if <i>values.Length != slices() || for any 0 &lt;= slice &lt; slices(): values[slice].Length != rows()</i>.</exception>
+        /// <exception cref="ArgumentException">if <i>for any 0 &lt;= column &lt; columns(): values[slice][row].Length != columns()</i>.</exception>
+        public DoubleMatrix3D Make(double[,,] values)
+        {
+            return Make(values.ToJagged());
+        }
+
+        /// <summary>
         /// Constructs a matrix with the given shape, each cell initialized with zero.
         /// </summary>
         /// <param name="slices"></param>
