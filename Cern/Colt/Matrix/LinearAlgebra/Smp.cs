@@ -55,7 +55,7 @@ namespace Cern.Colt.Matrix.LinearAlgebra
             if (this.taskGroup != null) this.taskGroup.Dispose();
         }
 
-        public void Run(DoubleMatrix2D[] blocksA, DoubleMatrix2D[] blocksB, ref double[] results, Matrix2DMatrix2DFunction function)
+        public void Run(IDoubleMatrix2D[] blocksA, IDoubleMatrix2D[] blocksB, ref double[] results, Matrix2DMatrix2DFunction function)
         {
 
             double[] buf = new double[blocksA.Length];
@@ -110,7 +110,7 @@ namespace Cern.Colt.Matrix.LinearAlgebra
             #endregion
         }
 
-        public DoubleMatrix2D[] SplitBlockedNN(DoubleMatrix2D A, int threshold, long flops)
+        public IDoubleMatrix2D[] SplitBlockedNN(IDoubleMatrix2D A, int threshold, long flops)
         {
             /*
             determine how to split and parallelize best into blocks
@@ -155,13 +155,13 @@ namespace Cern.Colt.Matrix.LinearAlgebra
 
             // set up concurrent tasks
             int span = p / noOfTasks;
-            DoubleMatrix2D[] blocks = new DoubleMatrix2D[noOfTasks];
+            IDoubleMatrix2D[] blocks = new IDoubleMatrix2D[noOfTasks];
             for (int i = 0; i < noOfTasks; i++)
             {
                 int offset = i * span;
                 if (i == noOfTasks - 1) span = p - span * i; // last span may be a bit larger
 
-                //DoubleMatrix2D AA, BB, CC;
+                //IDoubleMatrix2D AA, BB, CC;
                 if (!splitHoriz)
                 {   // split B along columns into blocks
                     blocks[i] = A.ViewPart(0, offset, A.Rows, span);
@@ -174,17 +174,17 @@ namespace Cern.Colt.Matrix.LinearAlgebra
             return blocks;
         }
 
-        public DoubleMatrix2D[][] SplitBlockedNN(DoubleMatrix2D A, DoubleMatrix2D B, int threshold, long flops)
+        public IDoubleMatrix2D[][] SplitBlockedNN(IDoubleMatrix2D A, IDoubleMatrix2D B, int threshold, long flops)
         {
-            DoubleMatrix2D[] blocksA = SplitBlockedNN(A, threshold, flops);
+            IDoubleMatrix2D[] blocksA = SplitBlockedNN(A, threshold, flops);
             if (blocksA == null) return null;
-            DoubleMatrix2D[] blocksB = SplitBlockedNN(B, threshold, flops);
+            IDoubleMatrix2D[] blocksB = SplitBlockedNN(B, threshold, flops);
             if (blocksB == null) return null;
-            DoubleMatrix2D[][] blocks = { blocksA, blocksB };
+            IDoubleMatrix2D[][] blocks = { blocksA, blocksB };
             return blocks;
         }
 
-        public DoubleMatrix2D[] SplitStridedNN(DoubleMatrix2D A, int threshold, long flops)
+        public IDoubleMatrix2D[] SplitStridedNN(IDoubleMatrix2D A, int threshold, long flops)
         {
             /*
             determine how to split and parallelize best into blocks
@@ -229,13 +229,13 @@ namespace Cern.Colt.Matrix.LinearAlgebra
 
             // set up concurrent tasks
             int span = p / noOfTasks;
-            DoubleMatrix2D[] blocks = new DoubleMatrix2D[noOfTasks];
+            IDoubleMatrix2D[] blocks = new IDoubleMatrix2D[noOfTasks];
             for (int i = 0; i < noOfTasks; i++)
             {
                 int offset = i * span;
                 if (i == noOfTasks - 1) span = p - span * i; // last span may be a bit larger
 
-                //DoubleMatrix2D AA, BB, CC;
+                //IDoubleMatrix2D AA, BB, CC;
                 if (!splitHoriz)
                 {
                     // split B along columns into blocks

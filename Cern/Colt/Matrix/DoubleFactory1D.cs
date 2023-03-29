@@ -17,10 +17,9 @@ namespace Cern.Colt.Matrix
 {
     using System;
     using System.Collections.Generic;
-
     using Function;
-
     using Implementation;
+    using Cern.Jet.Math;
 
     /// <summary>
     /// Factory for convenient construction of 1-d matrices holding <tt>double</tt> cells.
@@ -57,10 +56,10 @@ namespace Cern.Colt.Matrix
         /// <returns>
         /// The concatenation of A and B.
         /// </returns>
-        public DoubleMatrix1D AppendColumns(DoubleMatrix1D a, DoubleMatrix1D b)
+        public IDoubleMatrix1D AppendColumns(IDoubleMatrix1D a, IDoubleMatrix1D b)
         {
             // concatenate
-            DoubleMatrix1D matrix = Make(a.Size + b.Size);
+            IDoubleMatrix1D matrix = Make(a.Size + b.Size);
             matrix.ViewPart(0, a.Size).Assign(a);
             matrix.ViewPart(a.Size, b.Size).Assign(b);
             return matrix;
@@ -76,9 +75,9 @@ namespace Cern.Colt.Matrix
         /// <returns>
         /// A matrix with cells having ascending values.
         /// </returns>
-        public DoubleMatrix1D Ascending(int size)
+        public IDoubleMatrix1D Ascending(int size)
         {
-            return Descending(size).Assign(UnaryFunctions.Chain(a => -a, UnaryFunctions.Minus(size)));
+            return Descending(size).Assign(UnaryFunctions.Chain(new DoubleFunction() { Eval = (a) => -a }, UnaryFunctions.Minus(size))); 
         }
 
         /// <summary>
@@ -91,9 +90,9 @@ namespace Cern.Colt.Matrix
         /// <returns>
         /// A matrix with cells having descending values.
         /// </returns>
-        public DoubleMatrix1D Descending(int size)
+        public IDoubleMatrix1D Descending(int size)
         {
-            DoubleMatrix1D matrix = Make(size);
+            IDoubleMatrix1D matrix = Make(size);
             int v = 0;
             for (int i = size; --i >= 0; )
                 matrix[size] = v++;
@@ -109,7 +108,7 @@ namespace Cern.Colt.Matrix
         /// <returns>
         /// A matrix with the given cell values.
         /// </returns>
-        public DoubleMatrix1D Make(double[] values)
+        public IDoubleMatrix1D Make(double[] values)
         {
             if (this == Sparse) return new SparseDoubleMatrix1D(values);
             return new DenseDoubleMatrix1D(values);
@@ -125,14 +124,14 @@ namespace Cern.Colt.Matrix
         /// <returns>
         /// A matrix.
         /// </returns>
-        public DoubleMatrix1D Make(DoubleMatrix1D[] parts)
+        public IDoubleMatrix1D Make(IDoubleMatrix1D[] parts)
         {
             if (parts.Length == 0) return Make(0);
 
             int size = 0;
             for (int i = 0; i < parts.Length; i++) size += parts[i].Size;
 
-            DoubleMatrix1D vector = Make(size);
+            IDoubleMatrix1D vector = Make(size);
             size = 0;
             for (int i = 0; i < parts.Length; i++)
             {
@@ -152,7 +151,7 @@ namespace Cern.Colt.Matrix
         /// <returns>
         /// A matrix.
         /// </returns>
-        public DoubleMatrix1D Make(int size)
+        public IDoubleMatrix1D Make(int size)
         {
             if (this == Sparse) return new SparseDoubleMatrix1D(size);
             return new DenseDoubleMatrix1D(size);
@@ -170,7 +169,7 @@ namespace Cern.Colt.Matrix
         /// <returns>
         /// A matrix.
         /// </returns>
-        public DoubleMatrix1D Make(int size, double initialValue)
+        public IDoubleMatrix1D Make(int size, double initialValue)
         {
             if (initialValue == 0) return Make(size);
             return Make(size).Assign(initialValue);
@@ -186,10 +185,10 @@ namespace Cern.Colt.Matrix
         /// <returns>
         /// A new matrix.
         /// </returns>
-        public DoubleMatrix1D Make(IList<double> values)
+        public IDoubleMatrix1D Make(IList<double> values)
         {
             int size = values.Count;
-            DoubleMatrix1D vector = Make(size);
+            IDoubleMatrix1D vector = Make(size);
             for (int i = size; --i >= 0; ) vector[i] = values[i];
             return vector;
         }
@@ -203,7 +202,7 @@ namespace Cern.Colt.Matrix
         /// <returns>
         /// A matrix.
         /// </returns>
-        public DoubleMatrix1D Random(int size)
+        public IDoubleMatrix1D Random(int size)
         {
             return Make(size).Assign(new Random().NextDouble());
         }
@@ -220,10 +219,10 @@ namespace Cern.Colt.Matrix
         /// <returns>
         /// A matrix.
         /// </returns>
-        public DoubleMatrix1D Repeat(DoubleMatrix1D a, int repeat)
+        public IDoubleMatrix1D Repeat(IDoubleMatrix1D a, int repeat)
         {
             int size = a.Size;
-            DoubleMatrix1D matrix = Make(repeat * size);
+            IDoubleMatrix1D matrix = Make(repeat * size);
             for (int i = repeat; --i >= 0; )
                 matrix.ViewPart(size * i, size).Assign(a);
 
@@ -240,7 +239,7 @@ namespace Cern.Colt.Matrix
         /// <returns>
         /// A new list.
         /// </returns>
-        public List<double> ToList(DoubleMatrix1D values)
+        public List<double> ToList(IDoubleMatrix1D values)
         {
             int size = values.Size;
             var list = new List<double>(size);

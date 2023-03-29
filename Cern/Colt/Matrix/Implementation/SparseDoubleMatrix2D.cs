@@ -140,7 +140,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <returns>
         /// <tt>this</tt> (for convenience only).
         /// </returns>
-        public override DoubleMatrix2D Assign(double value)
+        public override IDoubleMatrix2D Assign(double value)
         {
             // overriden for performance only
             if (!IsView && value == 0) this.Elements.Clear();
@@ -162,7 +162,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <exception cref="ArgumentException">
         /// If <tt>columns() != other.columns() || rows() != other.rows()</tt>
         /// </exception>
-        public override DoubleMatrix2D Assign(DoubleMatrix2D source)
+        public override IDoubleMatrix2D Assign(IDoubleMatrix2D source)
         {
             // overriden for performance only
             if (!(source is SparseDoubleMatrix2D))
@@ -197,7 +197,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <exception cref="ArgumentException">
         /// If <tt>columns() != other.columns() || rows() != other.rows()</tt>
         /// </exception>
-        public override DoubleMatrix2D Assign(DoubleMatrix2D y, DoubleDoubleFunction function)
+        public override IDoubleMatrix2D Assign(IDoubleMatrix2D y, IDoubleDoubleFunction function)
         {
             if (!IsView)
                 CheckShape(y);
@@ -224,7 +224,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <returns>
         /// <tt>this</tt> (for convenience only).
         /// </returns>
-        public override DoubleMatrix2D ForEachNonZero(IntIntDoubleFunction function)
+        public override IDoubleMatrix2D ForEachNonZero(IntIntDoubleFunctionDelegate function)
         {
             if (IsView) base.ForEachNonZero(function);
             else
@@ -253,7 +253,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <returns>
         /// A new empty matrix of the same dynamic type.
         /// </returns>
-        public override DoubleMatrix2D Like(int rows, int columns)
+        public override IDoubleMatrix2D Like(int rows, int columns)
         {
             return new SparseDoubleMatrix2D(rows, columns);
         }
@@ -267,7 +267,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <returns>
         /// A new matrix of the corresponding dynamic type.
         /// </returns>
-        public override DoubleMatrix1D Like1D(int size)
+        public override IDoubleMatrix1D Like1D(int size)
         {
             return new SparseDoubleMatrix1D(size);
         }
@@ -298,7 +298,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <returns>
         /// A new matrix of the corresponding dynamic type.
         /// </returns>
-        public override DoubleMatrix1D Like1D(int size, int offset, int stride)
+        public override IDoubleMatrix1D Like1D(int size, int offset, int stride)
         {
             return new SparseDoubleMatrix1D(size, this.Elements, offset, stride);
         }
@@ -312,7 +312,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <returns>
         /// <tt>true</tt> if both matrices share at least one identical cell.
         /// </returns>
-        protected override bool HaveSharedCellsRaw(DoubleMatrix2D other)
+        public override bool HaveSharedCellsRaw(IDoubleMatrix2D other)
         {
             if (other is SelectedSparseDoubleMatrix2D)
             {
@@ -360,7 +360,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <returns>
         /// A new view.
         /// </returns>
-        protected override DoubleMatrix2D ViewSelectionLike(int[] rowOffsets, int[] columnOffsets)
+        protected override IDoubleMatrix2D ViewSelectionLike(int[] rowOffsets, int[] columnOffsets)
         {
             return new SelectedSparseDoubleMatrix2D(this.Elements, rowOffsets, columnOffsets, 0);
         }

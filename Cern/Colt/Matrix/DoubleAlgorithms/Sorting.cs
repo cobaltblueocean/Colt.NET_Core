@@ -45,7 +45,7 @@ namespace Cern.Colt.Matrix.DoubleAlgorithms
         /// <returns>
         /// A new sorted vector (matrix) viewd 
         /// </returns>
-        public DoubleMatrix1D Sort(DoubleMatrix1D vector)
+        public IDoubleMatrix1D Sort(IDoubleMatrix1D vector)
         {
             var indexes = new int[vector.Size]; // row indexes to reorder instead of matrix itself
             for (int i = indexes.Length; --i >= 0;)
@@ -78,7 +78,7 @@ namespace Cern.Colt.Matrix.DoubleAlgorithms
         /// <returns>
         /// A new matrix view sorted as specified.
         /// </returns>
-        public DoubleMatrix1D Sort(DoubleMatrix1D vector, DoubleComparator c)
+        public IDoubleMatrix1D Sort(IDoubleMatrix1D vector, DoubleComparatorDelegate c)
         {
             var indexes = new int[vector.Size]; // row indexes to reorder instead of matrix itself
             for (int i = indexes.Length; --i >= 0;) indexes[i] = i;
@@ -108,7 +108,7 @@ namespace Cern.Colt.Matrix.DoubleAlgorithms
         /// <exception cref="ArgumentOutOfRangeException">
         /// If <i>aggregates.Length != matrix.rows()</i>.
         /// </exception>
-        public DoubleMatrix2D Sort(DoubleMatrix2D matrix, double[] aggregates)
+        public IDoubleMatrix2D Sort(IDoubleMatrix2D matrix, double[] aggregates)
         {
             int rows = matrix.Rows;
             if (aggregates.Length != rows) throw new ArgumentOutOfRangeException("aggregates", "aggregates.Length != matrix.rows()");
@@ -154,7 +154,7 @@ namespace Cern.Colt.Matrix.DoubleAlgorithms
         /// <exception cref="IndexOutOfRangeException">
         /// If <i>column &lt; 0 || column &gt;= matrix.columns()</i>.
         /// </exception>
-        public DoubleMatrix2D Sort(DoubleMatrix2D matrix, int column)
+        public IDoubleMatrix2D Sort(IDoubleMatrix2D matrix, int column)
         {
             if (column < 0 || column >= matrix.Columns) throw new IndexOutOfRangeException("column=" + column + ", matrix=" + AbstractFormatter.Shape(matrix));
 
@@ -164,7 +164,7 @@ namespace Cern.Colt.Matrix.DoubleAlgorithms
                 rowIndexes[i] = i;
             }
 
-            DoubleMatrix1D col = matrix.ViewColumn(column);
+            IDoubleMatrix1D col = matrix.ViewColumn(column);
             RunSort(
                 rowIndexes,
                 0,
@@ -194,12 +194,12 @@ namespace Cern.Colt.Matrix.DoubleAlgorithms
         /// <returns>
         /// A new matrix view having rows sorted as specified.
         /// </returns>
-        public DoubleMatrix2D Sort(DoubleMatrix2D matrix, DoubleMatrix1DComparator c)
+        public IDoubleMatrix2D Sort(IDoubleMatrix2D matrix, DoubleMatrix1DComparator c)
         {
             var rowIndexes = new int[matrix.Rows]; // row indexes to reorder instead of matrix itself
             for (int i = rowIndexes.Length; --i >= 0;) rowIndexes[i] = i;
 
-            var views = new DoubleMatrix1D[matrix.Rows]; // precompute views for speed
+            var views = new IDoubleMatrix1D[matrix.Rows]; // precompute views for speed
             for (int i = views.Length; --i >= 0;) views[i] = matrix.ViewRow(i);
 
             RunSort(rowIndexes, 0, rowIndexes.Length, (a, b) => c(views[a], views[b]));
@@ -209,7 +209,7 @@ namespace Cern.Colt.Matrix.DoubleAlgorithms
             return matrix.ViewSelection(rowIndexes, null);
         }
 
-        public DoubleMatrix3D Sort(DoubleMatrix3D matrix, int row, int column)
+        public IDoubleMatrix3D Sort(DoubleMatrix3D matrix, int row, int column)
         {
             if (row < 0 || row >= matrix.Rows) throw new IndexOutOfRangeException("row=" + row + ", matrix=" + Formatter.Shape(matrix));
             if (column < 0 || column >= matrix.Columns) throw new IndexOutOfRangeException("column=" + column + ", matrix=" + Formatter.Shape(matrix));
@@ -217,8 +217,8 @@ namespace Cern.Colt.Matrix.DoubleAlgorithms
             int[] sliceIndexes = new int[matrix.Slices]; // indexes to reorder instead of matrix itself
             for (int i = sliceIndexes.Length; --i >= 0;) sliceIndexes[i] = i;
 
-            DoubleMatrix1D sliceView = matrix.ViewRow(row).ViewColumn(column);
-            IntComparator comp = new IntComparator((a, b) =>
+            IDoubleMatrix1D sliceView = matrix.ViewRow(row).ViewColumn(column);
+            IntComparatorDelegate comp = new IntComparatorDelegate((a, b) =>
             {
                 double av = sliceView[a];
                 double bv = sliceView[b];
@@ -235,15 +235,15 @@ namespace Cern.Colt.Matrix.DoubleAlgorithms
             return matrix.ViewSelection(sliceIndexes, null, null);
         }
 
-        public DoubleMatrix3D Sort(DoubleMatrix3D matrix, Cern.Colt.Matrix.DoubleAlgorithms.DoubleMatrix2DComparator c)
+        public IDoubleMatrix3D Sort(IDoubleMatrix3D matrix, Cern.Colt.Matrix.DoubleAlgorithms.DoubleMatrix2DComparator c)
         {
             int[] sliceIndexes = new int[matrix.Slices]; // indexes to reorder instead of matrix itself
             for (int i = sliceIndexes.Length; --i >= 0;) sliceIndexes[i] = i;
 
-            DoubleMatrix2D[] views = new DoubleMatrix2D[matrix.Slices]; // precompute views for speed
+            IDoubleMatrix2D[] views = new IDoubleMatrix2D[matrix.Slices]; // precompute views for speed
             for (int i = views.Length; --i >= 0;) views[i] = matrix.ViewSlice(i);
 
-            IntComparator comp = new IntComparator((a, b) => { return c(views[a], views[b]); });
+            IntComparatorDelegate comp = new IntComparatorDelegate((a, b) => { return c(views[a], views[b]); });
 
 
             RunSort(sliceIndexes, 0, sliceIndexes.Length, comp);
@@ -253,12 +253,12 @@ namespace Cern.Colt.Matrix.DoubleAlgorithms
             return matrix.ViewSelection(sliceIndexes, null, null);
         }
 
-        protected void RunSort(int[] a, int fromIndex, int toIndex, IntComparator c)
+        protected void RunSort(int[] a, int fromIndex, int toIndex, IntComparatorDelegate c)
         {
             Cern.Colt.Sorting.QuickSort(a, fromIndex, toIndex, c);
         }
 
-        protected void RunSort(int fromIndex, int toIndex, IntComparator c, Swapper swapper)
+        protected void RunSort(int fromIndex, int toIndex, IntComparatorDelegate c, Swapper swapper)
         {
             GenericSorting.QuickSort(fromIndex, toIndex, c, swapper);
         }

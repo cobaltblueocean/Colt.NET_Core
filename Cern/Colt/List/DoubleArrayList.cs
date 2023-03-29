@@ -227,19 +227,51 @@ namespace Cern.Colt.List
         public override Boolean Equals(Object otherObj)
         { //delta
           // overridden for performance only.
-            if (!(otherObj is DoubleArrayList)) return base.Equals(otherObj);
-            if (this == otherObj) return true;
-            if (otherObj == null) return false;
-            DoubleArrayList other = (DoubleArrayList)otherObj;
-            if (Size != other.Size) return false;
-
-            double[] theElements = GetElements();
-            double[] otherElements = other.ToArray();
-            for (int i = Size; --i >= 0;)
+            if (!(otherObj is DoubleArrayList))
             {
-                if (theElements[i] != otherElements[i]) return false;
+                if (otherObj is IList<Double>)
+                {
+                    var other = (IList<Double>)otherObj;
+                    if (Size != other.Count) return false;
+                    var theElements = GetElements();
+                    var otherElements = other.ToArray();
+                    for (int i = Size; --i >= 0;)
+                    {
+                        if (theElements[i] != otherElements[i]) return false;
+                    }
+                    return true;
+                }
+                else if (otherObj is Array)
+                {
+                    var other = (double[])otherObj;
+                    if (Size != other.Length) return false;
+                    var theElements = GetElements();
+                    for (int i = Size; --i >= 0;)
+                    {
+                        if (theElements[i] != other[i]) return false;
+                    }
+                    return true;
+                }
+                else
+                {
+                    return base.Equals(otherObj);
+                }
             }
-            return true;
+            else
+            {
+                if (this == otherObj) return true;
+                if (otherObj == null) return false;
+                DoubleArrayList other = (DoubleArrayList)otherObj;
+                if (Size != other.Size) return false;
+
+                var theElements = GetElements();
+                var otherElements = other.ToArray();
+                for (int i = Size; --i >= 0;)
+                {
+                    if (theElements[i] != otherElements[i]) return false;
+                }
+                return true;
+            }
         }
         /// <summary>
         /// Applies a procedure to each element of the receiver, if any.
@@ -247,7 +279,7 @@ namespace Cern.Colt.List
         /// <summary>
         /// <param name="procedure">   the procedure to be appliedd Stops iteration if the procedure returns <i>false</i>, otherwise continuesd</param>
         /// <returns><i>false</i> if the procedure stopped before all elements where iterated over, <i>true</i> otherwised</returns>
-        public override Boolean ForEach(DoubleProcedure procedure)
+        public override Boolean ForEach(DoubleProcedureDelegate procedure)
         {
             // overridden for performance only.
             double[] theElements = _elements;

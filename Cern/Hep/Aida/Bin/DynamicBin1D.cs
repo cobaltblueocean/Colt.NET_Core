@@ -142,7 +142,7 @@ namespace Cern.Hep.Aida.Bin
         /// <returns>the aggregated measure.</returns>
         /// <see cref="Cern.Jet.math.Functions"></see>
         [MethodImpl(MethodImplOptions.Synchronized)]
-        public double Aggregate(Cern.Colt.Function.DoubleDoubleFunction aggr, Cern.Colt.Function.DoubleFunction f)
+        public double Aggregate(Cern.Colt.Function.DoubleDoubleFunctionDelegate aggr, Cern.Colt.Function.DoubleFunctionDelegate f)
         {
             int s = Size;
             if (s == 0) return Double.NaN;

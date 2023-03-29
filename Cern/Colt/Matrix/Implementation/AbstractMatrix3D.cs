@@ -19,7 +19,7 @@ namespace Cern.Colt.Matrix.Implementation
     /// Abstract base class for 3-d matrices holding objects or primitive data types such as <code>int</code>, <code>double</code>, etc.
     /// </summary>
     /// <remarks>This implementation is not synchronized.</remarks>
-    public abstract class AbstractMatrix3D : AbstractMatrix
+    public abstract class AbstractMatrix3D<T> : AbstractMatrix, IMatrix3D<T>
     {
         /// <summary>
         /// Gets or sets the number of Slices this matrix (view) has.
@@ -74,6 +74,18 @@ namespace Cern.Colt.Matrix.Implementation
         {
             get { return Slices * Rows * Columns; }
         }
+
+        /// <summary>
+        /// Gets or sets the matrix cell value at coordinate <i>[slice,row,column]</i>.
+        /// <p>Provided with invalid parameters this method may return invalid objects without throwing any exception.
+        /// <b>You should only use this method when you are absolutely sure that the coordinate is within bounds.</b>
+        /// Precondition (unchecked): <i>slice&lt;0 || slice&gt;=Slices || row&lt;0 || row&gt;=Rows || column&lt;0 || column&gt;=column()</i>.
+        /// </summary>
+        /// <param name="slice">the index of the slice-coordinate.</param>
+        /// <param name="row">the index of the row-coordinate.</param>
+        /// <param name="column">the index of the column-coordinate.</param>
+        /// <returns>the value at the specified coordinate.</returns>
+        public abstract T this[int slice, int row, int column] { get; set; }
 
         /// <summary>
         /// Returns the position of the given absolute rank within the (virtual or non-virtual) internal 1-dimensional arrayd 
@@ -195,7 +207,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// Sanity check for operations requiring two matrices with the same number of Slices, Rows and Columns.
         /// </summary>
         /// <exception cref="ArgumentException">if <i>Slices() != B.Slices() || Rows() != B.Rows() || Columns() != B.Columns()</i>.</exception>
-        public virtual void CheckShape(AbstractMatrix3D B)
+        public virtual void CheckShape(IMatrix3D<T> B)
         {
             if (Slices != B.Slices || Rows != B.Rows || Columns != B.Columns) throw new ArgumentException(String.Format(Cern.LocalizedResources.Instance().Exception_IncompatibleDimensions2, ToStringShort(), B.ToStringShort()));
         }
@@ -204,9 +216,9 @@ namespace Cern.Colt.Matrix.Implementation
         /// Sanity check for operations requiring matrices with the same number of Slices, Rows and Columns.
         /// </summary>
         /// <exception cref="ArgumentException">if <i>Slices() != B.Slices() || Rows() != B.Rows() || Columns() != B.Columns() || Slices() != C.Slices() || Rows() != C.Rows() || Columns() != C.Columns()</i>.</exception>
-        public virtual void CheckShape(AbstractMatrix3D B, AbstractMatrix3D C)
+        public virtual void CheckShape(IMatrix3D<T> B, IMatrix3D<T> C)
         {
-            if (Slices != B.Slices || Rows != B.Rows || Columns != B.Columns || Slices != C.Slices || Rows != C.Rows || Columns != C.Columns) throw new ArgumentException(String.Format(Cern.LocalizedResources.Instance().Exception_IncompatibleDimensions3, ToStringShort() , B.ToStringShort() , C.ToStringShort()));
+            if (Slices != B.Slices || Rows != B.Rows || Columns != B.Columns || Slices != C.Slices || Rows != C.Rows || Columns != C.Columns) throw new ArgumentException(String.Format(Cern.LocalizedResources.Instance().Exception_IncompatibleDimensions3, ToStringShort(), B.ToStringShort(), C.ToStringShort()));
         }
 
         /// <summary>
@@ -312,7 +324,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <summary>
         /// Self modifying version of viewColumnFlip().
         /// </summary>
-        protected virtual AbstractMatrix3D VColumnFlip()
+        public virtual IMatrix3D<T> VColumnFlip()
         {
             if (Columns > 0)
             {
@@ -327,7 +339,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// Self modifying version of viewDice().
         /// </summary>
         /// <exception cref="ArgumentException">if some of the parameters are equal or not in range 0..2.</exception>
-        protected virtual AbstractMatrix3D VDice(int axis0, int axis1, int axis2)
+        public virtual IMatrix3D<T> VDice(int axis0, int axis1, int axis2)
         {
             int d = 3;
             if (axis0 < 0 || axis0 >= d || axis1 < 0 || axis1 >= d || axis2 < 0 || axis2 >= d ||
@@ -361,7 +373,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// Self modifying version of viewPart().
         /// </summary>
         /// <exception cref="IndexOutOfRangeException">if <i>slice %lt; 0 || depth %lt; 0 || slice+depth %gt; Slices() || row %lt; 0 || height %lt; 0 || row+height %gt; Rows() || column %lt; 0 || width %lt; 0 || column + width %gt; Columns()</i></exception>
-        protected virtual AbstractMatrix3D VPart(int slice, int row, int column, int depth, int height, int width)
+        public virtual IMatrix3D<T> VPart(int slice, int row, int column, int depth, int height, int width)
         {
             CheckBox(slice, row, column, depth, height, width);
 
@@ -380,7 +392,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <summary>
         /// Self modifying version of viewRowFlip().
         /// </summary>
-        protected virtual AbstractMatrix3D VRowFlip()
+        public virtual IMatrix3D<T> VRowFlip()
         {
             if (Rows > 0)
             {
@@ -394,7 +406,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <summary>
         /// Self modifying version of viewSliceFlip().
         /// </summary>
-        protected virtual AbstractMatrix3D VSliceFlip()
+        public virtual IMatrix3D<T> VSliceFlip()
         {
             if (Slices > 0)
             {
@@ -410,7 +422,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// @thRows  
         /// </summary>
         /// <exception cref="IndexOutOfRangeException">if <i>Slicestride %lt;= 0 || Rowstride %lt;= 0 || Columnstride %lt;= 0</i>.</exception>
-        protected virtual AbstractMatrix3D VStrides(int Slicestride, int Rowstride, int Columnstride)
+        public virtual IMatrix3D<T> VStrides(int Slicestride, int Rowstride, int Columnstride)
         {
             if (Slicestride <= 0 || Rowstride <= 0 || Columnstride <= 0) throw new IndexOutOfRangeException(String.Format(Cern.LocalizedResources.Instance().Exception_IllegalStrides3, Slicestride, Rowstride, Columnstride));
 

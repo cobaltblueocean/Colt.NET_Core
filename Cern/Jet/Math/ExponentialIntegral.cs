@@ -6,7 +6,11 @@ using System.Threading.Tasks;
 
 namespace Cern.Jet.Math
 {
-    class ExponentialIntegral
+    public class ExponentialIntegral:Constants
     {
+        protected ExponentialIntegral()
+        {
+
+        }
     }
 }

@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="DenseDoubleMatrix1D.cs" company="CERN">
+// <copyright file="DenseIDoubleMatrix1D.cs" company="CERN">
 //   Copyright © 1999 CERN - European Organization for Nuclear Research.
 //   Permission to use, copy, modify, distribute and sell this software and its documentation for any purpose 
 //   is hereby granted without fee, provided that the above copyright notice appear in all copies and 
@@ -115,7 +115,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <exception cref="ArgumentOutOfRangeException">
         /// If <tt>values.length != size()</tt>.
         /// </exception>
-        public override DoubleMatrix1D Assign(double[] values)
+        public override IDoubleMatrix1D Assign(double[] values)
         {
             if (IsView)
             {
@@ -140,7 +140,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <returns>
         /// <tt>this</tt> (for convenience only).
         /// </returns>
-        public override DoubleMatrix1D Assign(double value)
+        public override IDoubleMatrix1D Assign(double value)
         {
             int index = this.Index(0);
             int s = Stride;
@@ -164,7 +164,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <returns>
         /// <tt>this</tt> (for convenience only).
         /// </returns>
-        public override DoubleMatrix1D Assign(DoubleFunction function)
+        public override IDoubleMatrix1D Assign(IDoubleFunction function)
         {
             int s = Stride;
             int i = Index(0);
@@ -173,7 +173,7 @@ namespace Cern.Colt.Matrix.Implementation
 
             for (int k = Size; --k >= 0;)
             {
-                elems[i] = function(elems[i]);
+                elems[i] = function.Apply(elems[i]);
                 i += s;
             }
 
@@ -192,7 +192,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <exception cref="ArgumentException">
         /// If <tt>size() != other.size()</tt>.
         /// </exception>
-        public override DoubleMatrix1D Assign(DoubleMatrix1D source)
+        public override IDoubleMatrix1D Assign(IDoubleMatrix1D source)
         {
             // overriden for performance only
             if (!(source is DenseDoubleMatrix1D))
@@ -210,7 +210,7 @@ namespace Cern.Colt.Matrix.Implementation
 
             if (HaveSharedCells(other))
             {
-                DoubleMatrix1D c = other.Copy();
+                IDoubleMatrix1D c = other.Copy();
                 if (!(c is DenseDoubleMatrix1D))
                 {
                     // should not happen
@@ -255,7 +255,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <exception cref="ArgumentOutOfRangeException">
         /// If <tt>size() != y.size()</tt>.
         /// </exception>
-        public override DoubleMatrix1D Assign(DoubleMatrix1D y, DoubleDoubleFunction function)
+        public override IDoubleMatrix1D Assign(IDoubleMatrix1D y, IDoubleDoubleFunction function)
         {
             // overriden for performance only
             if (!(y is DenseDoubleMatrix1D))
@@ -273,12 +273,76 @@ namespace Cern.Colt.Matrix.Implementation
             int otherIndex = other.Index(0);
 
             // specialized for speed
-            for (int k = Size; --k >= 0;)
-            {
-                elems[index] = function(elems[index], otherElems[otherIndex]);
-                index += s;
-                otherIndex += ys;
+            if (function == Cern.Jet.Math.Functions.DoubleDoubleFunctions.Mult)
+            {  // x[i] = x[i] * y[i]
+                for (int k = Size; --k >= 0;)
+                {
+                    elems[index] *= otherElems[otherIndex];
+                    index += s;
+                    otherIndex += ys;
+                }
             }
+            else if (function == Cern.Jet.Math.Functions.DoubleDoubleFunctions.Div)
+            { // x[i] = x[i] / y[i]
+                for (int k = Size; --k >= 0;)
+                {
+                    elems[index] /= otherElems[otherIndex];
+                    index += s;
+                    otherIndex += ys;
+                }
+            }
+            else if (function is Cern.Jet.Math.PlusMultiFunction)
+            {
+                double multiplicator = ((Cern.Jet.Math.PlusMultiFunction)function).Multiplicator;
+                if (multiplicator == 0)
+                { // x[i] = x[i] + 0*y[i]
+                    return this;
+                }
+                else if (multiplicator == 1)
+                { // x[i] = x[i] + y[i]
+                    for (int k = Size; --k >= 0;)
+                    {
+                        elems[index] += otherElems[otherIndex];
+                        index += s;
+                        otherIndex += ys;
+                    }
+                }
+                else if (multiplicator == -1)
+                { // x[i] = x[i] - y[i]
+                    for (int k = Size; --k >= 0;)
+                    {
+                        elems[index] -= otherElems[otherIndex];
+                        index += s;
+                        otherIndex += ys;
+                    }
+                }
+                else
+                { // the general case x[i] = x[i] + mult*y[i]		
+                    for (int k = Size; --k >= 0;)
+                    {
+                        elems[index] += multiplicator * otherElems[otherIndex];
+                        index += s;
+                        otherIndex += ys;
+                    }
+                }
+            }
+
+            else
+            { // the general case x[i] = f(x[i],y[i])		
+                for (int k = Size; --k >= 0;)
+                {
+                    elems[index] = function.Apply(elems[index], otherElems[otherIndex]);
+                    index += s;
+                    otherIndex += ys;
+                }
+            }
+
+            //for (int k = Size; --k >= 0;)
+            //{
+            //    elems[index] = function(elems[index], otherElems[otherIndex]);
+            //    index += s;
+            //    otherIndex += ys;
+            //}
 
             return this;
         }
@@ -292,7 +356,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <returns>
         /// A new empty matrix of the same dynamic type.
         /// </returns>
-        public override DoubleMatrix1D Like(int n)
+        public override IDoubleMatrix1D Like(int n)
         {
             return new DenseDoubleMatrix1D(n);
         }
@@ -309,7 +373,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <returns>
         /// A new matrix of the corresponding dynamic type.
         /// </returns>
-        public override DoubleMatrix2D Like2D(int rows, int columns)
+        public override IDoubleMatrix2D Like2D(int rows, int columns)
         {
             return new DenseDoubleMatrix2D(rows, columns);
         }
@@ -338,7 +402,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <exception cref="ArgumentOutOfRangeException">
         /// If <tt>size() != other.size()</tt>.
         /// </exception>
-        public override void Swap(DoubleMatrix1D other)
+        public override void Swap(IDoubleMatrix1D other)
         {
             // overriden for performance only
             if (!(other is DenseDoubleMatrix1D))
@@ -401,7 +465,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <returns>
         /// The sum of products; zero if <tt>from &lt; 0 || length &lt; 0</tt>.
         /// </returns>
-        public override double ZDotProduct(DoubleMatrix1D y, int from, int length)
+        public override double ZDotProduct(IDoubleMatrix1D y, int from, int length)
         {
             if (!(y is DenseDoubleMatrix1D))
                 return base.ZDotProduct(y, from, length);
@@ -476,7 +540,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <returns>
         /// The position of the element with the given relative rank within the (virtual or non-virtual) internal 1-dimensional array.
         /// </returns>
-        protected internal override int Index(int rank)
+        public override int Index(int rank)
         {
             // overriden for manual inlining only
             return Zero + (rank * Stride);
@@ -538,7 +602,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <returns>
         /// <tt>true</tt> if both matrices share at least one identical cell.
         /// </returns>
-        protected override bool HaveSharedCellsRaw(DoubleMatrix1D other)
+        public override bool HaveSharedCellsRaw(IDoubleMatrix1D other)
         {
             if (other is SelectedDenseDoubleMatrix1D)
             {
@@ -564,7 +628,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <returns>
         /// A new view.
         /// </returns>
-        protected override DoubleMatrix1D ViewSelectionLike(int[] offsets)
+        public override IDoubleMatrix1D ViewSelectionLike(int[] offsets)
         {
             return new SelectedDenseDoubleMatrix1D(Elements, offsets);
         }

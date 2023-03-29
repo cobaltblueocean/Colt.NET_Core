@@ -591,7 +591,7 @@ namespace Cern.Colt.Tests
             //int[] sizes = {3};
             //double[] densities = {0.1};
 
-            DoubleMatrix3D timings = DoubleFactory3D.Dense.Make(types.Length, sizes.Length, densities.Length);
+            IDoubleMatrix3D timings = DoubleFactory3D.Dense.Make(types.Length, sizes.Length, densities.Length);
             Timer runTime = new Timer();
             runTime.Start();
             for (int k = 0; k < types.Length; k++)
@@ -620,8 +620,8 @@ namespace Cern.Colt.Tests
                         {
                             double val = 0.5;
                             function.A = null; function.B = null; function.C = null; function.D = null; // --> help gc before allocating new mem
-                            DoubleMatrix2D A = factory.Sample(size, size, val, density);
-                            DoubleMatrix2D B = factory.Sample(size, size, val, density);
+                            IDoubleMatrix2D A = factory.Sample(size, size, val, density);
+                            IDoubleMatrix2D B = factory.Sample(size, size, val, density);
                             function.SetParameters(A, B);
                             A = null; B = null; // help gc
                             double ops = function.Operations();
@@ -659,7 +659,7 @@ namespace Cern.Colt.Tests
             writer.WriteLine(new Cern.Colt.Matrix.DoubleAlgorithms.Formatter("%1.3G").ToTitleString(timings, sliceNames, rowNames, colNames, sliceAxisName, rowAxisName, colAxisName, "Performance of " + title, aggr));
             /*
             title = "Speedup of dense over sparse";
-            DoubleMatrix2D speedup = cern.colt.matrix.doublealgo.Transform.div(timings.viewSlice(0).Copy(),timings.viewSlice(1));
+            IDoubleMatrix2D speedup = cern.colt.matrix.doublealgo.Transform.div(timings.viewSlice(0).Copy(),timings.viewSlice(1));
             writer.WriteLine("\n"+new cern.colt.matrix.doublealgo.Formatter("%1.3G").toTitleString(speedup,rowNames,colNames,rowAxisName,colAxisName,title,aggr));
             */
             writer.WriteLine("Run took a total of " + runTime + "d End of run.");
@@ -673,7 +673,7 @@ namespace Cern.Colt.Tests
             double[] densities = { 0.00001 };
             Boolean[] sparses = { true };
 
-            DoubleMatrix2D timings = DoubleFactory2D.Dense.Make(sizes.Length, 4);
+            IDoubleMatrix2D timings = DoubleFactory2D.Dense.Make(sizes.Length, 4);
             Timer runTime = new Timer();
             runTime.Start();
             for (int i = 0; i < sizes.Length; i++)
@@ -687,8 +687,8 @@ namespace Cern.Colt.Tests
                 // Assert.Inconclusive("x");
                 double val = 0.5;
                 function.A = null; function.B = null; function.C = null; function.D = null; // --> help gc before allocating new mem
-                DoubleMatrix2D A = factory.Sample(size, size, val, density);
-                DoubleMatrix2D B = factory.Sample(size, size, val, density);
+                IDoubleMatrix2D A = factory.Sample(size, size, val, density);
+                IDoubleMatrix2D B = factory.Sample(size, size, val, density);
                 function.SetParameters(A, B);
                 A = null; B = null; // help gc
                 float secs = BenchmarkKernel.Run(minSeconds, function.timerProc);
@@ -783,7 +783,7 @@ namespace Cern.Colt.Tests
                 timerProc = new TimerProcedure((t) => { Cern.Colt.Matrix.LinearAlgebra.SmpBlas.smpBlas.Dgemm(TransposeA, TransposeB, 1, A, B, 0, C); });
             }
 
-            public override void SetParameters(DoubleMatrix2D G, DoubleMatrix2D H)
+            public override void SetParameters(IDoubleMatrix2D G, IDoubleMatrix2D H)
             {
                 base.SetParameters(G, H);
                 D = new Cern.Colt.Matrix.Implementation.DenseDoubleMatrix2D(A.Rows, A.Columns).Assign(0.5);
@@ -812,7 +812,7 @@ namespace Cern.Colt.Tests
 
             }
 
-            public override void SetParameters(DoubleMatrix2D G, DoubleMatrix2D H)
+            public override void SetParameters(IDoubleMatrix2D G, IDoubleMatrix2D H)
 
             {
                 base.SetParameters(G, H);
@@ -857,7 +857,7 @@ namespace Cern.Colt.Tests
 
             public double dummy;
             public override String ToString() { return "matrix to the power of an exponent"; }
-            public override void SetParameters(DoubleMatrix2D A, DoubleMatrix2D B)
+            public override void SetParameters(IDoubleMatrix2D A, IDoubleMatrix2D B)
             {
                 if (k < 0)
                 { // must be nonsingular for inversion
@@ -1054,7 +1054,7 @@ namespace Cern.Colt.Tests
 
             }
 
-            public override void SetParameters(DoubleMatrix2D A, DoubleMatrix2D B)
+            public override void SetParameters(IDoubleMatrix2D A, IDoubleMatrix2D B)
             {
                 base.SetParameters(A.ViewDice(), B); // transposed --> faster (memory aware) iteration in correlation algo
             }
@@ -1195,7 +1195,7 @@ namespace Cern.Colt.Tests
 
             public override String ToString() { return "LU.Solve(A) [Mflops/sec]"; }
 
-            public override void SetParameters(DoubleMatrix2D A, DoubleMatrix2D B)
+            public override void SetParameters(IDoubleMatrix2D A, IDoubleMatrix2D B)
             {
                 lu = null;
                 if (!Cern.Colt.Matrix.LinearAlgebra.Property.ZERO.IsDiagonallyDominantByRow(A) ||
@@ -1235,7 +1235,7 @@ namespace Cern.Colt.Tests
                 C.Assign(0);
             }
 
-            public override void SetParameters(DoubleMatrix2D A, DoubleMatrix2D B)
+            public override void SetParameters(IDoubleMatrix2D A, IDoubleMatrix2D B)
             {
                 // do not allocate mem for "D" --> safe some mem
                 this.A = A;
@@ -1273,7 +1273,7 @@ namespace Cern.Colt.Tests
                 C.ViewRow(0).Assign(D.ViewRow(0));
             }
 
-            public override void SetParameters(DoubleMatrix2D G, DoubleMatrix2D H)
+            public override void SetParameters(IDoubleMatrix2D G, IDoubleMatrix2D H)
             {
                 base.SetParameters(G, H);
                 D = new Cern.Colt.Matrix.Implementation.DenseDoubleMatrix2D(A.Rows, A.Columns).Assign(0.5);
@@ -1345,12 +1345,12 @@ namespace Cern.Colt.Tests
             public double beta = 1 - 1.25;
             public Boolean TransposeA { get; set; }
             public Boolean TransposeB { get; set; }
-            Cern.Colt.Function.Double9Function function;
+            Cern.Colt.Function.Double9FunctionDelegate function;
 
             public funSOR5_Double2DProcedure()
             {
                 timerProc = new TimerProcedure((t) => { A.ZAssign8Neighbors(B, function); });
-                function = new Cern.Colt.Function.Double9Function((
+                function = new Cern.Colt.Function.Double9FunctionDelegate((
                             double a00, double a01, double a02,
                             double a10, double a11, double a12,
                             double a20, double a21, double a22) =>
@@ -1380,7 +1380,7 @@ namespace Cern.Colt.Tests
             double omega = 1.25;
             double alpha = 1.25 * 0.25;
             double beta = 1 - 1.25;
-            Cern.Colt.Function.Double9Function function;
+            Cern.Colt.Function.Double9FunctionDelegate function;
             public Boolean TransposeA { get; set; }
             public Boolean TransposeB { get; set; }
 
@@ -1391,7 +1391,7 @@ namespace Cern.Colt.Tests
                     A.ZAssign8Neighbors(B, function);
                 });
 
-                function = new Cern.Colt.Function.Double9Function((
+                function = new Cern.Colt.Function.Double9FunctionDelegate((
                                 double a00, double a01, double a02,
                                 double a10, double a11, double a12,
                                 double a20, double a21, double a22) =>

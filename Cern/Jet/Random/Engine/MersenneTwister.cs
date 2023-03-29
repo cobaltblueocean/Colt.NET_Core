@@ -6,6 +6,10 @@ using System.Threading.Tasks;
 
 namespace Cern.Jet.Random.Engine
 {
+    /// <summary>
+    /// Mersenne Twister Random Number Generation
+    /// </summary>
+    /// <see href="https://www.prowaretech.com/articles/current/dot-net/mersenne-twister-random-number-generator#!"></see>
     public class MersenneTwister : RandomEngine
     {
 
@@ -22,9 +26,8 @@ namespace Cern.Jet.Random.Engine
         protected const int TEMPER5 = 15;
         protected const int TEMPER6 = 18;
 
-        protected uint[] mt;
-        protected int mti;
-        private uint[] mag01;
+        protected uint[] mt = new uint[N];
+        protected uint mti;
 
         protected const int DEFAULT_SEED = 4357;
         #endregion
@@ -37,7 +40,7 @@ namespace Cern.Jet.Random.Engine
         #endregion
 
         #region Constructor
-        public MersenneTwister() : this(Environment.TickCount) { }
+        public MersenneTwister() : this(Guid.NewGuid().GetHashCode()) { }
 
         public MersenneTwister(int seed)
         {
@@ -65,63 +68,96 @@ namespace Cern.Jet.Random.Engine
         /// <returns>new random value of Unsigned Int32</returns>
         public override uint NextUInt32()
         {
+            // generate 32 random bits
             uint y;
-            if (mti >= N) { NextBlock(); mti = 0; }
+
+            if (mti >= N)
+            {
+                const uint LOWER_MASK = 2147483647;
+                const uint UPPER_MASK = 0x80000000;
+                uint[] mag01 = { 0, MATRIX_A };
+
+                int kk;
+                for (kk = 0; kk < N - M; kk++)
+                {
+                    y = (mt[kk] & UPPER_MASK) | (mt[kk + 1] & LOWER_MASK);
+                    mt[kk] = mt[kk + M] ^ (y >> 1) ^ mag01[y & 1];
+                }
+
+                for (; kk < N - 1; kk++)
+                {
+                    y = (mt[kk] & UPPER_MASK) | (mt[kk + 1] & LOWER_MASK);
+                    mt[kk] = mt[kk + (M - N)] ^ (y >> 1) ^ mag01[y & 1];
+                }
+
+                y = (mt[N - 1] & UPPER_MASK) | (mt[0] & LOWER_MASK);
+                mt[N - 1] = mt[M - 1] ^ (y >> 1) ^ mag01[y & 1];
+                mti = 0;
+            }
+
             y = mt[mti++];
-            y ^= (y >> TEMPER3);
+
+            // Tempering (May be omitted):
+            y ^= y >> TEMPER3;
             y ^= (y << TEMPER4) & TEMPER1;
             y ^= (y << TEMPER5) & TEMPER2;
-            y ^= (y >> TEMPER6);
+            y ^= y >> TEMPER6;
             return y;
         }
 
+        public override double NextDouble()
+        {
+            // output random float number in the interval 0 <= x < 1
+            uint r = NextUInt32(); // get 32 random bits
+            if (BitConverter.IsLittleEndian)
+            {
+                byte[] i0 = BitConverter.GetBytes((r << 20));
+                byte[] i1 = BitConverter.GetBytes(((r >> 12) | 0x3FF00000));
+                byte[] bytes = { i0[0], i0[1], i0[2], i0[3], i1[0], i1[1], i1[2], i1[3] };
+                double f = BitConverter.ToDouble(bytes, 0);
+                return f - 1.0;
+            }
+            return r * (1.0 / (0xFFFFFFFF + 1.0));
+        }
         #endregion
 
         #region Local Public Methods
 
-        /// <summary>
-        /// Generates N words at one time.
-        /// </summary>
-        protected void NextBlock()
+        public void RandomInitByArray(uint[] seeds)
         {
-            int kk = 1;
-            uint y;
-            uint p;
-            y = mt[0] & UPPER_MASK;
-            do
+            // seed by more than 32 bits
+            uint i, j;
+            int k;
+            int length = seeds.Length;
+            SetSeed(19650218U);
+            if (length <= 0) return;
+            i = 1; j = 0;
+            k = (N > length ? N : length);
+            for (; k != 0; k--)
             {
-                p = mt[kk];
-                mt[kk - 1] = mt[kk + (M - 1)] ^ ((y | (p & LOWER_MASK)) >> 1) ^ mag01[p & 1];
-                y = p & UPPER_MASK;
-            } while (++kk < N - M + 1);
-            do
+                mt[i] = (mt[i] ^ ((mt[i - 1] ^ (mt[i - 1] >> 30)) * 1664525U)) + seeds[j] + j;
+                i++; j++;
+                if (i >= N) { mt[0] = mt[N - 1]; i = 1; }
+                if (j >= length) j = 0;
+            }
+            for (k = N - 1; k != 0; k--)
             {
-                p = mt[kk];
-                mt[kk - 1] = mt[kk + (M - N - 1)] ^ ((y | (p & LOWER_MASK)) >> 1) ^ mag01[p & 1];
-                y = p & UPPER_MASK;
-            } while (++kk < N);
-            p = mt[0];
-            mt[N - 1] = mt[M - 1] ^ ((y | (p & LOWER_MASK)) >> 1) ^ mag01[p & 1];
+                mt[i] = (mt[i] ^ ((mt[i - 1] ^ (mt[i - 1] >> 30)) * 1566083941U)) - i;
+                if (++i >= N) { mt[0] = mt[N - 1]; i = 1; }
+            }
+            mt[0] = 0x80000000U; // MSB is 1; assuring non-zero initial array
         }
 
-        /// <summary>
-        /// Returns a 32 bit uniformly distributed random number in the closed interval <tt>[Integer.MinValue,Integer.MaxValue]</tt> (including <tt>Integer.MinValue</tt> and <tt>Integer.MaxValue</tt>).
-        /// </summary>
-        /// <returns></returns>
-        public uint NextInt()
+        public int IRandom(int min, int max)
         {
-            /* Each single bit including the sign bit will be random */
-            if (mti == N) NextBlock(); // generate N ints at one time
-
-            uint y = mt[mti++];
-            //
-            y ^= (uint.Parse(y.ToString()) >> 11); // y ^= TEMPERING_SHIFT_U(y );
-            y ^= (y << 7) & TEMPER1; // y ^= TEMPERING_SHIFT_S(y) & TEMPERING_MASK_B;
-            y ^= (y << 15) & TEMPER2; // y ^= TEMPERING_SHIFT_T(y) & TEMPERING_MASK_C;	
-                                               // y &= 0xffffffff; //you may delete this line if word size = 32 
-            y ^= (uint.Parse(y.ToString()) >> 18); // y ^= TEMPERING_SHIFT_L(y);
-
-            return y;
+            // output random integer in the interval min <= x <= max
+            int r;
+            r = (int)((max - min + 1) * NextDouble()) + min; // multiply interval with random and truncate
+            if (r > max)
+                r = max;
+            if (max < min)
+                return -2147483648;
+            return r;
         }
 
         /// <summary>
@@ -131,17 +167,14 @@ namespace Cern.Jet.Random.Engine
         /// <param name="seed"></param>
         protected void SetSeed(uint seed)
         {
-            mt = new uint[N];
-            mti = N + 1;
-            mag01 = new uint[] { 0x0U, MATRIX_A };
-            //initialize
             mt[0] = seed;
-            for (int i = 1; i < N; i++)
-                mt[i] = (uint)(1812433253 * (mt[i - 1] ^ (mt[i - 1] >> 30)) + i);
+            for (mti = 1; mti < N; mti++)
+                mt[mti] = (1812433253U * (mt[mti - 1] ^ (mt[mti - 1] >> 30)) + mti);
         }
         #endregion
 
         #region Local Private Methods
+
 
         #endregion
     }

@@ -2,9 +2,10 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
   <metadata>
     <id>Cern.Colt.NET</id>
-    <version>0.9.2.6</version>
+    <version>0.9.2.9</version>
     <title>Colt Library for .NET</title>
     <authors>Kei Nakai</authors>
+    <icon>colt-logo.png</icon>
     <projectUrl>https://github.com/cobaltblueocean/Colt.NET_Core</projectUrl>
     <description>Ported CERN Colt Library from Java to .NET Core.
 Some code such as Matrix, etc. are based on code written by Mauro Mazzieri.
@@ -20,7 +21,7 @@ The files based on Mauro are clearly states as based on his work.</description>
     <repository type="GitHub" url="https://github.com/cobaltblueocean/Colt.NET_Core" />
     <dependencies>
       <group targetFramework="net7.0">
-        <dependency id="Mercury.Language.Core" version="0.8.1.6" exclude="Build,Analyzers" />
+        <dependency id="Mercury.Language.Core" version="0.8.1.7" exclude="Build,Analyzers" />
         <dependency id="Microsoft.Win32.Registry" version="5.0.0" exclude="Build,Analyzers" />
         <dependency id="System.Management" version="7.0.0" exclude="Build,Analyzers" />
       </group>
@@ -28,5 +29,6 @@ The files based on Mauro are clearly states as based on his work.</description>
   </metadata>
   <files>
     <file src="C:\Users\Mercury21\Source\Repos\Colt.NET_Core\Cern\bin\Debug\net7.0\Cern.Colt.dll" target="lib\net7.0\Cern.Colt.dll" />
+    <file src="C:\Users\Mercury21\Source\Repos\Colt.NET_Core\colt-logo.png" target="\colt-logo.png" />
   </files>
 </package>

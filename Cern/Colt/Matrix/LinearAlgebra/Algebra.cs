@@ -1,12 +1,17 @@
-﻿namespace Cern.Colt.Matrix.LinearAlgebra
-{
-    using System;
+﻿    using System;
     using System.Collections.Generic;
     using System.Text;
     using Cern.Colt.Function;
+using Cern.Jet.Math;
+
+using Cern.Colt.Matrix.Implementation;
+using System.Data;
+
+namespace Cern.Colt.Matrix.LinearAlgebra
+{
 
     /// <summary>
-    /// Linear algebraic matrix operations operating on {@link DoubleMatrix2D}; concentrates most functionality of this package.
+    /// Linear algebraic matrix operations operating on {@link IDoubleMatrix2D}; concentrates most functionality of this package.
     /// </summary>
     public static class Algebra
     {
@@ -63,7 +68,7 @@
         /// </summary>
         /// <param name="A"></param>
         /// <returns></returns>
-        public static double Cond(DoubleMatrix2D A)
+        public static double Cond(IDoubleMatrix2D A)
         {
             return Svd(A).Cond();
         }
@@ -73,7 +78,7 @@
         /// </summary>
         /// <param name="A"></param>
         /// <returns>a determinant</returns>
-        public static double Det(DoubleMatrix2D A)
+        public static double Det(IDoubleMatrix2D A)
         {
             return Lu(A).Det();
         }
@@ -83,16 +88,16 @@
         /// </summary>
         /// <param name="matrix"></param>
         /// <returns></returns>
-        private static EigenvalueDecomposition Eig(DoubleMatrix2D matrix)
+        private static EigenvalueDecomposition Eig(IDoubleMatrix2D matrix)
         {
             return new EigenvalueDecomposition(matrix);
         }
 
-        public static DoubleMatrix2D Inverse(DoubleMatrix2D A)
+        public static IDoubleMatrix2D Inverse(IDoubleMatrix2D A)
         {
             if (A.IsSquare && A.IsDiagonal)
             {
-                DoubleMatrix2D inv = A.Copy();
+                IDoubleMatrix2D inv = A.Copy();
                 Boolean IsNonSingular = Diagonal.Inverse(inv);
                 if (!IsNonSingular) throw new ArgumentException(Cern.LocalizedResources.Instance().Exception_MatrixIsSingular);
                 return inv;
@@ -106,7 +111,7 @@
         /// <param name="x">The first source vector.</param>
         /// <param name="y">The second source vector.</param>
         /// <returns>The inner product.</returns>
-        public static double Mult(DoubleMatrix1D x, DoubleMatrix1D y)
+        public static double Mult(IDoubleMatrix1D x, IDoubleMatrix1D y)
         {
             return x.ZDotProduct(y);
         }
@@ -123,7 +128,7 @@
         /// <returns>
         /// <i>z</i>; a new vector with <i>z.Size==A.Rows</i>.
         /// </returns>
-        public static DoubleMatrix1D Mult(DoubleMatrix2D a, DoubleMatrix1D y)
+        public static IDoubleMatrix1D Mult(IDoubleMatrix2D a, IDoubleMatrix1D y)
         {
             return a.ZMult(y, null);
         }
@@ -143,8 +148,24 @@
         /// <exception cref="ArgumentException">
         /// If <i>B.Rows != A.Columns</i>.
         /// </exception>
-        public static DoubleMatrix2D Mult(DoubleMatrix2D a, DoubleMatrix2D b)
+        public static IDoubleMatrix2D Mult(IDoubleMatrix2D a, IDoubleMatrix2D b)
         {
+            if ((a is DenseDoubleMatrix2D) && (b is DenseDoubleMatrix2D))
+            {
+                return ((DenseDoubleMatrix2D)a).ZMult((DenseDoubleMatrix2D)b, null);
+            }
+            else if ((a is DenseDoubleMatrix2D) && (b is SparseDoubleMatrix2D))
+            {
+                return ((DenseDoubleMatrix2D)a).ZMult((SparseDoubleMatrix2D)b, null);
+            }
+            else if ((a is SparseDoubleMatrix2D) && (b is DenseDoubleMatrix2D))
+            {
+                return ((SparseDoubleMatrix2D)a).ZMult((DenseDoubleMatrix2D)b, null);
+            }
+            else if ((a is SparseDoubleMatrix2D) && (b is SparseDoubleMatrix2D))
+            {
+                return ((SparseDoubleMatrix2D)a).ZMult((SparseDoubleMatrix2D)b, null);
+            }
             return a.ZMult(b, null);
         }
 
@@ -155,7 +176,7 @@
         /// <param name="y">the second source vector.</param>
         /// <param name="A">the matrix to hold the resultsd Set this parameter to <i>null</i> to indicate that a new result matrix shall be constructed.</param>
         /// <returns>A (for convenience only).</returns>
-        public static DoubleMatrix2D MultOuter(DoubleMatrix1D x, DoubleMatrix1D y, DoubleMatrix2D A)
+        public static IDoubleMatrix2D MultOuter(IDoubleMatrix1D x, IDoubleMatrix1D y, IDoubleMatrix2D A)
         {
             int rows = x.Size;
             int columns = y.Size;
@@ -177,10 +198,10 @@
         /// <returns>
         /// The one-norm of x.
         /// </returns>
-        public static double Norm1(DoubleMatrix1D x)
+        public static double Norm1(IDoubleMatrix1D x)
         {
             if (x.Size == 0) return 0;
-            return x.Aggregate(BinaryFunctions.Plus, Math.Abs);
+            return x.Aggregate(BinaryFunctions.Plus, new DoubleFunction() { Eval = (a) => { return Math.Abs(a); } });
         }
 
         /// <summary>
@@ -188,7 +209,7 @@
         /// </summary>
         /// <param name="A">The matrix A</param>
         /// <returns>The one-norm of A.</returns>
-        public static double Norm1(DoubleMatrix2D A)
+        public static double Norm1(IDoubleMatrix2D A)
         {
             double max = 0;
             for (int column = A.Columns; --column >= 0;)
@@ -203,7 +224,7 @@
         /// </summary>
         /// <param name="x">The vector x.</param>
         /// <returns>The two-norm of A.</returns>
-        public static double Norm2(DoubleMatrix1D x)
+        public static double Norm2(IDoubleMatrix1D x)
         {
             return Mult(x, x);
         }
@@ -213,7 +234,7 @@
         /// </summary>
         /// <param name="a">The matrix A.</param>
         /// <returns>The two-norm of A.</returns>
-        public static double Norm2(DoubleMatrix2D a)
+        public static double Norm2(IDoubleMatrix2D a)
         {
             return Svd(a).Norm2;
         }
@@ -223,10 +244,10 @@
         /// </summary>
         /// <param name="A"></param>
         /// <returns></returns>
-        public static double NormF(DoubleMatrix2D A)
+        public static double NormF(IDoubleMatrix2D A)
         {
             if (A.Size == 0) return 0;
-            return A.Aggregate(HypotFunction(), Cern.Jet.Math.Functions.DoubleFunctions.Identity);
+            return A.Aggregate(new DoubleDoubleFunction(){ Eval = HypotFunction()}, Cern.Jet.Math.Functions.DoubleFunctions.Identity);
         }
 
         /// <summary>
@@ -234,11 +255,11 @@
         /// </summary>
         /// <param name="x">The vector x.</param>
         /// <returns>The infinity norm of matrix <i>A</i></returns>
-        public static double NormInfinity(DoubleMatrix1D x)
+        public static double NormInfinity(IDoubleMatrix1D x)
         {
             // fix for bug reported by T.J.Hunt@open.ac.uk
             if (x.Size == 0) return 0;
-            return x.Aggregate(Math.Max, Math.Abs);
+            return x.Aggregate(new DoubleDoubleFunction() { Eval = (a, b) => { return Math.Max(a, b); } }, new DoubleFunction() { Eval = (a) => { return Math.Abs(a); } });
             //	if (x.Size==0) return 0;
             //	return x.aggregate(cern.Cern.Jet.math.Functions.plus,cern.Cern.Jet.math.Functions.abs);
             //	double max = 0;
@@ -253,7 +274,7 @@
         /// </summary>
         /// <param name="A">The matrix A.</param>
         /// <returns>The infinity norm of matrix <i>A</i></returns>
-        public static double NormInfinity(DoubleMatrix2D A)
+        public static double NormInfinity(IDoubleMatrix2D A)
         {
             double max = 0;
             for (int row = A.Rows; --row >= 0;)
@@ -268,9 +289,9 @@
         /// Returns sqrt(a^2 + b^2) without under/overflow.
         /// </summary>
         /// <returns></returns>
-        public static Cern.Colt.Function.DoubleDoubleFunction HypotFunction()
+        public static Cern.Colt.Function.DoubleDoubleFunctionDelegate HypotFunction()
         {
-            return new Cern.Colt.Function.DoubleDoubleFunction((a, b) =>
+            return new Cern.Colt.Function.DoubleDoubleFunctionDelegate((a, b) =>
             {
                 return Hypot(a, b);
             });
@@ -283,7 +304,7 @@
         /// <param name="indexes"></param>
         /// <param name="work"></param>
         /// <returns></returns>
-        public static DoubleMatrix1D Permute(DoubleMatrix1D A, int[] indexes, double[] work)
+        public static IDoubleMatrix1D Permute(IDoubleMatrix1D A, int[] indexes, double[] work)
         {
             // check validity
             int size = A.Size;
@@ -308,17 +329,17 @@
             return A;
         }
 
-        public static DoubleMatrix2D Permute(DoubleMatrix2D A, int[] rowIndexes, int[] columnIndexes)
+        public static IDoubleMatrix2D Permute(IDoubleMatrix2D A, int[] rowIndexes, int[] columnIndexes)
         {
             return A.ViewSelection(rowIndexes, columnIndexes);
         }
 
-        public static DoubleMatrix2D PermuteColumns(DoubleMatrix2D A, int[] indexes, int[] work)
+        public static IDoubleMatrix2D PermuteColumns(IDoubleMatrix2D A, int[] indexes, int[] work)
         {
             return PermuteRows(A.ViewDice(), indexes, work);
         }
 
-        public static DoubleMatrix2D PermuteRows(DoubleMatrix2D A, int[] indexes, int[] work)
+        public static IDoubleMatrix2D PermuteRows(IDoubleMatrix2D A, int[] indexes, int[] work)
         {
             // check validity
             int size = A.Rows;
@@ -362,7 +383,7 @@
         /// <param name="p">the exponent, can be any number.</param>
         /// <returns><i>B</i>, a newly constructed result matrix; storage-independent of <i>A</i>.</returns>
         ///<exception cref="ArgumentException">if <i>!property().isSquare(A)</i>.</exception>
-        public static DoubleMatrix2D Pow(DoubleMatrix2D A, int p)
+        public static IDoubleMatrix2D Pow(IDoubleMatrix2D A, int p)
         {
             // matrix multiplication based on log2 method: A*A*....*A is slow, ((A * A)^2)^2 * ..D is faster
             // allocates two auxiliary matrices as work space
@@ -375,7 +396,7 @@
                 p = -p;
             }
             if (p == 0) return DoubleFactory2D.Dense.Identity(A.Rows);
-            DoubleMatrix2D T = A.Like(); // temporary
+            IDoubleMatrix2D T = A.Like(); // temporary
             if (p == 1) return T.Assign(A);  // safes one auxiliary matrix allocation
             if (p == 2)
             {
@@ -387,7 +408,7 @@
 
             /*
             this is the naive version:
-            DoubleMatrix2D B = A.Copy();
+            IDoubleMatrix2D B = A.Copy();
             for (int i=0; i<p-1; i++) {
                 B = mult(B,A);
             }
@@ -402,17 +423,17 @@
             { // while (bit i of p == false)
               // A = mult(A,A); would allocate a lot of temporary memory
                 blas.Dgemm(false, false, 1, A, A, 0, T); // A.zMult(A,T);
-                DoubleMatrix2D swap = A; A = T; T = swap; // swap A with T
+                IDoubleMatrix2D swap = A; A = T; T = swap; // swap A with T
                 i++;
             }
 
-            DoubleMatrix2D B = A.Copy();
+            IDoubleMatrix2D B = A.Copy();
             i++;
             for (; i <= k; i++)
             {
                 // A = mult(A,A); would allocate a lot of temporary memory
                 blas.Dgemm(false, false, 1, A, A, 0, T); // A.zMult(A,T);	
-                DoubleMatrix2D swap = A; A = T; T = swap; // swap A with T
+                IDoubleMatrix2D swap = A; A = T; T = swap; // swap A with T
 
                 if ((p & (1 << i)) != 0)
                 { // if (bit i of p == true)
@@ -430,12 +451,12 @@
         /// </summary>
         /// <param name="A"></param>
         /// <returns></returns>
-        public static int Rank(DoubleMatrix2D A)
+        public static int Rank(IDoubleMatrix2D A)
         {
             return Svd(A).Rank;
         }
 
-        public static DoubleMatrix2D Solve(DoubleMatrix2D A, DoubleMatrix2D B)
+        public static IDoubleMatrix2D Solve(IDoubleMatrix2D A, IDoubleMatrix2D B)
         {
             LUDecomposition lu = new LUDecomposition(A);
             QRDecomposition qr = new QRDecomposition(B);
@@ -449,7 +470,7 @@
         /// <param name="A"></param>
         /// <param name="B"></param>
         /// <returns>X; a new independent matrix; solution if A is square, least squares solution otherwise.</returns>
-        public static DoubleMatrix2D SolveTranspose(DoubleMatrix2D A, DoubleMatrix2D B)
+        public static IDoubleMatrix2D SolveTranspose(IDoubleMatrix2D A, IDoubleMatrix2D B)
         {
             return Solve(Transpose(A), Transpose(B));
         }
@@ -465,12 +486,12 @@
         /// <param name="columnTo">the index of the last column to copy (inclusive).</param>
         /// <returns>a new sub matrix; with <i>sub.Rows==rowIndexes.Length; sub.Columns==columnTo-columnFrom+1</i>.</returns>
         /// <exception cref="IndexOutOfRangeException">if <i>columnFrom &lt; 0 || columnTo-columnFrom+1 &lt; 0 || columnTo+1>matrix.Columns || for any row=rowIndexes[i]: row  &lt;  0 || row >= matrix.Rows</i>.</exception>
-        private static DoubleMatrix2D SubMatrix(DoubleMatrix2D A, int[] rowIndexes, int columnFrom, int columnTo)
+        private static IDoubleMatrix2D SubMatrix(IDoubleMatrix2D A, int[] rowIndexes, int columnFrom, int columnTo)
         {
             int width = columnTo - columnFrom + 1;
             int rows = A.Rows;
             A = A.ViewPart(0, columnFrom, rows, width);
-            DoubleMatrix2D sub = A.Like(rowIndexes.Length, width);
+            IDoubleMatrix2D sub = A.Like(rowIndexes.Length, width);
 
             for (int r = rowIndexes.Length; --r >= 0;)
             {
@@ -493,13 +514,13 @@
         /// <param name="columnIndexes">the indexes of the columns to copyd May be unsorted.</param>
         /// <returns>a new sub matrix; with <i>sub.Rows==rowTo-rowFrom+1; sub.Columns==columnIndexes.Length</i>.</returns>
         /// <exception cref="IndexOutOfRangeException">if <i>rowFrom &lt; 0 || rowTo-rowFrom + 1 &lt; 0 || rowTo + 1 > matrix.Rows || for any col = columnIndexes[i]: col &lt; 0 || col >= matrix.Columns</i>.</exception>
-        private static DoubleMatrix2D SubMatrix(DoubleMatrix2D A, int rowFrom, int rowTo, int[] columnIndexes)
+        private static IDoubleMatrix2D SubMatrix(IDoubleMatrix2D A, int rowFrom, int rowTo, int[] columnIndexes)
         {
             if (rowTo - rowFrom >= A.Rows) throw new IndexOutOfRangeException(Cern.LocalizedResources.Instance().Exception_TooManyRows);
             int height = rowTo - rowFrom + 1;
             int columns = A.Columns;
             A = A.ViewPart(rowFrom, 0, height, columns);
-            DoubleMatrix2D sub = A.Like(height, columnIndexes.Length);
+            IDoubleMatrix2D sub = A.Like(height, columnIndexes.Length);
 
             for (int c = columnIndexes.Length; --c >= 0;)
             {
@@ -523,7 +544,7 @@
         /// <param name="toColumn">The index of the last column (inclusive).</param>
         /// <returns>a new sub-range view.</returns>
         /// <exception cref="IndexOutOfRangeException">if <i>fromColumn &lt; 0 || toColumn - fromColumn + 1 &lt; 0 || toColumn >= A.Columns || fromRow &lt; 0 || toRow - fromRow + 1 &lt; 0 || toRow >= A.Rows</i></exception>
-        public static DoubleMatrix2D SubMatrix(DoubleMatrix2D A, int fromRow, int toRow, int fromColumn, int toColumn)
+        public static IDoubleMatrix2D SubMatrix(IDoubleMatrix2D A, int fromRow, int toRow, int fromColumn, int toColumn)
         {
             return A.ViewPart(fromRow, fromColumn, toRow - fromRow + 1, toColumn - fromColumn + 1);
         }
@@ -544,7 +565,7 @@
         /// Rank          : 3
         /// Trace         : 0
         /// </example>
-        public static String ToString(DoubleMatrix2D matrix)
+        public static String ToString(IDoubleMatrix2D matrix)
         {
             List<Object> names = new List<Object>();
             List<Object> values = new List<Object>();
@@ -585,7 +606,7 @@
 
 
             // sort ascending by property name
-            Cern.Colt.Function.IntComparator comp = new Cern.Colt.Function.IntComparator((a, b) =>
+            Cern.Colt.Function.IntComparatorDelegate comp = new Cern.Colt.Function.IntComparatorDelegate((a, b) =>
             {
                 return names[a].ToString().CompareTo(names[b]);
             }
@@ -775,7 +796,7 @@
         /// 0.631761  0.532513  0.563301
         /// </pre>
         ///</example>
-        public static String ToVerboseString(DoubleMatrix2D matrix)
+        public static String ToVerboseString(IDoubleMatrix2D matrix)
         {
             /*
                 StringBuilder buf = new StringBuilder();
@@ -848,7 +869,7 @@
         /// <returns>
         /// The sum of the diagonal elements of matrix <i>A</i>.
         /// </returns>
-        public static double Trace(DoubleMatrix2D a)
+        public static double Trace(IDoubleMatrix2D a)
         {
             double sum = 0;
             for (int i = System.Math.Min(a.Rows, a.Columns); --i >= 0;)
@@ -865,7 +886,7 @@
         /// <returns>
         /// The transpose of A.
         /// </returns>
-        public static DoubleMatrix2D Transpose(DoubleMatrix2D a)
+        public static IDoubleMatrix2D Transpose(IDoubleMatrix2D a)
         {
             return a.ViewDice();
         }
@@ -875,7 +896,7 @@
         /// </summary>
         /// <param name="A"></param>
         /// <returns><i>A</i> (for convenience only).</returns>
-        public static DoubleMatrix2D TrapezoidalLower(DoubleMatrix2D A)
+        public static IDoubleMatrix2D TrapezoidalLower(IDoubleMatrix2D A)
         {
             int rows = A.Rows;
             int columns = A.Columns;
@@ -896,7 +917,7 @@
         /// </summary>
         /// <param name="matrix"></param>
         /// <returns></returns>
-        private static CholeskyDecomposition Chol(DoubleMatrix2D matrix)
+        private static CholeskyDecomposition Chol(IDoubleMatrix2D matrix)
         {
             return new CholeskyDecomposition(matrix);
         }
@@ -910,7 +931,7 @@
         /// <returns>
         /// The SVD of A.
         /// </returns>
-        private static SingularValueDecomposition Svd(DoubleMatrix2D matrix)
+        private static SingularValueDecomposition Svd(IDoubleMatrix2D matrix)
         {
             return new SingularValueDecomposition(matrix);
         }
@@ -920,7 +941,7 @@
         /// </summary>
         /// <param name="matrix"></param>
         /// <returns></returns>
-        private static LUDecomposition Lu(DoubleMatrix2D matrix)
+        private static LUDecomposition Lu(IDoubleMatrix2D matrix)
         {
             return new LUDecomposition(matrix);
         }
@@ -930,7 +951,7 @@
         /// </summary>
         /// <param name="matrix"></param>
         /// <returns></returns>
-        private static QRDecomposition Qr(DoubleMatrix2D matrix)
+        private static QRDecomposition Qr(IDoubleMatrix2D matrix)
         {
             return new QRDecomposition(matrix);
         }
@@ -941,9 +962,9 @@
         /// <param name="x">the first source vector.</param>
         /// <param name="y">the second source vector.</param>
         /// <returns>the outer product </i>A</i>.</returns>
-        private static DoubleMatrix2D XMultOuter(DoubleMatrix1D x, DoubleMatrix1D y)
+        private static IDoubleMatrix2D XMultOuter(IDoubleMatrix1D x, IDoubleMatrix1D y)
         {
-            DoubleMatrix2D A = x.Like2D(x.Size, y.Size);
+            IDoubleMatrix2D A = x.Like2D(x.Size, y.Size);
             MultOuter(x, y, A);
             return A;
         }
@@ -955,10 +976,10 @@
         /// <param name="k">the exponent, can be any number.</param>
         /// <returns>a new result matrix.</returns>
         /// <exception cref="ArgumentException">if <i>!Testing.isSquare(A)</i>.</exception>
-        private static DoubleMatrix2D XPowSlow(DoubleMatrix2D A, int k)
+        private static IDoubleMatrix2D XPowSlow(IDoubleMatrix2D A, int k)
         {
             //cern.colt.Timer timer = new cern.colt.Timer().start();
-            DoubleMatrix2D result = A.Copy();
+            IDoubleMatrix2D result = A.Copy();
             for (int i = 0; i < k - 1; i++)
             {
                 result = Mult(result, A);

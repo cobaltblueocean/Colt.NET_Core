@@ -65,7 +65,7 @@ namespace Cern.Jet.Random
 
         public override double NextDouble()
         {
-            throw new NotImplementedException();
+            return NextDouble(alpha, lambda);
         }
 
         #endregion
@@ -154,16 +154,16 @@ namespace Cern.Jet.Random
                 b = 1.0 + 0.36788794412 * a;              // Step 1
                 for (; ; )
                 {
-                    p = b * randomGenerator.Raw();
+                    p = b * this.RandomGenerator.Raw();
                     if (p <= 1.0)
                     {                       // Step 2d Case gds <= 1
                         gds = System.Math.Exp(System.Math.Log(p) / a);
-                        if (System.Math.Log(randomGenerator.Raw()) <= -gds) return (gds / lambda);
+                        if (System.Math.Log(this.RandomGenerator.Raw()) <= -gds) return (gds / lambda);
                     }
                     else
                     {                                // Step 3d Case gds > 1
                         gds = -System.Math.Log((b - p) / a);
-                        if (System.Math.Log(randomGenerator.Raw()) <= ((a - 1.0) * System.Math.Log(gds))) return (gds / lambda);
+                        if (System.Math.Log(this.RandomGenerator.Raw()) <= ((a - 1.0) * System.Math.Log(gds))) return (gds / lambda);
                     }
                 }
             }
@@ -180,8 +180,8 @@ namespace Cern.Jet.Random
                 // Step 2d Normal deviate
                 do
                 {
-                    v1 = 2.0 * randomGenerator.Raw() - 1.0;
-                    v2 = 2.0 * randomGenerator.Raw() - 1.0;
+                    v1 = 2.0 * this.RandomGenerator.Raw() - 1.0;
+                    v2 = 2.0 * this.RandomGenerator.Raw() - 1.0;
                     v12 = v1 * v1 + v2 * v2;
                 } while (v12 > 1.0);
                 t = v1 * System.Math.Sqrt(-2.0 * System.Math.Log(v12) / v12);
@@ -189,7 +189,7 @@ namespace Cern.Jet.Random
                 gds = x * x;
                 if (t >= 0.0) return (gds / lambda);         // Immediate acceptance
 
-                u = randomGenerator.Raw();                // Step 3d Uniform random number
+                u = this.RandomGenerator.Raw();                // Step 3d Uniform random number
                 if (d * u <= t * t * t) return (gds / lambda); // Squeeze acceptance
 
                 if (a != aaa)
@@ -239,8 +239,8 @@ namespace Cern.Jet.Random
                 {                             // Step 8d Double exponential deviate t
                     do
                     {
-                        e = -System.Math.Log(randomGenerator.Raw());
-                        u = randomGenerator.Raw();
+                        e = -System.Math.Log(this.RandomGenerator.Raw());
+                        u = this.RandomGenerator.Raw();
                         u = u + u - 1.0;
                         sign_u = (u > 0) ? 1.0 : -1.0;
                         t = b + (e * si) * sign_u;

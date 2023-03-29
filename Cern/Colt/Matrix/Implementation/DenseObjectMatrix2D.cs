@@ -186,7 +186,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <param name=""><i>this</i> (for convenience only).</param>
         /// <returns></returns>
         /// <see cref="Cern.Jet.Math.Functions"></see>
-        public override ObjectMatrix2D Assign(Cern.Colt.Function.ObjectFunction<Object> function)
+        public override ObjectMatrix2D Assign(Cern.Colt.Function.ObjectFunctionDelegate<Object> function)
         {
             Object[] elems = this.Elements;
             if (elems == null) throw new NullReferenceException();
@@ -293,7 +293,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <returns><i>this</i> (for convenience only).</returns>
         /// <exception cref="ArgumentException">if <i>columns() != other.columns() || rows() != other.rows()</i></exception>
         /// <see cref="Cern.Jet.Math.Functions"/>
-        public override ObjectMatrix2D Assign(ObjectMatrix2D y, Cern.Colt.Function.ObjectObjectFunction<Object> function)
+        public override ObjectMatrix2D Assign(ObjectMatrix2D y, Cern.Colt.Function.ObjectObjectFunctionDelegate<Object> function)
         {
             // overriden for performance only
             if (!(y is DenseObjectMatrix2D))

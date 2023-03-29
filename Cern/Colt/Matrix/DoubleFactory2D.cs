@@ -16,9 +16,8 @@
 namespace Cern.Colt.Matrix
 {
     using System;
-
     using Function;
-
+    using Cern.Jet.Math;
     using Implementation;
 
     /// <summary>
@@ -61,7 +60,7 @@ namespace Cern.Colt.Matrix
         /// <returns>
         /// The column-wise concatenation of A and B.
         /// </returns>
-        public DoubleMatrix2D AppendColumns(DoubleMatrix2D a, DoubleMatrix2D b)
+        public IDoubleMatrix2D AppendColumns(IDoubleMatrix2D a, IDoubleMatrix2D b)
         {
             // force both to have maximal shared number of rows.
             if (b.Rows > a.Rows) b = b.ViewPart(0, 0, a.Rows, b.Columns);
@@ -71,7 +70,7 @@ namespace Cern.Colt.Matrix
             int ac = a.Columns;
             int bc = b.Columns;
             int r = a.Rows;
-            DoubleMatrix2D matrix = Make(r, ac + bc);
+            var matrix = Make(r, ac + bc);
             matrix.ViewPart(0, 0, r, ac).Assign(a);
             matrix.ViewPart(0, ac, r, bc).Assign(b);
             return matrix;
@@ -89,7 +88,7 @@ namespace Cern.Colt.Matrix
         /// <returns>
         /// A new matrix which is the row-wise concatenation of A and B.
         /// </returns>
-        public DoubleMatrix2D AppendRows(DoubleMatrix2D a, DoubleMatrix2D b)
+        public IDoubleMatrix2D AppendRows(IDoubleMatrix2D a, IDoubleMatrix2D b)
         {
             // force both to have maximal shared number of columns.
             if (b.Columns > a.Columns) b = b.ViewPart(0, 0, b.Rows, a.Columns);
@@ -99,7 +98,7 @@ namespace Cern.Colt.Matrix
             int ar = a.Rows;
             int br = b.Rows;
             int c = a.Columns;
-            DoubleMatrix2D matrix = Make(ar + br, c);
+            var matrix = Make(ar + br, c);
             matrix.ViewPart(0, 0, ar, c).Assign(a);
             matrix.ViewPart(ar, 0, br, c).Assign(b);
             return matrix;
@@ -118,9 +117,15 @@ namespace Cern.Colt.Matrix
         /// <returns>
         /// A matrix with cells having ascending values.
         /// </returns>
-        public DoubleMatrix2D Ascending(int rows, int columns)
+        public IDoubleMatrix2D Ascending(int rows, int columns)
         {
-            return Descending(rows, columns).Assign(UnaryFunctions.Chain(a => -a, UnaryFunctions.Minus(columns * rows)));
+            double size = columns * rows;
+            return Descending(rows, columns).Assign(UnaryFunctions.Chain(
+                        new DoubleFunction()
+                        {
+                            Eval = a => -a
+                        }, UnaryFunctions.Minus(size)
+                    ));
         }
 
         /// <summary>
@@ -142,13 +147,13 @@ namespace Cern.Colt.Matrix
         /// <exception cref="ArgumentOutOfRangeException">
         /// If the parts are not subject to the conditions outlined above.
         /// </exception>
-        public DoubleMatrix2D Compose(DoubleMatrix2D[][] parts)
+        public IDoubleMatrix2D Compose(IDoubleMatrix2D[][] parts)
         {
             checkRectangularShape(parts);
             int rows = parts.Length;
             int columns = 0;
             if (parts.Length > 0) columns = parts[0].Length;
-            DoubleMatrix2D empty = Make(0, 0);
+            var empty = Make(0, 0);
 
             if (rows == 0 || columns == 0) return empty;
 
@@ -159,7 +164,7 @@ namespace Cern.Colt.Matrix
                 int maxWidth = 0;
                 for (int row = rows; --row >= 0; )
                 {
-                    DoubleMatrix2D part = parts[row][column];
+                    var part = parts[row][column];
                     if (part != null)
                     {
                         int width = part.Columns;
@@ -178,7 +183,7 @@ namespace Cern.Colt.Matrix
                 int maxHeight = 0;
                 for (int column = columns; --column >= 0; )
                 {
-                    DoubleMatrix2D part = parts[row][column];
+                    var part = parts[row][column];
                     if (part != null)
                     {
                         int height = part.Rows;
@@ -196,7 +201,7 @@ namespace Cern.Colt.Matrix
             int resultCols = 0;
             for (int column = columns; --column >= 0; ) resultCols += maxWidths[column];
 
-            DoubleMatrix2D matrix = Make(resultRows, resultCols);
+            var matrix = Make(resultRows, resultCols);
 
             // copy
             int r = 0;
@@ -205,7 +210,7 @@ namespace Cern.Colt.Matrix
                 int c = 0;
                 for (int column = 0; column < columns; column++)
                 {
-                    DoubleMatrix2D part = parts[row][column];
+                    var part = parts[row][column];
                     if (part != null)
                         matrix.ViewPart(r, c, part.Rows, part.Columns).Assign(part);
                     c += maxWidths[column];
@@ -229,13 +234,13 @@ namespace Cern.Colt.Matrix
         /// <returns>
         /// A diagonal block matrix.
         /// </returns>
-        public DoubleMatrix2D ComposeDiagonal(DoubleMatrix2D a, DoubleMatrix2D b)
+        public IDoubleMatrix2D ComposeDiagonal(IDoubleMatrix2D a, IDoubleMatrix2D b)
         {
             int ar = a.Rows;
             int ac = a.Columns;
             int br = b.Rows;
             int bc = b.Columns;
-            DoubleMatrix2D sum = Make(ar + br, ac + bc);
+            var sum = Make(ar + br, ac + bc);
             sum.ViewPart(0, 0, ar, ac).Assign(a);
             sum.ViewPart(ar, ac, br, bc).Assign(b);
             return sum;
@@ -256,9 +261,9 @@ namespace Cern.Colt.Matrix
         /// <returns>
         /// A diagonal block matrix.
         /// </returns>
-        public DoubleMatrix2D ComposeDiagonal(DoubleMatrix2D a, DoubleMatrix2D b, DoubleMatrix2D c)
+        public IDoubleMatrix2D ComposeDiagonal(IDoubleMatrix2D a, IDoubleMatrix2D b, IDoubleMatrix2D c)
         {
-            DoubleMatrix2D diag = Make(a.Rows + b.Rows + c.Rows, a.Columns + b.Columns + c.Columns);
+            var diag = Make(a.Rows + b.Rows + c.Rows, a.Columns + b.Columns + c.Columns);
             diag.ViewPart(0, 0, a.Rows, a.Columns).Assign(a);
             diag.ViewPart(a.Rows, a.Columns, b.Rows, b.Columns).Assign(b);
             diag.ViewPart(a.Rows + b.Rows, a.Columns + b.Columns, c.Rows, c.Columns).Assign(c);
@@ -284,7 +289,7 @@ namespace Cern.Colt.Matrix
         /// <exception cref="ArgumentException">
         /// subject to the conditions outlined above.
         /// </exception>
-        public void Decompose(DoubleMatrix2D[][] parts, DoubleMatrix2D matrix)
+        public void Decompose(IDoubleMatrix2D[][] parts, IDoubleMatrix2D matrix)
         {
             checkRectangularShape(parts);
             int rows = parts.Length;
@@ -299,7 +304,7 @@ namespace Cern.Colt.Matrix
                 int maxWidth = 0;
                 for (int row = rows; --row >= 0; )
                 {
-                    DoubleMatrix2D part = parts[row][column];
+                    var part = parts[row][column];
                     if (part != null)
                     {
                         int width = part.Columns;
@@ -318,7 +323,7 @@ namespace Cern.Colt.Matrix
                 int maxHeight = 0;
                 for (int column = columns; --column >= 0; )
                 {
-                    DoubleMatrix2D part = parts[row][column];
+                    var part = parts[row][column];
                     if (part != null)
                     {
                         int height = part.Rows;
@@ -345,7 +350,7 @@ namespace Cern.Colt.Matrix
                 int c = 0;
                 for (int column = 0; column < columns; column++)
                 {
-                    DoubleMatrix2D part = parts[row][column];
+                    var part = parts[row][column];
                     if (part != null)
                         part.Assign(matrix.ViewPart(r, c, part.Rows, part.Columns));
                     c += maxWidths[column];
@@ -368,9 +373,9 @@ namespace Cern.Colt.Matrix
         /// <returns>
         /// A matrix with cells having descending values.
         /// </returns>
-        public DoubleMatrix2D Descending(int rows, int columns)
+        public IDoubleMatrix2D Descending(int rows, int columns)
         {
-            DoubleMatrix2D matrix = Make(rows, columns);
+            var matrix = Make(rows, columns);
             int v = 0;
             for (int row = rows; --row >= 0; )
                 for (int column = columns; --column >= 0; )
@@ -388,10 +393,10 @@ namespace Cern.Colt.Matrix
         /// <returns>
         /// A new matrix.
         /// </returns>
-        public DoubleMatrix2D Diagonal(DoubleMatrix1D vector)
+        public IDoubleMatrix2D Diagonal(IDoubleMatrix1D vector)
         {
             int size = vector.Size;
-            DoubleMatrix2D diag = Make(size, size);
+            var diag = Make(size, size);
             for (int i = size; --i >= 0; )
                 diag[i, i] = vector[i];
             return diag;
@@ -407,10 +412,10 @@ namespace Cern.Colt.Matrix
         /// <returns>
         /// A new vector.
         /// </returns>
-        public DoubleMatrix1D Diagonal(DoubleMatrix2D a)
+        public IDoubleMatrix1D Diagonal(IDoubleMatrix2D a)
         {
             int min = Math.Min(a.Rows, a.Columns);
-            DoubleMatrix1D diag = make1D(min);
+            var diag = make1D(min);
             for (int i = min; --i >= 0; )
                 diag[i] = a[i, i];
             return diag;
@@ -425,9 +430,9 @@ namespace Cern.Colt.Matrix
         /// <returns>
         /// An identity matrix.
         /// </returns>
-        public DoubleMatrix2D Identity(int rowsAndColumns)
+        public IDoubleMatrix2D Identity(int rowsAndColumns)
         {
-            DoubleMatrix2D matrix = Make(rowsAndColumns, rowsAndColumns);
+            var matrix = Make(rowsAndColumns, rowsAndColumns);
             for (int i = rowsAndColumns; --i >= 0; )
                 matrix[i, i] = 1;
             return matrix;
@@ -445,7 +450,7 @@ namespace Cern.Colt.Matrix
         /// <exception cref="ArgumentOutOfRangeException">
         /// If <tt>for any 1 &lt;= row &lt; values.length: values[row].length != values[row-1].length</tt>.
         /// </exception>
-        public DoubleMatrix2D Make(double[][] values)
+        public IDoubleMatrix2D Make(double[][] values)
         {
             if (this == Sparse) return new SparseDoubleMatrix2D(values);
             return new DenseDoubleMatrix2D(values);
@@ -463,7 +468,7 @@ namespace Cern.Colt.Matrix
         /// <exception cref="ArgumentOutOfRangeException">
         /// If <tt>for any 1 &lt;= row &lt; values.length: values[row].length != values[row-1].length</tt>.
         /// </exception>
-        public DoubleMatrix2D Make(double[, ] values)
+        public IDoubleMatrix2D Make(double[, ] values)
         {
             return Make(values.ToJagged());
         }
@@ -483,13 +488,13 @@ namespace Cern.Colt.Matrix
         /// <exception cref="ArgumentException">
         /// <tt>values.length</tt> must be a multiple of <tt>rows</tt>.
         /// </exception>
-        public DoubleMatrix2D Make(double[] values, int rows)
+        public IDoubleMatrix2D Make(double[] values, int rows)
         {
             int columns = rows != 0 ? values.Length / rows : 0;
             if (rows * columns != values.Length)
                 throw new ArgumentException(Cern.LocalizedResources.Instance().Exception_ArrayLengthMustBeAMultipleOfM);
 
-            DoubleMatrix2D matrix = Make(rows, columns);
+            var matrix = Make(rows, columns);
             for (int row = 0; row < rows; row++)
                 for (int column = 0; column < columns; column++)
                     matrix[row, column] = values[row + (column * rows)];
@@ -509,7 +514,7 @@ namespace Cern.Colt.Matrix
         /// <returns>
         /// A matrix.
         /// </returns>
-        public DoubleMatrix2D Make(int rows, int columns)
+        public IDoubleMatrix2D Make(int rows, int columns)
         {
             if (this == Sparse) return new SparseDoubleMatrix2D(rows, columns);
             if (this == RowCompressed) return new RCDoubleMatrix2D(rows, columns);
@@ -531,7 +536,7 @@ namespace Cern.Colt.Matrix
         /// <returns>
         /// A matrix.
         /// </returns>
-        public DoubleMatrix2D Make(int rows, int columns, double initialValue)
+        public IDoubleMatrix2D Make(int rows, int columns, double initialValue)
         {
             if (initialValue == 0) return Make(rows, columns);
             return Make(rows, columns).Assign(initialValue);
@@ -549,10 +554,10 @@ namespace Cern.Colt.Matrix
         /// <returns>
         /// A matrix.
         /// </returns>
-        public DoubleMatrix2D Random(int rows, int columns)
+        public IDoubleMatrix2D Random(int rows, int columns)
         {
             var r = new Random();
-            return Make(rows, columns).Assign(a => r.NextDouble());
+            return Make(rows, columns).Assign(new DoubleFunction() { Eval = a => r.NextDouble() });
         }
 
         /// <summary>
@@ -570,11 +575,11 @@ namespace Cern.Colt.Matrix
         /// <returns>
         /// A matrix.
         /// </returns>
-        public DoubleMatrix2D Repeat(DoubleMatrix2D a, int rowRepeat, int columnRepeat)
+        public IDoubleMatrix2D Repeat(IDoubleMatrix2D a, int rowRepeat, int columnRepeat)
         {
             int r = a.Rows;
             int c = a.Columns;
-            DoubleMatrix2D matrix = Make(r * rowRepeat, c * columnRepeat);
+            IDoubleMatrix2D matrix = Make(r * rowRepeat, c * columnRepeat);
             for (int i = rowRepeat; --i >= 0; )
                 for (int j = columnRepeat; --j >= 0; )
                     matrix.ViewPart(r * i, c * j, r, c).Assign(a);
@@ -613,7 +618,7 @@ namespace Cern.Colt.Matrix
         /// <exception cref="ArgumentOutOfRangeException">
         /// If the array is not rectangular.
         /// </exception>
-        protected static void checkRectangularShape(DoubleMatrix2D[][] array)
+        protected static void checkRectangularShape(IDoubleMatrix2D[][] array)
         {
             int columns = -1;
             for (int row = array.Length; --row >= 0; )
@@ -635,7 +640,7 @@ namespace Cern.Colt.Matrix
         /// <returns>
         /// A matrix.
         /// </returns>
-        protected DoubleMatrix1D make1D(int size)
+        protected IDoubleMatrix1D make1D(int size)
         {
             return Make(0, 0).Like1D(size);
         }

@@ -27,14 +27,14 @@ namespace Cern.Jet.Random.Engine
     /// </summary>
     public abstract class RandomEngine
     {
-        public IntFunction ApplyIntFunction()
+        public IntFunctionDelegate ApplyIntFunction()
         {
-            return new IntFunction((a) => { return NextInt32(); });
+            return new IntFunctionDelegate((a) => { return NextInt32(); });
         }
 
-        public DoubleFunction ApplyDoubleFunction()
+        public DoubleFunctionDelegate ApplyDoubleFunction()
         {
-            return new DoubleFunction((a) => { return Raw(); });
+            return new DoubleFunctionDelegate((a) => { return Raw(); });
         }
 
         /// <summary>

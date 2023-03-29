@@ -49,7 +49,7 @@ namespace Cern.Colt
         /// <param name="swapper">
         /// The delegate that knows how to swap the elements at any two indexes (a,b).
         /// </param>
-        public static void MergeSort(int fromIndex, int toIndex, IntComparator c, Swapper swapper)
+        public static void MergeSort(int fromIndex, int toIndex, IntComparatorDelegate c, Swapper swapper)
         {
             /*
                 We retain the same method signature as quickSort.
@@ -96,7 +96,7 @@ namespace Cern.Colt
         /// <param name="swapper">
         /// The delegate that knows how to swap the elements at any two indexes (a,b).
         /// </param>
-        public static void QuickSort(int fromIndex, int toIndex, IntComparator c, Swapper swapper)
+        public static void QuickSort(int fromIndex, int toIndex, IntComparatorDelegate c, Swapper swapper)
         {
             quickSort1(fromIndex, toIndex - fromIndex, c, swapper);
         }
@@ -109,7 +109,7 @@ namespace Cern.Colt
         /// Elements in the first input range will precede equal elements in the 
         /// second.
         /// </summary>
-        private static void inplace_merge(int first, int middle, int last, IntComparator comp, Swapper swapper)
+        private static void inplace_merge(int first, int middle, int last, IntComparatorDelegate comp, Swapper swapper)
         {
             if (first >= middle || middle >= last)
                 return;
@@ -182,7 +182,7 @@ namespace Cern.Colt
         /// The largest index i such that, for every j in the range <code>[first, i)</code>, 
         /// <code>comp.apply(array[j], x)</code> is <code>true</code>.
         /// </returns>
-        private static int lower_bound(int first, int last, int x, IntComparator comp)
+        private static int lower_bound(int first, int last, int x, IntComparatorDelegate comp)
         {
             int len = last - first;
             while (len > 0)
@@ -206,7 +206,7 @@ namespace Cern.Colt
         /// <summary>
         /// Returns the index of the median of the three indexed integers.
         /// </summary>
-        private static int med3(int a, int b, int c, IntComparator comp)
+        private static int med3(int a, int b, int c, IntComparatorDelegate comp)
         {
             int ab = comp(a, b);
             int ac = comp(a, c);
@@ -219,7 +219,7 @@ namespace Cern.Colt
         /// <summary>
         /// Sorts the specified sub-array into ascending order.
         /// </summary>
-        private static void quickSort1(int off, int len, IntComparator comp, Swapper swapper)
+        private static void quickSort1(int off, int len, IntComparatorDelegate comp, Swapper swapper)
         {
             // Insertion sort on smallest arrays
             if (len < SMALL)
@@ -316,7 +316,7 @@ namespace Cern.Colt
         /// The largest index i such that, for every j in the range <code>[first, i)</code>, 
         /// <code>comp.apply(array[j], x)</code> is <code>false</code>.
         /// </returns>
-        private static int upper_bound(int first, int last, int x, IntComparator comp)
+        private static int upper_bound(int first, int last, int x, IntComparatorDelegate comp)
         {
             int len = last - first;
             while (len > 0)

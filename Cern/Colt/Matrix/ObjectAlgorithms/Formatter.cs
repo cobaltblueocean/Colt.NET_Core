@@ -40,7 +40,7 @@ namespace Cern.Colt.Matrix.ObjectAlgorithms
         /// <param name="matrix"></param>
         /// <param name="index"></param>
         /// <returns></returns>
-        protected String Form(AbstractMatrix1D matrix, int index)
+        protected String Form<T>(IMatrix1D<T> matrix, int index)
         {
             return this.Form((ObjectMatrix1D)matrix, index);
         }
@@ -65,7 +65,7 @@ namespace Cern.Colt.Matrix.ObjectAlgorithms
         /// <param name="index"></param>
         /// <param name="formatter"></param>
         /// <returns></returns>
-        protected override string Form(AbstractMatrix1D matrix, int index, Former formatter)
+        protected override string Form<T>(IMatrix1D<T> matrix, int index, Former formatter)
         {
             return this.Form((ObjectMatrix1D)matrix, index, formatter);
         }
@@ -89,7 +89,7 @@ namespace Cern.Colt.Matrix.ObjectAlgorithms
         /// </summary>
         /// <param name="matrix"></param>
         /// <returns></returns>
-        protected override String[][] Format(AbstractMatrix2D matrix)
+        protected override String[][] Format<T>(IMatrix2D<T> matrix)
         {
             return this.Format((ObjectMatrix2D)matrix);
         }
@@ -163,7 +163,7 @@ namespace Cern.Colt.Matrix.ObjectAlgorithms
         /// </summary>
         /// <param name="matrix">the matrix to convert.</param>
         /// <returns></returns>
-        protected override String ToString(AbstractMatrix2D matrix)
+        protected override String ToString<T>(IMatrix2D<T> matrix)
         {
             return this.ToString((ObjectMatrix2D)matrix);
         }

@@ -114,14 +114,14 @@ namespace Cern.Jet.Random
             // GENERATOR 
             do
             {
-                u = randomGenerator.Raw();                                // U(0/1) 
-                v = randomGenerator.Raw();                                // U(0/1) 
+                u = this.RandomGenerator.Raw();                                // U(0/1) 
+                v = this.RandomGenerator.Raw();                                // U(0/1) 
                 z = System.Math.Cos(System.Math.PI * u);
                 w = (1.0 + r * z) / (r + z);
                 c = k * (r - w);
             } while ((c * (2.0 - c) < v) && (System.Math.Log(c / v) + 1.0 < c));         // Acceptance/Rejection 
 
-            return (randomGenerator.Raw() > 0.5) ? System.Math.Acos(w) : -System.Math.Acos(w);        // Random sign //
+            return (this.RandomGenerator.Raw() > 0.5) ? System.Math.Acos(w) : -System.Math.Acos(w);        // Random sign //
                                                                                                       // 0 <= x <= Pi : -Pi <= x <= 0 //
         }
 

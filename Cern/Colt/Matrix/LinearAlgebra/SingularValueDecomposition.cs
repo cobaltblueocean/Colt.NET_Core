@@ -19,9 +19,8 @@ namespace Cern.Colt.Matrix.LinearAlgebra
 {
     using System;
     using System.Text;
-
     using Cern.Colt.Matrix.Implementation;
-
+    using Cern.Jet.Math;
     using Function;
 
     /// <summary>
@@ -36,12 +35,12 @@ namespace Cern.Colt.Matrix.LinearAlgebra
         /// <summary>
         /// Array for internal storage of U
         /// </summary>
-        private DoubleMatrix2D _u;
+        private IDoubleMatrix2D _u;
 
         /// <summary>
         /// Array for internal storage of V
         /// </summary>
-        private DoubleMatrix2D _v;
+        private IDoubleMatrix2D _v;
 
         /// <summary>
         /// Array for internal storage of singular values.
@@ -66,11 +65,11 @@ namespace Cern.Colt.Matrix.LinearAlgebra
         /// <returns>
         /// S
         /// </returns>
-        public DoubleMatrix2D S
+        public IDoubleMatrix2D S
         {
             get
             {
-                return DoubleFactory2D.Sparse.Diagonal(DoubleFactory1D.Dense.Make(_s));
+                return DoubleFactory2D.Sparse.Diagonal((DenseDoubleMatrix1D)DoubleFactory1D.Dense.Make(_s));
             }
         }
 
@@ -94,7 +93,7 @@ namespace Cern.Colt.Matrix.LinearAlgebra
         /// <returns>
         /// <tt>U</tt>
         /// </returns>
-        public DoubleMatrix2D U
+        public IDoubleMatrix2D U
         {
             get
             {
@@ -108,7 +107,7 @@ namespace Cern.Colt.Matrix.LinearAlgebra
         /// <returns>
         /// <tt>V</tt>
         /// </returns>
-        public DoubleMatrix2D V
+        public IDoubleMatrix2D V
         {
             get
             {
@@ -160,9 +159,9 @@ namespace Cern.Colt.Matrix.LinearAlgebra
         /// <exception cref="ArgumentException">
         /// If <code>a.Rows &lt; a.Columns</code>.
         /// </exception>
-        public SingularValueDecomposition(DoubleMatrix1D arg)
+        public SingularValueDecomposition(IDoubleMatrix1D arg)
         {
-            BatchSVD(DoubleFactory2D.Dense.Make(arg.ToArray(), arg.Size), true, true, true);
+            BatchSVD((DenseDoubleMatrix2D)DoubleFactory2D.Dense.Make(arg.ToArray(), arg.Size), true, true, true);
         }
 
         /// <summary>
@@ -175,7 +174,7 @@ namespace Cern.Colt.Matrix.LinearAlgebra
         /// <exception cref="ArgumentException">
         /// If <code>a.Rows &lt; a.Columns</code>.
         /// </exception>
-        public SingularValueDecomposition(DoubleMatrix2D arg)
+        public SingularValueDecomposition(IDoubleMatrix2D arg)
         {
             BatchSVD(arg, true, true, true);
         }
@@ -192,7 +191,7 @@ namespace Cern.Colt.Matrix.LinearAlgebra
         /// <param name="v">
         /// The matrix V. Can be <code>null</code>.
         /// </param>
-        public SingularValueDecomposition(DoubleMatrix2D u, double[] s, DoubleMatrix2D v)
+        public SingularValueDecomposition(IDoubleMatrix2D u, double[] s, IDoubleMatrix2D v)
         {
             _u = u;
             _s = s;
@@ -224,7 +223,7 @@ namespace Cern.Colt.Matrix.LinearAlgebra
         /// </code>
         /// .
         /// </exception>
-        public SingularValueDecomposition(DoubleMatrix2D arg, bool wantU, bool wantV, bool order)
+        public SingularValueDecomposition(IDoubleMatrix2D arg, bool wantU, bool wantV, bool order)
         {
             BatchSVD(arg, wantU, wantV, order);
         }
@@ -251,9 +250,9 @@ namespace Cern.Colt.Matrix.LinearAlgebra
         /// <returns>
         /// U'd
         /// </returns>
-        public DoubleMatrix1D Encode(DoubleMatrix1D d)
+        public IDoubleMatrix1D Encode(IDoubleMatrix1D d)
         {
-            return _u.ZMult(d.Size < _m ? DoubleFactory1D.Sparse.AppendColumns(d, DoubleFactory1D.Sparse.Make(_m - d.Size)) : d, null, 1, 0, true);
+            return _u.ZMult(d.Size < _m ? (SparseDoubleMatrix1D)DoubleFactory1D.Sparse.AppendColumns(d, (SparseDoubleMatrix1D)DoubleFactory1D.Sparse.Make(_m - d.Size)) : d, null, 1, 0, true);
         }
 
         /// <summary>
@@ -370,7 +369,7 @@ namespace Cern.Colt.Matrix.LinearAlgebra
         /// <param name="c">
         /// The new column.
         /// </param>
-        public void Update(DoubleMatrix1D c)
+        public void Update(IDoubleMatrix1D c)
         {
             Update(c, true);
         }
@@ -384,7 +383,7 @@ namespace Cern.Colt.Matrix.LinearAlgebra
         /// <param name="wantV">
         /// Whether the matrix V is needed.
         /// </param>
-        public void Update(DoubleMatrix1D c, bool wantV)
+        public void Update(IDoubleMatrix1D c, bool wantV)
         {
             int nRows = c.Size - _m;
             if (nRows > 0)
@@ -394,10 +393,10 @@ namespace Cern.Colt.Matrix.LinearAlgebra
             }
             else if (nRows < 0)
             {
-                c = DoubleFactory1D.Sparse.AppendColumns(c, DoubleFactory1D.Sparse.Make(-nRows));
+                c = DoubleFactory1D.Sparse.AppendColumns(c, (SparseDoubleMatrix1D)DoubleFactory1D.Sparse.Make(-nRows));
             }
 
-            var d = DoubleFactory2D.Dense.Make(c.ToArray(), c.Size);
+            var d = (DenseDoubleMatrix2D)DoubleFactory2D.Dense.Make(c.ToArray(), c.Size);
 
             // l = U'd is the eigencoding of d
             var l = _u.ViewDice().ZMult(d, null);
@@ -413,7 +412,7 @@ namespace Cern.Colt.Matrix.LinearAlgebra
             ////var h = d.Copy().Assign(ul, BinaryFunctions.Minus);
 
             // k is the projection of d onto the subspace othogonal to U
-            var k = Math.Sqrt(d.Aggregate(BinaryFunctions.Plus, a => a * a) - (2 * l.Aggregate(BinaryFunctions.Plus, a => a * a)) + ul.Aggregate(BinaryFunctions.Plus, a => a * a));
+            var k = Math.Sqrt(d.Aggregate(BinaryFunctions.Plus, new DoubleFunction() { Eval = a => a * a }) - (2 * l.Aggregate(BinaryFunctions.Plus, new DoubleFunction() { Eval = a => a * a })) + ul.Aggregate(BinaryFunctions.Plus, new DoubleFunction() { Eval = a => a * a }));
 
             // truncation
             if (k == 0 || double.IsNaN(k)) return;
@@ -427,13 +426,13 @@ namespace Cern.Colt.Matrix.LinearAlgebra
             // Q = [ S, l; 0, ||h||]
             var q =
                 DoubleFactory2D.Sparse.Compose(
-                    new[] { new[] { S, l }, new[] { null, DoubleFactory2D.Dense.Make(1, 1, k) } });
+                    new[] { new[] { S, l }, new[] { null, (DenseDoubleMatrix2D)DoubleFactory2D.Dense.Make(1, 1, k) } });
 
             var svdq = new SingularValueDecomposition(q, true, wantV, true);
             _u = DoubleFactory2D.Dense.AppendColumns(_u, j).ZMult(svdq.U, null);
             _s = svdq.SingularValues;
             if (wantV)
-                _v = DoubleFactory2D.Dense.ComposeDiagonal(_v, DoubleFactory2D.Dense.Identity(1)).ZMult(
+                _v = DoubleFactory2D.Dense.ComposeDiagonal(_v, (DenseDoubleMatrix2D)DoubleFactory2D.Dense.Identity(1)).ZMult(
                     svdq.V, null);
         }
         #endregion
@@ -462,7 +461,7 @@ namespace Cern.Colt.Matrix.LinearAlgebra
         /// </code>
         /// .
         /// </exception>
-        private void BatchSVD(DoubleMatrix2D arg, bool wantU, bool wantV, bool order)
+        private void BatchSVD(IDoubleMatrix2D arg, bool wantU, bool wantV, bool order)
         {
             Property.DEFAULT.CheckRectangular(arg);
 

@@ -156,7 +156,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <param name="function">a function object taking as argument the current cell's value.</param>
         /// <returns><i>this</i> (for convenience only).</returns>
         /// <see cref="Cern.Jet.Math.Functions"></see>
-        public override ObjectMatrix1D Assign(Cern.Colt.Function.ObjectFunction<Object> function)
+        public override ObjectMatrix1D Assign(Cern.Colt.Function.ObjectFunctionDelegate<Object> function)
         {
             int s = Stride;
             int i = Index(0);
@@ -249,7 +249,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <returns><i>this</i> (for convenience only).</returns>
         /// <exception cref="ArgumentException">if <i>size() != y.Count</i>.</exception>
         /// <see cref="Cern.Jet.Math.Functions"/>
-        public override ObjectMatrix1D Assign(ObjectMatrix1D y, Cern.Colt.Function.ObjectObjectFunction<Object> function)
+        public override ObjectMatrix1D Assign(ObjectMatrix1D y, Cern.Colt.Function.ObjectObjectFunctionDelegate<Object> function)
         {
             // overriden for performance only
             if (!(y is DenseObjectMatrix1D))
@@ -315,7 +315,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// You may want to override this method for performance.
         /// </summary>
         /// <param name="rank">the rank of the element.</param>
-        protected internal override int Index(int rank)
+        public override int Index(int rank)
         {
             // overriden for manual inlining only
             //return _offset(_rank(rank));

@@ -12,6 +12,7 @@
 //   A function that takes two arguments and returns a single value.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+using Cern.Jet.Math;
 
 namespace Cern.Colt.Function
 {
@@ -29,7 +30,7 @@ namespace Cern.Colt.Function
     /// <returns>
     /// The comparison result.
     /// </returns>
-    public delegate int ByteComparator(byte o1, byte o2);
+    public delegate int ByteComparatorDelegate(byte o1, byte o2);
 
     /// <summary>
     /// Compares its two arguments for order.  Returns a negative integer,
@@ -45,7 +46,7 @@ namespace Cern.Colt.Function
     /// <returns>
     /// The comparison result.
     /// </returns>
-    public delegate int CharComparator(char o1, char o2);
+    public delegate int CharComparatorDelegate(char o1, char o2);
 
     /// <summary>
     /// A function that takes arguments and returns a single value.
@@ -53,7 +54,7 @@ namespace Cern.Colt.Function
     /// <returns>
     /// The result of the function.
     /// </returns>
-    public delegate double Double9Function(
+    public delegate double Double9FunctionDelegate(
         double a00, double a01, double a02, double a10, double a11, double a12, double a20, double a21, double a22);
 
 
@@ -63,7 +64,7 @@ namespace Cern.Colt.Function
     /// <returns>
     /// The result of the function.
     /// </returns>
-    public delegate double Double27Function(double a000, double a001, double a002, double a010, double a011, double a012, double a020, double a021, double a022,
+    public delegate double Double27FunctionDelegate(double a000, double a001, double a002, double a010, double a011, double a012, double a020, double a021, double a022,
                                             double a100, double a101, double a102, double a110, double a111, double a112, double a120, double a121, double a122,
                                             double a200, double a201, double a202, double a210, double a211, double a212, double a220, double a221, double a222);
 
@@ -80,7 +81,7 @@ namespace Cern.Colt.Function
     /// <returns>
     /// A negative integer, zero, or a positive integer as the first argument is less than, equal to, or greater than the second. 
     /// </returns>
-    public delegate int DoubleComparator(double a, double b);
+    public delegate int DoubleComparatorDelegate(double a, double b);
 
     /// <summary>
     /// A function that takes two arguments and returns a single value.
@@ -94,7 +95,36 @@ namespace Cern.Colt.Function
     /// <returns>
     /// The result of the function.
     /// </returns>
-    public delegate double DoubleDoubleFunction(double x, double y);
+    public delegate double DoubleDoubleFunctionDelegate(double x, double y);
+
+    /// <summary>
+    /// Applies a procedure to an argument.
+    /// Optionally can return a boolean flag to inform the object calling the procedure.
+    /// </summary>
+    /// <param name="x">
+    /// The first argument passed to the function.
+    /// </param>
+    /// <param name="y">
+    /// The second argument passed to the function.
+    /// </param>
+    /// <returns>
+    /// A flag to inform the object calling the procedure.
+    /// </returns>
+    public delegate bool DoubleDoubleProcedureDelegate(double x, double y);
+
+    /// <summary>
+    /// A function that takes two arguments and returns a single value.
+    /// </summary>
+    /// <param name="x">
+    /// The first argument passed to the function.
+    /// </param>
+    /// <param name="y">
+    /// The second argument passed to the function.
+    /// </param>
+    /// <returns>
+    /// The result of the function.
+    /// </returns>
+    public delegate int IntIntFunctionDelegate(int x, int y);
 
 
     /// <summary>
@@ -110,37 +140,7 @@ namespace Cern.Colt.Function
     /// <returns>
     /// A flag to inform the object calling the procedure.
     /// </returns>
-    public delegate bool DoubleDoubleProcedure(double x, double y);
-
-    /// <summary>
-    /// A function that takes two arguments and returns a single value.
-    /// </summary>
-    /// <param name="x">
-    /// The first argument passed to the function.
-    /// </param>
-    /// <param name="y">
-    /// The second argument passed to the function.
-    /// </param>
-    /// <returns>
-    /// The result of the function.
-    /// </returns>
-    public delegate int IntIntFunction(int x, int y);
-
-
-    /// <summary>
-    /// Applies a procedure to an argument.
-    /// Optionally can return a boolean flag to inform the object calling the procedure.
-    /// </summary>
-    /// <param name="x">
-    /// The first argument passed to the function.
-    /// </param>
-    /// <param name="y">
-    /// The second argument passed to the function.
-    /// </param>
-    /// <returns>
-    /// A flag to inform the object calling the procedure.
-    /// </returns>
-    public delegate bool IntIntProcedure(int x, int y);
+    public delegate bool IntIntProcedureDelegate(int x, int y);
 
     /// <summary>
     /// Applies a procedure to an argument.
@@ -158,7 +158,7 @@ namespace Cern.Colt.Function
     /// <returns>
     /// A flag to inform the object calling the procedure.
     /// </returns>
-    public delegate bool IntIntIntProcedure(int x, int y, int z);
+    public delegate bool IntIntIntProcedureDelegate(int x, int y, int z);
 
     /// <summary>
     /// Compares its two arguments for order.  Returns a negative integer,
@@ -174,7 +174,7 @@ namespace Cern.Colt.Function
     /// <returns>
     /// The comparison result.
     /// </returns>
-    public delegate int FloatComparator(float o1, float o2);
+    public delegate int FloatComparatorDelegate(float o1, float o2);
 
     /// <summary>
     /// Compares its two arguments for order.  Returns a negative integer,
@@ -190,7 +190,7 @@ namespace Cern.Colt.Function
     /// <returns>
     /// The comparison result.
     /// </returns>
-    public delegate int IntComparator(int o1, int o2);
+    public delegate int IntComparatorDelegate(int o1, int o2);
 
     /// <summary>
     /// A function that takes three arguments.
@@ -207,7 +207,7 @@ namespace Cern.Colt.Function
     /// <returns>
     /// The result of the function.
     /// </returns>
-    public delegate double IntIntDoubleFunction(int first, int second, double third);
+    public delegate double IntIntDoubleFunctionDelegate(int first, int second, double third);
 
     /// <summary>
     /// A function that takes three arguments.
@@ -224,7 +224,7 @@ namespace Cern.Colt.Function
     /// <returns>
     /// The result of the function.
     /// </returns>
-    public delegate int IntIntIntFunction(int first, int second, int third);
+    public delegate int IntIntIntFunctionDelegate(int first, int second, int third);
 
     /// <summary>
     /// Compares its two arguments for order.  Returns a negative integer,
@@ -240,7 +240,7 @@ namespace Cern.Colt.Function
     /// <returns>
     /// The comparison result.
     /// </returns>
-    public delegate int LongComparator(long o1, long o2);
+    public delegate int LongComparatorDelegate(long o1, long o2);
 
     /// <summary>
     /// Compares its two arguments for order.  Returns a negative integer,
@@ -259,7 +259,7 @@ namespace Cern.Colt.Function
     /// <returns>
     /// The comparison result.
     /// </returns>
-    public delegate int ObjectComparator<C>(C o1, C o2);
+    public delegate int ObjectComparatorDelegate<C>(C o1, C o2);
 
     /// <summary>
     /// A function that takes two arguments and returns a single value.
@@ -276,7 +276,7 @@ namespace Cern.Colt.Function
     /// <typeparam name="C">
     /// The type of the arguments and of the return value.
     /// </typeparam>
-    public delegate C ObjectObjectFunction<C>(C x, C y);
+    public delegate C ObjectObjectFunctionDelegate<C>(C x, C y);
 
     /// <summary>
     /// Compares its two arguments for order.  Returns a negative integer,
@@ -292,7 +292,7 @@ namespace Cern.Colt.Function
     /// <returns>
     /// The comparison result.
     /// </returns>
-    public delegate int ShortComparator(short o1, short o2);
+    public delegate int ShortComparatorDelegate(short o1, short o2);
 
     /// <summary>
     /// Function to be passed to generic methods.
@@ -302,16 +302,25 @@ namespace Cern.Colt.Function
         /// <summary>
         /// Function that returns <tt>a + b</tt>.
         /// </summary>
-        public static readonly DoubleDoubleFunction Plus = (a, b) => a + b;
+        public static readonly IDoubleDoubleFunction Plus = new DoubleDoubleFunction()
+        {
+            Eval = (a, b) => a + b
+        };
 
         /// <summary>
         /// Function that returns <tt>a - b</tt>.
         /// </summary>
-        public static readonly DoubleDoubleFunction Minus = (a, b) => a - b;
+        public static readonly IDoubleDoubleFunction Minus = new DoubleDoubleFunction()
+        {
+            Eval = (a, b) => a - b
+        };
 
         /// <summary>
         /// Function that returns <tt>a * b</tt>.
         /// </summary>
-        public static readonly DoubleDoubleFunction Mult = (a, b) => a * b;
+        public static readonly IDoubleDoubleFunction Mult = new DoubleDoubleFunction()
+        {
+            Eval = (a, b) => a * b
+        };
     }
 }

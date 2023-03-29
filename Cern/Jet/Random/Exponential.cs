@@ -79,7 +79,7 @@ namespace Cern.Jet.Random
         /// <returns></returns>
         public double NextDouble(double lambda)
         {
-            return -System.Math.Log(randomGenerator.Raw()) / lambda;
+            return -System.Math.Log(this.RandomGenerator.Raw()) / lambda;
         }
 
         /// <summary>

@@ -308,7 +308,7 @@ namespace Cern.Jet.Stat.Quantile
         /// </summary>
         /// <param name="procedure">the procedure to be applied. Stops iteration if the procedure returns <tt>false</tt>, otherwise continues. </param>
         /// <returns></returns>
-        public Boolean ForEach(Cern.Colt.Function.DoubleProcedure procedure)
+        public Boolean ForEach(Cern.Colt.Function.DoubleProcedureDelegate procedure)
         {
             for (int i = buffers.Length; --i >= 0;)
             {

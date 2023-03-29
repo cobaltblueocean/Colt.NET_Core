@@ -154,7 +154,7 @@ namespace Cern.Jet.Random
         /// <returns></returns>
         public override int NextInt()
         {
-            return (int)GenerateZeta(ro, pk, randomGenerator);
+            return (int)GenerateZeta(ro, pk, this.RandomGenerator);
         }
 
         /// <summary>

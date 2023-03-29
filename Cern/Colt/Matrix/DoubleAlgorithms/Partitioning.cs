@@ -128,7 +128,7 @@ namespace Cern.Colt.Matrix.DoubleAlgorithms
         ///           </tr>
         /// </table>
         /// </example>
-        public static void Partition(DoubleMatrix2D matrix, int[] rowIndexes, int rowFrom, int rowTo, int column, double[] splitters, int splitFrom, int splitTo, int[] splitIndexes)
+        public static void Partition(IDoubleMatrix2D matrix, int[] rowIndexes, int rowFrom, int rowTo, int column, double[] splitters, int splitFrom, int splitTo, int[] splitIndexes)
         {
             if (rowFrom < 0 || rowTo >= matrix.Rows || rowTo >= rowIndexes.Length) throw new ArgumentException();
             if (column < 0 || column >= matrix.Columns) throw new ArgumentException();
@@ -144,8 +144,8 @@ namespace Cern.Colt.Matrix.DoubleAlgorithms
             });
 
             // compare splitter[a] with columnView[rowIndexes[b]]
-            DoubleMatrix1D columnView = matrix.ViewColumn(column);
-            IntComparator comp = new IntComparator((a, b) =>
+            IDoubleMatrix1D columnView = matrix.ViewColumn(column);
+            IntComparatorDelegate comp = new IntComparatorDelegate((a, b) =>
             {
                 double av = splitters[a];
                 double bv = columnView[g[b]];
@@ -153,7 +153,7 @@ namespace Cern.Colt.Matrix.DoubleAlgorithms
             });
 
             // compare columnView[rowIndexes[a]] with columnView[rowIndexes[b]]
-            IntComparator comp2 = new IntComparator((a, b) =>
+            IntComparatorDelegate comp2 = new IntComparatorDelegate((a, b) =>
             {
 
                 double av = columnView[g[a]];
@@ -162,7 +162,7 @@ namespace Cern.Colt.Matrix.DoubleAlgorithms
             });
 
             // compare splitter[a] with splitter[b]
-            IntComparator comp3 = new IntComparator((a, b) =>
+            IntComparatorDelegate comp3 = new IntComparatorDelegate((a, b) =>
             {
 
                 double av = splitters[a];
@@ -239,7 +239,7 @@ namespace Cern.Colt.Matrix.DoubleAlgorithms
         ///           </tr>
         /// </table>
         /// </example>
-        public static DoubleMatrix2D Partition(DoubleMatrix2D matrix, int column, double[] splitters, int[] splitIndexes)
+        public static IDoubleMatrix2D Partition(IDoubleMatrix2D matrix, int column, double[] splitters, int[] splitIndexes)
         {
             int rowFrom = 0;
             int rowTo = matrix.Rows - 1;
@@ -320,7 +320,7 @@ namespace Cern.Colt.Matrix.DoubleAlgorithms
         ///           </tr>
         /// </table>
         /// </example>
-        private static void xPartitionOld(DoubleMatrix2D matrix, DoubleMatrix1D column, int from, int to, double[] splitters, int splitFrom, int splitTo, int[] splitIndexes)
+        private static void xPartitionOld(IDoubleMatrix2D matrix, IDoubleMatrix1D column, int from, int to, double[] splitters, int splitFrom, int splitTo, int[] splitIndexes)
         {
             /*
             double splitter; // int, double --> template type dependent
@@ -418,7 +418,7 @@ namespace Cern.Colt.Matrix.DoubleAlgorithms
         /// <param name="to"></param>
         /// <param name="splitter"></param>
         /// <returns></returns>
-        private static int xPartitionOld(DoubleMatrix2D matrix, DoubleMatrix1D column, int from, int to, double splitter)
+        private static int xPartitionOld(IDoubleMatrix2D matrix, IDoubleMatrix1D column, int from, int to, double splitter)
         {
             /*
             double element;  // int, double --> template type dependent

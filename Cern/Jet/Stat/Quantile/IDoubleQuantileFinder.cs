@@ -20,7 +20,7 @@ namespace Cern.Jet.Stat.Quantile
 
         Object Clone();
 
-        Boolean ForEach(Cern.Colt.Function.DoubleProcedure procedure);
+        Boolean ForEach(Cern.Colt.Function.DoubleProcedureDelegate procedure);
 
         long Memory();
 

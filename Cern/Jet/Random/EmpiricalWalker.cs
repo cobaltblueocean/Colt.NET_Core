@@ -218,7 +218,7 @@ namespace Cern.Jet.Random
         {
             int c = 0;
             double u, f;
-            u = this.randomGenerator.Raw();
+            u = this.RandomGenerator.Raw();
             //#if KNUTH_CONVENTION
             //    c = (int)(u*(g->K));
             //#else

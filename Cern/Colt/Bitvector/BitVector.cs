@@ -60,7 +60,7 @@ namespace Cern.Colt.Bitvector
         /// <summary>
         /// IntProcedure for method indexOfFromTo(.d)
         /// </summary>
-        public Cern.Colt.Function.IntProcedure IndexProcedure = new Cern.Colt.Function.IntProcedure((index) =>
+        public Cern.Colt.Function.IntProcedureDelegate IndexProcedure = new Cern.Colt.Function.IntProcedureDelegate((index) =>
         {
             var foundPos = index;
             return false;
@@ -348,7 +348,7 @@ namespace Cern.Colt.Bitvector
         /// <param name="procedure">a procedure object taking as argument the current bit indexd Stops iteration if the procedure returns <i>false</i>, otherwise continuesd </param>
         /// <returns><i>false</i> if the procedure stopped before all elements where iterated over, <i>true</i> otherwised</returns>
         /// <exception cref="IndexOutOfRangeException">if (<i>Size&gt;0 && (from&lt;0 || from&gt;to || to&gt;=Size)</i>).</exception>
-        public Boolean ForEachIndexFromToInState(int from, int to, Boolean state, ref int foundPos, Cern.Colt.Function.IntProcedure procedure)
+        public Boolean ForEachIndexFromToInState(int from, int to, Boolean state, ref int foundPos, Cern.Colt.Function.IntProcedureDelegate procedure)
         {
             /*
             // this version is equivalent to the low level version below, but about 100 times slower for large ranges.
@@ -574,7 +574,7 @@ namespace Cern.Colt.Bitvector
         /// <exception cref="IndexOutOfRangeException">if (<i>Size&gt;0 && (from&lt;0 || from&gt;to || to&gt;=Size)</i>).</exception>
         public int IndexOfFromTo(int from, int to, Boolean state)
         {
-            var indexProcedure = new Cern.Colt.Function.IntProcedure((a) => { return false; });
+            var indexProcedure = new Cern.Colt.Function.IntProcedureDelegate((a) => { return false; });
             int foundPos = 0;
             ForEachIndexFromToInState(from, to, state, ref foundPos, indexProcedure);
             return foundPos;

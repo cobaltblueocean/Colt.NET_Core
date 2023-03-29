@@ -57,7 +57,7 @@ namespace Cern.Colt.Matrix.DoubleAlgorithms
         /// <returns>
         /// A string representation of all cells.
         /// </returns>
-        public string[][] Format(DoubleMatrix2D matrix)
+        public string[][] Format(IDoubleMatrix2D matrix)
         {
             var strings = new string[matrix.Rows][];
             for (int row = matrix.Rows; --row >= 0;) strings[row] = FormatRow(matrix.ViewRow(row));
@@ -74,15 +74,15 @@ namespace Cern.Colt.Matrix.DoubleAlgorithms
         /// <returns>
         /// A string representations of all cells.
         /// </returns>
-        protected override string[][] Format(AbstractMatrix2D matrix)
+        protected override string[][] Format<T>(IMatrix2D<T> matrix)
         {
-            return Format((DoubleMatrix2D)matrix);
+            return Format((IDoubleMatrix2D)matrix);
         }
 
         /// <summary>
         /// Converts a given cell to a String; no alignment considered.
         /// <summary>
-        protected String Form(DoubleMatrix1D matrix, int index, Former formatter)
+        protected String Form(IDoubleMatrix1D matrix, int index, Former formatter)
         {
             return formatter.form(matrix[index]);
         }
@@ -90,9 +90,9 @@ namespace Cern.Colt.Matrix.DoubleAlgorithms
         /// <summary>
         /// Converts a given cell to a String; no alignment considered.
         /// <summary>
-        protected override String Form(AbstractMatrix1D matrix, int index, Former formatter)
+        protected override String Form<T>(IMatrix1D<T> matrix, int index, Former formatter)
         {
-            return this.Form((DoubleMatrix1D)matrix, index, formatter);
+            return this.Form((IDoubleMatrix1D)matrix, index, formatter);
         }
 
         /// <summary>
@@ -133,7 +133,7 @@ namespace Cern.Colt.Matrix.DoubleAlgorithms
         /// </summary>
         /// <param name="matrix">the matrix to format.</param>
         /// <returns></returns>
-        public String ToSourceCode(DoubleMatrix1D matrix)
+        public String ToSourceCode(IDoubleMatrix1D matrix)
         {
             Formatter copy = (Formatter)this.Clone();
             copy.SetPrintShape(false);
@@ -148,7 +148,7 @@ namespace Cern.Colt.Matrix.DoubleAlgorithms
         /// </summary>
         /// <param name="matrix">the matrix to format.</param>
         /// <returns></returns>
-        public String ToSourceCode(DoubleMatrix2D matrix)
+        public String ToSourceCode(IDoubleMatrix2D matrix)
         {
             Formatter copy = (Formatter)this.Clone();
             String b3 = Blanks(3);
@@ -188,9 +188,9 @@ namespace Cern.Colt.Matrix.DoubleAlgorithms
         /// <returns>
         /// A string representation of the given matrix.
         /// </returns>
-        public string ToString(DoubleMatrix1D matrix)
+        public string ToString(IDoubleMatrix1D matrix)
         {
-            DoubleMatrix2D easy = matrix.Like2D(1, matrix.Size);
+            var easy = matrix.Like2D(1, matrix.Size);
             easy.ViewRow(0).Assign(matrix);
             return ToString(easy);
         }
@@ -204,7 +204,7 @@ namespace Cern.Colt.Matrix.DoubleAlgorithms
         /// <returns>
         /// A string representation of the given matrix.
         /// </returns>
-        public string ToString(DoubleMatrix2D matrix)
+        public string ToString(IDoubleMatrix2D matrix)
         {
             return base.ToString(matrix);
         }
@@ -214,7 +214,7 @@ namespace Cern.Colt.Matrix.DoubleAlgorithms
         /// </summary>
         /// <param name="matrix">the matrix to convert.</param>
         /// <returns>A string representation of the given matrix.</returns>
-        public String ToString(DoubleMatrix3D matrix)
+        public String ToString(IDoubleMatrix3D matrix)
         {
             var buf = new StringBuilder();
             Boolean oldPrintShape = this.printShape;
@@ -222,7 +222,7 @@ namespace Cern.Colt.Matrix.DoubleAlgorithms
             for (int slice = 0; slice < matrix.Slices; slice++)
             {
                 if (slice != 0) buf.Append(sliceSeparator);
-                buf.Append(ToString((AbstractMatrix2D)matrix.ViewSlice(slice)));
+                buf.Append(ToString((IDoubleMatrix2D)matrix.ViewSlice(slice)));
             }
             this.printShape = oldPrintShape;
             if (printShape) buf.Insert(0, Shape(matrix) + "\n");
@@ -238,9 +238,9 @@ namespace Cern.Colt.Matrix.DoubleAlgorithms
         /// <returns>
         /// A string representation of the given matrix.
         /// </returns>
-        protected override string ToString(AbstractMatrix2D matrix)
+        protected override string ToString<T>(IMatrix2D<T> matrix)
         {
-            return this.ToString((DoubleMatrix2D)matrix);
+            return this.ToString((IDoubleMatrix2D)matrix);
         }
 
         /// <summary>
@@ -253,7 +253,7 @@ namespace Cern.Colt.Matrix.DoubleAlgorithms
         /// <param name="columnAxisName"></param>
         /// <param name="title"></param>
         /// <returns></returns>
-        protected String ToTitleString(DoubleMatrix2D matrix, String[] rowNames, String[] columnNames, String rowAxisName, String columnAxisName, String title)
+        protected String ToTitleString(IDoubleMatrix2D matrix, String[] rowNames, String[] columnNames, String rowAxisName, String columnAxisName, String title)
         {
             if (matrix.Size == 0) return "Empty matrix";
             String[][] s = Format(matrix);
@@ -368,20 +368,20 @@ namespace Cern.Colt.Matrix.DoubleAlgorithms
         /// <returns>the matrix converted to a string.</returns>
         /// <see cref="Hep.Aida.Bin.BinFunction1D"/>
         /// <see cref="Hep.Aida.Bin.BinFunctions1D"/>
-        public String ToTitleString(DoubleMatrix2D matrix, String[] rowNames, String[] columnNames, String rowAxisName, String columnAxisName, String title, Hep.Aida.Bin.BinFunction1D[] aggr)
+        public String ToTitleString(IDoubleMatrix2D matrix, String[] rowNames, String[] columnNames, String rowAxisName, String columnAxisName, String title, Hep.Aida.Bin.BinFunction1D[] aggr)
         {
             if (matrix.Size == 0) return "Empty matrix";
             if (aggr == null || aggr.Length == 0) return ToTitleString(matrix, rowNames, columnNames, rowAxisName, columnAxisName, title);
 
-            DoubleMatrix2D rowStats = matrix.Like(matrix.Rows, aggr.Length); // hold row aggregations
-            DoubleMatrix2D colStats = matrix.Like(aggr.Length, matrix.Columns); // hold column aggregations
+            var rowStats = matrix.Like(matrix.Rows, aggr.Length); // hold row aggregations
+            var colStats = matrix.Like(aggr.Length, matrix.Columns); // hold column aggregations
 
             Cern.Colt.Matrix.DoubleAlgorithms.Statistics.Aggregate(matrix, aggr, colStats); // aggregate an entire column at a time
             Cern.Colt.Matrix.DoubleAlgorithms.Statistics.Aggregate(matrix.ViewDice(), aggr, rowStats.ViewDice()); // aggregate an entire row at a time
 
             // turn into strings
             // tmp holds "matrix" plus "colStats" below (needed so that numbers in a columns can be decimal point aligned)
-            DoubleMatrix2D tmp = matrix.Like(matrix.Rows + aggr.Length, matrix.Columns);
+            var tmp = matrix.Like(matrix.Rows + aggr.Length, matrix.Columns);
             tmp.ViewPart(0, 0, matrix.Rows, matrix.Columns).Assign(matrix);
             tmp.ViewPart(matrix.Rows, 0, aggr.Length, matrix.Columns).Assign(colStats);
 
@@ -446,7 +446,7 @@ namespace Cern.Colt.Matrix.DoubleAlgorithms
         /// <returns>the matrix converted to a string.</returns>
         /// <see cref="Hep.Aida.Bin.BinFunction1D"/>
         /// <see cref="Hep.Aida.Bin.BinFunctions1D"/>
-        public String ToTitleString(DoubleMatrix3D matrix, String[] sliceNames, String[] rowNames, String[] columnNames, String sliceAxisName, String rowAxisName, String columnAxisName, String title, Hep.Aida.Bin.BinFunction1D[] aggr)
+        public String ToTitleString(IDoubleMatrix3D matrix, String[] sliceNames, String[] rowNames, String[] columnNames, String sliceAxisName, String rowAxisName, String columnAxisName, String title, Hep.Aida.Bin.BinFunction1D[] aggr)
         {
             if (matrix.Size == 0) return "Empty matrix";
             StringBuilder buf = new StringBuilder();
@@ -471,7 +471,7 @@ namespace Cern.Colt.Matrix.DoubleAlgorithms
         /// <param name="columnAxisName">The label of the x-axis.</param>
         /// <param name="title">The overall title of the matrix to be formatted.</param>
         /// <returns>the matrix converted to a string.</returns>
-        private String XToTitleString(DoubleMatrix3D matrix, String[] sliceNames, String[] rowNames, String[] columnNames, String sliceAxisName, String rowAxisName, String columnAxisName, String title)
+        private String XToTitleString(IDoubleMatrix3D matrix, String[] sliceNames, String[] rowNames, String[] columnNames, String sliceAxisName, String rowAxisName, String columnAxisName, String title)
         {
             if (matrix.Size == 0) return "Empty matrix";
             StringBuilder buf = new StringBuilder();

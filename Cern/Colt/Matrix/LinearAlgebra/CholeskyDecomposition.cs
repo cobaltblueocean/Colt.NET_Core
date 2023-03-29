@@ -33,7 +33,7 @@ namespace Cern.Colt.Matrix.LinearAlgebra
         /// Array for internal storage of decomposition.
         /// internal array storage.
         /// </summary>
-        private DoubleMatrix2D mL;
+        private IDoubleMatrix2D mL;
 
         /// <summary>
         /// Row and column dimension (square matrix).
@@ -55,7 +55,7 @@ namespace Cern.Colt.Matrix.LinearAlgebra
         /// </summary>
         /// <param name="A">Square, symmetric matrix.</param>
         /// <exception cref="ArgumentException">if <i>A</i> is not square.</exception>
-        public CholeskyDecomposition(DoubleMatrix2D A)
+        public CholeskyDecomposition(IDoubleMatrix2D A)
         {
             Property.DEFAULT.CheckSquare(A);
             // Initialize.
@@ -67,21 +67,21 @@ namespace Cern.Colt.Matrix.LinearAlgebra
             isSymmetricPositiveDefinite = (A.Columns == n);
 
             //precompute and cache some views to avoid regenerating them time and again
-            DoubleMatrix1D[] Lrows = new DoubleMatrix1D[n];
+            IDoubleMatrix1D[] Lrows = new IDoubleMatrix1D[n];
             for (int j = 0; j < n; j++) Lrows[j] = mL.ViewRow(j);
 
             // Main loop.
             for (int j = 0; j < n; j++)
             {
                 //double[] Lrowj = L[j];
-                //DoubleMatrix1D Lrowj = L.ViewRow(j);
+                //IDoubleMatrix1D Lrowj = L.ViewRow(j);
                 double d = 0.0;
                 for (int k = 0; k < j; k++)
                 {
                     //double[] Lrowk = L[k];
                     double s = Lrows[k].ZDotProduct(Lrows[j], 0, k);
                     /*
-                    DoubleMatrix1D Lrowk = L.ViewRow(k);
+                    IDoubleMatrix1D Lrowk = L.ViewRow(k);
                     double s = 0.0;
                     for (int i = 0; i < k; i++) {
                        s += Lrowk.getQuick(i)*Lrowj.getQuick(i);
@@ -106,7 +106,7 @@ namespace Cern.Colt.Matrix.LinearAlgebra
         /// <summary>
         /// Returns the triangular factor, <i>L</i>.
         /// </summary>
-        public DoubleMatrix2D L
+        public IDoubleMatrix2D L
         {
             get
             {
@@ -133,10 +133,10 @@ namespace Cern.Colt.Matrix.LinearAlgebra
         /// <returns><i>X</i> so that <i>L*L'*X = B</i>.</returns>
         /// <exception cref="ArgumentException">if <i>B.Rows != A.Rows</i>.</exception>
         /// <exception cref="ArgumentException">if <i>!isSymmetricPositiveDefinite()</i>.</exception>
-        public DoubleMatrix2D Solve(DoubleMatrix2D B)
+        public IDoubleMatrix2D Solve(IDoubleMatrix2D B)
         {
             // Copy right hand side.
-            DoubleMatrix2D X = B.Copy();
+            IDoubleMatrix2D X = B.Copy();
             int nx = B.Columns;
 
             // fix by MG Ferreira <mgf@webmail.co.Za>
@@ -176,7 +176,7 @@ namespace Cern.Colt.Matrix.LinearAlgebra
         /// <returns><i>X</i> so that <i>L*L'*X = B</i>.</returns>
         /// <exception cref="ArgumentException">if <i>B.Rows != A.Rows</i>.</exception>
         /// <exception cref="ArgumentException">if <i>!isSymmetricPositiveDefinite()</i>.</exception>
-        private DoubleMatrix2D XXXsolveBuggy(DoubleMatrix2D B)
+        private IDoubleMatrix2D XXXsolveBuggy(IDoubleMatrix2D B)
         {
             var F = Cern.Jet.Math.Functions.functions;
 
@@ -190,11 +190,11 @@ namespace Cern.Colt.Matrix.LinearAlgebra
             }
 
             // Copy right hand side.
-            DoubleMatrix2D X = B.Copy();
+            IDoubleMatrix2D X = B.Copy();
             int nx = B.Columns;
 
             // precompute and cache some views to avoid regenerating them time and again
-            DoubleMatrix1D[] Xrows = new DoubleMatrix1D[n];
+            IDoubleMatrix1D[] Xrows = new IDoubleMatrix1D[n];
             for (int k = 0; k < n; k++) Xrows[k] = X.ViewRow(k);
 
             // Solve L*Y = B;

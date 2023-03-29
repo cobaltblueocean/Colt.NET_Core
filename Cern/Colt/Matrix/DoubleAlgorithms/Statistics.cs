@@ -18,6 +18,7 @@ using Cern.Hep.Aida.Bin;
 using Cern.Colt.Matrix.Implementation;
 using F1 = Cern.Jet.Math.Functions.DoubleFunctions;
 using F2 = Cern.Jet.Math.Functions.DoubleDoubleFunctions;
+using Cern.Jet.Math;
 
 namespace Cern.Colt.Matrix.DoubleAlgorithms
 {
@@ -28,7 +29,7 @@ namespace Cern.Colt.Matrix.DoubleAlgorithms
     /// <param name="x">the first argument vector passed to the function.</param>
     /// <param name="y">the second argument vector passed to the function.</param>
     /// <returns>the result of the function.</returns>
-    public delegate double VectorVectorFunction(Cern.Colt.Matrix.DoubleMatrix1D x, Cern.Colt.Matrix.DoubleMatrix1D y);
+    public delegate double VectorVectorFunction(Cern.Colt.Matrix.IDoubleMatrix1D x, Cern.Colt.Matrix.IDoubleMatrix1D y);
 
     public static class Statistics
     {
@@ -59,12 +60,12 @@ namespace Cern.Colt.Matrix.DoubleAlgorithms
         /// <returns></returns>
         public static VectorVectorFunction CANBERRA()
         {
-            DoubleDoubleFunction fun()
+            IDoubleDoubleFunction fun = new DoubleDoubleFunction()
             {
-                return (a, b) => System.Math.Abs(a - b) / System.Math.Abs(a + b);
-            }
+                Eval = (a, b) => System.Math.Abs(a - b) / System.Math.Abs(a + b)
+            };
 
-            return (a, b) => a.Aggregate(b, F2.Plus, fun());
+            return (a, b) => a.Aggregate(b, F2.Plus, fun);
         }
 
         /// <summary>
@@ -97,7 +98,7 @@ namespace Cern.Colt.Matrix.DoubleAlgorithms
         /// <see cref="Formatter"/>
         /// <see cref="Hep.Aida.Bin.BinFunction1D"/>
         /// <see cref="Hep.Aida.Bin.BinFunctions1D"/>
-        public static DoubleMatrix2D Aggregate(DoubleMatrix2D matrix, Hep.Aida.Bin.BinFunction1D[] aggr, DoubleMatrix2D result)
+        public static IDoubleMatrix2D Aggregate(IDoubleMatrix2D matrix, Hep.Aida.Bin.BinFunction1D[] aggr, IDoubleMatrix2D result)
         {
             var bin = new DynamicBin1D();
             var elements = new double[matrix.Rows];
@@ -168,7 +169,7 @@ namespace Cern.Colt.Matrix.DoubleAlgorithms
         /// </td>
         /// </table>
         /// </example>
-        public static DynamicBin1D Bin(DoubleMatrix1D vector)
+        public static DynamicBin1D Bin(IDoubleMatrix1D vector)
         {
             DynamicBin1D bin = new DynamicBin1D();
             bin.AddAllOf(new DoubleArrayList(DoubleFactory1D.Dense.ToList(vector).ToArray()));
@@ -186,9 +187,9 @@ namespace Cern.Colt.Matrix.DoubleAlgorithms
         /// and <A HREF="http://www.stat.berkeley.edu/users/stark/SticiGui/Text/gloss.htm#correlation_coef"> another def</A>.
         /// Compares two column vectors at a timed Use dice views to compare two row vectors at a time.
         /// </summary>
-        /// <param name="covariance">covariance a covariance matrix, as, for example, returned by method <see cref="Covariance(DoubleMatrix2D)"/>.</param>
+        /// <param name="covariance">covariance a covariance matrix, as, for example, returned by method <see cref="Covariance(IDoubleMatrix2D)"/>.</param>
         /// <returns>the modified covariance, now correlation matrix (for convenience only).</returns>
-        public static DoubleMatrix2D Correlation(DoubleMatrix2D covariance)
+        public static IDoubleMatrix2D Correlation(IDoubleMatrix2D covariance)
         {
             for (int i = covariance.Columns; --i >= 0;)
             {
@@ -219,14 +220,14 @@ namespace Cern.Colt.Matrix.DoubleAlgorithms
         /// </summary>
         /// <param name="matrix">any matrix; a column holds the values of a given variable.</param>
         /// <returns>the covariance matrix (<i>n x n, n=matrix.Columns</i>).</returns>
-        public static DoubleMatrix2D Covariance(DoubleMatrix2D matrix)
+        public static IDoubleMatrix2D Covariance(IDoubleMatrix2D matrix)
         {
             int rows = matrix.Rows;
             int columns = matrix.Columns;
-            DoubleMatrix2D covariance = new DenseDoubleMatrix2D(columns, columns);
+            var covariance = new DenseDoubleMatrix2D(columns, columns);
 
             double[] sums = new double[columns];
-            DoubleMatrix1D[] cols = new DoubleMatrix1D[columns];
+            IDoubleMatrix1D[] cols = new IDoubleMatrix1D[columns];
             for (int i = columns; --i >= 0;)
             {
                 cols[i] = matrix.ViewColumn(i);
@@ -286,7 +287,7 @@ namespace Cern.Colt.Matrix.DoubleAlgorithms
         /// </td>
         /// </table>
         /// </example>
-        public static Hep.Aida.IHistogram2D Cube(DoubleMatrix1D x, DoubleMatrix1D y, DoubleMatrix1D weights)
+        public static Hep.Aida.IHistogram2D Cube(IDoubleMatrix1D x, IDoubleMatrix1D y, IDoubleMatrix1D weights)
         {
             if (x.Size != y.Size || y.Size != weights.Size) throw new ArgumentException(Cern.LocalizedResources.Instance().Matrix_VectorsMustHaveSameSize);
 
@@ -331,7 +332,7 @@ namespace Cern.Colt.Matrix.DoubleAlgorithms
         /// <param name="weights"></param>
         /// <returns>the histogram containing the cube.</returns>
         /// <excption cref="ArgumentException">if <i>x.Count != y.Count || x.Count != z.Count || x.Count != weights.Count</i>.</excption>
-        public static Hep.Aida.IHistogram3D cube(DoubleMatrix1D x, DoubleMatrix1D y, DoubleMatrix1D z, DoubleMatrix1D weights)
+        public static Hep.Aida.IHistogram3D cube(IDoubleMatrix1D x, IDoubleMatrix1D y, IDoubleMatrix1D z, IDoubleMatrix1D weights)
         {
             if (x.Size != y.Size || x.Size != z.Size || x.Size != weights.Size) throw new ArgumentException(Cern.LocalizedResources.Instance().Matrix_VectorsMustHaveSameSize);
 
@@ -381,13 +382,13 @@ namespace Cern.Colt.Matrix.DoubleAlgorithms
         /// <param name="matrix">any matrix; a column holds the values of a given variable (vector).</param>
         /// <param name="distanceFunction">(EUCLID, CANBERRA, ..d, or any user defined distance function operating on two vectors).</param>
         /// <returns>the distance matrix (<i>n x n, n=matrix.Columns</i>).</returns>
-        public static DoubleMatrix2D Distance(DoubleMatrix2D matrix, VectorVectorFunction distanceFunction)
+        public static IDoubleMatrix2D Distance(IDoubleMatrix2D matrix, VectorVectorFunction distanceFunction)
         {
             int columns = matrix.Columns;
-            DoubleMatrix2D distance = new DenseDoubleMatrix2D(columns, columns);
+            IDoubleMatrix2D distance = new DenseDoubleMatrix2D(columns, columns);
 
             // cache views
-            DoubleMatrix1D[] cols = new DoubleMatrix1D[columns];
+            IDoubleMatrix1D[] cols = new IDoubleMatrix1D[columns];
             for (int i = columns; --i >= 0;)
             {
                 cols[i] = matrix.ViewColumn(i);
@@ -412,7 +413,7 @@ namespace Cern.Colt.Matrix.DoubleAlgorithms
         /// <param name="histo"></param>
         /// <param name="vector"></param>
         /// <returns><i>histo</i> (for convenience only).</returns>
-        public static Hep.Aida.IHistogram1D Histogram(Hep.Aida.IHistogram1D histo, DoubleMatrix1D vector)
+        public static Hep.Aida.IHistogram1D Histogram(Hep.Aida.IHistogram1D histo, IDoubleMatrix1D vector)
         {
             for (int i = vector.Size; --i >= 0;)
             {
@@ -429,7 +430,7 @@ namespace Cern.Colt.Matrix.DoubleAlgorithms
         /// <param name="y"></param>
         /// <returns><i>histo</i> (for convenience only).</returns>
         /// <exception cref="ArgumentException">if <i>x.Count != y.Count</i>.</exception>
-        public static Hep.Aida.IHistogram2D Histogram(Hep.Aida.IHistogram2D histo, DoubleMatrix1D x, DoubleMatrix1D y)
+        public static Hep.Aida.IHistogram2D Histogram(Hep.Aida.IHistogram2D histo, IDoubleMatrix1D x, IDoubleMatrix1D y)
         {
             if (x.Size != y.Size) throw new ArgumentException(Cern.LocalizedResources.Instance().Matrix_VectorsMustHaveSameSize);
             for (int i = x.Size; --i >= 0;)
@@ -448,7 +449,7 @@ namespace Cern.Colt.Matrix.DoubleAlgorithms
         /// <param name="weights"></param>
         /// <returns><i>histo</i> (for convenience only).</returns>
         /// <exception cref="ArgumentException">if <i>x.Count != y.Count || y.Count != weights.Count</i>.</exception>
-        public static Hep.Aida.IHistogram2D Histogram(Hep.Aida.IHistogram2D histo, DoubleMatrix1D x, DoubleMatrix1D y, DoubleMatrix1D weights)
+        public static Hep.Aida.IHistogram2D Histogram(Hep.Aida.IHistogram2D histo, IDoubleMatrix1D x, IDoubleMatrix1D y, IDoubleMatrix1D weights)
         {
             if (x.Size != y.Size || y.Size != weights.Size) throw new ArgumentException(Cern.LocalizedResources.Instance().Matrix_VectorsMustHaveSameSize);
             for (int i = x.Size; --i >= 0;)
@@ -468,7 +469,7 @@ namespace Cern.Colt.Matrix.DoubleAlgorithms
         /// <param name="weights"></param>
         /// <returns><i>histo</i> (for convenience only).</returns>
         /// <exception cref="ArgumentException">if <i>x.Count != y.Count || x.Count != z.Count || x.Count != weights.Count</i>.</exception>
-        public static Hep.Aida.IHistogram3D Histogram(Hep.Aida.IHistogram3D histo, DoubleMatrix1D x, DoubleMatrix1D y, DoubleMatrix1D z, DoubleMatrix1D weights)
+        public static Hep.Aida.IHistogram3D Histogram(Hep.Aida.IHistogram3D histo, IDoubleMatrix1D x, IDoubleMatrix1D y, IDoubleMatrix1D z, IDoubleMatrix1D weights)
         {
             if (x.Size != y.Size || x.Size != z.Size || x.Size != weights.Size) throw new ArgumentException(Cern.LocalizedResources.Instance().Matrix_VectorsMustHaveSameSize);
             for (int i = x.Size; --i >= 0;)

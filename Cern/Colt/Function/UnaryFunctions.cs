@@ -12,6 +12,7 @@
 //   A function that takes two arguments and returns a single value.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+using Cern.Jet.Math;
 
 namespace Cern.Colt.Function
 {
@@ -24,7 +25,7 @@ namespace Cern.Colt.Function
     /// <returns>
     /// The result of the function.
     /// </returns>
-    public delegate double BooleanFunction(double argument);
+    public delegate double BooleanFunctionDelegate(double argument);
 
     /// <summary>
     /// Applies a procedure to an argument.
@@ -36,7 +37,7 @@ namespace Cern.Colt.Function
     /// <returns>
     /// A flag to inform the object calling the procedure.
     /// </returns>
-    public delegate bool BooleanProcedure(bool element);
+    public delegate bool BooleanProcedureDelegate(bool element);
 
     /// <summary>
     /// A function that takes a single argument and returns a single value.
@@ -47,7 +48,7 @@ namespace Cern.Colt.Function
     /// <returns>
     /// The result of the function.
     /// </returns>
-    public delegate double DoubleFunction(double argument);
+    public delegate double DoubleFunctionDelegate(double argument);
 
     /// <summary>
     /// Applies a procedure to an argument.
@@ -59,7 +60,7 @@ namespace Cern.Colt.Function
     /// <returns>
     /// A flag to inform the object calling the procedure.
     /// </returns>
-    public delegate bool DoubleProcedure(double element);
+    public delegate bool DoubleProcedureDelegate(double element);
 
     /// <summary>
     /// A function that takes a single argument and returns a single value.
@@ -70,7 +71,7 @@ namespace Cern.Colt.Function
     /// <returns>
     /// The result of the function.
     /// </returns>
-    public delegate int IntFunction(int argument);
+    public delegate int IntFunctionDelegate(int argument);
 
     /// <summary>
     /// Applies a procedure to an argument.
@@ -82,7 +83,7 @@ namespace Cern.Colt.Function
     /// <returns>
     /// A flag to inform the object calling the procedure.
     /// </returns>
-    public delegate bool IntProcedure(int element);
+    public delegate bool IntProcedureDelegate(int element);
 
     /// <summary>
     /// A function that takes a single argument and returns a single value.
@@ -93,7 +94,7 @@ namespace Cern.Colt.Function
     /// <returns>
     /// The result of the function.
     /// </returns>
-    public delegate long LongFunction(long argument);
+    public delegate long LongFunctionDelegate(long argument);
 
     /// <summary>
     /// Applies a procedure to an argument.
@@ -105,7 +106,7 @@ namespace Cern.Colt.Function
     /// <returns>
     /// A flag to inform the object calling the procedure.
     /// </returns>
-    public delegate bool LongProcedure(long element);
+    public delegate bool LongProcedureDelegate(long element);
 
     /// <summary>
     /// A function that takes a single argument and returns a single value.
@@ -116,7 +117,7 @@ namespace Cern.Colt.Function
     /// <returns>
     /// The result of the function.
     /// </returns>
-    public delegate long FloatFunction(float argument);
+    public delegate long FloatFunctionDelegate(float argument);
 
     /// <summary>
     /// Applies a procedure to an argument.
@@ -128,7 +129,7 @@ namespace Cern.Colt.Function
     /// <returns>
     /// A flag to inform the object calling the procedure.
     /// </returns>
-    public delegate bool FloatProcedure(float element);
+    public delegate bool FloatProcedureDelegate(float element);
 
     /// <summary>
     /// A function that takes a single argument and returns a single value.
@@ -139,7 +140,7 @@ namespace Cern.Colt.Function
     /// <returns>
     /// The result of the function.
     /// </returns>
-    public delegate long ShortFunction(short argument);
+    public delegate long ShortFunctionDelegate(short argument);
 
     /// <summary>
     /// Applies a procedure to an argument.
@@ -151,7 +152,7 @@ namespace Cern.Colt.Function
     /// <returns>
     /// A flag to inform the object calling the procedure.
     /// </returns>
-    public delegate bool ShortProcedure(short element);
+    public delegate bool ShortProcedureDelegate(short element);
 
     /// <summary>
     /// A function that takes a single argument and returns a single value.
@@ -165,7 +166,7 @@ namespace Cern.Colt.Function
     /// <typeparam name="C">
     /// The type of the argument and of the return value.
     /// </typeparam>
-    public delegate C ObjectFunction<C>(C argument);
+    public delegate C ObjectFunctionDelegate<C>(C argument);
 
 
     /// <summary>
@@ -180,7 +181,7 @@ namespace Cern.Colt.Function
     /// <typeparam name="C">
     /// The type of the argument and of the return value.
     /// </typeparam>
-    public delegate bool ObjectProcedure<C>(C argument);
+    public delegate bool ObjectProcedureDelegate<C>(C argument);
 
     /// <summary>
     /// Function to be passed to generic methods.
@@ -190,12 +191,12 @@ namespace Cern.Colt.Function
         /// <summary>
         /// Function that returns its argument.
         /// </summary>
-        public static readonly DoubleFunction Identity = a => a;
+        public static readonly IDoubleFunction Identity = new DoubleFunction() { Eval = a => a };
 
         /// <summary>
         /// Function that returns <tt>-a</tt>.
         /// </summary>
-        public static readonly DoubleFunction Neg = a => -a;
+        public static readonly IDoubleFunction Neg = new DoubleFunction() { Eval = a => -a };
 
         /// <summary>
         /// A function that returns <tt>a + b</tt>.
@@ -207,11 +208,11 @@ namespace Cern.Colt.Function
         /// <returns>
         /// A function that returns <tt>a + b</tt>.
         /// </returns>
-        public static DoubleFunction Plus(double b)
+        public static IDoubleFunction Plus(double b)
         {
-            return a => a + b;
+            return new DoubleFunction() { Eval = a => a + b };
         }
-        
+
         /// <summary>
         /// Constructs the function <tt>g( h(a) )</tt>.
         /// </summary>
@@ -224,9 +225,9 @@ namespace Cern.Colt.Function
         /// <returns>
         /// The unary function <tt>g( h(a) )</tt>.
         /// </returns>
-        public static DoubleFunction Chain(DoubleFunction g, DoubleFunction h)
+        public static IDoubleFunction Chain(IDoubleFunction g, IDoubleFunction h)
         {
-            return a => g(h(a));
+            return new DoubleFunction() { Eval = a => g.Apply(h.Apply(a)) };
         }
 
         /// <summary>
@@ -239,9 +240,9 @@ namespace Cern.Colt.Function
         /// <returns>
         /// A function that returns <tt>a / b</tt>.
         /// </returns>
-        public static DoubleFunction Div(double b)
+        public static IDoubleFunction Div(double b)
         {
-            return a => a / b;
+            return new DoubleFunction() { Eval = a => a / b };
         }
 
         /// <summary>
@@ -254,9 +255,9 @@ namespace Cern.Colt.Function
         /// <returns>
         /// A function that returns <tt>a - b</tt>.
         /// </returns>
-        public static DoubleFunction Minus(double b)
+        public static IDoubleFunction Minus(double b)
         {
-            return a => a - b;
+            return new DoubleFunction() { Eval = a => a - b };
         }
 
         /// <summary>
@@ -269,9 +270,9 @@ namespace Cern.Colt.Function
         /// <returns>
         /// A function that returns <tt>a * b</tt>.
         /// </returns>
-        public static DoubleFunction Mult(double b)
+        public static IDoubleFunction Mult(double b)
         {
-            return a => a * b;
+            return new DoubleFunction() { Eval = a => a * b };
         }
     }
 }

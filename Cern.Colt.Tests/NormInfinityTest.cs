@@ -10,10 +10,10 @@ namespace Cern.Colt.Tests
         [Test]
         public void TestMain()
         {
-            DoubleMatrix1D x1 = DoubleFactory1D.Dense.Make(new double[] { 1.0, 2.0 });
-            DoubleMatrix1D x2 = DoubleFactory1D.Dense.Make(new double[] { 1.0, -2.0 });
-            DoubleMatrix1D x3 = DoubleFactory1D.Dense.Make(new double[] { -1.0, -2.0 });
-            DoubleMatrix1D x4 = DoubleFactory1D.Dense.Make(new double[] { 4.0, 5.0 });
+            IDoubleMatrix1D x1 = DoubleFactory1D.Dense.Make(new double[] { 1.0, 2.0 });
+            IDoubleMatrix1D x2 = DoubleFactory1D.Dense.Make(new double[] { 1.0, -2.0 });
+            IDoubleMatrix1D x3 = DoubleFactory1D.Dense.Make(new double[] { -1.0, -2.0 });
+            IDoubleMatrix1D x4 = DoubleFactory1D.Dense.Make(new double[] { 4.0, 5.0 });
 
             Assert.AreEqual(2, Algebra.NormInfinity(x1));
             Assert.AreEqual(2, Algebra.NormInfinity(x2));

@@ -12,6 +12,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Cern.Jet.Math;
+using Cern.Colt.Function;
 
 namespace Cern.Colt.Matrix.LinearAlgebra
 {
@@ -43,57 +45,57 @@ namespace Cern.Colt.Matrix.LinearAlgebra
         /// </summary>
         protected SeqBlas() { }
 
-        public void Assign(DoubleMatrix2D A, Cern.Colt.Function.DoubleFunction function)
+        public void Assign(IDoubleMatrix2D A, IDoubleFunction function)
         {
             A.Assign(function);
         }
 
-        public void Assign(DoubleMatrix2D A, DoubleMatrix2D B, Cern.Colt.Function.DoubleDoubleFunction function)
+        public void Assign(IDoubleMatrix2D A, IDoubleMatrix2D B, IDoubleDoubleFunction function)
         {
             A.Assign(B, function);
         }
 
-        public double Dasum(DoubleMatrix1D x)
+        public double Dasum(IDoubleMatrix1D x)
         {
             return x.Aggregate(F2.Plus, F1.Abs);
         }
 
-        public void Daxpy(double alpha, DoubleMatrix1D x, DoubleMatrix1D y)
+        public void Daxpy(double alpha, IDoubleMatrix1D x, IDoubleMatrix1D y)
         {
             y.Assign(x, F2.PlusMult(alpha));
         }
 
-        public void Daxpy(double alpha, DoubleMatrix2D A, DoubleMatrix2D B)
+        public void Daxpy(double alpha, IDoubleMatrix2D A, IDoubleMatrix2D B)
         {
             B.Assign(A, F2.PlusMult(alpha));
         }
 
-        public void Dcopy(DoubleMatrix1D x, DoubleMatrix1D y)
+        public void Dcopy(IDoubleMatrix1D x, IDoubleMatrix1D y)
         {
             y.Assign(x);
         }
 
-        public void Dcopy(DoubleMatrix2D A, DoubleMatrix2D B)
+        public void Dcopy(IDoubleMatrix2D A, IDoubleMatrix2D B)
         {
             B.Assign(A);
         }
 
-        public double Ddot(DoubleMatrix1D x, DoubleMatrix1D y)
+        public double Ddot(IDoubleMatrix1D x, IDoubleMatrix1D y)
         {
             return x.ZDotProduct(y);
         }
 
-        public void Dgemm(Boolean transposeA, Boolean transposeB, double alpha, DoubleMatrix2D A, DoubleMatrix2D B, double beta, DoubleMatrix2D C)
+        public void Dgemm(Boolean transposeA, Boolean transposeB, double alpha, IDoubleMatrix2D A, IDoubleMatrix2D B, double beta, IDoubleMatrix2D C)
         {
             A.ZMult(B, C, alpha, beta, transposeA, transposeB);
         }
 
-        public void Dgemv(Boolean transposeA, double alpha, DoubleMatrix2D A, DoubleMatrix1D x, double beta, DoubleMatrix1D y)
+        public void Dgemv(Boolean transposeA, double alpha, IDoubleMatrix2D A, IDoubleMatrix1D x, double beta, IDoubleMatrix1D y)
         {
             A.ZMult(x, y, alpha, beta, transposeA);
         }
 
-        public void Dger(double alpha, DoubleMatrix1D x, DoubleMatrix1D y, DoubleMatrix2D A)
+        public void Dger(double alpha, IDoubleMatrix1D x, IDoubleMatrix1D y, IDoubleMatrix2D A)
         {
             Cern.Jet.Math.PlusMult fun = new Cern.Jet.Math.PlusMult(0);
             for (int i = A.Rows; --i >= 0;)
@@ -104,15 +106,15 @@ namespace Cern.Colt.Matrix.LinearAlgebra
             }
         }
 
-        public double Dnrm2(DoubleMatrix1D x)
+        public double Dnrm2(IDoubleMatrix1D x)
         {
             return System.Math.Sqrt(Algebra.Norm2(x));
         }
 
-        public void Drot(DoubleMatrix1D x, DoubleMatrix1D y, double c, double s)
+        public void Drot(IDoubleMatrix1D x, IDoubleMatrix1D y, double c, double s)
         {
             x.CheckSize(y);
-            DoubleMatrix1D tmp = x.Copy();
+            IDoubleMatrix1D tmp = x.Copy();
 
             x.Assign(F1.Mult(c));
             x.Assign(y, F2.PlusMult(s));
@@ -165,29 +167,29 @@ namespace Cern.Colt.Matrix.LinearAlgebra
 
         }
 
-        public void Dscal(double alpha, DoubleMatrix1D x)
+        public void Dscal(double alpha, IDoubleMatrix1D x)
         {
             x.Assign(F1.Mult(alpha));
         }
 
-        public void Dscal(double alpha, DoubleMatrix2D A)
+        public void Dscal(double alpha, IDoubleMatrix2D A)
         {
             A.Assign(F1.Mult(alpha));
         }
 
-        public void Dswap(DoubleMatrix1D x, DoubleMatrix1D y)
+        public void Dswap(IDoubleMatrix1D x, IDoubleMatrix1D y)
         {
             y.Swap(x);
         }
 
-        public void Dswap(DoubleMatrix2D A, DoubleMatrix2D B)
+        public void Dswap(IDoubleMatrix2D A, IDoubleMatrix2D B)
         {
             //B.Swap(A); not yet implemented
             A.CheckShape(B);
             for (int i = A.Rows; --i >= 0;) A.ViewRow(i).Swap(B.ViewRow(i));
         }
 
-        public void Dsymv(Boolean isUpperTriangular, double alpha, DoubleMatrix2D A, DoubleMatrix1D x, double beta, DoubleMatrix1D y)
+        public void Dsymv(Boolean isUpperTriangular, double alpha, IDoubleMatrix2D A, IDoubleMatrix1D x, double beta, IDoubleMatrix1D y)
         {
             if (isUpperTriangular) A = A.ViewDice();
             Property.DEFAULT.CheckSquare(A);
@@ -196,7 +198,7 @@ namespace Cern.Colt.Matrix.LinearAlgebra
             {
                 throw new ArgumentException(A.ToStringShort() + ", " + x.ToStringShort() + ", " + y.ToStringShort());
             }
-            DoubleMatrix1D tmp = x.Like();
+            IDoubleMatrix1D tmp = x.Like();
             for (int i = 0; i < size; i++)
             {
                 double sum = 0;
@@ -213,7 +215,7 @@ namespace Cern.Colt.Matrix.LinearAlgebra
             y.Assign(tmp);
         }
 
-        public void Dtrmv(Boolean isUpperTriangular, Boolean transposeA, Boolean isUnitTriangular, DoubleMatrix2D A, DoubleMatrix1D x)
+        public void Dtrmv(Boolean isUpperTriangular, Boolean transposeA, Boolean isUnitTriangular, IDoubleMatrix2D A, IDoubleMatrix1D x)
         {
             if (transposeA)
             {
@@ -228,8 +230,8 @@ namespace Cern.Colt.Matrix.LinearAlgebra
                 throw new ArgumentException(A.ToStringShort() + ", " + x.ToStringShort());
             }
 
-            DoubleMatrix1D b = x.Like();
-            DoubleMatrix1D y = x.Like();
+            IDoubleMatrix1D b = x.Like();
+            IDoubleMatrix1D y = x.Like();
             if (isUnitTriangular)
             {
                 y.Assign(1);
@@ -266,7 +268,7 @@ namespace Cern.Colt.Matrix.LinearAlgebra
             x.Assign(b);
         }
 
-        public int Idamax(DoubleMatrix1D x)
+        public int Idamax(IDoubleMatrix1D x)
         {
             int maxIndex = -1;
             double maxValue = Double.MinValue;

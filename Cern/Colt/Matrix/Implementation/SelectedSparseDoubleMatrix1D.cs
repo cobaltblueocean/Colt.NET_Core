@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="SelectedSparseDoubleMatrix1D.cs" company="CERN">
+// <copyright file="SelectedSparseIDoubleMatrix1D.cs" company="CERN">
 //   Copyright © 1999 CERN - European Organization for Nuclear Research.
 //   Permission to use, copy, modify, distribute and sell this software and its documentation for any purpose 
 //   is hereby granted without fee, provided that the above copyright notice appear in all copies and 
@@ -121,7 +121,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <returns>
         /// A new empty matrix of the same dynamic type.
         /// </returns>
-        public override DoubleMatrix1D Like(int n)
+        public override IDoubleMatrix1D Like(int n)
         {
             return new SparseDoubleMatrix1D(n);
         }
@@ -138,7 +138,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <returns>
         /// A new matrix of the corresponding dynamic type.
         /// </returns>
-        public override DoubleMatrix2D Like2D(int rows, int columns)
+        public override IDoubleMatrix2D Like2D(int rows, int columns)
         {
             return new SparseDoubleMatrix2D(rows, columns);
         }
@@ -153,7 +153,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <returns>
         /// Tthe position of the element with the given relative rank within the (virtual or non-virtual) internal 1-dimensional array.
         /// </returns>
-        protected internal override int Index(int rank)
+        public override int Index(int rank)
         {
             // manually inlined:
             return Offset + Offsets[Zero + (rank * Stride)];
@@ -168,7 +168,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <returns>
         /// <tt>true</tt> if both matrices share at least one identical cell.
         /// </returns>
-        protected override bool HaveSharedCellsRaw(DoubleMatrix1D other)
+        public override bool HaveSharedCellsRaw(IDoubleMatrix1D other)
         {
             if (other is SelectedSparseDoubleMatrix1D)
             {
@@ -207,7 +207,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <returns>
         /// A new view.
         /// </returns>
-        protected override DoubleMatrix1D ViewSelectionLike(int[] off)
+        public override IDoubleMatrix1D ViewSelectionLike(int[] off)
         {
             return new SelectedSparseDoubleMatrix1D(this.Elements, off);
         }

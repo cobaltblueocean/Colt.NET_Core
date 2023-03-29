@@ -1,4 +1,4 @@
-﻿// <copyright file="DelegateDoubleMatrix1D.cs" company="CERN">
+﻿// <copyright file="DelegateIDoubleMatrix1D.cs" company="CERN">
 //   Copyright © 1999 CERN - European Organization for Nuclear Research.
 //   Permission to use, copy, modify, distribute and sell this software and its documentation for any purpose 
 //   is hereby granted without fee, provided that the above copyright notice appear in all copies and 
@@ -21,12 +21,12 @@ namespace Cern.Colt.Matrix.Implementation
     /// @author wolfgang.hoschek@cern.ch
     /// @version 1.0, 09/24/99
     /// </summary>
-    public class DelegateDoubleMatrix1D: WrapperDoubleMatrix1D
+    public class DelegateIDoubleMatrix1D: WrapperIDoubleMatrix1D
     {
         /// <summary>
         /// The elements of the matrix.
         /// </summary>
-        private DoubleMatrix2D content2D;
+        private IDoubleMatrix2D content2D;
 
         /// <summary>
         /// The row this view is bound to.
@@ -45,13 +45,13 @@ namespace Cern.Colt.Matrix.Implementation
         /// <summary>
         /// The elements of the matrix.
         /// </summary>
-        public new DoubleMatrix2D Content
+        public new IDoubleMatrix2D Content
         {
             get { return content2D; }
             protected set { content2D = value; }
         }
 
-        public DelegateDoubleMatrix1D(DoubleMatrix2D newContent, int row):base(null)
+        public DelegateIDoubleMatrix1D(IDoubleMatrix2D newContent, int row):base(null)
         {
             if (row < 0 || row >= newContent.Rows) throw new ArgumentException();
             Setup(newContent.Columns);
@@ -97,7 +97,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// </summary>
         /// <param name="size">the number of cell the matrix shall have.</param>
         /// <returns>a new empty matrix of the same dynamic type.</returns>
-        public override DoubleMatrix1D Like(int size)
+        public override IDoubleMatrix1D Like(int size)
         {
             return content2D.Like1D(size);
         }
@@ -112,7 +112,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <param name="rows">the number of rows the matrix shall have.</param>
         /// <param name="columns">the number of columns the matrix shall have.</param>
         /// <returns>a new matrix of the corresponding dynamic type.</returns>
-        public override DoubleMatrix2D Like2D(int rows, int columns)
+        public override IDoubleMatrix2D Like2D(int rows, int columns)
         {
             return content2D.Like(rows, columns);
         }

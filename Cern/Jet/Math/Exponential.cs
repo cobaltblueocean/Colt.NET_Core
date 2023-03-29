@@ -6,7 +6,11 @@ using System.Threading.Tasks;
 
 namespace Cern.Jet.Math
 {
-    class Exponential
+    public class Exponential : Constants
     {
+        protected Exponential()
+        {
+
+        }
     }
 }

@@ -71,7 +71,7 @@ namespace Cern.Colt.Matrix
         /// <param name="rows"></param>
         /// <param name="columns"></param>
         /// <returns></returns>
-        public DoubleMatrix3D Ascending(int slices, int rows, int columns)
+        public IDoubleMatrix3D Ascending(int slices, int rows, int columns)
         {
             //Cern.Jet.Math.Functions F = Cern.Jet.Math.Functions.functions;
             return Descending(slices, rows, columns).Assign(F1.Chain(F1.Neg, F1.Minus(slices * rows * columns)));
@@ -85,9 +85,9 @@ namespace Cern.Colt.Matrix
         /// <param name="rows"></param>
         /// <param name="columns"></param>
         /// <returns></returns>
-        public DoubleMatrix3D Descending(int slices, int rows, int columns)
+        public IDoubleMatrix3D Descending(int slices, int rows, int columns)
         {
-            DoubleMatrix3D matrix = Make(slices, rows, columns);
+            IDoubleMatrix3D matrix = Make(slices, rows, columns);
             int v = 0;
             for (int slice = slices; --slice >= 0;)
             {
@@ -113,7 +113,7 @@ namespace Cern.Colt.Matrix
         /// <returns><i>this</i> (for convenience only).</returns>
         /// <exception cref="ArgumentException">if <i>values.Length != slices() || for any 0 &lt;= slice &lt; slices(): values[slice].Length != rows()</i>.</exception>
         /// <exception cref="ArgumentException">if <i>for any 0 &lt;= column &lt; columns(): values[slice][row].Length != columns()</i>.</exception>
-        public DoubleMatrix3D Make(double[][][] values)
+        public IDoubleMatrix3D Make(double[][][] values)
         {
             if (this == _sparse) return new SparseDoubleMatrix3D(values);
             return new DenseDoubleMatrix3D(values);
@@ -130,7 +130,7 @@ namespace Cern.Colt.Matrix
         /// <returns><i>this</i> (for convenience only).</returns>
         /// <exception cref="ArgumentException">if <i>values.Length != slices() || for any 0 &lt;= slice &lt; slices(): values[slice].Length != rows()</i>.</exception>
         /// <exception cref="ArgumentException">if <i>for any 0 &lt;= column &lt; columns(): values[slice][row].Length != columns()</i>.</exception>
-        public DoubleMatrix3D Make(double[,,] values)
+        public IDoubleMatrix3D Make(double[,,] values)
         {
             return Make(values.ToJagged());
         }
@@ -142,7 +142,7 @@ namespace Cern.Colt.Matrix
         /// <param name="rows"></param>
         /// <param name="columns"></param>
         /// <returns></returns>
-        public DoubleMatrix3D Make(int slices, int rows, int columns)
+        public IDoubleMatrix3D Make(int slices, int rows, int columns)
         {
             if (this == _sparse) return new SparseDoubleMatrix3D(slices, rows, columns);
             return new DenseDoubleMatrix3D(slices, rows, columns);
@@ -156,7 +156,7 @@ namespace Cern.Colt.Matrix
         /// <param name="columns"></param>
         /// <param name="initialValue"></param>
         /// <returns></returns>
-        public DoubleMatrix3D Make(int slices, int rows, int columns, double initialValue)
+        public IDoubleMatrix3D Make(int slices, int rows, int columns, double initialValue)
         {
             return Make(slices, rows, columns).Assign(initialValue);
         }
@@ -168,7 +168,7 @@ namespace Cern.Colt.Matrix
         /// <param name="rows"></param>
         /// <param name="columns"></param>
         /// <returns></returns>
-        public DoubleMatrix3D Random(int slices, int rows, int columns)
+        public IDoubleMatrix3D Random(int slices, int rows, int columns)
         {
             return Make(slices, rows, columns).Assign(F1.Random());
         }

@@ -23,9 +23,9 @@ namespace Cern.Colt.Matrix
         /// <returns></returns>
         /// <exception cref="ArgumentException">if nonZeroFraction &lt; 0 || nonZeroFraction > 1.</exception>
         /// <see cref="Cern.Jet.Random.Sampling.RandomSamplingAssistant"/>
-        public static DoubleMatrix2D Sample(this DoubleFactory2D factory, int rows, int columns, double value, double nonZeroFraction)
+        public static IDoubleMatrix2D Sample(this DoubleFactory2D factory, int rows, int columns, double value, double nonZeroFraction)
         {
-            DoubleMatrix2D matrix = factory.Make(rows, columns);
+            IDoubleMatrix2D matrix = factory.Make(rows, columns);
             return Sample(factory, matrix, value, nonZeroFraction);
         }
 
@@ -42,7 +42,7 @@ namespace Cern.Colt.Matrix
         /// <returns></returns>
         /// <exception cref="ArgumentException">if nonZeroFraction &lt; 0 || nonZeroFraction > 1.</exception>
         /// <see cref="Cern.Jet.Random.Sampling.RandomSamplingAssistant"/>
-        public static DoubleMatrix2D Sample(this DoubleFactory2D factory, DoubleMatrix2D matrix, double value, double nonZeroFraction)
+        public static IDoubleMatrix2D Sample(this DoubleFactory2D factory, IDoubleMatrix2D matrix, double value, double nonZeroFraction)
         {
             int rows = matrix.Rows;
             int columns = matrix.Columns;

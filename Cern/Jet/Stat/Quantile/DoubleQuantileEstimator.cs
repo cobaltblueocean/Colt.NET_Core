@@ -214,7 +214,7 @@ namespace Cern.Jet.Stat.Quantile
         /// </summary>
         /// <param name="procedure">the procedure to be applied. Stops iteration if the procedure returns <tt>false</tt>, otherwise continues.</param>
         /// <returns><tt>false</tt> if the procedure stopped before all elements where iterated over, <tt>true</tt> otherwise. </returns>
-        public virtual bool ForEach(DoubleProcedure procedure)
+        public virtual bool ForEach(DoubleProcedureDelegate procedure)
         {
             return this.bufferSet.ForEach(procedure);
         }

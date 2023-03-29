@@ -26,9 +26,9 @@ namespace Cern.Colt.Matrix.Implementation
         /// <summary>
         /// The elements of the matrix.
         /// </summary>
-        private DoubleMatrix2D _content;
+        private IDoubleMatrix2D _content;
 
-        public WrapperDoubleMatrix2D(DoubleMatrix2D newContent)
+        public WrapperDoubleMatrix2D(IDoubleMatrix2D newContent)
         {
             if (newContent != null) Setup(newContent.Rows, newContent.Columns);
             this._content = newContent;
@@ -53,7 +53,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// Returns the content of this matrix if it is a wrapper; or <i>this</i> otherwise.
         /// Override this method in wrappers.
         /// </summary>
-        public DoubleMatrix2D Content
+        public IDoubleMatrix2D Content
         {
             get
             {
@@ -80,17 +80,17 @@ namespace Cern.Colt.Matrix.Implementation
             return _content[row, column];
         }
 
-        public override DoubleMatrix2D Like(int rows, int columns)
+        public override IDoubleMatrix2D Like(int rows, int columns)
         {
             return _content.Like(rows, columns);
         }
 
-        public override DoubleMatrix1D Like1D(int size)
+        public override IDoubleMatrix1D Like1D(int size)
         {
             return _content.Like1D(size);
         }
 
-        public override DoubleMatrix1D Like1D(int rows, int columns, int stride)
+        public override IDoubleMatrix1D Like1D(int rows, int columns, int stride)
         {
             return _content.Like1D(rows, columns, stride);
         }
@@ -126,7 +126,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// viewColumn(0) ==> Matrix1D of size 2:
         ///                      |1, 4|
         /// </example>
-        public override DoubleMatrix1D ViewColumn(int column)
+        public override IDoubleMatrix1D ViewColumn(int column)
         {
             return ViewDice().ViewRow(column);
         }
@@ -137,9 +137,9 @@ namespace Cern.Colt.Matrix.Implementation
         /// The returned view is backed by this matrix, so changes in the returned view are reflected in this matrix, and vice-versa.
         /// </summary>
         /// <returns>a new flip view.</returns>
-        public override DoubleMatrix2D ViewColumnFlip()
+        public override IDoubleMatrix2D ViewColumnFlip()
         {
-            DoubleMatrix2D view = new WrapperDoubleMatrix2DColumnFlip(this);
+            IDoubleMatrix2D view = new WrapperDoubleMatrix2DColumnFlip(this);
             return view;
         }
 
@@ -149,9 +149,9 @@ namespace Cern.Colt.Matrix.Implementation
         /// The returned view is backed by this matrix, so changes in the returned view are reflected in this matrix, and vice-versa.
         /// </summary>
         /// <returns>a new flip view.</returns>
-        public override DoubleMatrix2D ViewDice()
+        public override IDoubleMatrix2D ViewDice()
         {
-            DoubleMatrix2D view = new WrapperDoubleMatrix2DDice(this, Columns, Rows);
+            IDoubleMatrix2D view = new WrapperDoubleMatrix2DDice(this, Columns, Rows);
             return view;
         }
 
@@ -176,12 +176,12 @@ namespace Cern.Colt.Matrix.Implementation
         /// <param name="width">The width of the box.</param>
         /// <returns>the new view.</returns>
         /// <exception cref="IndexOutOfRangeException">if <i>index &lt; 0 || width &lt; 0 || index + width > Size()</i>.</exception>
-        public override DoubleMatrix2D ViewPart(int row, int column, int height, int width)
+        public override IDoubleMatrix2D ViewPart(int row, int column, int height, int width)
         {
             CheckBox(row, column, height, width);
-            DoubleMatrix2D view = new WrapperDoubleMatrix2DPart(this, row, column, height, width);
+            IDoubleMatrix2D view = new WrapperDoubleMatrix2DPart(this, row, column, height, width);
 
-            view.Size = width;
+            //view.Size = width;
             return view;
         }
 
@@ -201,10 +201,10 @@ namespace Cern.Colt.Matrix.Implementation
         /// viewRow(0) ==> Matrix1D of size 3:
         ///                         |1, 2, 3|
         /// </example>
-        public override DoubleMatrix1D ViewRow(int row)
+        public override IDoubleMatrix1D ViewRow(int row)
         {
             CheckRow(row);
-            return new DelegateDoubleMatrix1D(this, row);
+            return new DelegateIDoubleMatrix1D(this, row);
         }
 
         /// <summary>
@@ -228,10 +228,10 @@ namespace Cern.Colt.Matrix.Implementation
         /// 
         /// 
         /// </example>
-        public override DoubleMatrix2D ViewRowFlip()
+        public override IDoubleMatrix2D ViewRowFlip()
         {
             if (Rows == 0) return this;
-            DoubleMatrix2D view = new WrapperDoubleMatrix2DRowFlip(this);
+            IDoubleMatrix2D view = new WrapperDoubleMatrix2DRowFlip(this);
             return view;
         }
 
@@ -252,7 +252,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// -->
         /// view     = (0,8,7,8)
         /// </example>
-        public override DoubleMatrix2D ViewSelection(int[] rowIndexes, int[] columnIndexes)
+        public override IDoubleMatrix2D ViewSelection(int[] rowIndexes, int[] columnIndexes)
         {
             // check for "all"
             if (rowIndexes == null)
@@ -271,7 +271,7 @@ namespace Cern.Colt.Matrix.Implementation
             int[] rix = rowIndexes;
             int[] cix = columnIndexes;
 
-            DoubleMatrix2D view = new WrapperDoubleMatrix2DSelection(this, rix, cix);
+            IDoubleMatrix2D view = new WrapperDoubleMatrix2DSelection(this, rix, cix);
             return view;
         }
 
@@ -280,7 +280,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// </summary>
         /// <param name="offsets">the offsets of the visible elements.</param>
         /// <returns>a new view.</returns>
-        protected override DoubleMatrix2D ViewSelectionLike(int[] rowOffsets, int[] columnOffsets)
+        protected override IDoubleMatrix2D ViewSelectionLike(int[] rowOffsets, int[] columnOffsets)
         {
             throw new NotImplementedException();
         }
@@ -292,10 +292,10 @@ namespace Cern.Colt.Matrix.Implementation
         /// <param name="_stride">the step factor.</param>
         /// <returns>the new view.</returns>
         /// <exception cref="IndexOutOfRangeException">if <i>stride &lt;= 0</i>.</exception>
-        public override DoubleMatrix2D ViewStrides(int _rowStride, int _columnStride)
+        public override IDoubleMatrix2D ViewStrides(int _rowStride, int _columnStride)
         {
             if (_rowStride <= 0 || _columnStride <= 0) throw new IndexOutOfRangeException(Cern.LocalizedResources.Instance().Exception_IllegalStride);
-            DoubleMatrix2D view = new WrapperDoubleMatrix2DStrides(this, _rowStride, _columnStride);
+            IDoubleMatrix2D view = new WrapperDoubleMatrix2DStrides(this, _rowStride, _columnStride);
 
             return view;
         }

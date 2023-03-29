@@ -85,8 +85,8 @@ namespace Cern.Jet.Random
 
             do
             {
-                u = 2.0 * randomGenerator.Raw() - 1.0;
-                v = 2.0 * randomGenerator.Raw() - 1.0;
+                u = 2.0 * this.RandomGenerator.Raw() - 1.0;
+                v = 2.0 * this.RandomGenerator.Raw() - 1.0;
             }
             while ((w = u * u + v * v) > 1.0);
 

@@ -9,7 +9,7 @@ using F2 = Cern.Jet.Math.Functions.DoubleDoubleFunctions;
 namespace Cern.Colt.Matrix.DoubleAlgorithms
 {
     /// <summary>
-/// Deprecated; Basic element-by-element transformations on {@link cern.colt.matrix.DoubleMatrix1D} and {@link cern.colt.matrix.DoubleMatrix2D}.
+/// Deprecated; Basic element-by-element transformations on {@link cern.colt.matrix.IDoubleMatrix1D} and {@link cern.colt.matrix.IDoubleMatrix2D}.
 /// All transformations modify the first argument matrix to hold the result of the transformation.
 /// Use idioms like <i>result = mult(matrix.copy(),5)</i> to leave source matrices unaffected.
 /// <p>
@@ -70,7 +70,7 @@ namespace Cern.Colt.Matrix.DoubleAlgorithms
         /// </summary>
         /// <param name="A">the matrix to modify.</param>
         /// <returns><i>A</i> (for convenience only).</returns>
-        public static DoubleMatrix1D Abs(DoubleMatrix1D A)
+        public static IDoubleMatrix1D Abs(IDoubleMatrix1D A)
         {
             return A.Assign(F1.Abs);
         }
@@ -80,7 +80,7 @@ namespace Cern.Colt.Matrix.DoubleAlgorithms
         /// </summary>
         /// <param name="A">the matrix to modify.</param>
         /// <returns><i>A</i> (for convenience only).</returns>
-        public static DoubleMatrix2D Abs(DoubleMatrix2D A)
+        public static IDoubleMatrix2D Abs(IDoubleMatrix2D A)
         {
             return A.Assign(F1.Abs);
         }
@@ -91,7 +91,7 @@ namespace Cern.Colt.Matrix.DoubleAlgorithms
         /// <param name="A">the matrix to modify.</param>
         /// <param name="s">the scalar; can have any value.</param>
         /// <returns><i>A</i> (for convenience only).</returns>
-        public static DoubleMatrix1D Div(DoubleMatrix1D A, double s)
+        public static IDoubleMatrix1D Div(IDoubleMatrix1D A, double s)
         {
             return A.Assign(F1.Div(s));
         }
@@ -102,7 +102,7 @@ namespace Cern.Colt.Matrix.DoubleAlgorithms
         /// <param name="A">the matrix to modify.</param>
         /// <param name="B">the matrix to stay unaffected.</param>
         /// <returns><i>A</i> (for convenience only).</returns>
-        public static DoubleMatrix1D Div(DoubleMatrix1D A, DoubleMatrix1D B)
+        public static IDoubleMatrix1D Div(IDoubleMatrix1D A, IDoubleMatrix1D B)
         {
             return A.Assign(B, F2.Div);
         }
@@ -113,7 +113,7 @@ namespace Cern.Colt.Matrix.DoubleAlgorithms
         /// <param name="A">the matrix to modify.</param>
         /// <param name="s">the scalar; can have any value.</param>
         /// <returns><i>A</i> (for convenience only).</returns>
-        public static DoubleMatrix2D Div(DoubleMatrix2D A, double s)
+        public static IDoubleMatrix2D Div(IDoubleMatrix2D A, double s)
         {
             return A.Assign(F1.Div(s));
         }
@@ -124,7 +124,7 @@ namespace Cern.Colt.Matrix.DoubleAlgorithms
         /// <param name="A">the matrix to modify.</param>
         /// <param name="B">the matrix to stay unaffected.</param>
         /// <returns><i>A</i> (for convenience only).</returns>
-        public static DoubleMatrix2D Div(DoubleMatrix2D A, DoubleMatrix2D B)
+        public static IDoubleMatrix2D Div(IDoubleMatrix2D A, IDoubleMatrix2D B)
         {
             return A.Assign(B, F2.Div);
         }
@@ -135,7 +135,7 @@ namespace Cern.Colt.Matrix.DoubleAlgorithms
         /// <param name="A">the matrix to modify.</param>
         /// <param name="s">the scalar; can have any value.</param>
         /// <returns><i>A</i> (for convenience only).</returns>
-        public static DoubleMatrix2D Equals(DoubleMatrix2D A, double s)
+        public static IDoubleMatrix2D Equals(IDoubleMatrix2D A, double s)
         {
             return A.Assign(F1.Equals(s));
         }
@@ -146,7 +146,7 @@ namespace Cern.Colt.Matrix.DoubleAlgorithms
         /// <param name="A">the matrix to modify.</param>
         /// <param name="B">the matrix to stay unaffected.</param>
         /// <returns><i>A</i> (for convenience only).</returns>
-        public static DoubleMatrix2D Equals(DoubleMatrix2D A, DoubleMatrix2D B)
+        public static IDoubleMatrix2D Equals(IDoubleMatrix2D A, IDoubleMatrix2D B)
         {
             return A.Assign(B, F2.Equals);
         }
@@ -157,7 +157,7 @@ namespace Cern.Colt.Matrix.DoubleAlgorithms
         /// <param name="A">the matrix to modify.</param>
         /// <param name="s">the scalar; can have any value.</param>
         /// <returns><i>A</i> (for convenience only).</returns>
-        public static DoubleMatrix2D Greater(DoubleMatrix2D A, double s)
+        public static IDoubleMatrix2D Greater(IDoubleMatrix2D A, double s)
         {
             return A.Assign(F1.Greater(s));
         }
@@ -168,7 +168,7 @@ namespace Cern.Colt.Matrix.DoubleAlgorithms
         /// <param name="A">the matrix to modify.</param>
         /// <param name="B">the matrix to stay unaffected.</param>
         /// <returns><i>A</i> (for convenience only).</returns>
-        public static DoubleMatrix2D Greater(DoubleMatrix2D A, DoubleMatrix2D B)
+        public static IDoubleMatrix2D Greater(IDoubleMatrix2D A, IDoubleMatrix2D B)
         {
             return A.Assign(B, F2.Greater);
         }
@@ -179,7 +179,7 @@ namespace Cern.Colt.Matrix.DoubleAlgorithms
         /// <param name="A">the matrix to modify.</param>
         /// <param name="s">the scalar; can have any value.</param>
         /// <returns><i>A</i> (for convenience only).</returns>
-        public static DoubleMatrix2D Less(DoubleMatrix2D A, double s)
+        public static IDoubleMatrix2D Less(IDoubleMatrix2D A, double s)
         {
             return A.Assign(F1.Less(s));
         }
@@ -190,7 +190,7 @@ namespace Cern.Colt.Matrix.DoubleAlgorithms
         /// <param name="A">the matrix to modify.</param>
         /// <param name="B">the matrix to stay unaffected.</param>
         /// <returns><i>A</i> (for convenience only).</returns>
-        public static DoubleMatrix2D Less(DoubleMatrix2D A, DoubleMatrix2D B)
+        public static IDoubleMatrix2D Less(IDoubleMatrix2D A, IDoubleMatrix2D B)
         {
             return A.Assign(B, F2.Less);
         }
@@ -201,7 +201,7 @@ namespace Cern.Colt.Matrix.DoubleAlgorithms
         /// <param name="A">the matrix to modify.</param>
         /// <param name="s">the scalar; can have any value.</param>
         /// <returns><i>A</i> (for convenience only).</returns>
-        public static DoubleMatrix1D Minus(DoubleMatrix1D A, double s)
+        public static IDoubleMatrix1D Minus(IDoubleMatrix1D A, double s)
         {
             return A.Assign(F1.Minus(s));
         }
@@ -212,7 +212,7 @@ namespace Cern.Colt.Matrix.DoubleAlgorithms
         /// <param name="A">the matrix to modify.</param>
         /// <param name="B">the matrix to stay unaffected.</param>
         /// <returns><i>A</i> (for convenience only).</returns>
-        public static DoubleMatrix1D Minus(DoubleMatrix1D A, DoubleMatrix1D B)
+        public static IDoubleMatrix1D Minus(IDoubleMatrix1D A, IDoubleMatrix1D B)
         {
             return A.Assign(B, F2.Minus);
         }
@@ -223,7 +223,7 @@ namespace Cern.Colt.Matrix.DoubleAlgorithms
         /// <param name="A">the matrix to modify.</param>
         /// <param name="s">the scalar; can have any value.</param>
         /// <returns><i>A</i> (for convenience only).</returns>
-        public static DoubleMatrix2D Minus(DoubleMatrix2D A, double s)
+        public static IDoubleMatrix2D Minus(IDoubleMatrix2D A, double s)
         {
             return A.Assign(F1.Minus(s));
         }
@@ -234,7 +234,7 @@ namespace Cern.Colt.Matrix.DoubleAlgorithms
         /// <param name="A">the matrix to modify.</param>
         /// <param name="B">the matrix to stay unaffected.</param>
         /// <returns><i>A</i> (for convenience only).</returns>
-        public static DoubleMatrix2D Minus(DoubleMatrix2D A, DoubleMatrix2D B)
+        public static IDoubleMatrix2D Minus(IDoubleMatrix2D A, IDoubleMatrix2D B)
         {
             return A.Assign(B, F2.Minus);
         }
@@ -246,7 +246,7 @@ namespace Cern.Colt.Matrix.DoubleAlgorithms
         /// <param name="B">the matrix to stay unaffected.</param>
         /// <param name="s">the scalar; can have any value.</param>
         /// <returns><i>A</i> (for convenience only).</returns>
-        public static DoubleMatrix1D MinusMult(DoubleMatrix1D A, DoubleMatrix1D B, double s)
+        public static IDoubleMatrix1D MinusMult(IDoubleMatrix1D A, IDoubleMatrix1D B, double s)
         {
             return A.Assign(B, F2.MinusMult(s));
         }
@@ -258,7 +258,7 @@ namespace Cern.Colt.Matrix.DoubleAlgorithms
         /// <param name="B">the matrix to stay unaffected.</param>
         /// <param name="s">the scalar; can have any value.</param>
         /// <returns><i>A</i> (for convenience only).</returns>
-        public static DoubleMatrix2D MinusMult(DoubleMatrix2D A, DoubleMatrix2D B, double s)
+        public static IDoubleMatrix2D MinusMult(IDoubleMatrix2D A, IDoubleMatrix2D B, double s)
         {
             return A.Assign(B, F2.MinusMult(s));
         }
@@ -269,7 +269,7 @@ namespace Cern.Colt.Matrix.DoubleAlgorithms
         /// <param name="A">the matrix to modify.</param>
         /// <param name="s">the scalar; can have any value.</param>
         /// <returns><i>A</i> (for convenience only).</returns>
-        public static DoubleMatrix1D Mult(DoubleMatrix1D A, double s)
+        public static IDoubleMatrix1D Mult(IDoubleMatrix1D A, double s)
         {
             return A.Assign(F1.Mult(s));
         }
@@ -280,7 +280,7 @@ namespace Cern.Colt.Matrix.DoubleAlgorithms
         /// <param name="A">the matrix to modify.</param>
         /// <param name="B">the matrix to stay unaffected.</param>
         /// <returns><i>A</i> (for convenience only).</returns>
-        public static DoubleMatrix1D Mult(DoubleMatrix1D A, DoubleMatrix1D B)
+        public static IDoubleMatrix1D Mult(IDoubleMatrix1D A, IDoubleMatrix1D B)
         {
             return A.Assign(B, F2.Mult);
         }
@@ -291,7 +291,7 @@ namespace Cern.Colt.Matrix.DoubleAlgorithms
         /// <param name="A">the matrix to modify.</param>
         /// <param name="s">the scalar; can have any value.</param>
         /// <returns><i>A</i> (for convenience only).</returns>
-        public static DoubleMatrix2D Mult(DoubleMatrix2D A, double s)
+        public static IDoubleMatrix2D Mult(IDoubleMatrix2D A, double s)
         {
             return A.Assign(F1.Mult(s));
         }
@@ -302,7 +302,7 @@ namespace Cern.Colt.Matrix.DoubleAlgorithms
         /// <param name="A">the matrix to modify.</param>
         /// <param name="B">the matrix to stay unaffected.</param>
         /// <returns><i>A</i> (for convenience only).</returns>
-        public static DoubleMatrix2D Mult(DoubleMatrix2D A, DoubleMatrix2D B)
+        public static IDoubleMatrix2D Mult(IDoubleMatrix2D A, IDoubleMatrix2D B)
         {
             return A.Assign(B, F2.Mult);
         }
@@ -312,7 +312,7 @@ namespace Cern.Colt.Matrix.DoubleAlgorithms
         /// </summary>
         /// <param name="A"></param>
         /// <returns><i>A</i> (for convenience only).</returns>
-        public static DoubleMatrix1D Negate(DoubleMatrix1D A)
+        public static IDoubleMatrix1D Negate(IDoubleMatrix1D A)
         {
             return A.Assign(F1.Mult(-1));
         }
@@ -322,7 +322,7 @@ namespace Cern.Colt.Matrix.DoubleAlgorithms
         /// </summary>
         /// <param name="A"></param>
         /// <returns><i>A</i> (for convenience only).</returns>
-        public static DoubleMatrix2D Negate(DoubleMatrix2D A)
+        public static IDoubleMatrix2D Negate(IDoubleMatrix2D A)
         {
             return A.Assign(F1.Mult(-1));
         }
@@ -333,7 +333,7 @@ namespace Cern.Colt.Matrix.DoubleAlgorithms
         /// <param name="A">the matrix to modify.</param>
         /// <param name="s">the scalar; can have any value.</param>
         /// <returns><i>A</i> (for convenience only).</returns>
-        public static DoubleMatrix1D Plus(DoubleMatrix1D A, double s)
+        public static IDoubleMatrix1D Plus(IDoubleMatrix1D A, double s)
         {
             return A.Assign(F1.Plus(s));
         }
@@ -344,7 +344,7 @@ namespace Cern.Colt.Matrix.DoubleAlgorithms
         /// <param name="A">the matrix to modify.</param>
         /// <param name="B">the matrix to stay unaffected.</param>
         /// <returns><i>A</i> (for convenience only).</returns>
-        public static DoubleMatrix1D Plus(DoubleMatrix1D A, DoubleMatrix1D B)
+        public static IDoubleMatrix1D Plus(IDoubleMatrix1D A, IDoubleMatrix1D B)
         {
             return A.Assign(B, F2.Plus);
         }
@@ -355,7 +355,7 @@ namespace Cern.Colt.Matrix.DoubleAlgorithms
         /// <param name="A">the matrix to modify.</param>
         /// <param name="s">the scalar; can have any value.</param>
         /// <returns><i>A</i> (for convenience only).</returns>
-        public static DoubleMatrix2D Plus(DoubleMatrix2D A, double s)
+        public static IDoubleMatrix2D Plus(IDoubleMatrix2D A, double s)
         {
             return A.Assign(F1.Plus(s));
         }
@@ -366,7 +366,7 @@ namespace Cern.Colt.Matrix.DoubleAlgorithms
         /// <param name="A">the matrix to modify.</param>
         /// <param name="B">the matrix to stay unaffected.</param>
         /// <returns><i>A</i> (for convenience only).</returns>
-        public static DoubleMatrix2D Plus(DoubleMatrix2D A, DoubleMatrix2D B)
+        public static IDoubleMatrix2D Plus(IDoubleMatrix2D A, IDoubleMatrix2D B)
         {
             return A.Assign(B, F2.Plus);
         }
@@ -378,7 +378,7 @@ namespace Cern.Colt.Matrix.DoubleAlgorithms
         /// <param name="B">the matrix to stay unaffected.</param>
         /// <param name="s">the scalar; can have any value.</param>
         /// <returns><i>A</i> (for convenience only).</returns>
-        public static DoubleMatrix1D PlusMult(DoubleMatrix1D A, DoubleMatrix1D B, double s)
+        public static IDoubleMatrix1D PlusMult(IDoubleMatrix1D A, IDoubleMatrix1D B, double s)
         {
             return A.Assign(B, F2.PlusMult(s));
         }
@@ -390,7 +390,7 @@ namespace Cern.Colt.Matrix.DoubleAlgorithms
         /// <param name="B">the matrix to stay unaffected.</param>
         /// <param name="s">the scalar; can have any value.</param>
         /// <returns><i>A</i> (for convenience only).</returns>
-        public static DoubleMatrix2D PlusMult(DoubleMatrix2D A, DoubleMatrix2D B, double s)
+        public static IDoubleMatrix2D PlusMult(IDoubleMatrix2D A, IDoubleMatrix2D B, double s)
         {
             return A.Assign(B, F2.PlusMult(s));
         }
@@ -401,7 +401,7 @@ namespace Cern.Colt.Matrix.DoubleAlgorithms
         /// <param name="A">the matrix to modify.</param>
         /// <param name="s">the scalar; can have any value.</param>
         /// <returns><i>A</i> (for convenience only).</returns>
-        public static DoubleMatrix1D Pow(DoubleMatrix1D A, double s)
+        public static IDoubleMatrix1D Pow(IDoubleMatrix1D A, double s)
         {
             return A.Assign(F1.Pow(s));
         }
@@ -412,7 +412,7 @@ namespace Cern.Colt.Matrix.DoubleAlgorithms
         /// <param name="A">the matrix to modify.</param>
         /// <param name="B">the matrix to stay unaffected.</param>
         /// <returns><i>A</i> (for convenience only).</returns>
-        public static DoubleMatrix1D Pow(DoubleMatrix1D A, DoubleMatrix1D B)
+        public static IDoubleMatrix1D Pow(IDoubleMatrix1D A, IDoubleMatrix1D B)
         {
             return A.Assign(B, F2.Pow);
         }
@@ -423,7 +423,7 @@ namespace Cern.Colt.Matrix.DoubleAlgorithms
         /// <param name="A">the matrix to modify.</param>
         /// <param name="s">the scalar; can have any value.</param>
         /// <returns><i>A</i> (for convenience only).</returns>
-        public static DoubleMatrix2D Pow(DoubleMatrix2D A, double s)
+        public static IDoubleMatrix2D Pow(IDoubleMatrix2D A, double s)
         {
             return A.Assign(F1.Pow(s));
         }
@@ -434,7 +434,7 @@ namespace Cern.Colt.Matrix.DoubleAlgorithms
         /// <param name="A">the matrix to modify.</param>
         /// <param name="B">the matrix to stay unaffected.</param>
         /// <returns><i>A</i> (for convenience only).</returns>
-        public static DoubleMatrix2D Pow(DoubleMatrix2D A, DoubleMatrix2D B)
+        public static IDoubleMatrix2D Pow(IDoubleMatrix2D A, IDoubleMatrix2D B)
         {
             return A.Assign(B, F2.Pow);
         }

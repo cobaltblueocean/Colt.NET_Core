@@ -200,7 +200,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <param name="Rowstride">the number of elements between two Rows, i.ed <i>index(i+1,j)-index(i,j)</i>.</param>
         /// <param name="Columnstride">the number of elements between two Columns, i.ed <i>index(i,j+1)-index(i,j)</i>.</param>
         /// <returns>a new matrix of the corresponding dynamic type.</returns>
-        protected override DoubleMatrix2D Like2D(int Rows, int Columns, int rowZero, int columnZero, int Rowstride, int Columnstride)
+        protected override IDoubleMatrix2D Like2D(int Rows, int Columns, int rowZero, int columnZero, int Rowstride, int Columnstride)
         {
             return new DenseDoubleMatrix2D(Rows, Columns, this.Elements, rowZero, columnZero, Rowstride, Columnstride);
         }
@@ -265,7 +265,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <param name="source">the source matrix to copy from (may be identical to the receiver).</param>
         /// <returns><i>this</i> (for convenience only).</returns>
         /// <exception cref="ArgumentException">if <i>Slices() != source.Slices() || Rows() != source.Rows() || Columns() != source.Columns()</i></exception>
-        public override DoubleMatrix3D Assign(DoubleMatrix3D source)
+        public override IDoubleMatrix3D Assign(IDoubleMatrix3D source)
         {
             // overriden for performance only
             if (!(source is DenseDoubleMatrix3D))
@@ -277,7 +277,7 @@ namespace Cern.Colt.Matrix.Implementation
             CheckShape(other);
             if (HaveSharedCells(other))
             {
-                DoubleMatrix3D c = other.Copy();
+                var c = other.Copy();
                 if (!(c is DenseDoubleMatrix3D))
                 { // should not happen
                     return base.Assign(source);
@@ -351,7 +351,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <returns></returns>
         /// <exception cref="NullReferenceException">if <i>function==null</i>.</exception>
         /// <exception cref="ArgumentException">if <i>Rows() != B.Rows() || Columns() != B.Columns() || Slices() != B.Slices() </i>.</exception>
-        public override void ZAssign27Neighbors(DoubleMatrix3D B, Cern.Colt.Function.Double27Function function)
+        public override void ZAssign27Neighbors(IDoubleMatrix3D B, Cern.Colt.Function.Double27FunctionDelegate function)
         {
             // overridden for performance only
             if (!(B is DenseDoubleMatrix3D))
@@ -481,7 +481,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <li><i>this == other</i>
         /// </ul>
         /// </summary>
-        protected new Boolean HaveSharedCellsRaw(DoubleMatrix3D other)
+        public override Boolean HaveSharedCellsRaw(IDoubleMatrix3D other)
         {
             if (other is SelectedDenseDoubleMatrix3D)
             {

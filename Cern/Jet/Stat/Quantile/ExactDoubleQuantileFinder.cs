@@ -126,7 +126,7 @@ namespace Cern.Jet.Stat.Quantile
         /// </summary>
         /// <param name="procedure">the procedure to be appliedd Stops iteration if the procedure returns <i>false</i>, otherwise continuesd </param>
         /// <returns><i>false</i> if the procedure stopped before all elements where iterated over, <i>true</i> otherwise.</returns>
-        public bool ForEach(DoubleProcedure procedure)
+        public bool ForEach(DoubleProcedureDelegate procedure)
         {
             double[] theElements = buffer.ToArray();
             int theSize = (int)Size;

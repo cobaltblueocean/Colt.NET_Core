@@ -24,6 +24,18 @@ namespace Cern.Colt.Matrix.Implementation
     /// </summary>
     public class DenseDoubleMatrix2D : DoubleMatrix2D
     {
+        private double[] _elements { get; set; }
+
+        /// <summary>
+        /// Gets the elements of this matrix.
+        /// Elements are stored in row major, i.e.
+        /// index==row*columns + column
+        /// columnOf(index)==index%columns
+        /// rowOf(index)==index/columns
+        /// i.e. {row0 column0..m}, {row1 column0..m}, ..., {rown column0..m}
+        /// </summary>
+        public double[] Elements { get { return _elements; } }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="DenseDoubleMatrix2D"/> class with a copy of the given values.
         /// <tt>values</tt> is required to have the form <tt>values[row][column]</tt>
@@ -40,7 +52,7 @@ namespace Cern.Colt.Matrix.Implementation
             int rows = values.Length;
             int columns = values.Length == 0 ? 0 : values[0].Length;
             Setup(rows, columns);
-            Elements = new double[rows * columns];
+            _elements = new double[rows * columns];
             Assign(values);
         }
 
@@ -60,7 +72,7 @@ namespace Cern.Colt.Matrix.Implementation
         public DenseDoubleMatrix2D(int rows, int columns)
         {
             Setup(rows, columns);
-            Elements = new double[rows * columns];
+            _elements = new double[rows * columns];
         }
 
         /// <summary>
@@ -91,19 +103,9 @@ namespace Cern.Colt.Matrix.Implementation
         internal DenseDoubleMatrix2D(int rows, int columns, double[] elements, int rowZero, int columnZero, int rowStride, int columnStride)
         {
             Setup(rows, columns, rowZero, columnZero, rowStride, columnStride);
-            this.Elements = elements;
+            this._elements = elements;
             IsView = true;
         }
-
-        /// <summary>
-        /// Gets the elements of this matrix.
-        /// Elements are stored in row major, i.e.
-        /// index==row*columns + column
-        /// columnOf(index)==index%columns
-        /// rowOf(index)==index/columns
-        /// i.e. {row0 column0..m}, {row1 column0..m}, ..., {rown column0..m}
-        /// </summary>
-        internal double[] Elements { get; private set; }
 
         /// <summary>
         /// Gets or sets the matrix cell value at coordinate <tt>[row,column]</tt>.
@@ -119,13 +121,13 @@ namespace Cern.Colt.Matrix.Implementation
             get
             {
                 // manually inlined:
-                return Elements[Index(row, column)];
+                return _elements[Index(row, column)];
             }
 
             set
             {
                 // manually inlined:
-                Elements[Index(row, column)] = value;
+                _elements[Index(row, column)] = value;
             }
         }
 
@@ -141,7 +143,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <exception cref="ArgumentOutOfRangeException">
         /// If <tt>values.length != rows() || for any 0 &lt;= row &lt; rows(): values[row].length != columns()</tt>.
         /// </exception>
-        public override DoubleMatrix2D Assign(double[][] values)
+        public override IDoubleMatrix2D Assign(double[][] values)
         {
             if (IsView) base.Assign(values);
             else
@@ -152,7 +154,7 @@ namespace Cern.Colt.Matrix.Implementation
                 {
                     double[] currentRow = values[row];
                     if (currentRow.Length != Columns) throw new ArgumentOutOfRangeException("values", "Must have same number of columns in every row: columns=" + currentRow.Length + "columns()=" + Columns);
-                    Array.Copy(currentRow, 0, Elements, i, Columns);
+                    Array.Copy(currentRow, 0, _elements, i, Columns);
                     i -= Columns;
                 }
             }
@@ -169,9 +171,9 @@ namespace Cern.Colt.Matrix.Implementation
         /// <returns>
         /// <tt>this</tt> (for convenience only).
         /// </returns>
-        public override DoubleMatrix2D Assign(double value)
+        public override IDoubleMatrix2D Assign(double value)
         {
-            double[] elems = Elements;
+            double[] elems = _elements;
             int index = this.Index(0, 0);
             int cs = ColumnStride;
             int rs = RowStride;
@@ -198,9 +200,9 @@ namespace Cern.Colt.Matrix.Implementation
         /// <returns>
         /// <tt>this</tt> (for convenience only).
         /// </returns>
-        public override DoubleMatrix2D Assign(DoubleFunction function)
+        public override IDoubleMatrix2D Assign(IDoubleFunction function)
         {
-            double[] elems = Elements;
+            double[] elems = _elements;
             if (elems == null) throw new ApplicationException();
             int ind = Index(0, 0);
             int cs = ColumnStride;
@@ -211,7 +213,7 @@ namespace Cern.Colt.Matrix.Implementation
             {
                 for (int i = ind, column = Columns; --column >= 0;)
                 {
-                    elems[i] = function(elems[i]);
+                    elems[i] = function.Apply(elems[i]);
                     i += cs;
                 }
 
@@ -233,7 +235,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <exception cref="ArgumentOutOfRangeException">
         /// If <tt>columns() != source.columns() || rows() != source.rows()</tt>
         /// </exception>
-        public override DoubleMatrix2D Assign(DoubleMatrix2D source)
+        public override IDoubleMatrix2D Assign(IDoubleMatrix2D source)
         {
             // overriden for performance only
             if (!(source is DenseDoubleMatrix2D))
@@ -246,13 +248,13 @@ namespace Cern.Colt.Matrix.Implementation
             if (!IsView && !other.IsView)
             {
                 // quickest
-                Array.Copy(other.Elements, 0, Elements, 0, Elements.Length);
+                Array.Copy(other._elements, 0, _elements, 0, _elements.Length);
                 return this;
             }
 
             if (HaveSharedCells(other))
             {
-                DoubleMatrix2D c = other.Copy();
+                var c = other.Copy();
                 if (!(c is DenseDoubleMatrix2D))
                 {
                     // should not happen
@@ -262,8 +264,8 @@ namespace Cern.Colt.Matrix.Implementation
                 other = (DenseDoubleMatrix2D)c;
             }
 
-            double[] elems = Elements;
-            double[] otherElems = other.Elements;
+            double[] elems = _elements;
+            double[] otherElems = other._elements;
             if (elems == null || otherElems == null) throw new ApplicationException();
             int cs = ColumnStride;
             int ocs = other.ColumnStride;
@@ -303,7 +305,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <exception cref="ArgumentOutOfRangeException">
         /// If <tt>columns() != other.columns() || rows() != other.rows()</tt>
         /// </exception>
-        public override DoubleMatrix2D Assign(DoubleMatrix2D y, DoubleDoubleFunction function)
+        public override IDoubleMatrix2D Assign(IDoubleMatrix2D y, IDoubleDoubleFunction function)
         {
             // overriden for performance only
             if (!(y is DenseDoubleMatrix2D))
@@ -312,8 +314,8 @@ namespace Cern.Colt.Matrix.Implementation
             var other = (DenseDoubleMatrix2D)y;
             CheckShape(y);
 
-            double[] elems = Elements;
-            double[] otherElems = other.Elements;
+            double[] elems = _elements;
+            double[] otherElems = other._elements;
             if (elems == null || otherElems == null) throw new ApplicationException();
             int cs = ColumnStride;
             int ocs = ColumnStride;
@@ -328,7 +330,7 @@ namespace Cern.Colt.Matrix.Implementation
             {
                 for (int i = index, j = otherIndex, column = Columns; --column >= 0;)
                 {
-                    elems[i] = function(elems[i], otherElems[j]);
+                    elems[i] = function.Apply(elems[i], otherElems[j]);
                     i += cs;
                     j += ocs;
                 }
@@ -352,7 +354,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <returns>
         /// A new empty matrix of the same dynamic type.
         /// </returns>
-        public override DoubleMatrix2D Like(int rows, int columns)
+        public override IDoubleMatrix2D Like(int rows, int columns)
         {
             return new DenseDoubleMatrix2D(rows, columns);
         }
@@ -366,7 +368,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <returns>
         /// A new matrix of the corresponding dynamic type.
         /// </returns>
-        public override DoubleMatrix1D Like1D(int size)
+        public override IDoubleMatrix1D Like1D(int size)
         {
             return new DenseDoubleMatrix1D(size);
         }
@@ -405,7 +407,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <exception cref="ArgumentOutOfRangeException">
         /// If <tt>rows() != B.rows() || columns() != B.columns()</tt>.
         /// </exception>
-        public override void ZAssign8Neighbors(DoubleMatrix2D b, Double9Function function)
+        public override void ZAssign8Neighbors(IDoubleMatrix2D b, Double9FunctionDelegate function)
         {
             // 1. using only 4-5 out of the 9 cells in "function" is *not* the limiting factor for performance.
             // 2. if the "function" would be hardwired into the innermost loop, a speedup of 1.5-2.0 would be seen
@@ -426,8 +428,8 @@ namespace Cern.Colt.Matrix.Implementation
             int b_rs = bb.RowStride;
             int a_cs = ColumnStride;
             int b_cs = bb.ColumnStride;
-            double[] elems = Elements;
-            double[] b_elems = bb.Elements;
+            double[] elems = _elements;
+            double[] b_elems = bb._elements;
             if (elems == null || b_elems == null) throw new ApplicationException();
 
             int a_index = Index(1, 1);
@@ -499,7 +501,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <exception cref="ArgumentOutOfRangeException">
         /// If <tt>A.columns() != y.size() || A.rows() &gt; z.size())</tt>.
         /// </exception>
-        public override DoubleMatrix1D ZMult(DoubleMatrix1D y, DoubleMatrix1D z, double alpha, double beta, bool transposeA)
+        public override IDoubleMatrix1D ZMult(IDoubleMatrix1D y, IDoubleMatrix1D z, double alpha, double beta, bool transposeA)
         {
             if (transposeA) return ViewDice().ZMult(y, z, alpha, beta, false);
             if (z == null) z = new DenseDoubleMatrix1D(Rows);
@@ -510,7 +512,7 @@ namespace Cern.Colt.Matrix.Implementation
 
             var yy = (DenseDoubleMatrix1D)y;
             var zz = (DenseDoubleMatrix1D)z;
-            double[] aElems = Elements;
+            double[] aElems = _elements;
             double[] yElems = yy.Elements;
             double[] zElems = zz.Elements;
             if (aElems == null || yElems == null || zElems == null) throw new ApplicationException();
@@ -590,7 +592,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <exception cref="ArithmeticException">
         /// If <tt>A == C || B == C</tt>.
         /// </exception>
-        public override DoubleMatrix2D ZMult(DoubleMatrix2D b, DoubleMatrix2D c, double alpha, double beta, bool transposeA, bool transposeB)
+        public override IDoubleMatrix2D ZMult(IDoubleMatrix2D b, IDoubleMatrix2D c, double alpha, double beta, bool transposeA, bool transposeB)
         {
             // overriden for performance only
             if (transposeA) return ViewDice().ZMult(b, c, alpha, beta, false, transposeB);
@@ -621,9 +623,9 @@ namespace Cern.Colt.Matrix.Implementation
 
             var bb = (DenseDoubleMatrix2D)b;
             var cc = (DenseDoubleMatrix2D)c;
-            double[] aElems = Elements;
-            double[] bElems = bb.Elements;
-            double[] cElems = cc.Elements;
+            double[] aElems = _elements;
+            double[] bElems = bb._elements;
+            double[] cElems = cc._elements;
             if (aElems == null || bElems == null || cElems == null) throw new ApplicationException();
 
             int cA = ColumnStride;
@@ -718,7 +720,7 @@ namespace Cern.Colt.Matrix.Implementation
         public override double ZSum()
         {
             double sum = 0;
-            double[] elems = Elements;
+            double[] elems = _elements;
             if (elems == null) throw new ApplicationException();
             int index = this.Index(0, 0);
             int cs = ColumnStride;
@@ -752,9 +754,9 @@ namespace Cern.Colt.Matrix.Implementation
         /// <returns>
         /// A new matrix of the corresponding dynamic type.
         /// </returns>
-        public override DoubleMatrix1D Like1D(int size, int zero, int stride)
+        public override IDoubleMatrix1D Like1D(int size, int zero, int stride)
         {
-            return new DenseDoubleMatrix1D(size, Elements, zero, stride);
+            return new DenseDoubleMatrix1D(size, _elements, zero, stride);
         }
 
         /// <summary>
@@ -797,18 +799,18 @@ namespace Cern.Colt.Matrix.Implementation
         /// <returns>
         /// <tt>true</tt> if both matrices share common cells.
         /// </returns>
-        protected override bool HaveSharedCellsRaw(DoubleMatrix2D other)
+        public override bool HaveSharedCellsRaw(IDoubleMatrix2D other)
         {
             if (other is SelectedDenseDoubleMatrix2D)
             {
                 var otherMatrix = (SelectedDenseDoubleMatrix2D)other;
-                return Elements == otherMatrix.Elements;
+                return _elements == otherMatrix.Elements;
             }
 
             if (other is DenseDoubleMatrix2D)
             {
                 var otherMatrix = (DenseDoubleMatrix2D)other;
-                return Elements == otherMatrix.Elements;
+                return _elements == otherMatrix.Elements;
             }
 
             return false;
@@ -845,9 +847,9 @@ namespace Cern.Colt.Matrix.Implementation
         /// <returns>
         /// A new view.
         /// </returns>
-        protected override DoubleMatrix2D ViewSelectionLike(int[] rowOffsets, int[] cOffsets)
+        protected override IDoubleMatrix2D ViewSelectionLike(int[] rowOffsets, int[] cOffsets)
         {
-            return new SelectedDenseDoubleMatrix2D(Elements, rowOffsets, cOffsets, 0);
+            return new SelectedDenseDoubleMatrix2D(_elements, rowOffsets, cOffsets, 0);
         }
 
         public override string ToString(int row, int column)

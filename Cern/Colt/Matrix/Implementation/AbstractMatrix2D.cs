@@ -21,7 +21,7 @@ namespace Cern.Colt.Matrix.Implementation
     /// Abstract base class for 2-d matrices holding objects or primitive data types such as <code>int</code>, <code>double</code>, etc.
     /// </summary>
     /// <remarks>This implementation is not synchronized.</remarks>
-    public abstract class AbstractMatrix2D : AbstractMatrix
+    public abstract class AbstractMatrix2D<T> : AbstractMatrix, IMatrix2D<T>
     {
         /// <summary>
         /// Gets or sets the number of colums this matrix (view) has.
@@ -62,7 +62,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <exception cref="ArgumentOutOfRangeException">
         /// If <tt>columns() != B.columns() || rows() != B.rows()</tt>.
         /// </exception>
-        public void CheckShape(AbstractMatrix2D b)
+        public void CheckShape(IMatrix2D<T> b)
         {
             if (Columns != b.Columns || Rows != b.Rows) throw new ArgumentOutOfRangeException(String.Format(Cern.LocalizedResources.Instance().Exception_IncompatibleDimensionsAandB, this, b));
         }
@@ -79,7 +79,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <exception cref="ArgumentOutOfRangeException">
         /// If <tt>columns() != B.columns() || rows() != B.rows() || columns() != C.columns() || rows() != C.rows()</tt>.
         /// </exception>
-        public void CheckShape(AbstractMatrix2D b, AbstractMatrix2D c)
+        public void CheckShape(IMatrix2D<T> b, IMatrix2D<T> c)
         {
             if (Columns != b.Columns || Rows != b.Rows || Columns != c.Columns || Rows != c.Rows) throw new ArgumentOutOfRangeException(String.Format(Cern.LocalizedResources.Instance().Exception_IncompatibleDimensionsAandBandC, this, b, c));
         }
@@ -94,6 +94,8 @@ namespace Cern.Colt.Matrix.Implementation
         {
             get { return Rows * Columns; }
         }
+
+        public abstract T this[int row, int column] { get; set; }
 
         /// <summary>
         /// Teturns a string representation of the receiver's shape.
@@ -194,7 +196,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// </exception>
         protected void CheckColumn(int column)
         {
-            if (column < 0 || column >= Columns) throw new IndexOutOfRangeException(String.Format(Cern.LocalizedResources.Instance().Exception_AttemptedToAccessAtColumn, this , column));
+            if (column < 0 || column >= Columns) throw new IndexOutOfRangeException(String.Format(Cern.LocalizedResources.Instance().Exception_AttemptedToAccessAtColumn, this, column));
         }
 
         /// <summary>
@@ -327,7 +329,8 @@ namespace Cern.Colt.Matrix.Implementation
         /// <returns>
         /// A new flip view.
         /// </returns>
-        protected AbstractMatrix2D VColumnFlip()
+        /// </returns>
+        public virtual IMatrix2D<T> VColumnFlip()
         {
             if (Columns > 0)
             {
@@ -345,7 +348,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <returns>
         /// A new dice view.
         /// </returns>
-        protected virtual AbstractMatrix2D VDice()
+        public virtual IMatrix2D<T> VDice()
         {
             // swap;
             int tmp = Rows;
@@ -384,7 +387,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <exception cref="ArgumentException">
         /// If <tt>column &lt; 0 || width &lt; 0 || column+width &gt; columns() || row &lt; 0 || height &lt; 0 || row+height &gt; rows()</tt>
         /// </exception>
-        protected AbstractMatrix2D VPart(int row, int column, int height, int width)
+        public IMatrix2D<T> VPart(int row, int column, int height, int width)
         {
             CheckBox(row, column, height, width);
             RowZero += RowStride * row;
@@ -401,7 +404,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <returns>
         /// A new row flip.
         /// </returns>
-        protected AbstractMatrix2D VRowFlip()
+        public IMatrix2D<T> VRowFlip()
         {
             if (Rows > 0)
             {
@@ -428,7 +431,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <exception cref="ArgumentException">
         /// If <tt>rStride &lt;= 0 || cStride &lt;= 0</tt>.
         /// </exception>
-        protected AbstractMatrix2D VStrides(int rStride, int cStride)
+        public IMatrix2D<T> VStrides(int rStride, int cStride)
         {
             if (rStride <= 0 || cStride <= 0) throw new ArgumentException(String.Format(Cern.LocalizedResources.Instance().Exception_IllegalStrides, rStride, cStride));
             this.RowStride *= rStride;

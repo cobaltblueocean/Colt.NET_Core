@@ -12,6 +12,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Cern.Jet.Math;
+using Cern.Colt.Function;
 
 namespace Cern.Colt.Matrix.LinearAlgebra
 {
@@ -23,7 +25,7 @@ namespace Cern.Colt.Matrix.LinearAlgebra
         /// <param name="A">the matrix to modify.</param>
         /// <param name="function">a function object taking as argument the current cell's value.</param>
         /// <see cref="Cern.Jet.Math.Functions"/>
-        void Assign(DoubleMatrix2D A, Cern.Colt.Function.DoubleFunction function);
+        void Assign(IDoubleMatrix2D A, IDoubleFunction function);
 
         /// <summary>
         /// Assigns the result of a function to each cell; <i>x[row,col] = function(x[row,col],y[row,col])</i>.
@@ -33,7 +35,7 @@ namespace Cern.Colt.Matrix.LinearAlgebra
         /// <param name="function">a function object taking as first argument the current cell's value of <i>this</i>, and as second argument the current cell's value of <i>y</i>, <i>this</i> (for convenience only).</param>
         /// <exception cref="ArgumentException">if <i>x.Columns != y.Columns || x.Rows != y.Rows</i></exception>
         /// <see cref="Cern.Jet.Math.Functions"/>
-        void Assign(DoubleMatrix2D x, DoubleMatrix2D y, Cern.Colt.Function.DoubleDoubleFunction function);
+        void Assign(IDoubleMatrix2D x, IDoubleMatrix2D y, IDoubleDoubleFunction function);
 
         /// <summary>
         /// Returns the sum of absolute values; <i>|x[0]| + |x[1]| + ..d </i>.
@@ -41,7 +43,7 @@ namespace Cern.Colt.Matrix.LinearAlgebra
         /// </summary>
         /// <param name="x">the first vector.</param>
         /// <returns></returns>
-        double Dasum(DoubleMatrix1D x);
+        double Dasum(IDoubleMatrix1D x);
 
         /// <summary>
         /// Combined vector scaling; <i>y = y + alpha*x</i>.
@@ -51,7 +53,7 @@ namespace Cern.Colt.Matrix.LinearAlgebra
         /// <param name="x">the first source vector.</param>
         /// <param name="y">the second source vector, this is also the vector where results are stored.</param>
         /// <exception cref="ArgumentException"><i>x.Count != y.Count</i>..</exception>
-        void Daxpy(double alpha, DoubleMatrix1D x, DoubleMatrix1D y);
+        void Daxpy(double alpha, IDoubleMatrix1D x, IDoubleMatrix1D y);
 
         /// <summary>
         /// Combined matrix scaling; <i>B = B + alpha*A</i>.
@@ -61,7 +63,7 @@ namespace Cern.Colt.Matrix.LinearAlgebra
         /// <param name="A">the first source matrix.</param>
         /// <param name="B">the second source matrix, this is also the matrix where results are stored.</param>
         /// <exception cref="ArgumentException">if <i>A.Columns != B.Columns || A.Rows != B.Rows</i>.</exception>
-        void Daxpy(double alpha, DoubleMatrix2D A, DoubleMatrix2D B);
+        void Daxpy(double alpha, IDoubleMatrix2D A, IDoubleMatrix2D B);
 
         /// <summary>
         /// Vector assignment (copying); <i>y = x</i>.
@@ -70,7 +72,7 @@ namespace Cern.Colt.Matrix.LinearAlgebra
         /// <param name="x">the source vector.</param>
         /// <param name="y">the destination vector.</param>
         /// <exception cref="ArgumentException"><i>x.Count != y.Count</i>.</exception>
-        void Dcopy(DoubleMatrix1D x, DoubleMatrix1D y);
+        void Dcopy(IDoubleMatrix1D x, IDoubleMatrix1D y);
 
         /// <summary>
         /// Matrix assignment (copying); <i>B = A</i>.
@@ -79,7 +81,7 @@ namespace Cern.Colt.Matrix.LinearAlgebra
         /// <param name="A">the source matrix.</param>
         /// <param name="B">the destination matrix.</param>
         /// <exception cref="ArgumentException">if <i>A.Columns != B.Columns || A.Rows != B.Rows</i>.</exception>
-        void Dcopy(DoubleMatrix2D A, DoubleMatrix2D B);
+        void Dcopy(IDoubleMatrix2D A, IDoubleMatrix2D B);
 
         /// <summary>
         /// Returns the dot product of two vectors x and y, which is <i>Sum(x[i]*y[i])</i>.
@@ -89,7 +91,7 @@ namespace Cern.Colt.Matrix.LinearAlgebra
         /// <param name="y">the second vector.</param>
         /// <returns>the sum of products.</returns>
         /// <exception cref="ArgumentException">if <i>x.Count != y.Count</i>.</exception>
-        double Ddot(DoubleMatrix1D x, DoubleMatrix1D y);
+        double Ddot(IDoubleMatrix1D x, IDoubleMatrix1D y);
 
         /// <summary>
         /// Generalized linear algebraic matrix-matrix multiply; <i>C = alpha*A*B + beta*C</i>.
@@ -106,7 +108,7 @@ namespace Cern.Colt.Matrix.LinearAlgebra
         /// <exception cref="ArgumentException">if <i>B.Rows != A.Columns</i>.</exception>
         /// <exception cref="ArgumentException">if <i>C.Rows != A.Rows || C.Columns != B.Columns</i>.</exception>
         /// <exception cref="ArgumentException">if <i>A == C || B == C</i>.</exception>
-        void Dgemm(Boolean transposeA, Boolean transposeB, double alpha, DoubleMatrix2D A, DoubleMatrix2D B, double beta, DoubleMatrix2D C);
+        void Dgemm(Boolean transposeA, Boolean transposeB, double alpha, IDoubleMatrix2D A, IDoubleMatrix2D B, double beta, IDoubleMatrix2D C);
 
         /// <summary>
         /// Generalized linear algebraic matrix-vector multiply; <i>y = alpha*A*x + beta*y</i>.
@@ -120,7 +122,7 @@ namespace Cern.Colt.Matrix.LinearAlgebra
         /// <param name="beta">a scale factor.</param>
         /// <param name="y">the second source vector, this is also the vector where results are stored.</param>
         /// <exception cref="ArgumentException"><i>A.Columns != x.Count || A.Rows != y.Count)</i>..</exception>
-        void Dgemv(Boolean transposeA, double alpha, DoubleMatrix2D A, DoubleMatrix1D x, double beta, DoubleMatrix1D y);
+        void Dgemv(Boolean transposeA, double alpha, IDoubleMatrix2D A, IDoubleMatrix1D x, double beta, IDoubleMatrix1D y);
 
         /// <summary>
         /// Performs a rank 1 update; <i>A = A + alpha*x*y'</i>.
@@ -133,7 +135,7 @@ namespace Cern.Colt.Matrix.LinearAlgebra
         /// A = { {6,5}, {7,6} }, x = {1,2}, y = {3,4}, alpha = 1 -->
         /// A = { {9,9}, {13,14} }
         /// </example>
-        void Dger(double alpha, DoubleMatrix1D x, DoubleMatrix1D y, DoubleMatrix2D A);
+        void Dger(double alpha, IDoubleMatrix1D x, IDoubleMatrix1D y, IDoubleMatrix2D A);
 
         /// <summary>
         /// Return the 2-norm; <i>sqrt(x[0]^2 + x[1]^2 + ..d)</i>.
@@ -141,7 +143,7 @@ namespace Cern.Colt.Matrix.LinearAlgebra
         /// </summary>
         /// <param name="x">the vector.</param>
         /// <returns></returns>
-        double Dnrm2(DoubleMatrix1D x);
+        double Dnrm2(IDoubleMatrix1D x);
 
         /// <summary>
         /// Applies a givens plane rotation to (x,y); <i>x = c*x + s*y; y = c*y - s*x</i>.
@@ -150,7 +152,7 @@ namespace Cern.Colt.Matrix.LinearAlgebra
         /// <param name="y">the second vector.</param>
         /// <param name="c">the cosine of the angle of rotation.</param>
         /// <param name="s"><the sine of the angle of rotation./param>
-        void Drot(DoubleMatrix1D x, DoubleMatrix1D y, double c, double s);
+        void Drot(IDoubleMatrix1D x, IDoubleMatrix1D y, double c, double s);
 
         /// <summary>
         /// Constructs a Givens plane rotation for <i>(a,b)</i>.
@@ -168,7 +170,7 @@ namespace Cern.Colt.Matrix.LinearAlgebra
         /// </summary>
         /// <param name="alpha">a scale factor.</param>
         /// <param name="x">the first vector.</param>
-        void Dscal(double alpha, DoubleMatrix1D x);
+        void Dscal(double alpha, IDoubleMatrix1D x);
 
         /// <summary>
         /// Matrix scaling; <i>A = alpha*A</i>.
@@ -176,7 +178,7 @@ namespace Cern.Colt.Matrix.LinearAlgebra
         /// </summary>
         /// <param name="alpha">a scale factor.</param>
         /// <param name="A">the matrix.</param>
-        void Dscal(double alpha, DoubleMatrix2D A);
+        void Dscal(double alpha, IDoubleMatrix2D A);
 
         /// <summary>
         /// Swaps the elements of two vectors; <i>y <==> x</i>.
@@ -185,7 +187,7 @@ namespace Cern.Colt.Matrix.LinearAlgebra
         /// <param name="x">the first vector.</param>
         /// <param name="y">the second vector.</param>
         /// <exception cref="ArgumentException"><i>x.Count != y.Count</i>.</exception>
-        void Dswap(DoubleMatrix1D x, DoubleMatrix1D y);
+        void Dswap(IDoubleMatrix1D x, IDoubleMatrix1D y);
 
         /// <summary>
         /// Swaps the elements of two matrices; <i>B <==> A</i>.
@@ -193,7 +195,7 @@ namespace Cern.Colt.Matrix.LinearAlgebra
         /// <param name="x">the first matrix.</param>
         /// <param name="y">the second matrix.</param>
         /// <exception cref="ArgumentException">if <i>A.Columns != B.Columns || A.Rows != B.Rows</i>.</exception>
-        void Dswap(DoubleMatrix2D x, DoubleMatrix2D y);
+        void Dswap(IDoubleMatrix2D x, IDoubleMatrix2D y);
 
         /// <summary>
         /// Symmetric matrix-vector multiplication; <i>y = alpha*A*x + beta*y</i>.
@@ -207,7 +209,7 @@ namespace Cern.Colt.Matrix.LinearAlgebra
         /// <param name="x">the first source vector.</param>
         /// <param name="beta">scaling factor.</param>
         /// <param name="y">the second vector holding source and destination.</param>
-        void Dsymv(Boolean IsUpperTriangular, double alpha, DoubleMatrix2D A, DoubleMatrix1D x, double beta, DoubleMatrix1D y);
+        void Dsymv(Boolean IsUpperTriangular, double alpha, IDoubleMatrix2D A, IDoubleMatrix1D x, double beta, IDoubleMatrix1D y);
 
         /// <summary>
         /// Triangular matrix-vector multiplication; <i>x = A*x</i> or <i>x = A'*x</i>.
@@ -219,13 +221,13 @@ namespace Cern.Colt.Matrix.LinearAlgebra
         /// <param name="isUnitTriangular">true --> A is assumed to be unit triangular; false --> A is not assumed to be unit triangular</param>
         /// <param name="A">the source matrix.</param>
         /// <param name="x">the vector holding source and destination.</param>
-        void Dtrmv(Boolean IsUpperTriangular, Boolean transposeA, Boolean IsUnitTriangular, DoubleMatrix2D A, DoubleMatrix1D x);
+        void Dtrmv(Boolean IsUpperTriangular, Boolean transposeA, Boolean IsUnitTriangular, IDoubleMatrix2D A, IDoubleMatrix1D x);
 
         /// <summary>
         /// Returns the index of largest absolute value; <i>i such that |x[i]| == max(|x[0]|,|x[1]|,..d).</i>.
         /// </summary>
         /// <param name="x">the vector to search through.</param>
         /// <returns>the index of largest absolute value (-1 if x is empty).</returns>
-        int Idamax(DoubleMatrix1D x);
+        int Idamax(IDoubleMatrix1D x);
     }
 }

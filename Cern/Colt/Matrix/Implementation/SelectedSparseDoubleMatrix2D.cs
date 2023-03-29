@@ -151,7 +151,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <returns>
         /// A new empty matrix of the same dynamic type.
         /// </returns>
-        public override DoubleMatrix2D Like(int rows, int columns)
+        public override IDoubleMatrix2D Like(int rows, int columns)
         {
             return new SparseDoubleMatrix2D(rows, columns);
         }
@@ -165,7 +165,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <returns>
         /// A new matrix of the corresponding dynamic type.
         /// </returns>
-        public override DoubleMatrix1D Like1D(int size)
+        public override IDoubleMatrix1D Like1D(int size)
         {
             return new SparseDoubleMatrix1D(size);
         }
@@ -182,7 +182,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <exception cref="ArgumentOutOfRangeException">
         /// If <tt>column &lt; 0 || column &gt;= columns()</tt>.
         /// </exception>
-        public override DoubleMatrix1D ViewColumn(int column)
+        public override IDoubleMatrix1D ViewColumn(int column)
         {
             CheckColumn(column);
             int viewSize = this.Rows;
@@ -206,7 +206,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <exception cref="IndexOutOfRangeException">
         /// If <tt>row &lt; 0 || row &gt;= Rows</tt>.
         /// </exception>
-        public override DoubleMatrix1D ViewRow(int row)
+        public override IDoubleMatrix1D ViewRow(int row)
         {
             CheckRow(row);
             int viewSize = this.Columns;
@@ -232,7 +232,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <returns>
         /// A new matrix of the corresponding dynamic type.
         /// </returns>
-        public override DoubleMatrix1D Like1D(int size, int zero, int stride)
+        public override IDoubleMatrix1D Like1D(int size, int zero, int stride)
         {
             throw new ApplicationException(); // this method is never called since viewRow() and viewColumn are overridden properly.
         }
@@ -272,7 +272,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <returns>
         /// <tt>true</tt> if both matrices share at least one identical cell.
         /// </returns>
-        protected override bool HaveSharedCellsRaw(DoubleMatrix2D other)
+        public override bool HaveSharedCellsRaw(IDoubleMatrix2D other)
         {
             if (other is SelectedSparseDoubleMatrix2D)
             {
@@ -334,7 +334,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <returns>
         /// A new dice view.
         /// </returns>
-        protected override AbstractMatrix2D VDice()
+        public override AbstractMatrix2D<Double> VDice()
         {
             base.VDice();
 
@@ -360,7 +360,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <returns>
         /// A new view.
         /// </returns>
-        protected override DoubleMatrix2D ViewSelectionLike(int[] rOffsets, int[] cOffsets)
+        protected override IDoubleMatrix2D ViewSelectionLike(int[] rOffsets, int[] cOffsets)
         {
             return new SelectedSparseDoubleMatrix2D(this.Elements, rOffsets, cOffsets, this.Offset);
         }

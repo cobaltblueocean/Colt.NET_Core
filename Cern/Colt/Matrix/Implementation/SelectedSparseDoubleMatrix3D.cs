@@ -180,7 +180,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <li><i>this == other</i>
         /// </ul>
         /// </summary>
-        protected new Boolean HaveSharedCellsRaw(DoubleMatrix3D other)
+        public override Boolean HaveSharedCellsRaw(IDoubleMatrix3D other)
         {
             if (other is SelectedSparseDoubleMatrix3D)
             {
@@ -218,7 +218,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <param name="rows">the number of rows the matrix shall have.</param>
         /// <param name="columns">the number of columns the matrix shall have.</param>
         /// <returns>a new empty matrix of the same dynamic type.</returns>
-        public override DoubleMatrix3D Like(int Slices, int Rows, int Columns)
+        public override IDoubleMatrix3D Like(int Slices, int Rows, int Columns)
         {
             return new SparseDoubleMatrix3D(Slices, Rows, Columns);
         }
@@ -235,7 +235,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <param name="rowStride">the number of elements between two rows, i.ed <i>index(i+1,j)-index(i,j)</i>.</param>
         /// <param name="columnStride">the number of elements between two columns, i.ed <i>index(i,j+1)-index(i,j)</i>.</param>
         /// <returns>a new matrix of the corresponding dynamic type.</returns>
-        protected override DoubleMatrix2D Like2D(int Rows, int Columns, int rowZero, int columnZero, int Rowstride, int Columnstride)
+        protected override IDoubleMatrix2D Like2D(int Rows, int Columns, int rowZero, int columnZero, int Rowstride, int Columnstride)
         {
             // this method is never called since viewRow() and viewColumn are overridden properly.
             throw new NotImplementedException();
@@ -278,7 +278,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// Self modifying version of viewDice().
         /// </summary>
         /// <exception cref="ArgumentException">if some of the parameters are equal or not in range 0..2.</exception>
-        protected new AbstractMatrix3D VDice(int axis0, int axis1, int axis2)
+        protected new AbstractMatrix3D<double> VDice(int axis0, int axis1, int axis2)
         {
             base.VDice(axis0, axis1, axis2);
 
@@ -308,7 +308,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <exception cref="IndexOutOfRangeException">if <i>column &lt; 0 || column >= columns()</i>.</exception>
         /// <see cref="ViewSlice(int)"/>
         /// <see cref="ViewRow(int)"/>
-        public override DoubleMatrix2D ViewColumn(int column)
+        public override IDoubleMatrix2D ViewColumn(int column)
         {
             CheckColumn(column);
 
@@ -341,7 +341,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <exception cref="IndexOutOfRangeException">if <i>row &lt; 0 || row >= row()</i>.</exception>
         /// <see cref="ViewSlice(int)"/>
         /// <see cref="ViewColumn(int)"/>
-        public override DoubleMatrix2D ViewRow(int row)
+        public override IDoubleMatrix2D ViewRow(int row)
         {
             CheckRow(row);
 
@@ -368,9 +368,9 @@ namespace Cern.Colt.Matrix.Implementation
         /// <param name="rowOffsets">the offsets of the visible elements.</param>
         /// <param name="columnOffsets">the offsets of the visible elements.</param>
         /// <returns>a new view.</returns>
-        protected override DoubleMatrix3D ViewSelectionLike(int[] sliceOffsets, int[] rowOffsets, int[] columnOffsets)
+        protected override IDoubleMatrix3D ViewSelectionLike(int[] sliceOffsets, int[] rowOffsets, int[] columnOffsets)
         {
-            throw new NotImplementedException();
+            return new SelectedSparseDoubleMatrix3D(this.Elements, sliceOffsets, rowOffsets, columnOffsets, this.Offset);
         }
 
         /// <summary>
@@ -386,7 +386,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <exception cref="IndexOutOfRangeException">if <i>slice &lt; 0 || slice >= slices()</i>.</exception>
         /// <see cref="ViewRow(int)"/>
         /// <see cref="ViewColumn(int)"/>
-        public override DoubleMatrix2D ViewSlice(int slice)
+        public override IDoubleMatrix2D ViewSlice(int slice)
         {
             CheckSlice(slice);
 

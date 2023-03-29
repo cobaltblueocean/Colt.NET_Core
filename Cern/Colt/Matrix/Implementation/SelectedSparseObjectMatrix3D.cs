@@ -239,7 +239,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// Self modifying version of viewDice().
         /// </summary>
         /// <exception cref="ArgumentException">if some of the parameters are equal or not in range 0..2.</exception>
-        protected new AbstractMatrix3D VDice(int axis0, int axis1, int axis2)
+        protected new AbstractMatrix3D<Object> VDice(int axis0, int axis1, int axis2)
         {
             base.VDice(axis0, axis1, axis2);
 

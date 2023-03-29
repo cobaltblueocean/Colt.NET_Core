@@ -5,7 +5,7 @@
     <AssemblyName>Cern.Colt</AssemblyName>
     <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
     <PackageId>Cern.Colt.NET</PackageId>
-    <Version>0.9.2.7</Version>
+    <Version>0.9.3.3</Version>
     <Authors>Kei Nakai</Authors>
     <Company />
     <Product>Cern.Colt.NET Library</Product>
@@ -14,7 +14,7 @@ Some code such as Matrix, etc. are based on code written by Mauro Mazzieri.
 The files based on Mauro are clearly states as based on his work.</Description>
     <Copyright>Kei Nakai</Copyright>
     <PackageProjectUrl>https://github.com/cobaltblueocean/Colt.NET_Core</PackageProjectUrl>
-    <AssemblyVersion>0.9.0.7</AssemblyVersion>
+    <AssemblyVersion></AssemblyVersion>
     <RepositoryUrl>https://github.com/cobaltblueocean/Colt.NET_Core</RepositoryUrl>
     <RepositoryType>GitHub</RepositoryType>
     <PackageReleaseNotes>- Implemented Colt library.
@@ -23,12 +23,26 @@ The files based on Mauro are clearly states as based on his work.</Description>
 - Added Array transpose methods
 - Changed AlmostEqual method to be ExpressionTree logic.
 - Updated the Target framework to .NET 7.0
-- Fixed duplicated classes using Mercury.Language.Core library</PackageReleaseNotes>
+- Fixed duplicated classes using Mercury.Language.Core library
+
+9.3.0
+ - Refactor the class implemented of Interfaces for Design Pattern
+
+9.3.1
+ - Bug fixed for LUDecompositionQuick</PackageReleaseNotes>
     <Title>Colt Library for .NET</Title>
+    <PackageIcon>colt-logo.png</PackageIcon>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Mercury.Language.Core" Version="0.8.1.7" />
+    <None Include="..\colt-logo.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Mercury.Language.Core" Version="0.8.1.9" />
     <PackageReference Include="Microsoft.Win32.Registry" Version="5.0.0" />
     <PackageReference Include="System.Management" Version="7.0.0" />
   </ItemGroup>

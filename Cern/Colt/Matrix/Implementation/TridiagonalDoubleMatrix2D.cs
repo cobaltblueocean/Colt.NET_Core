@@ -12,6 +12,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Cern.Jet.Math;
+using Cern.Colt.Function;
 
 namespace Cern.Colt.Matrix.Implementation
 {
@@ -175,7 +177,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// </summary>
         /// <param name="value">the value to be filled into the cells.</param>
         /// <returns><i>this</i> (for convenience only).</returns>
-        public override DoubleMatrix2D Assign(double value)
+        public override IDoubleMatrix2D Assign(double value)
         {
             // overriden for performance only
             if (value == 0)
@@ -195,9 +197,9 @@ namespace Cern.Colt.Matrix.Implementation
             return this;
         }
 
-        public DoubleMatrix2D Assign(Cern.Colt.Function.DoubleFunction function, Double multialpha = 1)
+        public IDoubleMatrix2D Assign(IDoubleFunction function, Double multialpha = 1)
         {
-            if (Cern.Jet.Math.Functions.EvaluateFunctionEquality(function.Method, F2.Mult.Method))
+            if (Cern.Jet.Math.Functions.EvaluateFunctionEquality(function.Eval.Method, F2.Mult.Eval.Method))
             { // x[i] = mult*x[i]
                 double alpha = multialpha; //((Cern.Jet.Math.Mult)function).multiplicator;
                 if (alpha == 1) return this;
@@ -212,10 +214,10 @@ namespace Cern.Colt.Matrix.Implementation
                 */
 
                 ForEachNonZero(
-                    new Cern.Colt.Function.IntIntDoubleFunction((i, j, value) =>
+                    new Cern.Colt.Function.IntIntDoubleFunctionDelegate((i, j, value) =>
                     {
 
-                        return function(value);
+                        return function.Apply(value);
                     }
         ));
             }
@@ -234,7 +236,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <param name="source">the source matrix to copy from (may be identical to the receiver).</param>
         /// <returns><i>this</i> (for convenience only).</returns>
         /// <exception cref="ArgumentException">if <i>columns() != source.columns() || rows() != source.rows()</i></exception>
-        public override DoubleMatrix2D Assign(DoubleMatrix2D source)
+        public override IDoubleMatrix2D Assign(IDoubleMatrix2D source)
         {
             // overriden for performance only
             if (source == this) return this; // nothing to do
@@ -254,7 +256,7 @@ namespace Cern.Colt.Matrix.Implementation
             {
                 Assign(0);
                 source.ForEachNonZero(
-                    new Cern.Colt.Function.IntIntDoubleFunction((i, j, value) =>
+                    new Cern.Colt.Function.IntIntDoubleFunctionDelegate((i, j, value) =>
                     {
                         this[i, j] = value;
                         return value;
@@ -266,7 +268,7 @@ namespace Cern.Colt.Matrix.Implementation
             return base.Assign(source);
         }
 
-        public DoubleMatrix2D Assign(DoubleMatrix2D matrixY, Cern.Colt.Function.DoubleDoubleFunction function, Double x = 0, Double y = 0)
+        public IDoubleMatrix2D Assign(IDoubleMatrix2D matrixY, Cern.Colt.Function.IDoubleDoubleFunction function, Double x = 0, Double y = 0)
         {
             CheckShape(matrixY);
 
@@ -275,7 +277,7 @@ namespace Cern.Colt.Matrix.Implementation
                 double alpha = x; // ((Cern.Jet.Math.PlusMult)function).multiplicator;
                 if (alpha == 0) return this; // nothing to do
                 matrixY.ForEachNonZero(
-                    new Cern.Colt.Function.IntIntDoubleFunction((i, j, value) =>
+                    new Cern.Colt.Function.IntIntDoubleFunctionDelegate((i, j, value) =>
                     {
 
                         this[i, j] = this[i, j] + alpha * value;
@@ -285,11 +287,11 @@ namespace Cern.Colt.Matrix.Implementation
                 return this;
             }
 
-            if (Cern.Jet.Math.Functions.EvaluateFunctionEquality(function.Method, F2.Mult.Method))
+            if (Cern.Jet.Math.Functions.EvaluateFunctionEquality(function.Eval.Method, F2.Mult.Eval.Method))
             { // x[i] = x[i] * y[i]
                 ForEachNonZero(
 
-                    new Cern.Colt.Function.IntIntDoubleFunction((i, j, value) =>
+                    new Cern.Colt.Function.IntIntDoubleFunctionDelegate((i, j, value) =>
                     {
                         this[i, j] = this[i, j] * matrixY[i, j];
                         return value;
@@ -299,11 +301,11 @@ namespace Cern.Colt.Matrix.Implementation
 
             }
 
-            if (Cern.Jet.Math.Functions.EvaluateFunctionEquality(function.Method, F2.Div.Method))
+            if (Cern.Jet.Math.Functions.EvaluateFunctionEquality(function.Eval.Method, F2.Div.Eval.Method))
             { // x[i] = x[i] / y[i]
                 ForEachNonZero(
 
-                    new Cern.Colt.Function.IntIntDoubleFunction((i, j, value) =>
+                    new Cern.Colt.Function.IntIntDoubleFunctionDelegate((i, j, value) =>
                     {
                         this[i, j] = this[i, j] / matrixY[i, j];
                         return value;
@@ -316,7 +318,7 @@ namespace Cern.Colt.Matrix.Implementation
             return base.Assign(matrixY, function);
         }
 
-        public override DoubleMatrix2D ForEachNonZero(Cern.Colt.Function.IntIntDoubleFunction function)
+        public override IDoubleMatrix2D ForEachNonZero(Cern.Colt.Function.IntIntDoubleFunctionDelegate function)
         {
             for (int kind = 0; kind <= 2; kind++)
             {
@@ -356,7 +358,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// Override this method in wrappers.
         /// </summary>
         /// <returns></returns>
-        protected new DoubleMatrix2D GetContent()
+        protected new IDoubleMatrix2D GetContent()
         {
             return this;
         }
@@ -386,19 +388,19 @@ namespace Cern.Colt.Matrix.Implementation
         /// <param name="rows">the number of rows the matrix shall have.</param>
         /// <param name="columns">the number of columns the matrix shall have.</param>
         /// <returns>a new empty matrix of the same dynamic type.</returns>
-        public override DoubleMatrix2D Like(int rows, int columns)
+        public override IDoubleMatrix2D Like(int rows, int columns)
         {
             return new TridiagonalDoubleMatrix2D(rows, columns);
         }
 
         /// <summary>
         /// Construct and returns a new 1-d matrix <i>of the corresponding dynamic type</i>, entirelly independent of the receiver.
-        /// For example, if the receiver is an instance of type <i>DenseDoubleMatrix2D</i> the new matrix must be of type <i>DenseDoubleMatrix1D</i>,
-        /// if the receiver is an instance of type <i>SparseDoubleMatrix2D</i> the new matrix must be of type <i>SparseDoubleMatrix1D</i>, etc.
+        /// For example, if the receiver is an instance of type <i>DenseDoubleMatrix2D</i> the new matrix must be of type <i>DenseIDoubleMatrix1D</i>,
+        /// if the receiver is an instance of type <i>SparseDoubleMatrix2D</i> the new matrix must be of type <i>SparseIDoubleMatrix1D</i>, etc.
         /// </summary>
         /// <param name="size">the number of cells the matrix shall have.</param>
         /// <returns>a new matrix of the corresponding dynamic type.</returns>
-        public override DoubleMatrix1D Like1D(int size)
+        public override IDoubleMatrix1D Like1D(int size)
         {
             return new SparseDoubleMatrix1D(size);
         }
@@ -419,7 +421,7 @@ namespace Cern.Colt.Matrix.Implementation
             this[row, column] = value;
         }
 
-        public override DoubleMatrix1D ZMult(DoubleMatrix1D y, DoubleMatrix1D z, double alpha, double beta, Boolean transposeA)
+        public override IDoubleMatrix1D ZMult(IDoubleMatrix1D y, IDoubleMatrix1D z, double alpha, double beta, Boolean transposeA)
         {
             int m = Rows;
             int n = Columns;
@@ -455,7 +457,7 @@ namespace Cern.Colt.Matrix.Implementation
             if (yElements == null || zElements == null) throw new NullReferenceException();
 
             ForEachNonZero(
-                new Cern.Colt.Function.IntIntDoubleFunction((i, j, value) =>
+                new Cern.Colt.Function.IntIntDoubleFunctionDelegate((i, j, value) =>
                 {
 
                     if (transposeA) { int tmp = i; i = j; j = tmp; }
@@ -470,7 +472,7 @@ namespace Cern.Colt.Matrix.Implementation
             return z;
         }
 
-        public override DoubleMatrix2D ZMult(DoubleMatrix2D B, DoubleMatrix2D C, double alpha, double beta, Boolean transposeA, Boolean transposeB)
+        public override IDoubleMatrix2D ZMult(IDoubleMatrix2D B, IDoubleMatrix2D C, double alpha, double beta, Boolean transposeA, Boolean transposeB)
         {
             if (transposeB) B = B.ViewDice();
             int m = Rows;
@@ -494,14 +496,14 @@ namespace Cern.Colt.Matrix.Implementation
             if (!ignore) C.Assign(F1.Mult(beta));
 
             // cache views	
-            DoubleMatrix1D[] Brows = new DoubleMatrix1D[n];
+            IDoubleMatrix1D[] Brows = new IDoubleMatrix1D[n];
             for (int i = n; --i >= 0;) Brows[i] = B.ViewRow(i);
-            DoubleMatrix1D[] Crows = new DoubleMatrix1D[m];
+            IDoubleMatrix1D[] Crows = new IDoubleMatrix1D[m];
             for (int i = m; --i >= 0;) Crows[i] = C.ViewRow(i);
 
 
             ForEachNonZero(
-                new Cern.Colt.Function.IntIntDoubleFunction((i, j, value) =>
+                new Cern.Colt.Function.IntIntDoubleFunctionDelegate((i, j, value) =>
                 {
 
                     var fun = F2.PlusMult(value * alpha);

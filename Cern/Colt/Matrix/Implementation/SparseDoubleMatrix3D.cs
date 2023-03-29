@@ -247,7 +247,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
-        public override DoubleMatrix3D Assign(double value)
+        public override IDoubleMatrix3D Assign(double value)
         {
             // overriden for performance only
             if (!this.IsView && value == 0) this.Elements.Clear();
@@ -314,15 +314,17 @@ namespace Cern.Colt.Matrix.Implementation
         }
 
         /// <summary>
-         /// Returns <i>true</i> if both matrices share at least one identical cell.
-         /// </summary>
-        protected new Boolean HaveSharedCellsRaw(DoubleMatrix3D other)
+        /// Returns <i>true</i> if both matrices share at least one identical cell.
+        /// </summary>
+        public override Boolean HaveSharedCellsRaw(IDoubleMatrix3D other)
         {
-            if (other is SelectedSparseDoubleMatrix3D) {
+            if (other is SelectedSparseDoubleMatrix3D)
+            {
                 SelectedSparseDoubleMatrix3D otherMatrix = (SelectedSparseDoubleMatrix3D)other;
                 return this.Elements == otherMatrix.Elements;
             }
-	else if (other is SparseDoubleMatrix3D) {
+            else if (other is SparseDoubleMatrix3D)
+            {
                 SparseDoubleMatrix3D otherMatrix = (SparseDoubleMatrix3D)other;
                 return this.Elements == otherMatrix.Elements;
             }
@@ -368,7 +370,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <param name="Rows"></param>
         /// <param name="Columns"></param>
         /// <returns></returns>
-        public override DoubleMatrix3D Like(int Slices, int Rows, int Columns)
+        public override IDoubleMatrix3D Like(int Slices, int Rows, int Columns)
         {
             return new SparseDoubleMatrix3D(Slices, Rows, Columns);
         }
@@ -396,7 +398,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <param name="Rowstride"></param>
         /// <param name="Columnstride"></param>
         /// <returns></returns>
-        protected override DoubleMatrix2D Like2D(int Rows, int Columns, int rowZero, int columnZero, int Rowstride, int Columnstride)
+        protected override IDoubleMatrix2D Like2D(int Rows, int Columns, int rowZero, int columnZero, int Rowstride, int Columnstride)
         {
             return new SparseDoubleMatrix2D(Rows, Columns, this.Elements, rowZero, columnZero, RowStride, ColumnStride);
         }
@@ -455,7 +457,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <param name="rowOffsets">the offsets of the visible elements.</param>
         /// <param name="columnOffsets">the offsets of the visible elements.</param>
         /// <returns>a new view.</returns>
-        protected override DoubleMatrix3D ViewSelectionLike(int[] sliceOffsets, int[] rowOffsets, int[] columnOffsets)
+        protected override IDoubleMatrix3D ViewSelectionLike(int[] sliceOffsets, int[] rowOffsets, int[] columnOffsets)
         {
             return new SelectedSparseDoubleMatrix3D(this.Elements, sliceOffsets, rowOffsets, columnOffsets, 0);
         }

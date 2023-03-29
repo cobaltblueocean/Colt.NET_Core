@@ -138,9 +138,9 @@ namespace Cern.Colt.Matrix.Implementation
         /// <param name="rows">the number of rows the matrix shall have.</param>
         /// <param name="columns">the number of columns the matrix shall have.</param>
         /// <returns>a new empty matrix of the same dynamic type.</returns>
-        public override DoubleMatrix3D Like(int Slices, int Rows, int Columns)
+        public override DoubleMatrix3D Like(int slices, int rows, int columns)
         {
-            throw new NotImplementedException();
+            return new DenseDoubleMatrix3D(slices, rows, columns);
         }
 
         /// <summary>
@@ -155,7 +155,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <param name="RowStride">the number of elements between two rows, i.ed <i>index(i+1,j)-index(i,j)</i>.</param>
         /// <param name="ColumnStride">the number of elements between two columns, i.ed <i>index(i,j+1)-index(i,j)</i>.</param>
         /// <returns>a new matrix of the corresponding dynamic type.</returns>
-        protected override DoubleMatrix2D Like2D(int Rows, int Columns, int RowZero, int ColumnZero, int Rowstride, int Columnstride)
+        protected override IDoubleMatrix2D Like2D(int Rows, int Columns, int RowZero, int ColumnZero, int Rowstride, int Columnstride)
         {
             throw new NotImplementedException();
         }
@@ -169,7 +169,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <returns>a new view.</returns>
         protected override DoubleMatrix3D ViewSelectionLike(int[] sliceOffsets, int[] rowOffsets, int[] columnOffsets)
         {
-            throw new NotImplementedException();
+            return new SelectedDenseDoubleMatrix3D(this.Elements, sliceOffsets, rowOffsets, columnOffsets, this.Offset);
         }
         #endregion
 
@@ -238,7 +238,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <exception cref="IndexOutOfRangeException">if <i>column &lt; 0 || column >= columns()</i>.</exception>
         /// <see cref="ViewSlice(int)"/>
         /// <see cref="ViewRow(int)"/>
-        public override DoubleMatrix2D ViewColumn(int column)
+        public override IDoubleMatrix2D ViewColumn(int column)
         {
             CheckColumn(column);
 
@@ -271,7 +271,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <exception cref="IndexOutOfRangeException">if <i>row &lt; 0 || row >= row()</i>.</exception>
         /// <see cref="ViewSlice(int)"/>
         /// <see cref="ViewColumn(int)"/>
-        public override DoubleMatrix2D ViewRow(int row)
+        public override IDoubleMatrix2D ViewRow(int row)
         {
             CheckRow(row);
 
@@ -305,7 +305,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <exception cref="IndexOutOfRangeException">if <i>slice &lt; 0 || slice >= Slices()</i>.</exception>
         /// <see cref="ViewRow(int)"/>
         /// <see cref="ViewColumn(int)"/>
-        public override DoubleMatrix2D ViewSlice(int slice)
+        public override IDoubleMatrix2D ViewSlice(int slice)
         {
             CheckSlice(slice);
 
@@ -359,7 +359,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <li><i>this == other</i>
         /// </ul>
         /// </summary>
-        protected new Boolean HaveSharedCellsRaw(DoubleMatrix3D other)
+        public override Boolean HaveSharedCellsRaw(IDoubleMatrix3D other)
         {
             if (other is SelectedDenseDoubleMatrix3D)
             {
@@ -412,7 +412,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// Self modifying version of viewDice().
         /// </summary>
         /// <exception cref="ArgumentException">if some of the parameters are equal or not in range 0..2.</exception>
-        protected new AbstractMatrix3D VDice(int axis0, int axis1, int axis2)
+        protected new AbstractMatrix3D<Double> VDice(int axis0, int axis1, int axis2)
         {
             base.VDice(axis0, axis1, axis2);
 

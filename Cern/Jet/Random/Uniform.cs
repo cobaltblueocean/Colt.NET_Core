@@ -72,7 +72,7 @@ namespace Cern.Jet.Random
         #region Implement Methods
         public override double NextDouble()
         {
-            return min + (max - min) * randomGenerator.Raw();
+            return min + (max - min) * this.RandomGenerator.Raw();
         }
 
         public override int NextInt()
@@ -92,12 +92,12 @@ namespace Cern.Jet.Random
 
         public Boolean NextBoolean()
         {
-            return randomGenerator.Raw() > 0.5;
+            return this.RandomGenerator.Raw() > 0.5;
         }
 
         public double NextDoubleFromTo(double from, double to)
         {
-            return from + (to - from) * randomGenerator.Raw();
+            return from + (to - from) * this.RandomGenerator.Raw();
         }
 
         public float NextFloatFromTo(float from, float to)
@@ -107,7 +107,7 @@ namespace Cern.Jet.Random
 
         public int NextIntFromTo(int from, int to)
         {
-            return (int)((long)from + (long)((1L + (long)to - (long)from) * randomGenerator.Raw()));
+            return (int)((long)from + (long)((1L + (long)to - (long)from) * this.RandomGenerator.Raw()));
         }
 
         public long NextLongFromTo(long from, long to)

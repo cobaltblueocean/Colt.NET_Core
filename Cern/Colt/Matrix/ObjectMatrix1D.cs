@@ -28,7 +28,7 @@ namespace Cern.Colt.Matrix
     /// <returns>a flag to inform the object calling the procedure.</returns>
     public delegate Boolean ObjectMatrix1DProcedure(ObjectMatrix1D element);
 
-    public abstract class ObjectMatrix1D : AbstractMatrix1D, IEnumerable<Object>
+    public abstract class ObjectMatrix1D : AbstractMatrix1D<Object>, IEnumerable<Object>
     {
 
         #region Local Variables
@@ -44,19 +44,6 @@ namespace Cern.Colt.Matrix
         #endregion
 
         #region Abstract Methods
-
-        /// <summary>
-        /// Returns the matrix cell value at coordinate <i>index</i>.
-        ///
-        /// <p>Provided with invalid parameters this method may return invalid objects without throwing any exception.
-        /// <b>You should only use this method when you are absolutely sure that the coordinate is within bounds.</b>
-        /// Precondition (unchecked): <i>index&lt;0 || index&gt;=Size</i>.
-        /// </summary>
-        /// <param name="index">the index of the cell.</param>
-        /// <returns>the value of the specified cell.</returns>
-        /// <exception cref=""></exception>
-        public abstract Object this[int index] { get; set; }
-
         /// <summary>
         /// Construct and returns a new empty matrix <i>of the same dynamic type</i> as the receiver, having the specified size.
         /// For example, if the receiver is an instance of type <i>DenseObjectMatrix1D</i> the new matrix must also be of type <i>DenseObjectMatrix1D</i>,
@@ -99,12 +86,12 @@ namespace Cern.Colt.Matrix
         /// matrix.aggregate(F.plus, F.square);
         /// --> 14
         /// </pre>
-        /// For further examples, see the <see cref="Function.ObjectFunction{C}"/> doc</a>.
+        /// For further examples, see the <see cref="Function.ObjectFunctionDelegate{C}"/> doc</a>.
         /// </summary>
         /// <param name="aggr">an aggregation function taking as first argument the current aggregation and as second argument the transformed current cell value.</param>
         /// <param name="f">a function transforming the current cell value.</param>
         /// <returns>the aggregated measure.</returns>
-        public virtual Object Aggregate(Cern.Colt.Function.ObjectObjectFunction<Object> aggr, Cern.Colt.Function.ObjectFunction<Object> f)
+        public virtual Object Aggregate(Cern.Colt.Function.ObjectObjectFunctionDelegate<Object> aggr, Cern.Colt.Function.ObjectFunctionDelegate<Object> f)
         {
             if (Size == 0) return null;
             Object a = f(this[Size - 1]);
@@ -133,13 +120,13 @@ namespace Cern.Colt.Matrix
         /// x.aggregate(y, F.plus, F.chain(F.square, F.plus));
         /// --> 56
         /// </pre>
-        /// For further examples, see the <see cref="Function.ObjectFunction{C}"/> doc</a>.
+        /// For further examples, see the <see cref="Function.ObjectFunctionDelegate{C}"/> doc</a>.
         /// </summary>
         /// <param name="aggr">an aggregation function taking as first argument the current aggregation and as second argument the transformed current cell values.</param>
         /// <param name="f">a function transforming the current cell value.</param>
         /// <returns>the aggregated measure.</returns>
         /// <exception cref="ArgumentException">if <i>Size != other.Count</i>.</exception>
-        public virtual Object Aggregate(ObjectMatrix1D other, Cern.Colt.Function.ObjectObjectFunction<Object> aggr, Cern.Colt.Function.ObjectObjectFunction<Object> f)
+        public virtual Object Aggregate(ObjectMatrix1D other, Cern.Colt.Function.ObjectObjectFunctionDelegate<Object> aggr, Cern.Colt.Function.ObjectObjectFunctionDelegate<Object> f)
         {
             CheckSize(other);
             if (Size == 0) return null;
@@ -182,13 +169,13 @@ namespace Cern.Colt.Matrix
                                                                                /// -->
                                                                                /// matrix ==  0.479426 0.997495 0.598472 -0.350783
                                                                                /// </pre>
-                                                                               /// For further examples, see the <see cref="Function.ObjectFunction{C}"/> doc</a>.
+                                                                               /// For further examples, see the <see cref="Function.ObjectFunctionDelegate{C}"/> doc</a>.
                                                                                /// </summary>
                                                                                /// <param name="function">a function object taking as argument the current cell's value.</param>
                                                                                /// <returns><i>this</i> (for convenience only).</returns>
                                                                                /// <see cref="Cern.Jet.Math.Functions"/>
                                                                                /// <exception cref=""></exception>
-        public virtual ObjectMatrix1D Assign(Cern.Colt.Function.ObjectFunction<Object> function)
+        public virtual ObjectMatrix1D Assign(Cern.Colt.Function.ObjectFunctionDelegate<Object> function)
         {
             for (int i = Size; --i >= 0;)
             {
@@ -230,14 +217,14 @@ namespace Cern.Colt.Matrix
         /// -->
         /// m1 == 1 1 16 729
         /// </pre>
-        /// For further examples, see the <see cref="Function.ObjectFunction{C}"/> doc</a>.
+        /// For further examples, see the <see cref="Function.ObjectFunctionDelegate{C}"/> doc</a>.
         /// </summary>
         /// <param name="y">the secondary matrix to operate on.</param>
         /// <param name="function">a function object taking as first argument the current cell's value of <i>this</i>,and as second argument the current cell's value of <i>y</i>,</param>
         /// <returns><i>this</i> (for convenience only).</returns>
         /// <exception cref="ArgumentException">if <i>Size != y.Count</i>.</exception>
         /// <see cref="Cern.Jet.Math.Functions"/>
-        public virtual ObjectMatrix1D Assign(ObjectMatrix1D y, Cern.Colt.Function.ObjectObjectFunction<Object> function)
+        public virtual ObjectMatrix1D Assign(ObjectMatrix1D y, Cern.Colt.Function.ObjectObjectFunctionDelegate<Object> function)
         {
             CheckSize(y);
             for (int i = Size; --i >= 0;)
@@ -575,7 +562,7 @@ namespace Cern.Colt.Matrix
         /// </summary>
         /// <param name="condition">The condition to be matched.</param>
         /// <returns>the new view.</returns>
-        public virtual ObjectMatrix1D ViewSelection(Cern.Colt.Function.ObjectProcedure<Object> condition)
+        public virtual ObjectMatrix1D ViewSelection(Cern.Colt.Function.ObjectProcedureDelegate<Object> condition)
         {
             IntArrayList matches = new IntArrayList();
             for (int i = 0; i < Size; i++)
@@ -671,7 +658,7 @@ namespace Cern.Colt.Matrix
         /// </summary>
         /// <param name="procedure">a procedure object taking as argument the current cell's valued Stops iteration if the procedure returns <i>false</i>, otherwise continuesd</param>
         /// <returns><i>false</i> if the procedure stopped before all elements where iterated over, <i>true</i> otherwised</returns>
-        private Boolean XforEach(Cern.Colt.Function.ObjectProcedure<Object> procedure)
+        private Boolean XforEach(Cern.Colt.Function.ObjectProcedureDelegate<Object> procedure)
         {
             for (int i = Size; --i >= 0;)
             {

@@ -21,5 +21,5 @@ namespace Cern.Colt.Matrix.LinearAlgebra
     /// <param name="x">the first argument passed to the function.</param>
     /// <param name="y">the second argument passed to the function.</param>
     /// <returns>the result of the function.</returns>
-    public delegate double Matrix2DMatrix2DFunction(DoubleMatrix2D x, DoubleMatrix2D y);
+    public delegate double Matrix2DMatrix2DFunction(IDoubleMatrix2D x, IDoubleMatrix2D y);
 }

@@ -304,7 +304,7 @@ namespace Cern.Colt.List
         /// <summary>
         /// <param name="procedure">   the procedure to be appliedd Stops iteration if the procedure returns <i>false</i>, otherwise continuesd</param>
         /// <returns><i>false</i> if the procedure stopped before all elements where iterated over, <i>true</i> otherwised</returns>
-        public virtual Boolean ForEach(BooleanProcedure procedure)
+        public virtual Boolean ForEach(BooleanProcedureDelegate procedure)
         {
             for (int i = 0; i < _size;) if (!procedure(this[i++])) return false;
             return true;

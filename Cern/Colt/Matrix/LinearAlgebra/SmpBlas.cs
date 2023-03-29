@@ -70,7 +70,7 @@ namespace Cern.Colt.Matrix.LinearAlgebra
 
         #region Implemented Methods
 
-        public void Assign(DoubleMatrix2D A, DoubleFunction function)
+        public void Assign(IDoubleMatrix2D A, IDoubleFunction function)
         {
             run(A, false, new Matrix2DMatrix2DFunction((AA, BB) =>
                                     {
@@ -80,7 +80,7 @@ namespace Cern.Colt.Matrix.LinearAlgebra
                                     }));
         }
 
-        public void Assign(DoubleMatrix2D x, DoubleMatrix2D y, DoubleDoubleFunction function)
+        public void Assign(IDoubleMatrix2D x, IDoubleMatrix2D y, IDoubleDoubleFunction function)
         {
             run(x, y, false, new Matrix2DMatrix2DFunction((AA, BB) =>
                                     {
@@ -90,37 +90,37 @@ namespace Cern.Colt.Matrix.LinearAlgebra
                                     }));
         }
 
-        public double Dasum(DoubleMatrix1D x)
+        public double Dasum(IDoubleMatrix1D x)
         {
             return seqBlas.Dasum(x);
         }
 
-        public void Daxpy(double alpha, DoubleMatrix1D x, DoubleMatrix1D y)
+        public void Daxpy(double alpha, IDoubleMatrix1D x, IDoubleMatrix1D y)
         {
             seqBlas.Daxpy(alpha, x, y);
         }
 
-        public void Daxpy(double alpha, DoubleMatrix2D A, DoubleMatrix2D B)
+        public void Daxpy(double alpha, IDoubleMatrix2D A, IDoubleMatrix2D B)
         {
             seqBlas.Daxpy(alpha, A, B);
         }
 
-        public void Dcopy(DoubleMatrix1D x, DoubleMatrix1D y)
+        public void Dcopy(IDoubleMatrix1D x, IDoubleMatrix1D y)
         {
             seqBlas.Dcopy(x, y);
         }
 
-        public void Dcopy(DoubleMatrix2D A, DoubleMatrix2D B)
+        public void Dcopy(IDoubleMatrix2D A, IDoubleMatrix2D B)
         {
             seqBlas.Dcopy(A, B);
         }
 
-        public double Ddot(DoubleMatrix1D x, DoubleMatrix1D y)
+        public double Ddot(IDoubleMatrix1D x, IDoubleMatrix1D y)
         {
             return seqBlas.Ddot(x, y);
         }
 
-        public void Dgemm(bool transposeA, bool transposeB, double alpha, DoubleMatrix2D A, DoubleMatrix2D B, double beta, DoubleMatrix2D C)
+        public void Dgemm(bool transposeA, bool transposeB, double alpha, IDoubleMatrix2D A, IDoubleMatrix2D B, double beta, IDoubleMatrix2D C)
         {
             /*
 	        determine how to split and parallelize best into blocks
@@ -194,7 +194,7 @@ namespace Cern.Colt.Matrix.LinearAlgebra
                 int offset = i * span;
                 if (i == noOfTasks - 1) span = width - span * i; // last span may be a bit larger
 
-                DoubleMatrix2D AA, BB, CC;
+                IDoubleMatrix2D AA, BB, CC;
                 if (splitB)
                 {
                     // split B along columns into blocks
@@ -228,7 +228,7 @@ namespace Cern.Colt.Matrix.LinearAlgebra
 
         }
 
-        public void Dgemv(bool transposeA, double alpha, DoubleMatrix2D A, DoubleMatrix1D x, double beta, DoubleMatrix1D y)
+        public void Dgemv(bool transposeA, double alpha, IDoubleMatrix2D A, IDoubleMatrix1D x, double beta, IDoubleMatrix1D y)
         {
             /*
             split A, as follows:
@@ -273,8 +273,8 @@ namespace Cern.Colt.Matrix.LinearAlgebra
                 if (i == noOfTasks - 1) span = width - span * i; // last span may be a bit larger
 
                 // split A along rows into blocks
-                DoubleMatrix2D AA = A.ViewPart(offset, 0, span, n);
-                DoubleMatrix1D yy = y.ViewPart(offset, span);
+                IDoubleMatrix2D AA = A.ViewPart(offset, 0, span, n);
+                IDoubleMatrix1D yy = y.ViewPart(offset, span);
 
                 //    subTasks[i] = new FJTask()
                 //    {
@@ -304,17 +304,17 @@ namespace Cern.Colt.Matrix.LinearAlgebra
             }
         }
 
-        public void Dger(double alpha, DoubleMatrix1D x, DoubleMatrix1D y, DoubleMatrix2D A)
+        public void Dger(double alpha, IDoubleMatrix1D x, IDoubleMatrix1D y, IDoubleMatrix2D A)
         {
             seqBlas.Dger(alpha, x, y, A);
         }
 
-        public double Dnrm2(DoubleMatrix1D x)
+        public double Dnrm2(IDoubleMatrix1D x)
         {
             return seqBlas.Dnrm2(x);
         }
 
-        public void Drot(DoubleMatrix1D x, DoubleMatrix1D y, double c, double s)
+        public void Drot(IDoubleMatrix1D x, IDoubleMatrix1D y, double c, double s)
         {
             seqBlas.Drot(x, y, c, s);
         }
@@ -324,45 +324,45 @@ namespace Cern.Colt.Matrix.LinearAlgebra
             seqBlas.Drotg(a, b, rotvec);
         }
 
-        public void Dscal(double alpha, DoubleMatrix1D x)
+        public void Dscal(double alpha, IDoubleMatrix1D x)
         {
             seqBlas.Dscal(alpha, x);
         }
 
-        public void Dscal(double alpha, DoubleMatrix2D A)
+        public void Dscal(double alpha, IDoubleMatrix2D A)
         {
             seqBlas.Dscal(alpha, A);
         }
 
-        public void Dswap(DoubleMatrix1D x, DoubleMatrix1D y)
+        public void Dswap(IDoubleMatrix1D x, IDoubleMatrix1D y)
         {
             seqBlas.Dswap(x, y);
         }
 
-        public void Dswap(DoubleMatrix2D x, DoubleMatrix2D y)
+        public void Dswap(IDoubleMatrix2D x, IDoubleMatrix2D y)
         {
             seqBlas.Dswap(x, y);
         }
 
-        public void Dsymv(bool isUpperTriangular, double alpha, DoubleMatrix2D A, DoubleMatrix1D x, double beta, DoubleMatrix1D y)
+        public void Dsymv(bool isUpperTriangular, double alpha, IDoubleMatrix2D A, IDoubleMatrix1D x, double beta, IDoubleMatrix1D y)
         {
             seqBlas.Dsymv(isUpperTriangular, alpha, A, x, beta, y);
         }
 
-        public void Dtrmv(bool isUpperTriangular, bool transposeA, bool isUnitTriangular, DoubleMatrix2D A, DoubleMatrix1D x)
+        public void Dtrmv(bool isUpperTriangular, bool transposeA, bool isUnitTriangular, IDoubleMatrix2D A, IDoubleMatrix1D x)
         {
             seqBlas.Dtrmv(isUpperTriangular, transposeA, isUnitTriangular, A, x);
         }
 
-        public int Idamax(DoubleMatrix1D x)
+        public int Idamax(IDoubleMatrix1D x)
         {
             return seqBlas.Idamax(x);
         }
         #endregion
 
-        protected double[] run(DoubleMatrix2D A, DoubleMatrix2D B, Boolean collectResults, Matrix2DMatrix2DFunction fun)
+        protected double[] run(IDoubleMatrix2D A, IDoubleMatrix2D B, Boolean collectResults, Matrix2DMatrix2DFunction fun)
         {
-            DoubleMatrix2D[][] blocks;
+            IDoubleMatrix2D[][] blocks;
             blocks = this.smp.SplitBlockedNN(A, B, NN_THRESHOLD, A.Rows * A.Columns);
             //blocks = this.smp.splitStridedNN(A, B, NN_THRESHOLD, A.Rows*A.Columns);
             int b = blocks != null ? blocks.GetLength(1) : 1;
@@ -381,9 +381,9 @@ namespace Cern.Colt.Matrix.LinearAlgebra
             return results;
         }
 
-        protected double[] run(DoubleMatrix2D A, Boolean collectResults, Matrix2DMatrix2DFunction fun)
+        protected double[] run(IDoubleMatrix2D A, Boolean collectResults, Matrix2DMatrix2DFunction fun)
         {
-            DoubleMatrix2D[] blocks;
+            IDoubleMatrix2D[] blocks;
             blocks = this.smp.SplitBlockedNN(A, NN_THRESHOLD, A.Rows * A.Columns);
             //blocks = this.smp.splitStridedNN(A, NN_THRESHOLD, A.Rows*A.Columns);
             int b = blocks != null ? blocks.Length : 1;
@@ -411,7 +411,7 @@ namespace Cern.Colt.Matrix.LinearAlgebra
             if (this.smp != null) this.smp.Statistics();
         }
 
-        private double XSum(DoubleMatrix2D A)
+        private double XSum(IDoubleMatrix2D A)
         {
             double[] sums = run(A, true,
                 new Matrix2DMatrix2DFunction((AA, BB) =>

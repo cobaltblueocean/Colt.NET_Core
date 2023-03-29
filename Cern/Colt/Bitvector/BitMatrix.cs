@@ -232,7 +232,7 @@ namespace Cern.Colt.Bitvector
         /// <param name="state">element to search for.</param>
         /// <param name="procedure">a procedure object taking as first argument the current column and as second argument the current rowd Stops iteration if the procedure returns <i>false</i>, otherwise continuesd </param>
         /// <returns><i>false</i> if the procedure stopped before all elements where iterated over, <i>true</i> otherwised </returns>
-        public Boolean ForEachCoordinateInState(Boolean state, Cern.Colt.Function.IntIntProcedure procedure)
+        public Boolean ForEachCoordinateInState(Boolean state, Cern.Colt.Function.IntIntProcedureDelegate procedure)
         {
             /*
             this is equivalent to the low level version below, apart from that it iterates in the reverse oder and is slower.

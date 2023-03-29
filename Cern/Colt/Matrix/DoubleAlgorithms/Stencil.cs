@@ -50,9 +50,9 @@ namespace Cern.Colt.Matrix.DoubleAlgorithms
         /// (Since a convergence may be expensive, you may want to do it only every 2,4 or 8 iterationsd)
         /// </param>
         /// <returns>the number of iterations actually executedd </returns>
-        public static int Stencil27(DoubleMatrix3D A, Cern.Colt.Function.Double27Function function, int maxIterations, DoubleMatrix3DProcedure hasConverged, int convergenceIterations)
+        public static int Stencil27(IDoubleMatrix3D A, Cern.Colt.Function.Double27FunctionDelegate function, int maxIterations, DoubleMatrix3DProcedure hasConverged, int convergenceIterations)
         {
-            DoubleMatrix3D B = A.Copy();
+            var B = A.Copy();
             if (convergenceIterations <= 1) convergenceIterations = 2;
             if (convergenceIterations % 2 != 0) convergenceIterations++; // odd -> make it even
 
@@ -93,9 +93,9 @@ namespace Cern.Colt.Matrix.DoubleAlgorithms
         /// (Since a convergence may be expensive, you may want to do it only every 2,4 or 8 iterationsd)
         /// </param>
         /// <returns><the number of iterations actually executedd /returns>
-        public static int Stencil9(DoubleMatrix2D A, Cern.Colt.Function.Double9Function function, int maxIterations, DoubleMatrix2DProcedure hasConverged, int convergenceIterations)
+        public static int Stencil9(IDoubleMatrix2D A, Cern.Colt.Function.Double9FunctionDelegate function, int maxIterations, DoubleMatrix2DProcedure hasConverged, int convergenceIterations)
         {
-            DoubleMatrix2D B = A.Copy();
+            var B = A.Copy();
             if (convergenceIterations <= 1) convergenceIterations = 2;
             if (convergenceIterations % 2 != 0) convergenceIterations++; // odd -> make it even
 

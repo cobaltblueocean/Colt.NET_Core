@@ -282,7 +282,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <summary>
         /// Self modifying version of viewDice().
         /// </summary>
-        protected override AbstractMatrix2D VDice()
+        public override AbstractMatrix2D<Object> VDice()
         {
             base.VDice();
             // swap

@@ -137,8 +137,8 @@ namespace Cern.Jet.Random
             // GENERATOR 
             for (; ; )
             {
-                u = randomGenerator.Raw();
-                v = randomGenerator.Raw();
+                u = this.RandomGenerator.Raw();
+                v = this.RandomGenerator.Raw();
                 if (u <= pm)
                 { // Rejection with a uniform majorizing function
                   // over the body of the distribution 

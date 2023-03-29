@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="DoubleMatrix1D.cs" company="CERN">
+// <copyright file="IDoubleMatrix1D.cs" company="CERN">
 //   Copyright © 1999 CERN - European Organization for Nuclear Research.
 //   Permission to use, copy, modify, distribute and sell this software and its documentation for any purpose 
 //   is hereby granted without fee, provided that the above copyright notice appear in all copies and 
@@ -20,7 +20,7 @@ namespace Cern.Colt.Matrix
     using System.Collections.Generic;
     using System.Reflection;
     using Cern.Colt.List;
-
+    using Cern.Jet.Math;
     using DoubleAlgorithms;
 
     using Function;
@@ -36,7 +36,7 @@ namespace Cern.Colt.Matrix
     /// <returns>
     /// A flag to inform the object calling the procedure.
     /// </returns>
-    public delegate bool DoubleMatrix1DProcedure(DoubleMatrix1D element);
+    public delegate bool IDoubleMatrix1DProcedure(IDoubleMatrix1D element);
 
     /// <summary>
     /// A binary function of two 1-d matrices returning a single value.
@@ -50,25 +50,13 @@ namespace Cern.Colt.Matrix
     /// <returns>
     /// The dinstance.
     /// </returns>
-    public delegate double DoubleMatrix1DDinstance(DoubleMatrix1D x, DoubleMatrix1D y);
+    public delegate double IDoubleMatrix1DDinstance(IDoubleMatrix1D x, IDoubleMatrix1D y);
 
     /// <summary>
     /// Abstract base class for 1-d matrices (aka <i>vectors</i>) holding <tt>double</tt> elements.
     /// </summary>
-    public abstract class DoubleMatrix1D : AbstractMatrix1D, IEnumerable<double>
+    public abstract class DoubleMatrix1D : AbstractMatrix1D<Double>, IDoubleMatrix1D
     {
-        /// <summary>
-        /// Gets or sets the matrix cell value at coordinate <tt>index</tt>.
-        /// </summary>
-        /// <param name="index">
-        /// The index of the cell.
-        /// </param>
-        public abstract double this[int index]
-        {
-            get;
-            set;
-        }
-
         /// <summary>
         /// Implicit conversione from array.
         /// </summary>
@@ -95,12 +83,12 @@ namespace Cern.Colt.Matrix
         /// <returns>
         /// The aggregated measure.
         /// </returns>
-        public virtual double Aggregate(DoubleDoubleFunction aggr, DoubleFunction f)
+        public virtual double Aggregate(IDoubleDoubleFunction aggr, IDoubleFunction f)
         {
             if (Size == 0) return double.NaN;
-            double a = f(this[Size - 1]);
+            double a = f.Apply(this[Size - 1]);
             for (int i = Size - 1; --i >= 0;)
-                a = aggr(a, f(this[i]));
+                a = aggr.Apply(a, f.Apply(this[i]));
             return a;
         }
 
@@ -122,13 +110,13 @@ namespace Cern.Colt.Matrix
         /// <exception cref="ArgumentOutOfRangeException">
         /// If <tt>size() != other.size()</tt>.
         /// </exception>
-        public double Aggregate(DoubleMatrix1D other, DoubleDoubleFunction aggr, DoubleDoubleFunction f)
+        public double Aggregate(IMatrix1D<double> other, IDoubleDoubleFunction aggr, IDoubleDoubleFunction f)
         {
             CheckSize(other);
             if (Size == 0) return double.NaN;
-            double a = f(this[Size - 1], other[Size - 1]);
+            double a = f.Apply(this[Size - 1], other[Size - 1]);
             for (int i = Size - 1; --i >= 0;)
-                a = aggr(a, f(this[i], other[i]));
+                a = aggr.Apply(a, f.Apply(this[i], other[i]));
             return a;
         }
 
@@ -149,7 +137,7 @@ namespace Cern.Colt.Matrix
         /// <exception cref="ArgumentOutOfRangeException">
         /// If <tt>values.length != size()</tt>.
         /// </exception>
-        public virtual DoubleMatrix1D Assign(double[] values)
+        public virtual IDoubleMatrix1D Assign(double[] values)
         {
             if (values.Length != Size) throw new ArgumentOutOfRangeException(String.Format(Cern.LocalizedResources.Instance().Matrix_MustHaveSameNumberOfCell, values.Length, Size));
             for (int i = Size; --i >= 0;)
@@ -166,7 +154,7 @@ namespace Cern.Colt.Matrix
         /// <returns>
         /// <tt>this</tt> (for convenience only).
         /// </returns>
-        public virtual DoubleMatrix1D Assign(double value)
+        public virtual IDoubleMatrix1D Assign(double value)
         {
             for (int i = Size; --i >= 0;)
                 this[i] = value;
@@ -183,10 +171,10 @@ namespace Cern.Colt.Matrix
         /// <returns>
         /// <tt>this</tt> (for convenience only).
         /// </returns>
-        public virtual DoubleMatrix1D Assign(DoubleFunction function)
+        public virtual IDoubleMatrix1D Assign(IDoubleFunction function)
         {
             for (int i = Size; --i >= 0;)
-                this[i] = function(this[i]);
+                this[i] = function.Apply(this[i]);
             return this;
         }
 
@@ -204,7 +192,7 @@ namespace Cern.Colt.Matrix
         /// <exception cref="ArgumentOutOfRangeException">
         /// If <tt>size() != other.size()</tt>.
         /// </exception>
-        public virtual DoubleMatrix1D Assign(DoubleMatrix1D other)
+        public virtual IDoubleMatrix1D Assign(IDoubleMatrix1D other)
         {
             if (other == this) return this;
             CheckSize(other);
@@ -216,7 +204,7 @@ namespace Cern.Colt.Matrix
         }
 
 
-        public virtual DoubleMatrix1D Assign(Cern.Jet.Math.Mult mult)
+        public virtual IDoubleMatrix1D Assign(Cern.Jet.Math.Mult mult)
         {
             for (int i = Size; --i >= 0;)
                 this[i] = mult.Apply(this[i]);
@@ -240,20 +228,20 @@ namespace Cern.Colt.Matrix
         /// <exception cref="ArgumentOutOfRangeException">
         /// If <tt>size() != y.size()</tt>.
         /// </exception>
-        public virtual DoubleMatrix1D Assign(DoubleMatrix1D y, DoubleDoubleFunction function)
+        public virtual IDoubleMatrix1D Assign(IDoubleMatrix1D y, IDoubleDoubleFunction function)
         {
             CheckSize(y);
             for (int i = Size; --i >= 0;)
-                this[i] = function(this[i], y[i]);
+                this[i] = function.Apply(this[i], y[i]);
             return this;
         }
 
-        public DoubleMatrix1D Assign(DoubleMatrix1D y, Cern.Jet.Math.PlusMult function)
-        {
-            return Assign(y, function.Apply);
-        }
+        //public IDoubleMatrix1D Assign(IDoubleMatrix1D y, Cern.Jet.Math.PlusMult function)
+        //{
+        //    return Assign(y, function);
+        //}
 
-        public DoubleMatrix1D Assign(DoubleMatrix1D y, Cern.Jet.Math.PlusMult function, IntArrayList nonZeroIndexes)
+        public IDoubleMatrix1D Assign(IDoubleMatrix1D y, Cern.Jet.Math.PlusMult function, IntArrayList nonZeroIndexes)
         {
             CheckSize(y);
             int[] nonZeroElements = nonZeroIndexes.ToArray();
@@ -291,20 +279,20 @@ namespace Cern.Colt.Matrix
             return this;
         }
 
-        public DoubleMatrix1D Assign(DoubleMatrix1D y, Cern.Colt.Function.DoubleDoubleFunction function, IntArrayList nonZeroIndexes)
+        public IDoubleMatrix1D Assign(IDoubleMatrix1D y, IDoubleDoubleFunction function, IntArrayList nonZeroIndexes)
         {
             CheckSize(y);
             int[] nonZeroElements = nonZeroIndexes.ToArray();
 
             // specialized for speed
-            if (function == Cern.Jet.Math.Functions.DoubleDoubleFunctions.Mult)
+            if (function is Cern.Jet.Math.Mult)
             {  // x[i] = x[i] * y[i]
                 int j = 0;
                 for (int index = nonZeroIndexes.Count; --index >= 0;)
                 {
                     int i = nonZeroElements[index];
                     for (; j < i; j++) this[j] = 0; // x[i] = 0 for all zeros
-                    this[i] =  this[i] * y[i];  // x[i] * y[i] for all nonZeros
+                    this[i] = this[i] * y[i];  // x[i] * y[i] for all nonZeros
                     j++;
                 }
             }
@@ -340,9 +328,9 @@ namespace Cern.Colt.Matrix
         /// <returns>
         /// A deep copy of the receiver.
         /// </returns>
-        public DoubleMatrix1D Copy()
+        public IDoubleMatrix1D Copy()
         {
-            DoubleMatrix1D copy = Like();
+            IDoubleMatrix1D copy = Like();
             copy.Assign(this);
             return copy;
         }
@@ -364,7 +352,7 @@ namespace Cern.Colt.Matrix
         /// <summary>
         /// Compares this object against the specified object.
         /// The result is <code>true</code> if and only if the argument is 
-        /// not <code>null</code> and is at least a <code>DoubleMatrix1D</code> object
+        /// not <code>null</code> and is at least a <code>IDoubleMatrix1D</code> object
         /// that has the same sizes as the receiver and 
         /// has exactly the same values at the same indexes.
         /// </summary>
@@ -379,9 +367,9 @@ namespace Cern.Colt.Matrix
         {
             if (this == obj) return true;
             if (obj == null) return false;
-            if (!(obj is DoubleMatrix1D)) return false;
+            if (!(obj is IDoubleMatrix1D)) return false;
 
-            return Property.DEFAULT.Equals(this, (DoubleMatrix1D)obj);
+            return Property.DEFAULT.Equals(this, (IDoubleMatrix1D)obj);
         }
 
         public override int GetHashCode()
@@ -491,7 +479,7 @@ namespace Cern.Colt.Matrix
         /// <returns>
         /// A new empty matrix of the same dynamic type.
         /// </returns>
-        public DoubleMatrix1D Like()
+        public IDoubleMatrix1D Like()
         {
             return Like(Size);
         }
@@ -505,7 +493,7 @@ namespace Cern.Colt.Matrix
         /// <returns>
         /// A new empty matrix of the same dynamic type.
         /// </returns>
-        public abstract DoubleMatrix1D Like(int size);
+        public abstract IDoubleMatrix1D Like(int size);
 
         /// <summary>
         /// Construct and returns a new 2-d matrix <i>of the corresponding dynamic type</i>, entirelly independent of the receiver.
@@ -519,7 +507,7 @@ namespace Cern.Colt.Matrix
         /// <returns>
         /// A new matrix of the corresponding dynamic type.
         /// </returns>
-        public abstract DoubleMatrix2D Like2D(int rows, int columns);
+        public abstract IDoubleMatrix2D Like2D(int rows, int columns);
 
         /// <summary>
         /// Sets the matrix cell at coordinate <tt>index</tt> to the specified value.
@@ -549,7 +537,7 @@ namespace Cern.Colt.Matrix
         /// <exception cref="ArgumentOutOfRangeException">
         /// If <tt>size() != other.size()</tt>.
         /// </exception>
-        public virtual void Swap(DoubleMatrix1D other)
+        public virtual void Swap(IDoubleMatrix1D other)
         {
             CheckSize(other);
             for (int i = Size; --i >= 0;)
@@ -623,9 +611,9 @@ namespace Cern.Colt.Matrix
         /// <returns>
         /// A new flip view.
         /// </returns>
-        public virtual DoubleMatrix1D ViewFlip()
+        public virtual IDoubleMatrix1D ViewFlip()
         {
-            return (DoubleMatrix1D)View().VFlip();
+            return (IDoubleMatrix1D)View().VFlip();
         }
 
         /// <summary>
@@ -643,9 +631,9 @@ namespace Cern.Colt.Matrix
         /// <exception cref="IndexOutOfRangeException">
         /// If <tt>index &lt; 0 || width &lt; 0 || index+width &gt; size()</tt>.
         /// </exception>
-        public virtual DoubleMatrix1D ViewPart(int index, int width)
+        public virtual IDoubleMatrix1D ViewPart(int index, int width)
         {
-            return (DoubleMatrix1D)View().VPart(index, width);
+            return (IDoubleMatrix1D)View().VPart(index, width);
         }
 
         /// <summary>
@@ -662,7 +650,7 @@ namespace Cern.Colt.Matrix
         /// <exception cref="IndexOutOfRangeException">
         /// If <tt>!(0 &lt;= indexes[i] &lt; size())</tt> for any <tt>i=0..indexes.length()-1</tt>.
         /// </exception>
-        public virtual DoubleMatrix1D ViewSelection(int[] indexes)
+        public virtual IDoubleMatrix1D ViewSelection(int[] indexes)
         {
             // check for "all"
             if (indexes == null)
@@ -688,11 +676,11 @@ namespace Cern.Colt.Matrix
         /// <returns>
         /// The new view.
         /// </returns>
-        public virtual DoubleMatrix1D ViewSelection(DoubleProcedure condition)
+        public virtual IDoubleMatrix1D ViewSelection(IDoubleProcedure condition)
         {
             var matches = new IntArrayList();
             for (int i = 0; i < Size; i++)
-                if (condition(this[i])) matches.Add(i);
+                if (condition.Apply(this[i])) matches.Add(i);
             return ViewSelection(matches.ToArray());
         }
 
@@ -703,7 +691,7 @@ namespace Cern.Colt.Matrix
         /// <returns>
         /// A new sorted vector (matrix) view.
         /// </returns>
-        public virtual DoubleMatrix1D ViewSorted()
+        public virtual IDoubleMatrix1D ViewSorted()
         {
             return Sorting.MergeSort.Sort(this);
         }
@@ -721,9 +709,9 @@ namespace Cern.Colt.Matrix
         /// <exception cref="IndexOutOfRangeException">
         /// If <tt>stride &lt;= 0</tt>.
         /// </exception>
-        public virtual DoubleMatrix1D ViewStrides(int s)
+        public virtual IDoubleMatrix1D ViewStrides(int s)
         {
-            return (DoubleMatrix1D)View().VStrides(s);
+            return (IDoubleMatrix1D)View().VStrides(s);
         }
 
         /// <summary>
@@ -737,7 +725,7 @@ namespace Cern.Colt.Matrix
         /// <returns>
         /// The sum of products.
         /// </returns>
-        public virtual double ZDotProduct(DoubleMatrix1D y)
+        public virtual double ZDotProduct(IDoubleMatrix1D y)
         {
             return ZDotProduct(y, 0, Size);
         }
@@ -759,7 +747,7 @@ namespace Cern.Colt.Matrix
         /// <returns>
         /// The sum of products; zero if <tt>from &lt; 0 || length &lt; 0</tt>.
         /// </returns>
-        public virtual double ZDotProduct(DoubleMatrix1D y, int from, int length)
+        public virtual double ZDotProduct(IDoubleMatrix1D y, int from, int length)
         {
             if (from < 0 || length <= 0) return 0;
 
@@ -794,7 +782,7 @@ namespace Cern.Colt.Matrix
         /// <returns>
         /// The sum of products.
         /// </returns>
-        public virtual double ZDotProduct(DoubleMatrix1D y, int from, int length, IntArrayList nonZeroIndexes)
+        public virtual double ZDotProduct(IDoubleMatrix1D y, int from, int length, IntArrayList nonZeroIndexes)
         {
             // determine minimum length
             if (from < 0 || length <= 0) return 0;
@@ -862,7 +850,7 @@ namespace Cern.Colt.Matrix
         /// <returns>
         /// The content of this matrix if it is a wrapper; or <tt>this</tt> otherwise.
         /// </returns>
-        protected DoubleMatrix1D GetContent()
+        public IDoubleMatrix1D GetContent()
         {
             return this;
         }
@@ -876,7 +864,7 @@ namespace Cern.Colt.Matrix
         /// <returns>
         /// <tt>true</tt> if both matrices share at least one identical cell.
         /// </returns>
-        protected virtual bool HaveSharedCells(DoubleMatrix1D other)
+        public virtual bool HaveSharedCells(IDoubleMatrix1D other)
         {
             if (other == null) return false;
             if (this == other) return true;
@@ -892,7 +880,7 @@ namespace Cern.Colt.Matrix
         /// <returns>
         /// <tt>true</tt> if both matrices share at least one identical cell.
         /// </returns>
-        protected virtual bool HaveSharedCellsRaw(DoubleMatrix1D other)
+        public virtual bool HaveSharedCellsRaw(IDoubleMatrix1D other)
         {
             return false;
         }
@@ -904,9 +892,9 @@ namespace Cern.Colt.Matrix
         /// <returns>
         /// A new view of the receiver.
         /// </returns>
-        protected DoubleMatrix1D View()
+        public IDoubleMatrix1D View()
         {
-            return (DoubleMatrix1D)Clone();
+            return (IDoubleMatrix1D)Clone();
         }
 
         /// <summary>
@@ -918,7 +906,7 @@ namespace Cern.Colt.Matrix
         /// <returns>
         /// A new view.
         /// </returns>
-        protected abstract DoubleMatrix1D ViewSelectionLike(int[] offsets);
+        public abstract IDoubleMatrix1D ViewSelectionLike(int[] offsets);
 
         /// <summary>
         /// Returns the dot product of two vectors x and y, which is <tt>Sum(x[i]*y[i])</tt>,
@@ -933,7 +921,7 @@ namespace Cern.Colt.Matrix
         /// <returns>
         /// The sum of products.
         /// </returns>
-        protected double ZDotProduct(DoubleMatrix1D y, IntArrayList nonZeroIndexes)
+        public double ZDotProduct(IDoubleMatrix1D y, IntArrayList nonZeroIndexes)
         {
             return ZDotProduct(y, 0, Size, nonZeroIndexes);
         }

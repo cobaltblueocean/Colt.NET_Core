@@ -28,7 +28,7 @@ namespace Cern.Colt.Matrix.DoubleAlgorithms
     /// A negative integer, zero, or a positive integer as the first argument is less than, equal
     /// to, or greater than the second.
     /// </returns>
-    public delegate int DoubleMatrix1DComparator(DoubleMatrix1D o1, DoubleMatrix1D o2);
+    public delegate int DoubleMatrix1DComparator(IDoubleMatrix1D o1, IDoubleMatrix1D o2);
 
     /// <summary>
     /// A comparison function which imposes a <i>total ordering</i> on some collection of elements. 
@@ -43,5 +43,5 @@ namespace Cern.Colt.Matrix.DoubleAlgorithms
     /// A negative integer, zero, or a positive integer as the first argument is less than, equal
     /// to, or greater than the second.
     /// </returns>
-    public delegate int DoubleMatrix2DComparator(DoubleMatrix2D o1, DoubleMatrix2D o2);
+    public delegate int DoubleMatrix2DComparator(IDoubleMatrix2D o1, IDoubleMatrix2D o2);
 }

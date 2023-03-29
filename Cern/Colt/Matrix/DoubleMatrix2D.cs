@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="DoubleMatrix2D.cs" company="CERN">
+// <copyright file="IDoubleMatrix2D.cs" company="CERN">
 //   Copyright © 1999 CERN - European Organization for Nuclear Research.
 //   Permission to use, copy, modify, distribute and sell this software and its documentation for any purpose 
 //   is hereby granted without fee, provided that the above copyright notice appear in all copies and 
@@ -33,7 +33,7 @@ namespace Cern.Colt.Matrix
     /// <returns>
     /// A flag to inform the object calling the procedure.
     /// </returns>
-    public delegate bool DoubleMatrix2DProcedure(DoubleMatrix2D element);
+    public delegate bool DoubleMatrix2DProcedure(IDoubleMatrix2D element);
 
     /// <summary>
     /// A binary function of two 1-d matrices returning a single value.
@@ -47,28 +47,13 @@ namespace Cern.Colt.Matrix
     /// <returns>
     /// The dinstance.
     /// </returns>
-    public delegate double DoubleMatrix2DDinstance(DoubleMatrix2D x, DoubleMatrix2D y);
+    public delegate double DoubleMatrix2DDinstance(IDoubleMatrix2D x, IDoubleMatrix2D y);
 
     /// <summary>
     /// Abstract base class for 2-d matrices holding <tt>double</tt> elements.
     /// </summary>
-    public abstract class DoubleMatrix2D : AbstractMatrix2D, IEnumerable<double>
+    public abstract class DoubleMatrix2D : AbstractMatrix2D<double>, IDoubleMatrix2D
     {
-        /// <summary>
-        /// Gets or sets the matrix cell value at coordinate <tt>[row,column]</tt>.
-        /// </summary>
-        /// <param name="row">
-        /// The index of the row-coordinate.
-        /// </param>
-        /// <param name="column">
-        /// The index of the column-coordinate.
-        /// </param>
-        public abstract double this[int row, int column]
-        {
-            get;
-            set;
-        }
-
         /// <summary>
         /// Applies a function to each cell and aggregates the results.
         /// </summary>
@@ -81,16 +66,16 @@ namespace Cern.Colt.Matrix
         /// <returns>
         /// The aggregated measure.
         /// </returns>
-        public double Aggregate(DoubleDoubleFunction aggr, DoubleFunction f)
+        public double Aggregate(IDoubleDoubleFunction aggr, IDoubleFunction f)
         {
-            if (Size == 0) 
+            if (Size == 0)
                 return double.NaN;
-            double a = f(this[Rows - 1, Columns - 1]);
+            double a = f.Apply(this[Rows - 1, Columns - 1]);
             int d = 1; // last cell already done
             for (int row = Rows; --row >= 0;)
             {
                 for (int column = Columns - d; --column >= 0;)
-                    a = aggr(a, f(this[row, column]));
+                    a = aggr.Apply(a, f.Apply(this[row, column]));
                 d = 0;
             }
 
@@ -115,16 +100,16 @@ namespace Cern.Colt.Matrix
         /// <exception cref="ArgumentException">
         /// If <tt>columns() != other.columns() || rows() != other.rows()</tt>
         /// </exception>
-        public double Aggregate(DoubleMatrix2D other, DoubleDoubleFunction aggr, DoubleDoubleFunction f)
+        public double Aggregate(IDoubleMatrix2D other, IDoubleDoubleFunction aggr, IDoubleDoubleFunction f)
         {
             CheckShape(other);
             if (Size == 0) return double.NaN;
-            double a = f(this[Rows - 1, Columns - 1], other[Rows - 1, Columns - 1]);
+            double a = f.Apply(this[Rows - 1, Columns - 1], other[Rows - 1, Columns - 1]);
             int d = 1; // last cell already done
             for (int row = Rows; --row >= 0;)
             {
                 for (int column = Columns - d; --column >= 0;)
-                    a = aggr(a, f(this[row, column], other[row, column]));
+                    a = aggr.Apply(a, f.Apply(this[row, column], other[row, column]));
                 d = 0;
             }
 
@@ -148,13 +133,13 @@ namespace Cern.Colt.Matrix
         /// <exception cref="ArgumentException">
         /// If <tt>values.Length != rows() || for any 0 &lt;= row &lt; rows(): values[row].Length != columns()</tt>.
         /// </exception>
-        public virtual DoubleMatrix2D Assign(double[][] values)
+        public virtual IDoubleMatrix2D Assign(double[][] values)
         {
             if (values.Length != Rows) throw new ArgumentException(String.Format(Cern.LocalizedResources.Instance().Matrix_MustHaveSameNumberOfRows, values.Length, Rows));
             for (int row = Rows; --row >= 0;)
             {
                 double[] currentRow = values[row];
-                if (currentRow.Length != Columns) throw new ArgumentException(String.Format(Cern.LocalizedResources.Instance().Matrix_MustHaveSameNumberOfColumnsInEveryRow, currentRow.Length , Columns));
+                if (currentRow.Length != Columns) throw new ArgumentException(String.Format(Cern.LocalizedResources.Instance().Matrix_MustHaveSameNumberOfColumnsInEveryRow, currentRow.Length, Columns));
                 for (int column = Columns; --column >= 0;)
                     this[row, column] = currentRow[column];
             }
@@ -179,7 +164,7 @@ namespace Cern.Colt.Matrix
         /// <exception cref="ArgumentException">
         /// If <tt>values.Length != rows() || for any 0 &lt;= row &lt; rows(): values[row].Length != columns()</tt>.
         /// </exception>
-        public virtual DoubleMatrix2D Assign(double[,] values)
+        public virtual IDoubleMatrix2D Assign(double[,] values)
         {
             return Assign(values.ToJagged());
         }
@@ -193,7 +178,7 @@ namespace Cern.Colt.Matrix
         /// <returns>
         /// <tt>this</tt> (for convenience only).
         /// </returns>
-        public virtual DoubleMatrix2D Assign(double value)
+        public virtual IDoubleMatrix2D Assign(double value)
         {
             int r = Rows;
             int c = Columns;
@@ -212,11 +197,11 @@ namespace Cern.Colt.Matrix
         /// <returns>
         /// <tt>this</tt> (for convenience only).
         /// </returns>
-        public virtual DoubleMatrix2D Assign(DoubleFunction function)
+        public virtual IDoubleMatrix2D Assign(IDoubleFunction function)
         {
             for (int row = Rows; --row >= 0;)
                 for (int column = Columns; --column >= 0;)
-                    this[row, column] = function(this[row, column]);
+                    this[row, column] = function.Apply(this[row, column]);
             return this;
         }
 
@@ -234,7 +219,7 @@ namespace Cern.Colt.Matrix
         /// <exception cref="ArgumentException">
         /// If <tt>columns() != other.columns() || rows() != other.rows()</tt>
         /// </exception>
-        public virtual DoubleMatrix2D Assign(DoubleMatrix2D other)
+        public virtual IDoubleMatrix2D Assign(IDoubleMatrix2D other)
         {
             if (other == this) return this;
             CheckShape(other);
@@ -262,10 +247,10 @@ namespace Cern.Colt.Matrix
         /// <exception cref="ArgumentException">
         /// If <tt>columns() != other.columns() || rows() != other.rows()</tt>
         /// </exception>
-        public virtual DoubleMatrix2D Assign(DoubleMatrix2D y, DoubleDoubleFunction function)
+        public virtual IDoubleMatrix2D Assign(IDoubleMatrix2D y, IDoubleDoubleFunction function)
         {
             CheckShape(y);
-            for (int row = Rows; --row >= 0;) for (int column = Columns; --column >= 0;) this[row, column] = function(this[row, column], y[row, column]);
+            for (int row = Rows; --row >= 0;) for (int column = Columns; --column >= 0;) this[row, column] = function.Apply(this[row, column], y[row, column]);
             return this;
         }
 
@@ -290,7 +275,7 @@ namespace Cern.Colt.Matrix
         /// <returns>
         /// A deep copy of the receiver.
         /// </returns>
-        public DoubleMatrix2D Copy()
+        public virtual IDoubleMatrix2D Copy()
         {
             return Like().Assign(this);
         }
@@ -312,7 +297,7 @@ namespace Cern.Colt.Matrix
         /// <summary>
         /// Compares this object against the specified object.
         /// The result is <code>true</code> if and only if the argument is 
-        /// not <code>null</code> and is at least a <code>DoubleMatrix2D</code> object
+        /// not <code>null</code> and is at least a <code>IDoubleMatrix2D</code> object
         /// that has the same number of columns and rows as the receiver and 
         /// has exactly the same values at the same coordinates.
         /// </summary>
@@ -327,9 +312,9 @@ namespace Cern.Colt.Matrix
         {
             if (this == obj) return true;
             if (obj == null) return false;
-            if (!(obj is DoubleMatrix2D)) return false;
+            if (!(obj is IDoubleMatrix2D)) return false;
 
-            return Property.DEFAULT.Equals(this, (DoubleMatrix2D)obj);
+            return Property.DEFAULT.Equals(this, (IDoubleMatrix2D)obj);
         }
 
         public override int GetHashCode()
@@ -349,7 +334,7 @@ namespace Cern.Colt.Matrix
         /// <returns>
         /// <tt>this</tt> (for convenience only).
         /// </returns>
-        public virtual DoubleMatrix2D ForEachNonZero(IntIntDoubleFunction function)
+        public virtual IDoubleMatrix2D ForEachNonZero(IntIntDoubleFunctionDelegate function)
         {
             for (int row = Rows; --row >= 0;)
                 for (int column = Columns; --column >= 0;)
@@ -460,7 +445,7 @@ namespace Cern.Colt.Matrix
         /// <returns>
         /// A new empty matrix of the same dynamic type.
         /// </returns>
-        public DoubleMatrix2D Like()
+        public virtual IDoubleMatrix2D Like()
         {
             return Like(Rows, Columns);
         }
@@ -477,7 +462,7 @@ namespace Cern.Colt.Matrix
         /// <returns>
         /// A new empty matrix of the same dynamic type.
         /// </returns>
-        public abstract DoubleMatrix2D Like(int rows, int columns);
+        public abstract IDoubleMatrix2D Like(int rows, int columns);
 
         /// <summary>
         /// Construct and returns a new 1-d matrix <i>of the corresponding dynamic type</i>, entirelly independent of the receiver.
@@ -488,7 +473,7 @@ namespace Cern.Colt.Matrix
         /// <returns>
         /// A new matrix of the corresponding dynamic type.
         /// </returns>
-        public abstract DoubleMatrix1D Like1D(int size);
+        public abstract IDoubleMatrix1D Like1D(int size);
 
         /// <summary>
         /// Return an iterator over non-zero elements.
@@ -578,7 +563,7 @@ namespace Cern.Colt.Matrix
         /// <exception cref="IndexOutOfRangeException">
         /// If <tt>column &lt; 0 || column &gt;= Columns</tt>.
         /// </exception>
-        public virtual DoubleMatrix1D ViewColumn(int column)
+        public virtual IDoubleMatrix1D ViewColumn(int column)
         {
             CheckColumn(column);
             int viewSize = Rows;
@@ -595,9 +580,9 @@ namespace Cern.Colt.Matrix
         /// <returns>
         /// A new flip view.
         /// </returns>
-        public virtual DoubleMatrix2D ViewColumnFlip()
+        public virtual IDoubleMatrix2D ViewColumnFlip()
         {
-            return (DoubleMatrix2D)View().VColumnFlip();
+            return (IDoubleMatrix2D)View().VColumnFlip();
         }
 
         /// <summary>
@@ -610,9 +595,9 @@ namespace Cern.Colt.Matrix
         /// <returns>
         /// A new dice view.
         /// </returns>
-        public virtual DoubleMatrix2D ViewDice()
+        public virtual IDoubleMatrix2D ViewDice()
         {
-            return (DoubleMatrix2D)View().VDice();
+            return (IDoubleMatrix2D)View().VDice();
         }
 
         /// <summary>
@@ -636,9 +621,9 @@ namespace Cern.Colt.Matrix
         /// <exception cref="IndexOutOfRangeException">
         /// If <tt>column &lt; 0 || width &lt; 0 || column+width &gt; columns() || row &lt; 0 || height &lt; 0 || row+height &gt; rows()</tt>
         /// </exception>
-        public virtual DoubleMatrix2D ViewPart(int row, int column, int height, int width)
+        public virtual IDoubleMatrix2D ViewPart(int row, int column, int height, int width)
         {
-            return (DoubleMatrix2D)View().VPart(row, column, height, width);
+            return (IDoubleMatrix2D)View().VPart(row, column, height, width);
         }
 
         /// <summary>
@@ -654,7 +639,7 @@ namespace Cern.Colt.Matrix
         /// <exception cref="IndexOutOfRangeException">
         /// If <tt>row &lt; 0 || row &gt;= Rows</tt>.
         /// </exception>
-        public virtual DoubleMatrix1D ViewRow(int row)
+        public virtual IDoubleMatrix1D ViewRow(int row)
         {
             CheckRow(row);
             int viewSize = Columns;
@@ -671,9 +656,9 @@ namespace Cern.Colt.Matrix
         /// <returns>
         /// A new flip view.
         /// </returns>
-        public virtual DoubleMatrix2D ViewRowFlip()
+        public virtual IDoubleMatrix2D ViewRowFlip()
         {
-            return (DoubleMatrix2D)View().VRowFlip();
+            return (IDoubleMatrix2D)View().VRowFlip();
         }
 
         /// <summary>
@@ -693,7 +678,7 @@ namespace Cern.Colt.Matrix
         /// <exception cref="IndexOutOfRangeException">
         /// If <tt>!(0 &lt;= rowIndexes[i] &lt; rows())</tt> for any <tt>i=0..rowIndexes.Length()-1</tt> or if <tt>!(0 &lt;= columnIndexes[i] &lt; columns())</tt> for any <tt>i=0..columnIndexes.Length()-1</tt>.
         /// </exception>
-        public virtual DoubleMatrix2D ViewSelection(int[] rowIndexes, int[] columnIndexes)
+        public virtual IDoubleMatrix2D ViewSelection(int[] rowIndexes, int[] columnIndexes)
         {
             // check for "all"
             if (rowIndexes == null)
@@ -730,7 +715,7 @@ namespace Cern.Colt.Matrix
         /// <returns>
         /// The new view.
         /// </returns>
-        public virtual DoubleMatrix2D ViewSelection(DoubleMatrix1DProcedure condition)
+        public virtual IDoubleMatrix2D ViewSelection(IDoubleMatrix1DProcedure condition)
         {
             var matches = new IntArrayList();
             for (int i = 0; i < Rows; i++)
@@ -754,7 +739,7 @@ namespace Cern.Colt.Matrix
         /// <exception cref="IndexOutOfRangeException">
         /// If <tt>column &lt; 0 || column &gt;= columns()</tt>.
         /// </exception>
-        public virtual DoubleMatrix2D ViewSorted(int column)
+        public virtual IDoubleMatrix2D ViewSorted(int column)
         {
             return Sorting.MergeSort.Sort(this, column);
         }
@@ -776,9 +761,9 @@ namespace Cern.Colt.Matrix
         /// <exception cref="IndexOutOfRangeException">
         /// If <tt>rStride &lt;= 0 || cStride &lt;= 0</tt>.
         /// </exception>
-        public virtual DoubleMatrix2D ViewStrides(int rStride, int cStride)
+        public virtual IDoubleMatrix2D ViewStrides(int rStride, int cStride)
         {
-            return (DoubleMatrix2D)View().VStrides(rStride, cStride);
+            return (IDoubleMatrix2D)View().VStrides(rStride, cStride);
         }
 
         /// <summary>
@@ -798,7 +783,7 @@ namespace Cern.Colt.Matrix
         /// <exception cref="ArgumentOutOfRangeException">
         /// If <tt>rows() != B.rows() || columns() != B.columns()</tt>.
         /// </exception>
-        public virtual void ZAssign8Neighbors(DoubleMatrix2D b, Double9Function function)
+        public virtual void ZAssign8Neighbors(IDoubleMatrix2D b, Double9FunctionDelegate function)
         {
             if (function == null) throw new ArgumentNullException("function", Cern.LocalizedResources.Instance().Exception_FuncionMustNotBeNull);
             CheckShape(b);
@@ -848,7 +833,7 @@ namespace Cern.Colt.Matrix
         /// <returns>
         /// The matrix-vector multiplication.
         /// </returns>
-        public DoubleMatrix1D ZMult(DoubleMatrix1D y, DoubleMatrix1D z)
+        public IDoubleMatrix1D ZMult(IDoubleMatrix1D y, IDoubleMatrix1D z)
         {
             return ZMult(y, z, 1, (z == null ? 1 : 0), false);
         }
@@ -877,7 +862,7 @@ namespace Cern.Colt.Matrix
         /// <exception cref="ArgumentOutOfRangeException">
         /// If <tt>A.columns() != y.Count || A.rows() &gt; z.Count)</tt>.
         /// </exception>
-        public virtual DoubleMatrix1D ZMult(DoubleMatrix1D y, DoubleMatrix1D z, double alpha, double beta, bool transposeA)
+        public virtual IDoubleMatrix1D ZMult(IDoubleMatrix1D y, IDoubleMatrix1D z, double alpha, double beta, bool transposeA)
         {
             if (transposeA) return ViewDice().ZMult(y, z, alpha, beta, false);
             if (z == null) z = new DenseDoubleMatrix1D(Rows);
@@ -907,7 +892,7 @@ namespace Cern.Colt.Matrix
         /// <returns>
         /// The matrix C (for convenience only).
         /// </returns>
-        public DoubleMatrix2D ZMult(DoubleMatrix2D b, DoubleMatrix2D c)
+        public IDoubleMatrix2D ZMult(IDoubleMatrix2D b, IDoubleMatrix2D c)
         {
             return ZMult(b, c, 1, (c == null ? 1 : 0), false, false);
         }
@@ -945,7 +930,7 @@ namespace Cern.Colt.Matrix
         /// <exception cref="ArithmeticException">
         /// If <tt>A == C || B == C</tt>.
         /// </exception>
-        public virtual DoubleMatrix2D ZMult(DoubleMatrix2D b, DoubleMatrix2D c, double alpha, double beta, bool transposeA, bool transposeB)
+        public virtual IDoubleMatrix2D ZMult(IDoubleMatrix2D b, IDoubleMatrix2D c, double alpha, double beta, bool transposeA, bool transposeB)
         {
             if (transposeA) return ViewDice().ZMult(b, c, alpha, beta, false, transposeB);
             if (transposeB) return ZMult(b.ViewDice(), c, alpha, beta, false, false);
@@ -958,7 +943,7 @@ namespace Cern.Colt.Matrix
             if (b.Rows != n)
                 throw new ArgumentOutOfRangeException("b", String.Format(Cern.LocalizedResources.Instance().Exception_Matrix2DInnerDimensionMustAgree, this, b));
             if (c.Rows != m || c.Columns != p)
-                throw new ArgumentException(String.Format(Cern.LocalizedResources.Instance().Exception_IncompatibleResultMatrix, this , b , c));
+                throw new ArgumentException(String.Format(Cern.LocalizedResources.Instance().Exception_IncompatibleResultMatrix, this, b, c));
             if (this == c || b == c)
                 throw new ArithmeticException(Cern.LocalizedResources.Instance().Exception_MatricesMustNotBeIdentical);
 
@@ -1003,7 +988,7 @@ namespace Cern.Colt.Matrix
         /// <returns>
         /// A new matrix of the corresponding dynamic type.
         /// </returns>
-        public abstract DoubleMatrix1D Like1D(int size, int zero, int stride);
+        public abstract IDoubleMatrix1D Like1D(int size, int zero, int stride);
 
         /// <summary>
         /// Returns the content of this matrix if it is a wrapper; or <tt>this</tt> otherwise.
@@ -1012,7 +997,7 @@ namespace Cern.Colt.Matrix
         /// <returns>
         /// The content of this matrix if it is a wrapper; or <tt>this</tt> otherwise.
         /// </returns>
-        protected DoubleMatrix2D GetContent()
+        public virtual IDoubleMatrix2D GetContent()
         {
             return this;
         }
@@ -1026,7 +1011,7 @@ namespace Cern.Colt.Matrix
         /// <returns>
         /// <tt>true</tt> if both matrices share at least one identical cell.
         /// </returns>
-        protected bool HaveSharedCells(DoubleMatrix2D other)
+        public virtual bool HaveSharedCells(IDoubleMatrix2D other)
         {
             if (other == null) return false;
             if (this == other) return true;
@@ -1042,7 +1027,7 @@ namespace Cern.Colt.Matrix
         /// <returns>
         /// <tt>true</tt> if both matrices share at least one identical cell.
         /// </returns>
-        protected virtual bool HaveSharedCellsRaw(DoubleMatrix2D other)
+        public virtual bool HaveSharedCellsRaw(IDoubleMatrix2D other)
         {
             return false;
         }
@@ -1053,9 +1038,9 @@ namespace Cern.Colt.Matrix
         /// <returns>
         /// A new view equal to the receiver.
         /// </returns>
-        protected DoubleMatrix2D View()
+        public IDoubleMatrix2D View()
         {
-            return (DoubleMatrix2D)Clone();
+            return (IDoubleMatrix2D)Clone();
         }
 
         /// <summary>
@@ -1070,13 +1055,13 @@ namespace Cern.Colt.Matrix
         /// <returns>
         /// A new view.
         /// </returns>
-        protected abstract DoubleMatrix2D ViewSelectionLike(int[] rowOffsets, int[] cOffsets);
+        protected abstract IDoubleMatrix2D ViewSelectionLike(int[] rowOffsets, int[] cOffsets);
 
         public virtual IEnumerator<double> GetEnumerator()
         {
-            for(int i = 0; i< Rows; i++)
+            for (int i = 0; i < Rows; i++)
             {
-                for (int j = 0; j< Columns; j++)
+                for (int j = 0; j < Columns; j++)
                 {
                     yield return this[i, j];
                 }

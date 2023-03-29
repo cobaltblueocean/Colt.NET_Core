@@ -118,8 +118,8 @@ namespace Cern.Jet.Random
             {
                 for (; ; )
                 {
-                    u = randomGenerator.Raw();
-                    v = randomGenerator.Raw() * 0.857763884960707;
+                    u = this.RandomGenerator.Raw();
+                    v = this.RandomGenerator.Raw() * 0.857763884960707;
                     z = v / u;
                     if (z < 0) continue;
                     zz = z * z;
@@ -143,8 +143,8 @@ namespace Cern.Jet.Random
                 }
                 for (; ; )
                 {
-                    u = randomGenerator.Raw();
-                    v = randomGenerator.Raw() * vd + vm;
+                    u = this.RandomGenerator.Raw();
+                    v = this.RandomGenerator.Raw() * vd + vm;
                     z = v / u;
                     if (z < -b) continue;
                     zz = z * z;

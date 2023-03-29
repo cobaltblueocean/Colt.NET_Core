@@ -177,9 +177,9 @@ namespace Cern.Hep.Aida.Ref
 
             String[] yEdges = new[] { "Data" };
 
-            Cern.Colt.Matrix.DoubleMatrix2D heights = new DenseDoubleMatrix2D(1, h.XAxis.Bins);
+            Cern.Colt.Matrix.IDoubleMatrix2D heights = new DenseDoubleMatrix2D(1, h.XAxis.Bins);
             heights.ViewRow(0).Assign(ToArrayHeights(h));
-            //Cern.Colt.Matrix.DoubleMatrix2D errors = new Cern.Colt.Matrix.DenseDoubleMatrix2D(1,h.XAxis.Bins);
+            //Cern.Colt.Matrix.IDoubleMatrix2D errors = new Cern.Colt.Matrix.DenseDoubleMatrix2D(1,h.XAxis.Bins);
             //errors.ViewRow(0).Assign(toArrayErrors(h));
 
             return title + sep +
@@ -229,11 +229,11 @@ namespace Cern.Hep.Aida.Ref
             for (int i = 0; i < h.YAxis.Bins; i++) yEdges[i] = Form(f, h.YAxis.BinLowerEdge(i));
             new List<Object>(yEdges).Reverse(); // keep coordd system
 
-            Cern.Colt.Matrix.DoubleMatrix2D heights = new DenseDoubleMatrix2D(ToArrayHeights(h));
+            Cern.Colt.Matrix.IDoubleMatrix2D heights = new DenseDoubleMatrix2D(ToArrayHeights(h));
             heights = heights.ViewDice().ViewRowFlip(); // keep the histo coordd system
                                                         //heights = heights.ViewPart(1,1,heights.Rows()-2,heights.columns()-2); // ignore under&overflows
 
-            //Cern.Colt.Matrix.DoubleMatrix2D errors = new Cern.Colt.Matrix.DenseDoubleMatrix2D(toArrayErrors(h));
+            //Cern.Colt.Matrix.IDoubleMatrix2D errors = new Cern.Colt.Matrix.DenseDoubleMatrix2D(toArrayErrors(h));
             //errors = errors.ViewDice().ViewRowFlip(); // keep the histo coord system
             ////errors = errors.ViewPart(1,1,errors.Rows()-2,errors.columns()-2); // ignore under&overflows
 
@@ -296,11 +296,11 @@ namespace Cern.Hep.Aida.Ref
             for (int i = 0; i < h.ZAxis.Bins; i++) zEdges[i] = Form(f, h.ZAxis.BinLowerEdge(i));
             new List<Object>(zEdges).Reverse(); // keep coordd system
 
-            DoubleMatrix3D heights = new DenseDoubleMatrix3D(ToArrayHeights(h));
+            IDoubleMatrix3D heights = new DenseDoubleMatrix3D(ToArrayHeights(h));
             heights = heights.ViewDice(2, 1, 0).ViewSliceFlip().ViewRowFlip(); // keep the histo coordd system
                                                                                //heights = heights.ViewPart(1,1,heights.Rows()-2,heights.columns()-2); // ignore under&overflows
 
-            //Cern.Colt.Matrix.DoubleMatrix2D errors = new Cern.Colt.Matrix.DenseDoubleMatrix2D(toArrayErrors(h));
+            //Cern.Colt.Matrix.IDoubleMatrix2D errors = new Cern.Colt.Matrix.DenseDoubleMatrix2D(toArrayErrors(h));
             //errors = errors.ViewDice().ViewRowFlip(); // keep the histo coord system
             ////errors = errors.ViewPart(1,1,errors.Rows()-2,errors.columns()-2); // ignore under&overflows
 

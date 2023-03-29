@@ -71,7 +71,7 @@
         /// <exception cref="ArgumentOutOfRangeException">
         /// If <i>A.Rows &lt; A.Columns</i>.
         /// </exception>
-        public void CheckRectangular(DoubleMatrix2D a)
+        public void CheckRectangular(IDoubleMatrix2D a)
         {
             if (a.Rows < a.Columns)
             {
@@ -84,7 +84,7 @@
         /// </summary>
         /// <param name="A"></param>
         /// <exception cref="ArgumentException">if <i>A.Rows != A.Columns</i>.</exception>
-        public void CheckSquare(DoubleMatrix2D A)
+        public void CheckSquare(IDoubleMatrix2D A)
         {
             if (A.Rows != A.Columns) throw new ArgumentException(Cern.LocalizedResources.Instance().Exception_MatrixMustBeSquare);
         }
@@ -94,7 +94,7 @@
         /// </summary>
         /// <param name="A"></param>
         /// <returns></returns>
-        public static double Density(DoubleMatrix2D A)
+        public static double Density(IDoubleMatrix2D A)
         {
             return A.Cardinality() / (double)A.Size;
         }
@@ -114,7 +114,7 @@
         /// <i>true</i> if the matrix is equal to the value;
         /// <i>false</i> otherwise.
         /// </returns>
-        public bool Equals(DoubleMatrix1D a, double value)
+        public bool Equals(IDoubleMatrix1D a, double value)
         {
             if (a == null) return false;
             double epsilon = Tolerance;
@@ -146,7 +146,7 @@
         /// <i>true</i> if both matrices are equal;
         /// <i>false</i> otherwise.
         /// </returns>
-        public bool Equals(DoubleMatrix1D a, DoubleMatrix1D b)
+        public bool Equals(IDoubleMatrix1D a, IDoubleMatrix1D b)
         {
             if (a == b) return true;
             if (!(a != null && b != null)) return false;
@@ -179,7 +179,7 @@
         /// <i>true</i> if the matrix is equal to the value;
         /// <i>false</i> otherwise.
         /// </returns>
-        public bool Equals(DoubleMatrix2D a, double value)
+        public bool Equals(IDoubleMatrix2D a, double value)
         {
             if (a == null) return false;
             int rows = a.Rows;
@@ -213,7 +213,7 @@
         /// <i>true</i> if both matrices are equal;
         /// <i>false</i> otherwise.
         /// </returns>
-        public bool Equals(DoubleMatrix2D a, DoubleMatrix2D b)
+        public bool Equals(IDoubleMatrix2D a, IDoubleMatrix2D b)
         {
             if (a == b) return true;
             if (!(a != null && b != null)) return false;
@@ -247,7 +247,7 @@
         /// @return  <i>true</i> if the matrix is equal to the value;
         ///          <i>false</i> otherwise.
         /// </summary>
-        public Boolean Equals(DoubleMatrix3D A, double value)
+        public Boolean Equals(IDoubleMatrix3D A, double value)
         {
             if (A == null) return false;
             int rows = A.Rows;
@@ -282,7 +282,7 @@
         /// @return  <i>true</i> if both matrices are equal;
         ///          <i>false</i> otherwise.
         /// </summary>
-        public Boolean Equals(DoubleMatrix3D A, DoubleMatrix3D B)
+        public Boolean Equals(IDoubleMatrix3D A, IDoubleMatrix3D B)
         {
             if (A == B) return true;
             if (!(A != null && B != null)) return false;
@@ -317,7 +317,7 @@
         /// <summary>
         ///<param name = "A" > the square matrix to modify.</param>
         ///<exception cref = "ArgumentException" >if <i>!isSquare(A)</i>. </exception>
-        public void GenerateNonSingular(DoubleMatrix2D A)
+        public void GenerateNonSingular(IDoubleMatrix2D A)
         {
             CheckSquare(A);
             var F = Cern.Jet.Math.Functions.functions;
@@ -343,7 +343,7 @@
         /// A matrix <i>A</i> is <i>diagonal</i> if <i>A[i,j] == 0</i> whenever <i>i != j</i>.
         /// Matrix may but need not be square.
         /// <summary>
-        public Boolean IsDiagonal(DoubleMatrix2D A)
+        public Boolean IsDiagonal(IDoubleMatrix2D A)
         {
             double epsilon = Tolerance;
             int rows = A.Rows;
@@ -365,7 +365,7 @@
         /// <p>
         /// Note: Ignores tolerance.
         /// <summary>
-        public Boolean IsDiagonallyDominantByColumn(DoubleMatrix2D A)
+        public Boolean IsDiagonallyDominantByColumn(IDoubleMatrix2D A)
         {
             Cern.Jet.Math.Functions F = Cern.Jet.Math.Functions.functions;
             double epsilon = Tolerance;
@@ -385,7 +385,7 @@
         /// <p>
         /// Note: Ignores tolerance.
         /// <summary>
-        public Boolean IsDiagonallyDominantByRow(DoubleMatrix2D A)
+        public Boolean IsDiagonallyDominantByRow(IDoubleMatrix2D A)
         {
             Cern.Jet.Math.Functions F = Cern.Jet.Math.Functions.functions;
             double epsilon = Tolerance;
@@ -402,7 +402,7 @@
         /// A matrix <i>A</i> is an <i>identity</i> matrix if <i>A[i,i] == 1</i> and all other cells are zero.
         /// Matrix may but need not be square.
         /// <summary>
-        public Boolean IsIdentity(DoubleMatrix2D A)
+        public Boolean IsIdentity(IDoubleMatrix2D A)
         {
             double epsilon = Tolerance;
             int rows = A.Rows;
@@ -425,7 +425,7 @@
         /// A matrix <i>A</i> is <i>lower bidiagonal</i> if <i>A[i,j]==0</i> unless <i>i==j || i==j+1</i>.
         /// Matrix may but need not be square.
         /// <summary>
-        public Boolean IsLowerBidiagonal(DoubleMatrix2D A)
+        public Boolean IsLowerBidiagonal(IDoubleMatrix2D A)
         {
             double epsilon = Tolerance;
             int rows = A.Rows;
@@ -447,7 +447,7 @@
         /// A matrix <i>A</i> is <i>lower triangular</i> if <i>A[i,j]==0</i> whenever <i>i &lt; j</i>.
         /// Matrix may but need not be square.
         /// <summary>
-        public Boolean IsLowerTriangular(DoubleMatrix2D A)
+        public Boolean IsLowerTriangular(IDoubleMatrix2D A)
         {
             double epsilon = Tolerance;
             int rows = A.Rows;
@@ -467,7 +467,7 @@
         /// <p>
         /// Note: Ignores tolerance.
         /// <summary>
-        public Boolean IsNonNegative(DoubleMatrix2D A)
+        public Boolean IsNonNegative(IDoubleMatrix2D A)
         {
             int rows = A.Rows;
             int columns = A.Columns;
@@ -484,7 +484,7 @@
         /// A square matrix <i>A</i> is <i>orthogonal</i> if <i>A*transpose(A) = I</i>.
         /// <summary>
         /// <exception cref="ArgumentException">if <i>!isSquare(A)</i>. </exception>
-        public Boolean IsOrthogonal(DoubleMatrix2D A)
+        public Boolean IsOrthogonal(IDoubleMatrix2D A)
         {
             CheckSquare(A);
             return Equals(A.ZMult(A, null, 1, 0, false, true), Cern.Colt.Matrix.DoubleFactory2D.Dense.Identity(A.Rows));
@@ -494,7 +494,7 @@
         /// <p>
         /// Note: Ignores tolerance.
         /// <summary>
-        public Boolean IsPositive(DoubleMatrix2D A)
+        public Boolean IsPositive(IDoubleMatrix2D A)
         {
             int rows = A.Rows;
             int columns = A.Columns;
@@ -510,7 +510,7 @@
         /// <summary>
         /// A matrix <i>A</i> is <i>singular</i> if it has no inverse, that is, iff <i>det(A)==0</i>.
         /// <summary>
-        public Boolean IsSingular(DoubleMatrix2D A)
+        public Boolean IsSingular(IDoubleMatrix2D A)
         {
             var lu = new LUDecomposition(A);
 
@@ -520,7 +520,7 @@
         /// A square matrix <i>A</i> is <i>skew-symmetric</i> if <i>A = -transpose(A)</i>, that is <i>A[i,j] == -A[j,i]</i>.
         /// <summary>
         /// <exception cref="ArgumentException">if <i>!isSquare(A)</i>. </exception>
-        public Boolean IsSkewSymmetric(DoubleMatrix2D A)
+        public Boolean IsSkewSymmetric(IDoubleMatrix2D A)
         {
             CheckSquare(A);
             double epsilon = Tolerance;
@@ -539,7 +539,7 @@
         /// <summary>
         /// A matrix <i>A</i> is <i>square</i> if it has the same number of rows and columns.
         /// <summary>
-        public Boolean IsSquare(DoubleMatrix2D A)
+        public Boolean IsSquare(IDoubleMatrix2D A)
         {
             return A.Rows == A.Columns;
         }
@@ -547,7 +547,7 @@
         /// A matrix <i>A</i> is <i>strictly lower triangular</i> if <i>A[i,j]==0</i> whenever <i>i &lt;= j</i>.
         /// Matrix may but need not be square.
         /// <summary>
-        public Boolean IsStrictlyLowerTriangular(DoubleMatrix2D A)
+        public Boolean IsStrictlyLowerTriangular(IDoubleMatrix2D A)
         {
             double epsilon = Tolerance;
             int rows = A.Rows;
@@ -566,7 +566,7 @@
         /// A matrix <i>A</i> is <i>strictly triangular</i> if it is triangular and its diagonal elements all equal 0.
         /// Matrix may but need not be square.
         /// <summary>
-        public Boolean IsStrictlyTriangular(DoubleMatrix2D A)
+        public Boolean IsStrictlyTriangular(IDoubleMatrix2D A)
         {
             if (!IsTriangular(A)) return false;
 
@@ -582,7 +582,7 @@
         /// A matrix <i>A</i> is <i>strictly upper triangular</i> if <i>A[i,j]==0</i> whenever <i>i &gt;= j</i>.
         /// Matrix may but need not be square.
         /// <summary>
-        public Boolean IsStrictlyUpperTriangular(DoubleMatrix2D A)
+        public Boolean IsStrictlyUpperTriangular(IDoubleMatrix2D A)
         {
             double epsilon = Tolerance;
             int rows = A.Rows;
@@ -602,7 +602,7 @@
         /// A matrix <i>A</i> is <i>symmetric</i> if <i>A = tranpose(A)</i>, that is <i>A[i,j] == A[j,i]</i>.
         /// <summary>
         /// <exception cref="ArgumentException">if <i>!isSquare(A)</i>. </exception>
-        public Boolean IsSymmetric(DoubleMatrix2D A)
+        public Boolean IsSymmetric(IDoubleMatrix2D A)
         {
             CheckSquare(A);
             return Equals(A, A.ViewDice());
@@ -612,7 +612,7 @@
         /// A matrix <i>A</i> is <i>triangular</i> iff it is either upper or lower triangular.
         /// Matrix may but need not be square.
         /// <summary>
-        public Boolean IsTriangular(DoubleMatrix2D A)
+        public Boolean IsTriangular(IDoubleMatrix2D A)
         {
             return IsLowerTriangular(A) || IsUpperTriangular(A);
         }
@@ -621,7 +621,7 @@
         /// A matrix <i>A</i> is <i>tridiagonal</i> if <i>A[i,j]==0</i> whenever <i>System.Math.Abs(i-j) > 1</i>.
         /// Matrix may but need not be square.
         /// <summary>
-        public Boolean IsTridiagonal(DoubleMatrix2D A)
+        public Boolean IsTridiagonal(IDoubleMatrix2D A)
         {
             double epsilon = Tolerance;
             int rows = A.Rows;
@@ -643,7 +643,7 @@
         /// A matrix <i>A</i> is <i>unit triangular</i> if it is triangular and its diagonal elements all equal 1.
         /// Matrix may but need not be square.
         /// <summary>
-        public Boolean IsUnitTriangular(DoubleMatrix2D A)
+        public Boolean IsUnitTriangular(IDoubleMatrix2D A)
         {
             if (!IsTriangular(A)) return false;
 
@@ -659,7 +659,7 @@
         /// A matrix <i>A</i> is <i>upper bidiagonal</i> if <i>A[i,j]==0</i> unless <i>i==j || i==j-1</i>.
         /// Matrix may but need not be square.
         /// <summary>
-        public Boolean IsUpperBidiagonal(DoubleMatrix2D A)
+        public Boolean IsUpperBidiagonal(IDoubleMatrix2D A)
         {
             double epsilon = Tolerance;
             int rows = A.Rows;
@@ -681,7 +681,7 @@
         /// A matrix <i>A</i> is <i>upper triangular</i> if <i>A[i,j]==0</i> whenever <i>i &gt; j</i>.
         /// Matrix may but need not be square.
         /// <summary>
-        public Boolean IsUpperTriangular(DoubleMatrix2D A)
+        public Boolean IsUpperTriangular(IDoubleMatrix2D A)
         {
             double epsilon = Tolerance;
             int rows = A.Rows;
@@ -699,7 +699,7 @@
         /// <summary>
         /// A matrix <i>A</i> is <i>zero</i> if all its cells are zero.
         /// <summary>
-        public Boolean IsZero(DoubleMatrix2D A)
+        public Boolean IsZero(IDoubleMatrix2D A)
         {
             return Equals(A, 0);
         }
@@ -712,9 +712,9 @@
 ///<param name = "A" > the square matrix to analyze.</param>
 ///<returns>the lower bandwith.</returns>
 ///<exception cref = "ArgumentException" >if <i>!isSquare(A)</i>. </exception>
-///<see cref = "#semiBandwidth(DoubleMatrix2D)" ></ see>
-///<see cref= "#upperBandwidth(DoubleMatrix2D)" ></ see>
-        public int LowerBandwidth(DoubleMatrix2D A)
+///<see cref = "#semiBandwidth(IDoubleMatrix2D)" ></ see>
+///<see cref= "#upperBandwidth(IDoubleMatrix2D)" ></ see>
+        public int LowerBandwidth(IDoubleMatrix2D A)
         {
             CheckSquare(A);
             double epsilon = Tolerance;
@@ -871,9 +871,9 @@
         ///<param name= "A" > the square matrix to analyze.</param>
         ///<returns>the semi-bandwith<i> l</i>.</returns>
         ///<exception cref = "ArgumentException" >if <i>!isSquare(A)</i>. </exception>
-        ///<see cref = "#lowerBandwidth(DoubleMatrix2D)" ></see>
-        ///<see cref= "#upperBandwidth(DoubleMatrix2D)" ></see>
-        public int SemiBandwidth(DoubleMatrix2D A)
+        ///<see cref = "#lowerBandwidth(IDoubleMatrix2D)" ></see>
+        ///<see cref= "#upperBandwidth(IDoubleMatrix2D)" ></see>
+        public int SemiBandwidth(IDoubleMatrix2D A)
         {
             CheckSquare(A);
             double epsilon = Tolerance;
@@ -940,7 +940,7 @@
         /// upperBandwidth               : Illegal operation or error: Matrix must be square.
         /// </pre>
         /// <summary>
-        public String ToString(DoubleMatrix2D A)
+        public String ToString(IDoubleMatrix2D A)
         {
             var names = new List<Object>();
             var values = new List<Object>();
@@ -1056,7 +1056,7 @@
 
 
             // sort ascending by property name
-            Cern.Colt.Function.IntComparator comp = new Cern.Colt.Function.IntComparator((a, b) =>
+            Cern.Colt.Function.IntComparatorDelegate comp = new Cern.Colt.Function.IntComparatorDelegate((a, b) =>
             {
                 return names[a].ToString().CompareTo(names[b].ToString());
             }
@@ -1101,9 +1101,9 @@
         /// <param name = "A" > the square matrix to analyze.</param>
         /// <returns>the upper bandwith.</returns>
         /// <exception cref = "ArgumentException" >if <i>!isSquare(A)</i>. </exception>
-        /// <see cref = "#semiBandwidth(DoubleMatrix2D)" ></see>
-        /// <see cref= "#lowerBandwidth(DoubleMatrix2D)" ></see>
-        public int UpperBandwidth(DoubleMatrix2D A)
+        /// <see cref = "#semiBandwidth(IDoubleMatrix2D)" ></see>
+        /// <see cref= "#lowerBandwidth(IDoubleMatrix2D)" ></see>
+        public int UpperBandwidth(IDoubleMatrix2D A)
         {
             CheckSquare(A);
             double epsilon = Tolerance;

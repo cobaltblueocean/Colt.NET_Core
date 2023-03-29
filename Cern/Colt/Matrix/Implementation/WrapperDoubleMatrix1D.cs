@@ -1,4 +1,4 @@
-﻿// <copyright file="WrapperDoubleMatrix1D.cs" company="CERN">
+﻿// <copyright file="WrapperIDoubleMatrix1D.cs" company="CERN">
 //   Copyright © 1999 CERN - European Organization for Nuclear Research.
 //   Permission to use, copy, modify, distribute and sell this software and its documentation for any purpose 
 //   is hereby granted without fee, provided that the above copyright notice appear in all copies and 
@@ -21,14 +21,14 @@ namespace Cern.Colt.Matrix.Implementation
     /// @author wolfgang.hoschek@cern.ch
     /// @version 1.0, 09/24/99
     /// </summary>
-    public class WrapperDoubleMatrix1D : DoubleMatrix1D
+    public class WrapperIDoubleMatrix1D : DoubleMatrix1D
     {
         /// <summary>
         /// The elements of the matrix.
         /// </summary>
-        private DoubleMatrix1D _content;
+        private IDoubleMatrix1D _content;
 
-        public WrapperDoubleMatrix1D(DoubleMatrix1D newContent)
+        public WrapperIDoubleMatrix1D(IDoubleMatrix1D newContent)
         {
             if (newContent != null) Setup(newContent.Count());
             this.Content = newContent;
@@ -52,7 +52,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// Returns the content of this matrix if it is a wrapper; or <i>this</i> otherwise.
         /// Override this method in wrappers.
         /// </summary>
-        public virtual DoubleMatrix1D Content
+        public virtual IDoubleMatrix1D Content
         {
             get { return _content; }
             protected set { _content = value; }
@@ -72,12 +72,12 @@ namespace Cern.Colt.Matrix.Implementation
             return Content[index];
         }
 
-        public override DoubleMatrix1D Like(int Size)
+        public override IDoubleMatrix1D Like(int Size)
         {
             return Content.Like(Size);
         }
 
-        public override DoubleMatrix2D Like2D(int rows, int columns)
+        public override IDoubleMatrix2D Like2D(int rows, int columns)
         {
             return Content.Like2D(rows, columns);
         }
@@ -102,9 +102,9 @@ namespace Cern.Colt.Matrix.Implementation
         /// The returned view is backed by this matrix, so changes in the returned view are reflected in this matrix, and vice-versa.
         /// </summary>
         /// <returns>a new flip view.</returns>
-        public override DoubleMatrix1D ViewFlip()
+        public override IDoubleMatrix1D ViewFlip()
         {
-            DoubleMatrix1D view = new WrapperDoubleMatrix1DFlip(this);
+            IDoubleMatrix1D view = new WrapperIDoubleMatrix1DFlip(this);
             return view;
         }
 
@@ -127,10 +127,10 @@ namespace Cern.Colt.Matrix.Implementation
         /// <param name="width">The width of the range.</param>
         /// <returns>the new view.</returns>
         /// <exception cref="IndexOutOfRangeException">if <i>index &lt; 0 || width &lt; 0 || index + width > Size()</i>.</exception>
-        public override DoubleMatrix1D ViewPart(int index, int width)
+        public override IDoubleMatrix1D ViewPart(int index, int width)
         {
             CheckRange(index, width);
-            DoubleMatrix1D view = new WrapperDoubleMatrix1DPart(this, index);
+            IDoubleMatrix1D view = new WrapperIDoubleMatrix1DPart(this, index);
 
             view.Size = width;
             return view;
@@ -153,7 +153,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// -->
         /// view     = (0,8,7,8)
         /// </example>
-        public override DoubleMatrix1D ViewSelection(int[] indexes)
+        public override IDoubleMatrix1D ViewSelection(int[] indexes)
         {
             // check for "all"
             if (indexes == null)
@@ -165,7 +165,7 @@ namespace Cern.Colt.Matrix.Implementation
             CheckIndexes(indexes);
             int[] idx = indexes;
 
-            DoubleMatrix1D view = new WrapperDoubleMatrix1DSelection(this, idx);
+            IDoubleMatrix1D view = new WrapperIDoubleMatrix1DSelection(this, idx);
 
 
             view.Size = indexes.Length;
@@ -177,7 +177,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// </summary>
         /// <param name="offsets">the offsets of the visible elements.</param>
         /// <returns>a new view.</returns>
-        protected override DoubleMatrix1D ViewSelectionLike(int[] offsets)
+        public override IDoubleMatrix1D ViewSelectionLike(int[] offsets)
         {
             throw new NotImplementedException();
         }
@@ -189,10 +189,10 @@ namespace Cern.Colt.Matrix.Implementation
         /// <param name="_stride">the step factor.</param>
         /// <returns>the new view.</returns>
         /// <exception cref="IndexOutOfRangeException">if <i>stride &lt;= 0</i>.</exception>
-        public override DoubleMatrix1D ViewStrides(int _stride)
+        public override IDoubleMatrix1D ViewStrides(int _stride)
         {
             if (Stride <= 0) throw new IndexOutOfRangeException(Cern.LocalizedResources.Instance().Exception_IllegalStride);
-            DoubleMatrix1D view = new WrapperDoubleMatrix1DStrides(this, _stride);
+            IDoubleMatrix1D view = new WrapperIDoubleMatrix1DStrides(this, _stride);
 
             view.Size = Size;
             if (Size != 0) view.Size = (Size - 1) / _stride + 1;
@@ -204,9 +204,9 @@ namespace Cern.Colt.Matrix.Implementation
             return this[index].ToString();
         }
 
-        private class WrapperDoubleMatrix1DFlip : WrapperDoubleMatrix1D
+        private class WrapperIDoubleMatrix1DFlip : WrapperIDoubleMatrix1D
         {
-            public WrapperDoubleMatrix1DFlip(WrapperDoubleMatrix1D newcontent) : base(newcontent.Content)
+            public WrapperIDoubleMatrix1DFlip(WrapperIDoubleMatrix1D newcontent) : base(newcontent.Content)
             { }
 
             public override double this[int index]
@@ -216,11 +216,11 @@ namespace Cern.Colt.Matrix.Implementation
             }
         }
 
-        private class WrapperDoubleMatrix1DPart : WrapperDoubleMatrix1D
+        private class WrapperIDoubleMatrix1DPart : WrapperIDoubleMatrix1D
         {
             int indexOffset;
 
-            public WrapperDoubleMatrix1DPart(WrapperDoubleMatrix1D newcontent, int offset) : base(newcontent.Content)
+            public WrapperIDoubleMatrix1DPart(WrapperIDoubleMatrix1D newcontent, int offset) : base(newcontent.Content)
             {
                 indexOffset = offset;
             }
@@ -232,11 +232,11 @@ namespace Cern.Colt.Matrix.Implementation
             }
         }
 
-        private class WrapperDoubleMatrix1DSelection : WrapperDoubleMatrix1D
+        private class WrapperIDoubleMatrix1DSelection : WrapperIDoubleMatrix1D
         {
             int[] idx;
 
-            public WrapperDoubleMatrix1DSelection(WrapperDoubleMatrix1D newcontent, int[] indexes) : base(newcontent.Content)
+            public WrapperIDoubleMatrix1DSelection(WrapperIDoubleMatrix1D newcontent, int[] indexes) : base(newcontent.Content)
             {
                 idx = indexes;
             }
@@ -248,11 +248,11 @@ namespace Cern.Colt.Matrix.Implementation
             }
         }
 
-        private class WrapperDoubleMatrix1DStrides : WrapperDoubleMatrix1D
+        private class WrapperIDoubleMatrix1DStrides : WrapperIDoubleMatrix1D
         {
             int _stride;
 
-            public WrapperDoubleMatrix1DStrides(WrapperDoubleMatrix1D newcontent, int stride) : base(newcontent.Content)
+            public WrapperIDoubleMatrix1DStrides(WrapperIDoubleMatrix1D newcontent, int stride) : base(newcontent.Content)
             {
                 _stride = stride;
             }

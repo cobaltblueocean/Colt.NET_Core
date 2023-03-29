@@ -107,15 +107,15 @@ namespace Cern.Jet.Random.Sampling
         long my_n;
         long my_N;
         long my_low;
-        RandomEngine my_RandomGenerator;
+        RandomEngine _randomGenerator;
 
         #endregion
 
         #region Property
         public RandomEngine RandomGenerator
         {
-            get { return my_RandomGenerator; }
-            set { my_RandomGenerator = value; }
+            get { return _randomGenerator; }
+            set { _randomGenerator = value; }
         }
         #endregion
 
@@ -138,7 +138,7 @@ namespace Cern.Jet.Random.Sampling
             this.my_low = low;
 
             if (randomGenerator == null) randomGenerator = Cern.Jet.Random.AbstractDistribution.MakeDefaultGenerator();
-            this.my_RandomGenerator = randomGenerator;
+            this._randomGenerator = randomGenerator;
         }
         #endregion
 
@@ -154,7 +154,7 @@ namespace Cern.Jet.Random.Sampling
         public override Object Clone()
         {
             RandomSampler copy = (RandomSampler)base.Clone();
-            copy.my_RandomGenerator = (RandomEngine)this.my_RandomGenerator.Clone();
+            copy._randomGenerator = (RandomEngine)this._randomGenerator.Clone();
             return copy;
         }
 
@@ -191,7 +191,7 @@ namespace Cern.Jet.Random.Sampling
 
             if (count == 0) return; //nothing to do
 
-            Sample(my_n, my_N, count, my_low, values, fromIndex, my_RandomGenerator);
+            Sample(my_n, my_N, count, my_low, values, fromIndex, _randomGenerator);
 
             long lastSample = values[fromIndex + count - 1];
             my_n -= count;

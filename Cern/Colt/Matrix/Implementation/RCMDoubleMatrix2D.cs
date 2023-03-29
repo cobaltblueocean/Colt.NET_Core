@@ -134,7 +134,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// </summary>
         /// <param name="value">the value to be filled into the cells.</param>
         /// <returns><i>this</i> (for convenience only).</returns>
-        public override DoubleMatrix2D Assign(double value)
+        public override IDoubleMatrix2D Assign(double value)
         {
             // overriden for performance only
             if (value == 0)
@@ -154,7 +154,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// Override this method in wrappers.
         /// </summary>
         /// <returns></returns>
-        protected new DoubleMatrix2D GetContent()
+        protected new IDoubleMatrix2D GetContent()
         {
             return this;
         }
@@ -187,19 +187,19 @@ namespace Cern.Colt.Matrix.Implementation
         /// <param name="rows">the number of rows the matrix shall have.</param>
         /// <param name="columns">the number of columns the matrix shall have.</param>
         /// <returns>a new empty matrix of the same dynamic type.</returns>
-        public override DoubleMatrix2D Like(int rows, int columns)
+        public override IDoubleMatrix2D Like(int rows, int columns)
         {
             return new RCMDoubleMatrix2D(rows, columns);
         }
 
         /// <summary>
         /// Construct and returns a new 1-d matrix <i>of the corresponding dynamic type</i>, entirelly independent of the receiver.
-        /// For example, if the receiver is an instance of type <i>DenseDoubleMatrix2D</i> the new matrix must be of type <i>DenseDoubleMatrix1D</i>,
-        /// if the receiver is an instance of type <i>SparseDoubleMatrix2D</i> the new matrix must be of type <i>SparseDoubleMatrix1D</i>, etc.
+        /// For example, if the receiver is an instance of type <i>DenseDoubleMatrix2D</i> the new matrix must be of type <i>DenseIDoubleMatrix1D</i>,
+        /// if the receiver is an instance of type <i>SparseDoubleMatrix2D</i> the new matrix must be of type <i>SparseIDoubleMatrix1D</i>, etc.
         /// </summary>
         /// <param name="size">the number of cells the matrix shall have.</param>
         /// <returns>a new matrix of the corresponding dynamic type.</returns>
-        public override DoubleMatrix1D Like1D(int size)
+        public override IDoubleMatrix1D Like1D(int size)
         {
             return new SparseDoubleMatrix1D(size);
         }
@@ -276,7 +276,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <param name="alpha"></param>
         /// <param name="beta"></param>
         /// <exception cref="ArgumentException">if <i>A.columns() != y.Count || A.rows() > z.Count)</i>.</exception>
-        protected void ZMult(DoubleMatrix1D y, DoubleMatrix1D z, IntArrayList nonZeroIndexes, DoubleMatrix1D[] allRows, double alpha, double beta)
+        protected void ZMult(IDoubleMatrix1D y, IDoubleMatrix1D z, IntArrayList nonZeroIndexes, IDoubleMatrix1D[] allRows, double alpha, double beta)
         {
             if (Columns != y.Size || Rows > z.Size)
                 throw new ArgumentException(String.Format(Cern.LocalizedResources.Instance().Exception_IncompatibleArgs, ToStringShort(), y.ToStringShort(), z.ToStringShort()));

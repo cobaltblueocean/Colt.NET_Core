@@ -27,7 +27,7 @@ namespace Cern.Colt.Matrix.LinearAlgebra
         /// Array for internal storage of decomposition.
         /// @serial internal array storage.
         /// </summary>
-        private DoubleMatrix2D QR;
+        private IDoubleMatrix2D QR;
         //private double[][] QR;
 
         /// <summary>
@@ -41,7 +41,7 @@ namespace Cern.Colt.Matrix.LinearAlgebra
         /// Array for internal storage of diagonal of R.
         /// @serial diagonal of R.
         /// </summary>
-        private DoubleMatrix1D Rdiag;
+        private IDoubleMatrix1D Rdiag;
 
         /// <summary>
         /// Constructs and returns a new QR decomposition object;  computed by Householder reflections;
@@ -50,7 +50,7 @@ namespace Cern.Colt.Matrix.LinearAlgebra
         /// </summary>
         /// <param name="A">A rectangular matrix.</param>
         /// <exception cref="ArgumentException">if <i>A.Rows &lt; A.Columns</i>.</exception>
-        public QRDecomposition(DoubleMatrix2D A)
+        public QRDecomposition(IDoubleMatrix2D A)
         {
             Property.DEFAULT.CheckRectangular(A);
 
@@ -61,11 +61,11 @@ namespace Cern.Colt.Matrix.LinearAlgebra
             n = A.Columns;
             Rdiag = A.Like1D(n);
             //Rdiag = new double[n];
-            DoubleDoubleFunction hypot = Algebra.HypotFunction();
+            DoubleDoubleFunctionDelegate hypot = Algebra.HypotFunction();
 
             // precompute and cache some views to avoid regenerating them time and again
-            DoubleMatrix1D[] QRcolumns = new DoubleMatrix1D[n];
-            DoubleMatrix1D[] QRcolumnsPart = new DoubleMatrix1D[n];
+            IDoubleMatrix1D[] QRcolumns = new IDoubleMatrix1D[n];
+            IDoubleMatrix1D[] QRcolumnsPart = new IDoubleMatrix1D[n];
             for (int k = 0; k < n; k++)
             {
                 QRcolumns[k] = QR.ViewColumn(k);
@@ -75,7 +75,7 @@ namespace Cern.Colt.Matrix.LinearAlgebra
             // Main loop.
             for (int k = 0; k < n; k++)
             {
-                //DoubleMatrix1D QRcolk = QR.ViewColumn(k).ViewPart(k,m-k);
+                //IDoubleMatrix1D QRcolk = QR.ViewColumn(k).ViewPart(k,m-k);
                 // Compute 2-norm of k-th column without under/overflow.
                 double nrm = 0;
                 //if (k<m) nrm = QRcolumnsPart[k].aggregate(hypot,F.identity);
@@ -102,11 +102,11 @@ namespace Cern.Colt.Matrix.LinearAlgebra
                     // Apply transformation to remaining columns.
                     for (int j = k + 1; j < n; j++)
                     {
-                        DoubleMatrix1D QRcolj = QR.ViewColumn(j).ViewPart(k, m - k);
+                        IDoubleMatrix1D QRcolj = QR.ViewColumn(j).ViewPart(k, m - k);
                         double s = QRcolumnsPart[k].ZDotProduct(QRcolj);
                         /*
                         // fixes bug reported by John Chambers
-                        DoubleMatrix1D QRcolj = QR.ViewColumn(j).ViewPart(k,m-k);
+                        IDoubleMatrix1D QRcolj = QR.ViewColumn(j).ViewPart(k,m-k);
                         double s = QRcolumnsPart[k].ZDotProduct(QRcolumns[j]);
                         double s = 0.0; 
                         for (int i = k; i < m; i++) {
@@ -130,7 +130,7 @@ namespace Cern.Colt.Matrix.LinearAlgebra
         /// <summary>
         /// Returns the Householder vectors <i>H</i> that a lower trapezoidal matrix whose columns define the householder reflections.
         /// </summary>
-        public DoubleMatrix2D H
+        public IDoubleMatrix2D H
         {
             get
             {
@@ -141,21 +141,21 @@ namespace Cern.Colt.Matrix.LinearAlgebra
         /// <summary>
         /// Generates and returns the (economy-sized) orthogonal factor <i>Q</i>.
         /// </summary>
-        public DoubleMatrix2D Q
+        public IDoubleMatrix2D Q
         {
             get
             {            //Functions F = Functions.functions;
-                DoubleMatrix2D Q = QR.Like();
+                IDoubleMatrix2D Q = QR.Like();
                 //double[][] Q = X.getArray();
                 for (int k = n - 1; k >= 0; k--)
                 {
-                    DoubleMatrix1D QRcolk = QR.ViewColumn(k).ViewPart(k, m - k);
+                    IDoubleMatrix1D QRcolk = QR.ViewColumn(k).ViewPart(k, m - k);
                     Q[k, k] = 1;
                     for (int j = k; j < n; j++)
                     {
                         if (QR[k, k] != 0)
                         {
-                            DoubleMatrix1D Qcolj = Q.ViewColumn(j).ViewPart(k, m - k);
+                            IDoubleMatrix1D Qcolj = Q.ViewColumn(j).ViewPart(k, m - k);
                             double s = QRcolk.ZDotProduct(Qcolj);
                             s = -s / QR[k, k];
                             Qcolj.Assign(QRcolk, Functions.DoubleDoubleFunctions.PlusMult(s));
@@ -169,11 +169,11 @@ namespace Cern.Colt.Matrix.LinearAlgebra
         /// <summary>
         /// Returns the upper triangular factor, <i>R</i>.
         /// </summary>
-        public DoubleMatrix2D R
+        public IDoubleMatrix2D R
         {
             get
             {
-                DoubleMatrix2D R = QR.Like(n, n);
+                IDoubleMatrix2D R = QR.Like(n, n);
                 for (int i = 0; i < n; i++)
                 {
                     for (int j = 0; j < n; j++)
@@ -213,7 +213,7 @@ namespace Cern.Colt.Matrix.LinearAlgebra
         /// <returns><i>X</i> that minimizes the two norm of <i>Q*R*X - B</i>.</returns>
         /// <exception cref="ArgumentException">if <i>B.Rows != A.Rows</i>.</exception>
         /// <exception cref="ArgumentException">if <i>!this.hasFullRank()</i> (<i>A</i> is rank deficient).</exception>
-        public DoubleMatrix2D Solve(DoubleMatrix2D B)
+        public IDoubleMatrix2D Solve(IDoubleMatrix2D B)
         {
             Functions F = Functions.functions;
             if (B.Rows != m)
@@ -227,7 +227,7 @@ namespace Cern.Colt.Matrix.LinearAlgebra
 
             // Copy right hand side
             int nx = B.Columns;
-            DoubleMatrix2D X = B.Copy();
+            IDoubleMatrix2D X = B.Copy();
 
             // Compute Y = transpose(Q)*B
             for (int k = 0; k < n; k++)

@@ -272,7 +272,7 @@ namespace Cern.Colt.List
         /// <see cref="Cern.Colt.Sorting"></see>
         /// <see cref="java.util.Arrays"></see>
         /// <see cref="java.util.Comparator"></see>
-        public int BinarySearchFromTo(Object key, int from, int to, ObjectComparator<Object> comparator)
+        public int BinarySearchFromTo(Object key, int from, int to, ObjectComparatorDelegate<Object> comparator)
         {
             return Cern.Colt.Sorting.BinarySearchFromTo(this.Elements, key, from, to, comparator);
         }
@@ -311,6 +311,18 @@ namespace Cern.Colt.List
         public ObjectArrayList Copy()
         {
             return (ObjectArrayList)Clone();
+        }
+        /// <summary>
+        /// Returns the elements currently stored, including invalid elements between Size and capacity, if any.
+        /// 
+        /// <b>WARNING:</b> For efficiency reasons and to keep memory usage low, <b>the array is not copied</b>.
+        /// So if subsequently you modify the returned array directly via the [] operator, be sure you know what you're doing.
+        /// 
+        /// <summary>
+        /// <returns>the elements currently stored.</returns>
+        public Object[] GetElements()
+        {
+            return _elements;
         }
         /// <summary>
         /// Deletes the first element from the receiver that matches the specified element.
@@ -389,15 +401,48 @@ namespace Cern.Colt.List
         /// <returns>true if the specified Object is equal to the receiver.</returns>
         public Boolean Equals(Object otherObj, Boolean testForEquality)
         { //delta
-            if (!(otherObj is ObjectArrayList)) { return false; }
+            //if (!(otherObj is ObjectArrayList)) { return false; }
             if (this == otherObj) return true;
+            if (!(otherObj is ObjectArrayList))
+            {
+                if (otherObj is IList<Object>)
+                {
+                    var other = (IList<Object>)otherObj;
+                    if (Size != other.Count) return false;
+                    var theElements = GetElements();
+                    var otherElements = other.ToArray();
+                    for (int i = Size; --i >= 0;)
+                    {
+                        if (theElements[i] != otherElements[i]) return false;
+                    }
+                    return true;
+                }
+                else if (otherObj is Array)
+                {
+                    var other = (Object[])otherObj;
+                    if (Size != other.Length) return false;
+                    var theElements = GetElements();
+                    for (int i = Size; --i >= 0;)
+                    {
+                        if (theElements[i] != other[i]) return false;
+                    }
+                    return true;
+                }
+                else
+                {
+                    return base.Equals(otherObj);
+                }
+            }
+            else
+            {
+                if (this == otherObj) return true;
             if (otherObj == null) return false;
             ObjectArrayList other = (ObjectArrayList)otherObj;
             if (_elements == other.Elements) return true;
             if (_size != other.Size) return false;
 
-            Object[] otherElements = other.Elements;
-            Object[] theElements = _elements;
+            var otherElements = other.Elements;
+            var theElements = _elements;
             if (!testForEquality)
             {
                 for (int i = _size; --i >= 0;)
@@ -414,7 +459,7 @@ namespace Cern.Colt.List
             }
 
             return true;
-
+        }
         }
         /// <summary>
         /// Sets the specified range of elements in the specified array to the specified value.
@@ -434,7 +479,7 @@ namespace Cern.Colt.List
         /// <summary>
         /// <param name="procedure">   the procedure to be applied. Stops iteration if the procedure returns <tt>false</tt>, otherwise continues.</param>
         /// <returns><tt>false</tt> if the procedure stopped before all elements where iterated over, <tt>true</tt> otherwise.</returns>
-        public Boolean ForEach(ObjectProcedure<Object> procedure)
+        public Boolean ForEach(ObjectProcedureDelegate<Object> procedure)
         {
             Object[] theElements = _elements;
             int theSize = _size;
@@ -728,7 +773,7 @@ namespace Cern.Colt.List
         /// <tt>toIndex &gt; a.length</tt>
         /// <see cref="Comparator"></see>
         /// <exception cref="IndexOutOfRangeException">index is out of range (<tt>size()&gt;0 && (from&lt;0 || from&gt;to || to&gt;=size())</tt>). </exception>
-        public void QuickSortFromTo(int from, int to, ObjectComparator<Object> c)
+        public void QuickSortFromTo(int from, int to, ObjectComparatorDelegate<Object> c)
         {
             if (_size == 0) return;
             CheckRangeFromTo(from, to, _size);

@@ -330,7 +330,7 @@ namespace Cern.Jet.Random
         /// <returns></returns>
         public override int NextInt()
         {
-            return NextInt(this.my_N, this.my_s, this.my_n, this.randomGenerator);
+            return NextInt(this.my_N, this.my_s, this.my_n, this.RandomGenerator);
         }
 
         /// <summary>
@@ -342,7 +342,7 @@ namespace Cern.Jet.Random
         /// <returns></returns>
         public int NextInt(int N, int s, int n)
         {
-            return NextInt(N, s, n, this.randomGenerator);
+            return NextInt(N, s, n, this.RandomGenerator);
         }
 
         /// <summary>

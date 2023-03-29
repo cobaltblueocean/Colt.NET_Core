@@ -79,7 +79,7 @@ namespace Cern.Colt
         /// that this guarantees that the return value will be &gt;= 0 if
         /// and only if the key is found.
         /// </returns>
-        private static int BinarySearchFromTo(int a, int from, int to, IntComparator comp)
+        private static int BinarySearchFromTo(int a, int from, int to, IntComparatorDelegate comp)
         {
             while (from <= to)
             {
@@ -423,8 +423,8 @@ namespace Cern.Colt
         /// Takes as second argument the index <i>c</i> within the generic data <i>g</i>.
         /// </param>
         /// <see cref="Sorting"/>
-        /// <see cref="Sorting.BinarySearchFromTo(int[], int, int, int, IntComparator)"/>
-        public static void GenericPartition(int from, int to, int splitFrom, int splitTo, int[] splitIndexes, IntComparator comp, IntComparator comp2, IntComparator comp3, Swapper swapper)
+        /// <see cref="Sorting.BinarySearchFromTo(int[], int, int, int, IntComparatorDelegate)"/>
+        public static void GenericPartition(int from, int to, int splitFrom, int splitTo, int[] splitIndexes, IntComparatorDelegate comp, IntComparatorDelegate comp2, IntComparatorDelegate comp3, Swapper swapper)
         {
             int splitter; // int, double --> template type dependent
 
@@ -516,7 +516,7 @@ namespace Cern.Colt
         /// <param name="comp"></param>
         /// <param name="swapper"></param>
         /// <returns></returns>
-        private static int GenericPartition(int from, int to, int splitter, IntComparator comp, Swapper swapper)
+        private static int GenericPartition(int from, int to, int splitter, IntComparatorDelegate comp, Swapper swapper)
         {
             for (int i = from - 1; ++i <= to;)
             {
@@ -570,7 +570,7 @@ namespace Cern.Colt
         /// <param name="c"></param>
         /// <param name="comp"></param>
         /// <returns></returns>
-        private static int Med3<T>(T[] x, int a, int b, int c, ObjectComparator<T> comp)
+        private static int Med3<T>(T[] x, int a, int b, int c, ObjectComparatorDelegate<T> comp)
         {
             int ab = comp(x[a], x[b]);
             int ac = comp(x[a], x[c]);
@@ -588,7 +588,7 @@ namespace Cern.Colt
         /// <param name="c"></param>
         /// <param name="comp"></param>
         /// <returns></returns>
-        private static int Med3(int a, int b, int c, IntComparator comp)
+        private static int Med3(int a, int b, int c, IntComparatorDelegate comp)
         {
             int ab = comp(a, b);
             int ac = comp(a, c);
@@ -1139,7 +1139,7 @@ namespace Cern.Colt
         /// <param name="splitTo"></param>
         /// <param name="splitIndexes"></param>
         /// <param name="comp"></param>
-        public static void Partition<T>(T[] list, int from, int to, T[] splitters, int splitFrom, int splitTo, int[] splitIndexes, ObjectComparator<T> comp)
+        public static void Partition<T>(T[] list, int from, int to, T[] splitters, int splitFrom, int splitTo, int[] splitIndexes, ObjectComparatorDelegate<T> comp)
         {
             T splitter; // int, double --> template type dependent
 
@@ -1230,7 +1230,7 @@ namespace Cern.Colt
         /// <param name="splitter"></param>
         /// <param name="comp"></param>
         /// <returns></returns>
-        public static int Partition<T>(T[] list, int from, int to, T splitter, ObjectComparator<T> comp)
+        public static int Partition<T>(T[] list, int from, int to, T splitter, ObjectComparatorDelegate<T> comp)
         {
             T element;  // int, double --> template type dependent
             for (int i = from - 1; ++i <= to;)

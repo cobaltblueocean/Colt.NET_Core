@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="SparseDoubleMatrix1D.cs" company="CERN">
+// <copyright file="SparseIDoubleMatrix1D.cs" company="CERN">
 //   Copyright © 1999 CERN - European Organization for Nuclear Research.
 //   Permission to use, copy, modify, distribute and sell this software and its documentation for any purpose 
 //   is hereby granted without fee, provided that the above copyright notice appear in all copies and 
@@ -121,7 +121,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <returns>
         /// The aggregated measure.
         /// </returns>
-        public override double Aggregate(DoubleDoubleFunction aggr, DoubleFunction f)
+        public override double Aggregate(IDoubleDoubleFunction aggr, IDoubleFunction f)
         {
             double result = double.NaN;
             bool first = true;
@@ -130,11 +130,11 @@ namespace Cern.Colt.Matrix.Implementation
                 if (first)
                 {
                     first = false;
-                    result = f(e);
+                    result = f.Apply(e);
                 }
                 else
                 {
-                    result = aggr(result, f(e));
+                    result = aggr.Apply(result, f.Apply(e));
                 }
             });
 
@@ -150,7 +150,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <returns>
         /// <tt>this</tt> (for convenience only).
         /// </returns>
-        public override DoubleMatrix1D Assign(double value)
+        public override IDoubleMatrix1D Assign(double value)
         {
             // overriden for performance only
             if (!IsView && value == 0) this.Elements.Clear();
@@ -168,13 +168,13 @@ namespace Cern.Colt.Matrix.Implementation
         /// <returns>
         /// <tt>this</tt> (for convenience only).
         /// </returns>
-        public override DoubleMatrix1D Assign(DoubleFunction function)
+        public override IDoubleMatrix1D Assign(IDoubleFunction function)
         {
             var indices = new int[Elements.Count];
             Elements.Keys.CopyTo(indices, 0);
             AutoParallel.AutoParallelForEach(indices, (i) =>
                     {
-                        Elements[i] = function(Elements[i]);
+                        Elements[i] = function.Apply(Elements[i]);
                     });
             return this;
         }
@@ -223,7 +223,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <returns>
         /// A new empty matrix of the same dynamic type.
         /// </returns>
-        public override DoubleMatrix1D Like(int n)
+        public override IDoubleMatrix1D Like(int n)
         {
             return new SparseDoubleMatrix1D(n);
         }
@@ -240,7 +240,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <returns>
         /// A new matrix of the corresponding dynamic type.
         /// </returns>
-        public override DoubleMatrix2D Like2D(int rows, int columns)
+        public override IDoubleMatrix2D Like2D(int rows, int columns)
         {
             return new SparseDoubleMatrix2D(rows, columns);
         }
@@ -255,7 +255,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <returns>
         /// The position of the element with the given relative rank.
         /// </returns>
-        protected internal override int Index(int rank)
+        public override int Index(int rank)
         {
             // overriden for manual inlining only
             return Zero + (rank * Stride);
@@ -270,7 +270,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <returns>
         /// <tt>true</tt> if both matrices share at least one identical cell.
         /// </returns>
-        protected override bool HaveSharedCellsRaw(DoubleMatrix1D other)
+        public override bool HaveSharedCellsRaw(IDoubleMatrix1D other)
         {
             if (other is SelectedSparseDoubleMatrix1D)
             {
@@ -296,7 +296,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <returns>
         /// A new view.
         /// </returns>
-        protected override DoubleMatrix1D ViewSelectionLike(int[] offsets)
+        public override IDoubleMatrix1D ViewSelectionLike(int[] offsets)
         {
             return new SelectedSparseDoubleMatrix1D(this.Elements, offsets);
         }

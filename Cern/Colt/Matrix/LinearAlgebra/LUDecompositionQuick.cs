@@ -33,11 +33,11 @@ namespace Cern.Colt.Matrix.LinearAlgebra
     {
 
         #region Local Variables
-        protected DoubleMatrix2D _lu;
+        protected IDoubleMatrix2D _lu;
         protected int pivsign;
         protected int[] piv;
 
-        protected Boolean isNonSingular;
+        //protected Boolean isNonSingular;
 
         //protected Algebra algebra;
 
@@ -47,14 +47,14 @@ namespace Cern.Colt.Matrix.LinearAlgebra
         #endregion
 
         #region Property
-        public DoubleMatrix2D L
+        public IDoubleMatrix2D L
         {
             get { return LowerTriangular(_lu.Copy()); }
         }
 
-        public DoubleMatrix2D LU
+        public IDoubleMatrix2D LU
         {
-            get { return _lu.Copy();}
+            get { return _lu; }
             set { _lu = value; }
         }
 
@@ -63,14 +63,14 @@ namespace Cern.Colt.Matrix.LinearAlgebra
             get { return piv; }
         }
 
-        public DoubleMatrix2D U
+        public IDoubleMatrix2D U
         {
             get { return UpperTriangular(_lu.Copy()); }
         }
 
         public Boolean IsNonsingular
         {
-            get { return isNonSingular; }
+            get { return IsMatrixNonsingular(_lu); }
         }
 
         protected int M
@@ -116,7 +116,7 @@ namespace Cern.Colt.Matrix.LinearAlgebra
         #endregion
 
         #region Local Public Methods
-        protected static Boolean IsMatrixNonsingular(DoubleMatrix2D matrix)
+        protected static Boolean IsMatrixNonsingular(IDoubleMatrix2D matrix)
         {
             int m = matrix.Rows;
             int n = matrix.Columns;
@@ -129,7 +129,7 @@ namespace Cern.Colt.Matrix.LinearAlgebra
             return true;
         }
 
-        public void Decompose(DoubleMatrix2D A)
+        public void Decompose(IDoubleMatrix2D A)
         {
             int CUT_OFF = 10;
             // setup
@@ -149,11 +149,11 @@ namespace Cern.Colt.Matrix.LinearAlgebra
             }
 
             //precompute and cache some views to avoid regenerating them time and again
-            DoubleMatrix1D[] LUrows = new DoubleMatrix1D[m];
+            IDoubleMatrix1D[] LUrows = new IDoubleMatrix1D[m];
             for (int i = 0; i < m; i++) LUrows[i] = LU.ViewRow(i);
 
             IntArrayList nonZeroIndexes = new IntArrayList(); // sparsity
-            DoubleMatrix1D LUcolj = LU.ViewColumn(0).Like();  // blocked column j
+            IDoubleMatrix1D LUcolj = LU.ViewColumn(0).Like();  // blocked column j
             Cern.Jet.Math.Mult multFunction = Cern.Jet.Math.Mult.CreateInstance(0);
 
             // Outer loop.
@@ -234,7 +234,7 @@ namespace Cern.Colt.Matrix.LinearAlgebra
             LU = LU;
         }
 
-        public void Decompose(DoubleMatrix2D A, int semiBandwidth)
+        public void Decompose(IDoubleMatrix2D A, int semiBandwidth)
         {
             if (!A.IsSquare || semiBandwidth < 0 || semiBandwidth > 2)
             {
@@ -289,7 +289,7 @@ namespace Cern.Colt.Matrix.LinearAlgebra
             return det;
         }
 
-        public void Solve(DoubleMatrix1D B)
+        public void Solve(IDoubleMatrix1D B)
         {
             //algebra.property().checkRectangular(LU);
            
@@ -339,7 +339,7 @@ namespace Cern.Colt.Matrix.LinearAlgebra
             }
         }
 
-        public void Solve(DoubleMatrix2D B)
+        public void Solve(IDoubleMatrix2D B)
         {
             int CUT_OFF = 10;
             //algebra.property().checkRectangular(LU);
@@ -359,7 +359,7 @@ namespace Cern.Colt.Matrix.LinearAlgebra
             int nx = B.Columns;
 
             //precompute and cache some views to avoid regenerating them time and again
-            DoubleMatrix1D[] Brows = new DoubleMatrix1D[n];
+            IDoubleMatrix1D[] Brows = new IDoubleMatrix1D[n];
             for (int k = 0; k < n; k++) Brows[k] = B.ViewRow(k);
 
             // transformations
@@ -367,7 +367,7 @@ namespace Cern.Colt.Matrix.LinearAlgebra
            Cern.Jet.Math.PlusMult minusMult =Cern.Jet.Math.PlusMult.MinusMult(0);
 
             IntArrayList nonZeroIndexes = new IntArrayList(); // sparsity
-            DoubleMatrix1D Browk = Cern.Colt.Matrix.DoubleFactory1D.Dense.Make(nx); // blocked row k
+            IDoubleMatrix1D Browk = (Cern.Colt.Matrix.Implementation.DenseDoubleMatrix1D)Cern.Colt.Matrix.DoubleFactory1D.Dense.Make(nx); // blocked row k
 
             // Solve L*Y = B(piv,:)
             for (int k = 0; k < n; k++)
@@ -410,7 +410,7 @@ namespace Cern.Colt.Matrix.LinearAlgebra
                 Brows[k].Assign(div);
 
                 // blocking
-                if (Browk == null) Browk = Cern.Colt.Matrix.DoubleFactory1D.Dense.Make(B.Columns);
+                if (Browk == null) Browk = (Cern.Colt.Matrix.Implementation.DenseDoubleMatrix1D)Cern.Colt.Matrix.DoubleFactory1D.Dense.Make(B.Columns);
                 Browk.Assign(Brows[k]);
 
                 // sparsity detection
@@ -473,14 +473,14 @@ namespace Cern.Colt.Matrix.LinearAlgebra
             catch (ArgumentException exc) { buf.Append(unknown + exc.Message); }
 
             buf.Append("\n\ninverse(A) = ");
-            DoubleMatrix2D identity = Cern.Colt.Matrix.DoubleFactory2D.Dense.Identity(LU.Rows);
+            IDoubleMatrix2D identity = Cern.Colt.Matrix.DoubleFactory2D.Dense.Identity(LU.Rows);
             try { this.Solve(identity); buf.Append(identity.ToString()); }
             catch (ArgumentException exc) { buf.Append(unknown + exc.Message); }
 
             return buf.ToString();
         }
 
-        public DoubleMatrix2D LowerTriangular(DoubleMatrix2D A)
+        public IDoubleMatrix2D LowerTriangular(IDoubleMatrix2D A)
         {
             int rows = A.Rows;
             int columns = A.Columns;
@@ -498,7 +498,7 @@ namespace Cern.Colt.Matrix.LinearAlgebra
             return A;
         }
 
-        public DoubleMatrix2D UpperTriangular(DoubleMatrix2D A)
+        public IDoubleMatrix2D UpperTriangular(IDoubleMatrix2D A)
         {
             int rows = A.Rows;
             int columns = A.Columns;

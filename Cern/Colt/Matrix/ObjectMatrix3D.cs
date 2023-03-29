@@ -28,7 +28,7 @@ namespace Cern.Colt.Matrix
     /// <returns>a flag to inform the object calling the procedure.</returns>
     public delegate Boolean ObjectMatrix3DProcedure(ObjectMatrix3D element);
 
-    public abstract class ObjectMatrix3D : AbstractMatrix3D, IEnumerable<Object>
+    public abstract class ObjectMatrix3D : AbstractMatrix3D<Object>, IEnumerable<Object>
     {
 
         #region Local Variables
@@ -44,20 +44,6 @@ namespace Cern.Colt.Matrix
         #endregion
 
         #region Abstract Methods
-
-        /// <summary>
-        /// Get or set the matrix cell value at coordinate <i>[slice,row,column]</i>.
-        ///
-        /// <p>Provided with invalid parameters this method may return invalid objects without throwing any exception.
-        /// <b>You should only use this method when you are absolutely sure that the coordinate is within bounds.</b>
-        /// Precondition (unchecked): <i>slice&lt;0 || slice&gt;=Slices || row&lt;0 || row&gt;=Rows || column&lt;0 || column&gt;=column()</i>.
-        /// </summary>
-        /// <param name="slice">the index of the slice-coordinate.</param>
-        /// <param name="row">the index of the row-coordinate.</param>
-        /// <param name="colum">the index of the column-coordinate.</param>
-        /// <returns>the value of the specified coordinate.</returns>
-        public abstract Object this[int slice, int row, int colum] { get; set; }
-
         /// <summary>
         /// Construct and returns a new empty matrix <i>of the same dynamic type</i> as the receiver, having the specified number of Slices, Rows and Columns.
         /// For example, if the receiver is an instance of type <see cref="DenseObjectMatrix3D"/> the new matrix must also be of type <see cref="DenseObjectMatrix3D"/>,
@@ -124,7 +110,7 @@ namespace Cern.Colt.Matrix
         /// <param name="f">a function transforming the current cell value.</param>
         /// <returns>the aggregated measure.</returns>
         /// <see cref="Cern.Jet.Math.Functions"/>
-        public virtual Object Aggregate(Cern.Colt.Function.ObjectObjectFunction<Object> aggr, Cern.Colt.Function.ObjectFunction<Object> f)
+        public virtual Object Aggregate(Cern.Colt.Function.ObjectObjectFunctionDelegate<Object> aggr, Cern.Colt.Function.ObjectFunctionDelegate<Object> f)
         {
             if (Size == 0) return null;
             Object a = f(this[Slices - 1, Rows - 1, Columns - 1]);
@@ -179,7 +165,7 @@ namespace Cern.Colt.Matrix
         /// <returns>the aggregated measure.</returns>
         /// <exception cref="ArgumentException">if <i>Slices != other.Slices || Rows != other.Rows || Columns != other.Columns</i></exception>
         /// <see cref="Cern.Jet.Math.Functions"/>
-        public virtual Object Aggregate(ObjectMatrix3D other, Cern.Colt.Function.ObjectObjectFunction<Object> aggr, Cern.Colt.Function.ObjectObjectFunction<Object> f)
+        public virtual Object Aggregate(ObjectMatrix3D other, Cern.Colt.Function.ObjectObjectFunctionDelegate<Object> aggr, Cern.Colt.Function.ObjectObjectFunctionDelegate<Object> f)
         {
             CheckShape(other);
             if (Size == 0) return null;
@@ -267,7 +253,7 @@ namespace Cern.Colt.Matrix
         /// <param name="function">a function object taking as argument the current cell's value.</param>
         /// <returns><i>this</i> (for convenience only).</returns>
         /// <see cref="Cern.Jet.Math.Functions"/>
-        public virtual ObjectMatrix3D Assign(Cern.Colt.Function.ObjectFunction<Object> function)
+        public virtual ObjectMatrix3D Assign(Cern.Colt.Function.ObjectFunctionDelegate<Object> function)
         {
             for (int slice = Slices; --slice >= 0;)
             {
@@ -336,7 +322,7 @@ namespace Cern.Colt.Matrix
         /// <returns><i>this</i> (for convenience only).</returns>
         /// <exception cref="ArgumentException">if <i>Slices != other.Slices || Rows != other.Rows || Columns != other.Columns</i></exception>
         /// <see cref="Cern.Jet.Math.Functions"/>
-        public virtual ObjectMatrix3D Assign(ObjectMatrix3D y, Cern.Colt.Function.ObjectObjectFunction<Object> function)
+        public virtual ObjectMatrix3D Assign(ObjectMatrix3D y, Cern.Colt.Function.ObjectObjectFunctionDelegate<Object> function)
         {
             CheckShape(y);
             for (int slice = Slices; --slice >= 0;)
@@ -948,7 +934,7 @@ namespace Cern.Colt.Matrix
         /// </summary>
         /// <param name="procedure">a procedure object taking as argument the current cell's valued Stops iteration if the procedure returns <i>false</i>, otherwise continuesd</param>
         /// <returns><i>false</i> if the procedure stopped before all elements where iterated over, <i>true</i> otherwised</returns>
-        private Boolean XforEach(Cern.Colt.Function.ObjectProcedure<Object> procedure)
+        private Boolean XforEach(Cern.Colt.Function.ObjectProcedureDelegate<Object> procedure)
         {
             for (int slice = Slices; --slice >= 0;)
             {
@@ -981,7 +967,7 @@ namespace Cern.Colt.Matrix
         /// </summary>
         /// <param name="procedure">a procedure object taking as first argument the current slice, as second argument the current row, and as third argument the current columnd Stops iteration if the procedure returns <i>false</i>, otherwise continuesd </param>
         /// <returns><i>false</i> if the procedure stopped before all elements where iterated over, <i>true</i> otherwised </returns>
-        private Boolean XforEachCoordinate(Cern.Colt.Function.IntIntIntProcedure procedure)
+        private Boolean XforEachCoordinate(Cern.Colt.Function.IntIntIntProcedureDelegate procedure)
         {
             for (int column = Columns; --column >= 0;)
             {

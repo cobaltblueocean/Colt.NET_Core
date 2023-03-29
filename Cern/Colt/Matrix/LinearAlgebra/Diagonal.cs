@@ -15,7 +15,7 @@ namespace Cern.Colt.Matrix.LinearAlgebra
     /// </summary>
     public static class Diagonal
     {
-        public static Boolean Inverse(DoubleMatrix2D A)
+        public static Boolean Inverse(IDoubleMatrix2D A)
         {
             //Property.DEFAULT.checkSquare(A);
             //A.IsSquare;

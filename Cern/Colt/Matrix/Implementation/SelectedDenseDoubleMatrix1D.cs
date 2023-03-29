@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="SelectedDenseDoubleMatrix1D.cs" company="CERN">
+// <copyright file="SelectedDenseIDoubleMatrix1D.cs" company="CERN">
 //   Copyright © 1999 CERN - European Organization for Nuclear Research.
 //   Permission to use, copy, modify, distribute and sell this software and its documentation for any purpose 
 //   is hereby granted without fee, provided that the above copyright notice appear in all copies and 
@@ -117,7 +117,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <returns>
         /// A new empty matrix of the same dynamic type.
         /// </returns>
-        public override DoubleMatrix1D Like(int n)
+        public override IDoubleMatrix1D Like(int n)
         {
             return new DenseDoubleMatrix1D(n);
         }
@@ -134,7 +134,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <returns>
         /// A new matrix of the corresponding dynamic type.
         /// </returns>
-        public override DoubleMatrix2D Like2D(int rows, int columns)
+        public override IDoubleMatrix2D Like2D(int rows, int columns)
         {
             return new DenseDoubleMatrix2D(rows, columns);
         }
@@ -149,7 +149,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <returns>
         /// Returns the position of the element with the given relative rank.
         /// </returns>
-        protected internal override int Index(int rank)
+        public override int Index(int rank)
         {
             ////return this.offset + super.index(rank);
             // manually inlined:
@@ -180,7 +180,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <returns>
         /// <tt>true</tt> if both matrices share at least one identical cell.
         /// </returns>
-        protected override bool HaveSharedCellsRaw(DoubleMatrix1D other)
+        public override bool HaveSharedCellsRaw(IDoubleMatrix1D other)
         {
             if (other is SelectedDenseDoubleMatrix1D)
             {
@@ -222,7 +222,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <returns>
         /// A new view.
         /// </returns>
-        protected override DoubleMatrix1D ViewSelectionLike(int[] offs)
+        public override IDoubleMatrix1D ViewSelectionLike(int[] offs)
         {
             return new SelectedDenseDoubleMatrix1D(this.Elements, offs);
         }

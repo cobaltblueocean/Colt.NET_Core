@@ -30,7 +30,7 @@ namespace Cern.Colt.Tests
         public void TestViewColumn()
         {
             var a = DoubleFactory2D.Dense.Ascending(5, 4);
-            DoubleMatrix1D d = a.ViewColumn(0);
+            IDoubleMatrix1D d = a.ViewColumn(0);
             Assert.AreEqual(5, d.Size);
             Assert.AreEqual(1, d[0]);
             Assert.AreEqual(5, d[1]);

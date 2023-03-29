@@ -8,23 +8,127 @@ using Cern.Colt.Function;
 
 namespace Cern.Jet.Math
 {
+    #region function class definitions
+    public class DoubleFunction : IDoubleFunction
+    {
+        DoubleFunctionDelegate _eval;
+
+        public DoubleFunctionDelegate Eval { get { return _eval; } set { _eval = value; } }
+
+        public double Apply(double x)
+        {
+            if (_eval == null)
+            {
+                throw new NullReferenceException();
+            }
+            else
+            {
+                return _eval(x);
+            }
+        }
+    }
+
+    public class DoubleProcedure : IDoubleProcedure
+    {
+        DoubleProcedureDelegate _eval;
+
+        public DoubleProcedureDelegate Eval { get { return _eval; } set { _eval = value; } }
+
+        public bool Apply(double x)
+        {
+            if (_eval == null)
+            {
+                throw new NullReferenceException();
+            }
+            else
+            {
+                return _eval(x);
+            }
+        }
+    }
+
+    public class DoubleDoubleFunction : IDoubleDoubleFunction
+    {
+        DoubleDoubleFunctionDelegate _eval;
+
+        public DoubleDoubleFunctionDelegate Eval { get { return _eval; } set { _eval = value; } }
+
+        public double Apply(double x, double y)
+        {
+            if (_eval == null)
+            {
+                throw new NullReferenceException();
+            }
+            else
+            {
+                return _eval(x, y);
+            }
+        }
+    }
+
+    public class DoubleDoubleProcedure : IDoubleDoubleProcedure
+    {
+        DoubleDoubleProcedureDelegate _eval;
+
+        public DoubleDoubleProcedureDelegate Eval { get { return _eval; } set { _eval = value; } }
+
+        public bool Apply(double x, double y)
+        {
+            if (_eval == null)
+            {
+                throw new NullReferenceException();
+            }
+            else
+            {
+                return _eval(x, y);
+            }
+        }
+    }
+
+    public class PlusMultiFunction : IDoubleDoubleMultFunction
+    {
+        DoubleDoubleFunctionDelegate _eval;
+        double _multiplicator;
+        public DoubleDoubleFunctionDelegate Eval { get { return _eval; } set { _eval = value; } }
+
+        public PlusMultiFunction(double multiplicator)
+        {
+            _multiplicator = multiplicator;
+        }
+
+        public double Multiplicator { get { return _multiplicator; } set { _multiplicator = value; } }
+
+        public double Apply(double x, double y)
+        {
+            if (_eval == null)
+            {
+                throw new NullReferenceException();
+            }
+            else
+            {
+                return _eval(x, y);
+            }
+        }
+    }
+
+    #endregion
     /// <summary>
     /// Function objects to be passed to generic methodsd Contains the functions of <see cref="System.Math"/> as function objects, as well as a few more basic functions.
     /// Function objects conveniently allow to express arbitrary functions in a generic mannerd Essentially, a function object is an object that can perform a function on some arguments.
     /// It is a minimal delegate that takes the arguments, computes something and returns some result valued Function objects are comparable to function pointers in C used for call-backs.
     /// 
-    /// Unary functions are of type <see cref="Cern.Colt.Function.DoubleFunction"/>, binary functions of type <see cref="Cern.Colt.Function.DoubleDoubleFunction"/>.
+    /// Unary functions are of type <see cref="Cern.Colt.Function.DoubleFunctionDelegate"/>, binary functions of type <see cref="Cern.Colt.Function.DoubleDoubleFunctionDelegate"/>.
     /// All can be retrieved via public static variables named after the functiond 
-    /// Unary predicates are of type <see cref="Cern.Colt.Function.DoubleProcedure"/>, binary predicates of type <see cref="Cern.Colt.Function.DoubleDoubleProcedure"/>.
+    /// Unary predicates are of type <see cref="Cern.Colt.Function.DoubleProcedureDelegate"/>, binary predicates of type <see cref="Cern.Colt.Function.DoubleDoubleProcedureDelegate"/>.
     /// All can be retrieved via public static variables named IsXXXX.
     /// 
     /// Binary functions and predicates also exist as unary functions with the second argument being fixed to a constantd These are generated and retrieved via factory methods (again with the same name as the function).
     /// 
     /// More general, any binary function can be made an unary functions by fixing either the first or the second argument.
-    /// See methods <see cref="Functions.DoubleFunctions.BindArg1(DoubleDoubleFunction, double)"/> and <see cref="Functions.DoubleFunctions.BindArg2(DoubleDoubleFunction, double)"/>d  The order of arguments can be swapped so that the first argument becomes the second and vice-versa.
-    /// See method <see cref="Functions.DoubleDoubleFunctions.SwapArgs(DoubleDoubleFunction)"/>.
+    /// See methods <see cref="Functions.DoubleFunctions.BindArg1(DoubleDoubleFunctionDelegate, double)"/> and <see cref="Functions.DoubleFunctions.BindArg2(DoubleDoubleFunctionDelegate, double)"/>d  The order of arguments can be swapped so that the first argument becomes the second and vice-versa.
+    /// See method <see cref="Functions.DoubleDoubleFunctions.SwapArgs(DoubleDoubleFunctionDelegate)"/>.
     /// 
-    /// Even more general, functions can be chained (composed, assembled)d Assume we have two unary functions <i>g</i> and <i>h</i>.The unary function <i>g(h(a))</i> applying both in sequence can be generated via <see cref="Functions.DoubleFunctions.Chain(DoubleFunction, DoubleFunction)"/>d 
+    /// Even more general, functions can be chained (composed, assembled)d Assume we have two unary functions <i>g</i> and <i>h</i>.The unary function <i>g(h(a))</i> applying both in sequence can be generated via <see cref="Functions.DoubleFunctions.Chain(DoubleFunctionDelegate, DoubleFunctionDelegate)"/>d 
     /// 
     /// Arbitrarily complex functions can be composed from these building blocksd For example,
     /// sin(a) + cos<sup>2</sup>(b) can be specified as follows:
@@ -41,18 +145,18 @@ namespace Cern.Jet.Math
     {
         public static Functions functions = new Functions();
 
-        public static Boolean EvaluateDoubleFunctionEquality(DoubleFunction a, DoubleFunction b)
+        public static Boolean EvaluateDoubleFunctionEquality(IDoubleFunction a, IDoubleFunction b)
         {
-            String FullNameA = a.Method.DeclaringType.FullName;
-            String FullNameB = b.Method.DeclaringType.FullName;
+            String FullNameA = a.GetType().FullName;
+            String FullNameB = b.GetType().FullName;
 
             return FullNameA.Equals(FullNameB);
         }
 
-        public static Boolean EvaluateDoubleDoubleFunctionEquality(DoubleDoubleFunction a, DoubleDoubleFunction b)
+        public static Boolean EvaluateDoubleDoubleFunctionEquality(IDoubleDoubleFunction a, IDoubleDoubleFunction b)
         {
-            String FullNameA = a.Method.DeclaringType.FullName;
-            String FullNameB = b.Method.DeclaringType.FullName;
+            String FullNameA = a.GetType().FullName;
+            String FullNameB = b.GetType().FullName;
 
             return FullNameA.Equals(FullNameB);
         }
@@ -87,9 +191,12 @@ namespace Cern.Jet.Math
             /// <param name="from"></param>
             /// <param name="to"></param>
             /// <returns>(from &lt= a && a &lt= to) ? 1 : 0</returns>
-            public static DoubleFunction Between(double from, double to)
+            public static IDoubleFunction Between(double from, double to)
             {
-                return new DoubleFunction((a) => { return (from <= a && a <= to) ? 1 : 0; });
+                return new DoubleFunction()
+                {
+                    Eval = new DoubleFunctionDelegate((a) => { return (from <= a && a <= to) ? 1 : 0; })
+                };
             }
 
             /// <summary>
@@ -99,9 +206,12 @@ namespace Cern.Jet.Math
             /// <param name="function">a binary function taking operands in the form <i>function.apply(c,var)</i>.</param>
             /// <param name="c"></param>
             /// <returns>the unary function <i>function(c,var)</i>.</returns>
-            public static DoubleFunction BindArg1(DoubleDoubleFunction function, double c)
+            public static IDoubleFunction BindArg1(IDoubleDoubleFunction function, double c)
             {
-                return new DoubleFunction((var) => { return function(c, var); });
+                return new DoubleFunction()
+                {
+                    Eval = new DoubleFunctionDelegate((var) => { return function.Apply(c, var); })
+                };
             }
 
             /// <summary>
@@ -111,9 +221,12 @@ namespace Cern.Jet.Math
             /// <param name="function">a binary function taking operands in the form <i>function.apply(var,c)</i>.</param>
             /// <param name="c"></param>
             /// <returns>the unary function <i>function(var,c)</i>.</returns>
-            public static DoubleFunction BindArg2(DoubleDoubleFunction function, double c)
+            public static IDoubleFunction BindArg2(IDoubleDoubleFunction function, double c)
             {
-                return new DoubleFunction((var) => { return function(var, c); });
+                return new DoubleFunction()
+                {
+                    Eval = new DoubleFunctionDelegate((var) => { return function.Apply(var, c); })
+                };
             }
 
             /// <summary>
@@ -122,9 +235,12 @@ namespace Cern.Jet.Math
             /// <param name="g">a binary function.</param>
             /// <param name="h">a binary function.</param>
             /// <returns>the binary function <i>f( g(a), h(b) )</i>.</returns>
-            public static DoubleFunction Chain(DoubleFunction g, DoubleFunction h)
+            public static IDoubleFunction Chain(IDoubleFunction g, IDoubleFunction h)
             {
-                return new DoubleFunction((a) => { return g(h(a)); });
+                return new DoubleFunction()
+                {
+                    Eval = new DoubleFunctionDelegate((a) => { return g.Apply(h.Apply(a)); })
+                };
             }
 
             /// <summary>
@@ -133,9 +249,10 @@ namespace Cern.Jet.Math
             /// </summary>
             /// <param name="b">the value to be compared.</param>
             /// <returns>the binary function</returns>
-            public static DoubleFunction Compare(Double b)
+            public static IDoubleFunction Compare(Double b)
             {
-                return new DoubleFunction((a) => { return a < b ? -1 : a > b ? 1 : 0; });
+                return new DoubleFunction()
+                { Eval = new DoubleFunctionDelegate((a) => { return a < b ? -1 : a > b ? 1 : 0; }) };
             }
 
             /// <summary>
@@ -143,9 +260,10 @@ namespace Cern.Jet.Math
             /// </summary>
             /// <param name="c"></param>
             /// <returns></returns>
-            public static DoubleFunction Constant(Double c)
+            public static IDoubleFunction Constant(Double c)
             {
-                return new DoubleFunction((a) => { return c; });
+                return new DoubleFunction()
+                { Eval = new DoubleFunctionDelegate((a) => { return c; }) };
             }
 
             /// <summary>
@@ -154,9 +272,10 @@ namespace Cern.Jet.Math
             /// </summary>
             /// <param name="b"></param>
             /// <returns></returns>
-            public static DoubleFunction Div(Double b)
+            public static IDoubleFunction Div(Double b)
             {
-                return new DoubleFunction((a) => { return (1 / b); });
+                return new DoubleFunction()
+                { Eval = new DoubleFunctionDelegate((a) => { return (1 / b); }) };
             }
 
             /// <summary>
@@ -165,9 +284,10 @@ namespace Cern.Jet.Math
             /// </summary>
             /// <param name="b"></param>
             /// <returns></returns>
-            public static DoubleFunction Equals(Double b)
+            public static IDoubleFunction Equals(Double b)
             {
-                return new DoubleFunction((a) => { return a == b ? 1 : 0; });
+                return new DoubleFunction()
+                { Eval = new DoubleFunctionDelegate((a) => { return a == b ? 1 : 0; }) };
             }
 
             /// <summary>
@@ -176,9 +296,10 @@ namespace Cern.Jet.Math
             /// </summary>
             /// <param name="b"></param>
             /// <returns></returns>
-            public static DoubleFunction Greater(Double b)
+            public static IDoubleFunction Greater(Double b)
             {
-                return new DoubleFunction((a) => { return a > b ? 1 : 0; });
+                return new DoubleFunction()
+                { Eval = new DoubleFunctionDelegate((a) => { return a > b ? 1 : 0; }) };
             }
 
             /// <summary>
@@ -187,9 +308,10 @@ namespace Cern.Jet.Math
             /// </summary>
             /// <param name="b"></param>
             /// <returns></returns>
-            public static DoubleFunction IEEEremainder(Double b)
+            public static IDoubleFunction IEEEremainder(Double b)
             {
-                return new DoubleFunction((a) => { return System.Math.IEEERemainder(a, b); });
+                return new DoubleFunction()
+                { Eval = new DoubleFunctionDelegate((a) => { return System.Math.IEEERemainder(a, b); }) };
             }
 
             /// <summary>
@@ -201,7 +323,8 @@ namespace Cern.Jet.Math
             /// <returns></returns>
             public static DoubleProcedure IsBetween(double from, double to)
             {
-                return new DoubleProcedure((a) => { return from <= a && a <= to; });
+                return new DoubleProcedure()
+                { Eval = new DoubleProcedureDelegate((a) => { return from <= a && a <= to; }) };
             }
 
             /// <summary>
@@ -212,7 +335,8 @@ namespace Cern.Jet.Math
             /// <returns></returns>
             public static DoubleProcedure IsEqual(double b)
             {
-                return new DoubleProcedure((a) => { return a==b; });
+                return new DoubleProcedure()
+                { Eval = new DoubleProcedureDelegate((a) => { return a == b; }) };
             }
 
             /// <summary>
@@ -223,7 +347,8 @@ namespace Cern.Jet.Math
             /// <returns></returns>
             public static DoubleProcedure IsGreater(double b)
             {
-                return new DoubleProcedure((a) => { return a > b; });
+                return new DoubleProcedure()
+                { Eval = new DoubleProcedureDelegate((a) => { return a > b; }) };
             }
 
             /// <summary>
@@ -234,7 +359,8 @@ namespace Cern.Jet.Math
             /// <returns></returns>
             public static DoubleProcedure IsLess(double b)
             {
-                return new DoubleProcedure((a) => { return a < b; });
+                return new DoubleProcedure()
+                { Eval = new DoubleProcedureDelegate((a) => { return a < b; }) };
             }
 
             /// <summary>
@@ -243,9 +369,10 @@ namespace Cern.Jet.Math
             /// </summary>
             /// <param name="b"></param>
             /// <returns></returns>
-            public static DoubleFunction Less(double b)
+            public static IDoubleFunction Less(double b)
             {
-                return new DoubleFunction((a) => { return a < b ? 1 : 0; });
+                return new DoubleFunction()
+                { Eval = new DoubleFunctionDelegate((a) => { return a < b ? 1 : 0; }) };
             }
 
             /// <summary>
@@ -254,12 +381,16 @@ namespace Cern.Jet.Math
             /// </summary>
             /// <param name="b"></param>
             /// <returns></returns>
-            public static DoubleFunction Lg(double b)
+            public static IDoubleFunction Lg(double b)
             {
-                return new DoubleFunction((a) => {
-                    double logInv = 1 / System.Math.Log(b);
-                    return System.Math.Log(a) * logInv;
-                });
+                return new DoubleFunction()
+                {
+                    Eval = new DoubleFunctionDelegate((a) =>
+                    {
+                        double logInv = 1 / System.Math.Log(b);
+                        return System.Math.Log(a) * logInv;
+                    })
+                };
             }
 
             /// <summary>
@@ -268,9 +399,10 @@ namespace Cern.Jet.Math
             /// </summary>
             /// <param name="b"></param>
             /// <returns></returns>
-            public static DoubleFunction Max(double b)
+            public static IDoubleFunction Max(double b)
             {
-                return new DoubleFunction((a) => { return System.Math.Max(a, b); });
+                return new DoubleFunction()
+                { Eval = new DoubleFunctionDelegate((a) => { return System.Math.Max(a, b); }) };
             }
 
             /// <summary>
@@ -279,9 +411,10 @@ namespace Cern.Jet.Math
             /// </summary>
             /// <param name="b"></param>
             /// <returns></returns>
-            public static DoubleFunction Min(double b)
+            public static IDoubleFunction Min(double b)
             {
-                return new DoubleFunction((a) => { return System.Math.Min(a, b); });
+                return new DoubleFunction()
+                { Eval = new DoubleFunctionDelegate((a) => { return System.Math.Min(a, b); }) };
             }
 
             /// <summary>
@@ -290,9 +423,10 @@ namespace Cern.Jet.Math
             /// </summary>
             /// <param name="b"></param>
             /// <returns></returns>
-            public static DoubleFunction Minus(double b)
+            public static IDoubleFunction Minus(double b)
             {
-                return new DoubleFunction((a) => { return a - b; });
+                return new DoubleFunction()
+                { Eval = new DoubleFunctionDelegate((a) => { return a - b; }) };
             }
 
             /// <summary>
@@ -301,9 +435,10 @@ namespace Cern.Jet.Math
             /// </summary>
             /// <param name="b"></param>
             /// <returns></returns>
-            public static DoubleFunction Mod(double b)
+            public static IDoubleFunction Mod(double b)
             {
-                return new DoubleFunction((a) => { return a % b; });
+                return new DoubleFunction()
+                { Eval = new DoubleFunctionDelegate((a) => { return a % b; }) };
             }
 
             /// <summary>
@@ -311,9 +446,10 @@ namespace Cern.Jet.Math
             /// </summary>
             /// <param name="b"></param>
             /// <returns></returns>
-            public static DoubleFunction Mult(double b)
+            public static IDoubleFunction Mult(double b)
             {
-                return new DoubleFunction((a) => { return a * b; });
+                return new DoubleFunction()
+                { Eval = new DoubleFunctionDelegate((a) => { return a * b; }) };
             }
 
             /// <summary>
@@ -322,9 +458,10 @@ namespace Cern.Jet.Math
             /// </summary>
             /// <param name="b"></param>
             /// <returns></returns>
-            public static DoubleFunction Plus(double b)
+            public static IDoubleFunction Plus(double b)
             {
-                return new DoubleFunction((a) => { return a + b; });
+                return new DoubleFunction()
+                { Eval = new DoubleFunctionDelegate((a) => { return a + b; }) };
             }
 
             /// <summary>
@@ -333,9 +470,10 @@ namespace Cern.Jet.Math
             /// </summary>
             /// <param name="b"></param>
             /// <returns></returns>
-            public static DoubleFunction Pow(double b)
+            public static IDoubleFunction Pow(double b)
             {
-                return new DoubleFunction((a) => { return System.Math.Pow(a, b); });
+                return new DoubleFunction()
+                { Eval = new DoubleFunctionDelegate((a) => { return System.Math.Pow(a, b); }) };
             }
 
             /// <summary>
@@ -347,9 +485,10 @@ namespace Cern.Jet.Math
             /// Thus, if you are not happy with the default, just pass your favourite random generator to function evaluating methods.
             /// </summary>
             /// <returns></returns>
-            public static DoubleFunction Random()
+            public static IDoubleFunction Random()
             {
-                return new DoubleFunction((a) => { return new Cern.Jet.Random.Engine.MersenneTwister(DateTime.Now).Raw(); });
+                return new DoubleFunction()
+                { Eval = new DoubleFunctionDelegate((a) => { return new Cern.Jet.Random.Engine.MersenneTwister(DateTime.Now).Raw(); }) };
             }
 
             /// <summary>
@@ -357,9 +496,10 @@ namespace Cern.Jet.Math
             /// </summary>
             /// <param name="precision"></param>
             /// <returns></returns>
-            public static DoubleFunction Round(double precision)
+            public static IDoubleFunction Round(double precision)
             {
-                return new DoubleFunction((a) => { return System.Math.Round(a / precision) * precision; });
+                return new DoubleFunction()
+                { Eval = new DoubleFunctionDelegate((a) => { return System.Math.Round(a / precision) * precision; }) };
             }
 
             #endregion
@@ -368,97 +508,154 @@ namespace Cern.Jet.Math
             /// <summary>
             /// Function that returns <i>System.Math.Abs(a)</i>.
             /// </summary>
-            public static DoubleFunction Abs = new DoubleFunction((a) => { return System.Math.Abs(a); });
+            public static IDoubleFunction Abs = new DoubleFunction()
+            {
+                Eval = new DoubleFunctionDelegate((a) => { return System.Math.Abs(a); })
+            };
 
             /// <summary>
             /// Function that returns <i>System.Math.Acos(a)</i>.
             /// </summary>
-            public static DoubleFunction Acos = new DoubleFunction((a) => { return System.Math.Acos(a); });
+            public static IDoubleFunction Acos = new DoubleFunction()
+            {
+                Eval = new DoubleFunctionDelegate((a) => { return System.Math.Acos(a); })
+            };
 
             /// <summary>
             /// Function that returns <i>System.Math.Asin(a)</i>.
             /// </summary>
-            public static DoubleFunction Asin = new DoubleFunction((a) => { return System.Math.Asin(a); });
+            public static IDoubleFunction Asin = new DoubleFunction()
+            {
+                Eval = new DoubleFunctionDelegate((a) => { return System.Math.Asin(a); })
+            };
 
             /// <summary>
             /// Function that returns <i>System.Math.Atan(a)</i>.
             /// </summary>
-            public static DoubleFunction Atan = new DoubleFunction((a) => { return System.Math.Atan(a); });
+            public static IDoubleFunction Atan = new DoubleFunction()
+            {
+                Eval = new DoubleFunctionDelegate((a) => { return System.Math.Atan(a); })
+            };
 
             /// <summary>
             /// Function that returns <i>System.Math.Ceiling(a)</i>.
             /// </summary>
-            public static DoubleFunction Ceil = new DoubleFunction((a) => { return System.Math.Ceiling(a); });
+            public static IDoubleFunction Ceil = new DoubleFunction()
+            {
+                Eval = new DoubleFunctionDelegate((a) => { return System.Math.Ceiling(a); })
+            };
 
             /// <summary>
             /// Function that returns <i>System.Math.Cos(a)</i>.
             /// </summary>
-            public static DoubleFunction Cos = new DoubleFunction((a) => { return System.Math.Cos(a); });
+            public static IDoubleFunction Cos = new DoubleFunction()
+            {
+                Eval = new DoubleFunctionDelegate((a) => { return System.Math.Cos(a); })
+            };
 
             /// <summary>
             /// Function that returns <i>System.Math.Exp(a)</i>.
             /// </summary>
-            public static DoubleFunction Exp = new DoubleFunction((a) => { return System.Math.Exp(a); });
+            public static IDoubleFunction Exp = new DoubleFunction()
+            {
+                Eval = new DoubleFunctionDelegate((a) => { return System.Math.Exp(a); })
+            };
 
             /// <summary>
             /// Function that returns <i>System.Math.Floor(a)</i>.
             /// </summary>
-            public static DoubleFunction Floor = new DoubleFunction((a) => { return System.Math.Floor(a); });
+            public static IDoubleFunction Floor = new DoubleFunction()
+            {
+                Eval = new DoubleFunctionDelegate((a) => { return System.Math.Floor(a); })
+            };
 
             /// <summary>
             /// Function that returns its argument.
             /// </summary>
-            public static DoubleFunction Identity = new DoubleFunction((a) => { return a; });
+            public static IDoubleFunction Identity = new DoubleFunction()
+            {
+                Eval = new DoubleFunctionDelegate((a) => { return a; })
+            };
 
             /// <summary>
             /// Function that returns <i>1.0 / a</i>.
             /// </summary>
-            public static DoubleFunction Inv = new DoubleFunction((a) => { return 1.0 / a; });
+            public static IDoubleFunction Inv = new DoubleFunction()
+            {
+                Eval = new DoubleFunctionDelegate((a) => { return 1.0 / a; })
+            };
 
             /// <summary>
             /// Function that returns <i>System.Math.Log(a)</i>.
             /// </summary>
-            public static DoubleFunction Log = new DoubleFunction((a) => { return System.Math.Log(a); });
+            public static IDoubleFunction Log = new DoubleFunction()
+            {
+                Eval = new DoubleFunctionDelegate((a) => { return System.Math.Log(a); })
+            };
 
             /// <summary>
             /// Function that returns <i>System.Math.Log(a) / System.Math.Log(2)</i>.
             /// </summary>
-            public static DoubleFunction Log2 = new DoubleFunction((a) => { return System.Math.Log(a) * 1.4426950408889634; });
+            public static IDoubleFunction Log2 = new DoubleFunction()
+            {
+                Eval = new DoubleFunctionDelegate((a) => { return System.Math.Log(a) * 1.4426950408889634; })
+            };
 
             /// <summary>
             /// Function that returns <i>-a</i>.
             /// </summary>
-            public static DoubleFunction Neg = new DoubleFunction((a) => { return -a; });
+            public static IDoubleFunction Neg = new DoubleFunction()
+            {
+                Eval = new DoubleFunctionDelegate((a) => { return -a; })
+            };
 
             /// <summary>
             /// Function that returns <i>System.Math.Round(a)</i>.
             /// </summary>
-            public static DoubleFunction Rint = new DoubleFunction((a) => { return System.Math.Round(a); });
+            public static IDoubleFunction Rint = new DoubleFunction()
+            {
+                Eval = new DoubleFunctionDelegate((a) => { return System.Math.Round(a); })
+            };
 
             /// <summary>
             /// Function that returns <i>a < 0 ? -1 : a > 0 ? 1 : 0</i>.
             /// </summary>
-            public static DoubleFunction Sign = new DoubleFunction((a) => { return System.Math.Sign(a); });
+            public static IDoubleFunction Sign = new DoubleFunction()
+            {
+                Eval = new DoubleFunctionDelegate((a) => { return System.Math.Sign(a); })
+            };
 
             /// <summary>
             /// Function that returns <i>System.Math.Sin(a)</i>.
             /// </summary>
-            public static DoubleFunction Sin = new DoubleFunction((a) => { return System.Math.Sin(a); });
+            public static IDoubleFunction Sin = new DoubleFunction()
+            {
+                Eval = new DoubleFunctionDelegate((a) => { return System.Math.Sin(a); })
+            };
 
             /// <summary>
             /// Function that returns <i>System.Math.Sqrt(a)</i>.
             /// </summary>
-            public static DoubleFunction Sqrt = new DoubleFunction((a) => { return System.Math.Sqrt(a); });
+            public static IDoubleFunction Sqrt = new DoubleFunction()
+            {
+                Eval = new DoubleFunctionDelegate((a) => { return System.Math.Sqrt(a); })
+            };
 
             /// <summary>
             /// Function that returns <i>a * a</i>.
             /// </summary>
-            public static DoubleFunction Square = new DoubleFunction((a) => { return a * a; });
+            public static IDoubleFunction Square = new DoubleFunction()
+            {
+                Eval = new DoubleFunctionDelegate((a) => { return a * a; })
+            };
 
             /// <summary>
             /// Function that returns <i>System.Math.Tan(a)</i>.
             /// </summary>
-            public static DoubleFunction Tan = new DoubleFunction((a) => { return System.Math.Tan(a); });
+            public static IDoubleFunction Tan = new DoubleFunction()
+            {
+                Eval = new DoubleFunctionDelegate((a) => { return System.Math.Tan(a); })
+            };
 
             #endregion
 
@@ -479,9 +676,12 @@ namespace Cern.Jet.Math
             /// <param name="g">a binary function.</param>
             /// <param name="h">a binary function.</param>
             /// <returns>the binary function <i>f( g(a), h(b) )</i>.</returns>
-            public static DoubleDoubleFunction Chain(DoubleDoubleFunction f, DoubleFunction g, DoubleFunction h)
+            public static IDoubleDoubleFunction Chain(IDoubleDoubleFunction f, IDoubleFunction g, IDoubleFunction h)
             {
-                return new DoubleDoubleFunction((a, b) => { return f(g(a), h(b)); });
+                return new DoubleDoubleFunction()
+                {
+                    Eval = new DoubleDoubleFunctionDelegate((a, b) => { return f.Apply(g.Apply(a), h.Apply(b)); })
+                };
             }
 
             /// <summary>
@@ -490,12 +690,15 @@ namespace Cern.Jet.Math
             /// <param name="g">a unary function.</param>
             /// <param name="h">a binary function.</param>
             /// <returns>the unary function <i>g( h(a,b) )</i>.</returns>
-            public static DoubleDoubleFunction Chain(DoubleFunction g, DoubleDoubleFunction h)
+            public static DoubleDoubleFunction Chain(IDoubleFunction g, IDoubleDoubleFunction h)
             {
-                return new DoubleDoubleFunction((a, b) => 
+                return new DoubleDoubleFunction()
                 {
-                    return g(h(a, b)); 
-                });
+                    Eval = new DoubleDoubleFunctionDelegate((a, b) =>
+                {
+                    return g.Apply(h.Apply(a, b));
+                })
+                };
             }
 
             /// <summary>
@@ -504,13 +707,15 @@ namespace Cern.Jet.Math
             /// <param name="g">a unary function.</param>
             /// <param name="h">a unary function.</param>
             /// <returns>the unary function <i>g( h(a) )</i>.</returns>
-            public static DoubleFunction Chain(DoubleFunction g, DoubleFunction h)
+            public static IDoubleFunction Chain(IDoubleFunction g, IDoubleFunction h)
             {
-                return new DoubleFunction((a) =>
+                return new DoubleFunction()
                 {
-
-                    return g(h(a));
-                });
+                    Eval = new DoubleFunctionDelegate((a) =>
+                    {
+                        return g.Apply(h.Apply(a));
+                    })
+                };
             }
 
             /// <summary>
@@ -519,9 +724,26 @@ namespace Cern.Jet.Math
             /// </summary>
             /// <param name="constant"></param>
             /// <returns>the binary function <i>f(a - b * constant)</i></returns>
-            public static DoubleDoubleFunction MinusMult(double constant)
+            public static IDoubleDoubleFunction MinusDiv(double constant)
             {
-                return new DoubleDoubleFunction((a, b) => { return a - b * constant; });
+                return new PlusMultiFunction(-1/constant)
+                {
+                    Eval = new DoubleDoubleFunctionDelegate((a, b) => { return a - b * 1/constant; })
+                };
+            }
+
+            /// <summary>
+            /// Constructs a function that returns <i>a - b*constant</i>.
+            /// <i>a</i> and <i>b</i> are variables, <i>constant</i> is fixed.
+            /// </summary>
+            /// <param name="constant"></param>
+            /// <returns>the binary function <i>f(a - b * constant)</i></returns>
+            public static IDoubleDoubleFunction MinusMult(double constant)
+            {
+                return new PlusMultiFunction(-constant)
+                {
+                    Eval = new DoubleDoubleFunctionDelegate((a, b) => { return a - b * constant; })
+                };
             }
 
             /// <summary>
@@ -530,9 +752,28 @@ namespace Cern.Jet.Math
             /// </summary>
             /// <param name="constant"></param>
             /// <returns>the binary function <i>f(a + b * constant)</i></returns>
-            public static DoubleDoubleFunction PlusMult(double constant)
+            public static IDoubleDoubleFunction PlusMult(double constant)
             {
-                return new DoubleDoubleFunction((a, b) => { return a + b * constant; });
+                return new PlusMultiFunction(constant)
+                {
+                    Multiplicator = constant,
+                    Eval = new DoubleDoubleFunctionDelegate((a, b) => { return a + b * constant; })
+                };
+            }
+
+            /// <summary>
+            /// Constructs a function that returns <i>a % b</i>.
+            /// <i>a</i> is a variable, <i>b</i> is fixed.
+            /// </summary>
+            /// <param name="constant"></param>
+            /// <returns>the binary function <i>f(a + b * constant)</i></returns>
+            public static IDoubleDoubleFunction PlusDiv(double constant)
+            {
+                return new PlusMultiFunction(1/constant)
+                {
+                    Multiplicator = constant,
+                    Eval = new DoubleDoubleFunctionDelegate((a, b) => { return a + b * 1/constant; })
+                };
             }
 
             /// <summary>
@@ -540,9 +781,12 @@ namespace Cern.Jet.Math
             /// </summary>
             /// <param name="function">a function taking operands in the form <i>function.apply(a,b)</i>.</param>
             /// <returns>the binary function <i>function(b, a)</i>.</returns>
-            public static DoubleDoubleFunction SwapArgs(DoubleDoubleFunction function)
+            public static IDoubleDoubleFunction SwapArgs(DoubleDoubleFunctionDelegate function)
             {
-                return new DoubleDoubleFunction((a, b) => { return function(b, a); });
+                return new DoubleDoubleFunction()
+                {
+                    Eval = new DoubleDoubleFunctionDelegate((a, b) => { return function(b, a); })
+                };
             }
 
             #endregion
@@ -551,99 +795,155 @@ namespace Cern.Jet.Math
             /// <summary>
             /// Function that returns <i>System.Math.Atan2(a,b)</i>.
             /// </summary>
-            public static DoubleDoubleFunction Atan2 = new DoubleDoubleFunction((a, b) => { return System.Math.Atan2(a, b); });
+            public static IDoubleDoubleFunction Atan2 = new DoubleDoubleFunction()
+            {
+                Eval = new DoubleDoubleFunctionDelegate((a, b) => { return System.Math.Atan2(a, b); })
+            };
 
             /// <summary>
             /// Function that returns <i>a < b ? -1 : a > b ? 1 : 0</i>.
             /// </summary>
-            public static DoubleDoubleFunction Compare = new DoubleDoubleFunction((a, b) => { return a < b ? -1 : a > b ? 1 : 0; });
+            public static IDoubleDoubleFunction Compare = new DoubleDoubleFunction()
+            {
+                Eval = new DoubleDoubleFunctionDelegate((a, b) => { return a < b ? -1 : a > b ? 1 : 0; })
+            };
 
             /// <summary>
             /// Function that returns <i>a / b</i>.
             /// </summary>
-            public static DoubleDoubleFunction Div = new DoubleDoubleFunction((a, b) => { return a / b; });
+            public static IDoubleDoubleFunction Div = new DoubleDoubleFunction()
+            {
+                Eval = new DoubleDoubleFunctionDelegate((a, b) => { return a / b; })
+            };
 
             /// <summary>
             /// Function that returns <i>a == b ? 1 : 0</i>.
             /// </summary>
-            public static new DoubleDoubleFunction Equals = new DoubleDoubleFunction((a, b) => { return a == b ? 1 : 0; });
+            public static new IDoubleDoubleFunction Equals = new DoubleDoubleFunction()
+            {
+                Eval = new DoubleDoubleFunctionDelegate((a, b) => { return a == b ? 1 : 0; })
+            };
 
             /// <summary>
             /// Function that returns <i>a > b ? 1 : 0</i>.
             /// </summary>
-            public static DoubleDoubleFunction Greater = new DoubleDoubleFunction((a, b) => { return a > b ? 1 : 0; });
+            public static IDoubleDoubleFunction Greater = new DoubleDoubleFunction()
+            {
+                Eval = new DoubleDoubleFunctionDelegate((a, b) => { return a > b ? 1 : 0; })
+            };
 
             /// <summary>
             /// Function that returns <i>System.Math.IEEERemainder(a,b)</i>.
             /// </summary>
-            public static DoubleDoubleFunction IEEEremainder = new DoubleDoubleFunction((a, b) => { return System.Math.IEEERemainder(a, b); });
+            public static IDoubleDoubleFunction IEEEremainder = new DoubleDoubleFunction()
+            {
+                Eval = new DoubleDoubleFunctionDelegate((a, b) => { return System.Math.IEEERemainder(a, b); })
+            };
 
             /// <summary>
             /// Function that returns <i>a == b</i>.
             /// </summary>
-            public static DoubleDoubleProcedure IsEqual = new DoubleDoubleProcedure((a, b) => { return a == b; });
+            public static IDoubleDoubleProcedure IsEqual = new DoubleDoubleProcedure()
+            {
+                Eval = new DoubleDoubleProcedureDelegate((a, b) => { return a == b; })
+            };
 
             /// <summary>
             /// Function that returns <i>a < b</i>.
             /// </summary>
-            public static DoubleDoubleProcedure IsLess = new DoubleDoubleProcedure((a, b) => { return a < b; });
+            public static IDoubleDoubleProcedure IsLess = new DoubleDoubleProcedure()
+            {
+                Eval = new DoubleDoubleProcedureDelegate((a, b) => { return a < b; })
+            };
 
             /// <summary>
             /// Function that returns <i>a > b</i>.
             /// </summary>
-            public static DoubleDoubleProcedure IsGreater = new DoubleDoubleProcedure((a, b) => { return a > b; });
+            public static IDoubleDoubleProcedure IsGreater = new DoubleDoubleProcedure()
+            {
+                Eval = new DoubleDoubleProcedureDelegate((a, b) => { return a > b; })
+            };
 
             /// <summary>
             /// Function that returns <i>a < b ? 1 : 0</i>.
             /// </summary>
-            public static DoubleDoubleFunction Less = new DoubleDoubleFunction((a, b) => { return a < b ? 1 : 0; });
+            public static IDoubleDoubleFunction Less = new DoubleDoubleFunction()
+            {
+                Eval = new DoubleDoubleFunctionDelegate((a, b) => { return a < b ? 1 : 0; })
+            };
 
             /// <summary>
             /// Function that returns <i>System.Math.Log(a) / System.Math.Log(b)</i>.
             /// </summary>
-            public static DoubleDoubleFunction Lg = new DoubleDoubleFunction((a, b) => { return System.Math.Log(a) / System.Math.Log(b); });
+            public static IDoubleDoubleFunction Lg = new DoubleDoubleFunction()
+            {
+                Eval = new DoubleDoubleFunctionDelegate((a, b) => { return System.Math.Log(a) / System.Math.Log(b); })
+            };
 
             /// <summary>
             /// Function that returns <i>System.Math.Max(a,b)</i>.
             /// </summary>
-            public static DoubleDoubleFunction Max = new DoubleDoubleFunction((a, b) => { return System.Math.Max(a, b); });
+            public static IDoubleDoubleFunction Max = new DoubleDoubleFunction()
+            {
+                Eval = new DoubleDoubleFunctionDelegate((a, b) => { return System.Math.Max(a, b); })
+            };
 
             /// <summary>
             /// Function that returns <i>System.Math.Min(a,b)</i>.
             /// </summary>
-            public static DoubleDoubleFunction Min = new DoubleDoubleFunction((a, b) => { return System.Math.Min(a, b); });
+            public static IDoubleDoubleFunction Min = new DoubleDoubleFunction()
+            {
+                Eval = new DoubleDoubleFunctionDelegate((a, b) => { return System.Math.Min(a, b); })
+            };
 
             /// <summary>
             /// Function that returns <i>a - b</i>.
             /// </summary>
-            public static DoubleDoubleFunction Minus = new DoubleDoubleFunction((a, b) => { return a - b; });
+            public static IDoubleDoubleFunction Minus = new DoubleDoubleFunction()
+            {
+                Eval = new DoubleDoubleFunctionDelegate((a, b) => { return a - b; })
+            };
 
             /// <summary>
             /// Function that returns <i>a % b</i>.
             /// </summary>
-            public static DoubleDoubleFunction Mod = new DoubleDoubleFunction((a, b) => { return a % b; });
+            public static IDoubleDoubleFunction Mod = new DoubleDoubleFunction()
+            {
+                Eval = new DoubleDoubleFunctionDelegate((a, b) => { return a % b; })
+            };
 
             /// <summary>
             /// Function that returns <i>a * b</i>.
             /// </summary>
-            public static DoubleDoubleFunction Mult = new DoubleDoubleFunction((a, b) => { return a * b; });
+            public static IDoubleDoubleFunction Mult = new DoubleDoubleFunction()
+            {
+                Eval = new DoubleDoubleFunctionDelegate((a, b) => { return a * b; })
+            };
 
             /// <summary>
             /// Function that returns <i>a + b</i>.
             /// </summary>
-            public static DoubleDoubleFunction Plus = new DoubleDoubleFunction((a, b) => { return a + b; });
+            public static IDoubleDoubleFunction Plus = new DoubleDoubleFunction()
+            {
+                Eval = new DoubleDoubleFunctionDelegate((a, b) => { return a + b; })
+            };
 
             /// <summary>
             /// Function that returns <i>System.Math.Abs(a) + System.Math.Abs(b)</i>.
             /// </summary>
-            public static DoubleDoubleFunction PlusAbs = new DoubleDoubleFunction((a, b) => { return System.Math.Abs(a) + System.Math.Abs(b); });
+            public static IDoubleDoubleFunction PlusAbs = new DoubleDoubleFunction()
+            {
+                Eval = new DoubleDoubleFunctionDelegate((a, b) => { return System.Math.Abs(a) + System.Math.Abs(b); })
+            };
 
             /// <summary>
             /// Function that returns <i>System.Math.Pow(a,b)</i>.
             /// </summary>
-            public static DoubleDoubleFunction Pow = new DoubleDoubleFunction((a, b) => { return System.Math.Pow(a, b); });
+            public static IDoubleDoubleFunction Pow = new DoubleDoubleFunction()
+            {
+                Eval = new DoubleDoubleFunctionDelegate((a, b) => { return System.Math.Pow(a, b); })
+            };
             #endregion
-
         }
     }
 }

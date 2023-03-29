@@ -95,8 +95,8 @@ namespace Cern.Colt.Tests
                 Assert.AreEqual(0, c3[6, 3]);
 
                 var a = f.Ascending(2, 2);
-                DoubleMatrix2D b = f.Descending(2, 2);
-                const DoubleMatrix2D N = null;
+                IDoubleMatrix2D b = f.Descending(2, 2);
+                const IDoubleMatrix2D N = null;
 
                 var parts4 = new[] { new[] { a, N, a, N }, new[] { N, a, N, b } };
                 var c4 = f.Compose(parts4);
@@ -119,13 +119,13 @@ namespace Cern.Colt.Tests
         {
             foreach (var f in new[] { DoubleFactory2D.Dense, DoubleFactory2D.Sparse })
             {
-                const DoubleMatrix2D N = null;
-                DoubleMatrix2D a = f.Make(2, 2, 1);
-                DoubleMatrix2D b = f.Make(4, 4, 2);
-                DoubleMatrix2D c = f.Make(4, 3, 3);
-                DoubleMatrix2D d = f.Make(2, 2, 4);
+                const IDoubleMatrix2D N = null;
+                IDoubleMatrix2D a = f.Make(2, 2, 1);
+                IDoubleMatrix2D b = f.Make(4, 4, 2);
+                IDoubleMatrix2D c = f.Make(4, 3, 3);
+                IDoubleMatrix2D d = f.Make(2, 2, 4);
                 var parts1 = new[] { new[] { N, a, N }, new[] { b, N, c }, new[] { N, d, N } };
-                DoubleMatrix2D matrix = f.Compose(parts1);
+                IDoubleMatrix2D matrix = f.Compose(parts1);
                 var sm = matrix.ToString();
 
                 a.Assign(9);

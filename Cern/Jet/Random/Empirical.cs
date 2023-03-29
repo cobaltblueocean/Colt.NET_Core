@@ -102,7 +102,7 @@ namespace Cern.Jet.Random
         /// <returns></returns>
         public override double NextDouble()
         {
-            double rand = randomGenerator.Raw();
+            double rand = this.RandomGenerator.Raw();
             if (this._cdf == null) return rand; // Non-existing pdf
 
             // binary search in cumulative distribution function:
@@ -149,10 +149,10 @@ namespace Cern.Jet.Random
         /// <returns></returns>
         public double ProbabilityDistributionFunction(double x)
         {
-            throw new NotImplementedException();
             //if (x < 0 || x > cdf.Length-2) return 0.0;
             //int k = (int) x;
             //return cdf[k-1] - cdf[k];
+            return ProbabilityDistributionFunction((int)x);
         }
 
         /// <summary>

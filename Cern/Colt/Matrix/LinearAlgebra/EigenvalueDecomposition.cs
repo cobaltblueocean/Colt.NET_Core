@@ -65,7 +65,7 @@ namespace Cern.Colt.Matrix.LinearAlgebra
         /// Returns the block diagonal eigenvalue matrix, <i>D</i>.
         /// </summary>
         /// <returns><i>D</i></returns>
-        public DoubleMatrix2D D
+        public IDoubleMatrix2D D
         {
             get
             {
@@ -94,7 +94,7 @@ namespace Cern.Colt.Matrix.LinearAlgebra
         /// Returns the imaginary parts of the eigenvalues.
         /// </summary>
         /// <returns>imag(diag(D))</returns>
-        public DoubleMatrix1D ImagEigenvalues
+        public IDoubleMatrix1D ImagEigenvalues
         {
             get
             {
@@ -106,7 +106,7 @@ namespace Cern.Colt.Matrix.LinearAlgebra
         /// Returns the real parts of the eigenvalues.
         /// </summary>
         /// <returns>real(diag(D))</returns>
-        public DoubleMatrix1D RealEigenvalues
+        public IDoubleMatrix1D RealEigenvalues
         {
             get
             {
@@ -118,7 +118,7 @@ namespace Cern.Colt.Matrix.LinearAlgebra
         /// Returns the eigenvector matrix, <i>V</i>
         /// </summary>
         /// <returns><i>V</i></returns>
-        public DoubleMatrix2D V
+        public IDoubleMatrix2D V
         {
             get
             {
@@ -134,7 +134,7 @@ namespace Cern.Colt.Matrix.LinearAlgebra
         /// </summary>
         /// <param name="A">A square matrix.</param>
         /// <exception cref=""ArgumentException>if <i>A</i> is not square.</exception>
-        public EigenvalueDecomposition(DoubleMatrix2D A)
+        public EigenvalueDecomposition(IDoubleMatrix2D A)
         {
             Property.DEFAULT.CheckSquare(A);
 

@@ -82,7 +82,7 @@
         /// If <i>fromIndex &lt; 0</i> or <i>toIndex &gt; a.Length</i>
         /// </exception>
         /// <returns></returns>
-        public static int BinarySearchFromTo(int[] a, int value, int fromIndex, int toIndex, IntComparator comp)
+        public static int BinarySearchFromTo(int[] a, int value, int fromIndex, int toIndex, IntComparatorDelegate comp)
         {
             var c = new IntComparatorWrapper();
             c.comparator = comp;
@@ -133,7 +133,7 @@
         /// If <i>fromIndex &lt; 0</i> or <i>toIndex &gt; a.Length</i>
         /// </exception>
         /// <returns></returns>
-        public static int BinarySearchFromTo(byte[] a, byte value, int fromIndex, int toIndex, ByteComparator comp)
+        public static int BinarySearchFromTo(byte[] a, byte value, int fromIndex, int toIndex, ByteComparatorDelegate comp)
         {
             var c = new ByteComparatorWrapper();
             c.comparator = comp;
@@ -184,7 +184,7 @@
         /// If <i>fromIndex &lt; 0</i> or <i>toIndex &gt; a.Length</i>
         /// </exception>
         /// <returns></returns>
-        public static int BinarySearchFromTo(char[] a, char value, int fromIndex, int toIndex, CharComparator comp)
+        public static int BinarySearchFromTo(char[] a, char value, int fromIndex, int toIndex, CharComparatorDelegate comp)
         {
             var c = new CharComparatorWrapper();
             c.comparator = comp;
@@ -235,7 +235,7 @@
         /// If <i>fromIndex &lt; 0</i> or <i>toIndex &gt; a.Length</i>
         /// </exception>
         /// <returns></returns>
-        public static int BinarySearchFromTo(float[] a, float value, int fromIndex, int toIndex, FloatComparator comp)
+        public static int BinarySearchFromTo(float[] a, float value, int fromIndex, int toIndex, FloatComparatorDelegate comp)
         {
             var c = new FloatComparatorWrapper();
             c.comparator = comp;
@@ -286,7 +286,7 @@
         /// If <i>fromIndex &lt; 0</i> or <i>toIndex &gt; a.Length</i>
         /// </exception>
         /// <returns></returns>
-        public static int BinarySearchFromTo(double[] a, double value, int fromIndex, int toIndex, DoubleComparator comp)
+        public static int BinarySearchFromTo(double[] a, double value, int fromIndex, int toIndex, DoubleComparatorDelegate comp)
         {
             var c = new DoubleComparatorWrapper();
             c.comparator = comp;
@@ -337,7 +337,7 @@
         /// If <i>fromIndex &lt; 0</i> or <i>toIndex &gt; a.Length</i>
         /// </exception>
         /// <returns></returns>
-        public static int BinarySearchFromTo(long[] a, long value, int fromIndex, int toIndex, LongComparator comp)
+        public static int BinarySearchFromTo(long[] a, long value, int fromIndex, int toIndex, LongComparatorDelegate comp)
         {
             var c = new LongComparatorWrapper();
             c.comparator = comp;
@@ -388,7 +388,7 @@
         /// If <i>fromIndex &lt; 0</i> or <i>toIndex &gt; a.Length</i>
         /// </exception>
         /// <returns></returns>
-        public static int BinarySearchFromTo(short[] a, short value, int fromIndex, int toIndex, ShortComparator comp)
+        public static int BinarySearchFromTo(short[] a, short value, int fromIndex, int toIndex, ShortComparatorDelegate comp)
         {
             var c = new ShortComparatorWrapper();
             c.comparator = comp;
@@ -439,7 +439,7 @@
         /// If <i>fromIndex &lt; 0</i> or <i>toIndex &gt; a.Length</i>
         /// </exception>
         /// <returns></returns>
-        public static int BinarySearchFromTo<T>(T[] a, T value, int fromIndex, int toIndex, ObjectComparator<T> comp)
+        public static int BinarySearchFromTo<T>(T[] a, T value, int fromIndex, int toIndex, ObjectComparatorDelegate<T> comp)
         {
             var c = new ObjectComparatorWrapper<T>();
             c.comparator = comp;
@@ -470,7 +470,7 @@
         /// <exception cref="IndexOutOfRangeException">
         /// If <i>fromIndex &lt; 0</i> or <i>toIndex &gt; a.Length</i>
         /// </exception>
-        public static void QuickSort(int[] a, int fromIndex, int toIndex, IntComparator c)
+        public static void QuickSort(int[] a, int fromIndex, int toIndex, IntComparatorDelegate c)
         {
             RangeCheck(a.Length, fromIndex, toIndex);
             QuickSort1(a, fromIndex, toIndex - fromIndex, c);
@@ -498,7 +498,7 @@
         /// <exception cref="IndexOutOfRangeException">
         /// If <i>fromIndex &lt; 0</i> or <i>toIndex &gt; a.Length</i>
         /// </exception>
-        public static void QuickSort(Byte[] a, int fromIndex, int toIndex, ByteComparator c)
+        public static void QuickSort(Byte[] a, int fromIndex, int toIndex, ByteComparatorDelegate c)
         {
             RangeCheck(a.Length, fromIndex, toIndex);
             QuickSort1(a, fromIndex, toIndex - fromIndex, c);
@@ -526,7 +526,7 @@
         /// <exception cref="IndexOutOfRangeException">
         /// If <i>fromIndex &lt; 0</i> or <i>toIndex &gt; a.Length</i>
         /// </exception>
-        public static void QuickSort(Char[] a, int fromIndex, int toIndex, CharComparator c)
+        public static void QuickSort(Char[] a, int fromIndex, int toIndex, CharComparatorDelegate c)
         {
             RangeCheck(a.Length, fromIndex, toIndex);
             QuickSort1(a, fromIndex, toIndex - fromIndex, c);
@@ -554,7 +554,7 @@
         /// <exception cref="IndexOutOfRangeException">
         /// If <i>fromIndex &lt; 0</i> or <i>toIndex &gt; a.Length</i>
         /// </exception>
-        public static void QuickSort(double[] a, int fromIndex, int toIndex, DoubleComparator c)
+        public static void QuickSort(double[] a, int fromIndex, int toIndex, DoubleComparatorDelegate c)
         {
             RangeCheck(a.Length, fromIndex, toIndex);
             QuickSort1(a, fromIndex, toIndex - fromIndex, c);
@@ -582,7 +582,7 @@
         /// <exception cref="IndexOutOfRangeException">
         /// If <i>fromIndex &lt; 0</i> or <i>toIndex &gt; a.Length</i>
         /// </exception>
-        public static void QuickSort(float[] a, int fromIndex, int toIndex, FloatComparator c)
+        public static void QuickSort(float[] a, int fromIndex, int toIndex, FloatComparatorDelegate c)
         {
             RangeCheck(a.Length, fromIndex, toIndex);
             QuickSort1(a, fromIndex, toIndex - fromIndex, c);
@@ -610,7 +610,7 @@
         /// <exception cref="IndexOutOfRangeException">
         /// If <i>fromIndex &lt; 0</i> or <i>toIndex &gt; a.Length</i>
         /// </exception>
-        public static void QuickSort(long[] a, int fromIndex, int toIndex, LongComparator c)
+        public static void QuickSort(long[] a, int fromIndex, int toIndex, LongComparatorDelegate c)
         {
             RangeCheck(a.Length, fromIndex, toIndex);
             QuickSort1(a, fromIndex, toIndex - fromIndex, c);
@@ -638,7 +638,7 @@
         /// <exception cref="IndexOutOfRangeException">
         /// If <i>fromIndex &lt; 0</i> or <i>toIndex &gt; a.Length</i>
         /// </exception>
-        public static void QuickSort(short[] a, int fromIndex, int toIndex, ShortComparator c)
+        public static void QuickSort(short[] a, int fromIndex, int toIndex, ShortComparatorDelegate c)
         {
             RangeCheck(a.Length, fromIndex, toIndex);
             QuickSort1(a, fromIndex, toIndex - fromIndex, c);
@@ -666,7 +666,7 @@
         /// <exception cref="IndexOutOfRangeException">
         /// If <i>fromIndex &lt; 0</i> or <i>toIndex &gt; a.Length</i>
         /// </exception>
-        public static void QuickSort(Object[] a, int fromIndex, int toIndex, ObjectComparator<Object> c)
+        public static void QuickSort(Object[] a, int fromIndex, int toIndex, ObjectComparatorDelegate<Object> c)
         {
             RangeCheck(a.Length, fromIndex, toIndex);
             QuickSort1(a, fromIndex, toIndex - fromIndex, c);
@@ -770,7 +770,7 @@
         ///	       <i>toIndex &gt; a.Length</i>
         /// @see Comparator
         /// </summary>
-        public static void MergeSort(byte[] a, int fromIndex, int toIndex, ByteComparator c)
+        public static void MergeSort(byte[] a, int fromIndex, int toIndex, ByteComparatorDelegate c)
         {
             RangeCheck(a.Length, fromIndex, toIndex);
             byte[] aux = (byte[])a.Clone();
@@ -833,7 +833,7 @@
         ///	       <i>toIndex &gt; a.Length</i>
         /// @see Comparator
         /// </summary>
-        public static void MergeSort(char[] a, int fromIndex, int toIndex, CharComparator c)
+        public static void MergeSort(char[] a, int fromIndex, int toIndex, CharComparatorDelegate c)
         {
             RangeCheck(a.Length, fromIndex, toIndex);
             char[] aux = (char[])a.Clone();
@@ -894,7 +894,7 @@
         ///	       <i>toIndex &gt; a.Length</i>
         /// @see Comparator
         /// </summary>
-        public static void MergeSort(double[] a, int fromIndex, int toIndex, DoubleComparator c)
+        public static void MergeSort(double[] a, int fromIndex, int toIndex, DoubleComparatorDelegate c)
         {
             RangeCheck(a.Length, fromIndex, toIndex);
             double[] aux = (double[])a.Clone();
@@ -955,7 +955,7 @@
         ///	       <i>toIndex &gt; a.Length</i>
         /// @see Comparator
         /// </summary>
-        public static void MergeSort(float[] a, int fromIndex, int toIndex, FloatComparator c)
+        public static void MergeSort(float[] a, int fromIndex, int toIndex, FloatComparatorDelegate c)
         {
             RangeCheck(a.Length, fromIndex, toIndex);
             float[] aux = (float[])a.Clone();
@@ -1018,7 +1018,7 @@
         ///	       <i>toIndex &gt; a.Length</i>
         /// @see Comparator
         /// </summary>
-        public static void MergeSort(int[] a, int fromIndex, int toIndex, IntComparator c)
+        public static void MergeSort(int[] a, int fromIndex, int toIndex, IntComparatorDelegate c)
         {
             RangeCheck(a.Length, fromIndex, toIndex);
             int[] aux = (int[])a.Clone();
@@ -1081,7 +1081,7 @@
         ///	       <i>toIndex &gt; a.Length</i>
         /// @see Comparator
         /// </summary>
-        public static void MergeSort(long[] a, int fromIndex, int toIndex, LongComparator c)
+        public static void MergeSort(long[] a, int fromIndex, int toIndex, LongComparatorDelegate c)
         {
             RangeCheck(a.Length, fromIndex, toIndex);
             long[] aux = (long[])a.Clone();
@@ -1144,7 +1144,7 @@
         ///	       <i>toIndex &gt; a.Length</i>
         /// @see Comparator
         /// </summary>
-        public static void MergeSort(short[] a, int fromIndex, int toIndex, ShortComparator c)
+        public static void MergeSort(short[] a, int fromIndex, int toIndex, ShortComparatorDelegate c)
         {
             RangeCheck(a.Length, fromIndex, toIndex);
             short[] aux = (short[])a.Clone();
@@ -1213,7 +1213,7 @@
         /// <summary>
         /// Returns the index of the median of the three indexed ints.
         /// </summary>
-        private static int Med3(int[] x, int a, int b, int c, IntComparator comp)
+        private static int Med3(int[] x, int a, int b, int c, IntComparatorDelegate comp)
         {
             int ab = comp(x[a], x[b]);
             int ac = comp(x[a], x[c]);
@@ -1226,7 +1226,7 @@
         /// <summary>
         /// Returns the index of the median of the three indexed ints.
         /// </summary>
-        private static int Med3(double[] x, int a, int b, int c, DoubleComparator comp)
+        private static int Med3(double[] x, int a, int b, int c, DoubleComparatorDelegate comp)
         {
             int ab = comp(x[a], x[b]);
             int ac = comp(x[a], x[c]);
@@ -1239,7 +1239,7 @@
         /// <summary>
         /// Returns the index of the median of the three indexed ints.
         /// </summary>
-        private static int Med3(Byte[] x, int a, int b, int c, ByteComparator comp)
+        private static int Med3(Byte[] x, int a, int b, int c, ByteComparatorDelegate comp)
         {
             int ab = comp(x[a], x[b]);
             int ac = comp(x[a], x[c]);
@@ -1258,7 +1258,7 @@
         /// <param name="c"></param>
         /// <param name="comp"></param>
         /// <returns></returns>
-        private static int Med3(char[] x, int a, int b, int c, CharComparator comp)
+        private static int Med3(char[] x, int a, int b, int c, CharComparatorDelegate comp)
         {
             int ab = comp(x[a], x[b]);
             int ac = comp(x[a], x[c]);
@@ -1271,7 +1271,7 @@
         /// <summary>
         /// Returns the index of the median of the three indexed chars.
         /// </summary>
-        private static int Med3(float[] x, int a, int b, int c, FloatComparator comp)
+        private static int Med3(float[] x, int a, int b, int c, FloatComparatorDelegate comp)
         {
             int ab = comp(x[a], x[b]);
             int ac = comp(x[a], x[c]);
@@ -1290,7 +1290,7 @@
         /// <param name="c"></param>
         /// <param name="comp"></param>
         /// <returns></returns>
-        private static int Med3(long[] x, int a, int b, int c, LongComparator comp)
+        private static int Med3(long[] x, int a, int b, int c, LongComparatorDelegate comp)
         {
             int ab = comp(x[a], x[b]);
             int ac = comp(x[a], x[c]);
@@ -1327,7 +1327,7 @@
         /// <param name="c"></param>
         /// <param name="comp"></param>
         /// <returns></returns>
-        private static int Med3(Object[] x, int a, int b, int c, ObjectComparator<Object> comp)
+        private static int Med3(Object[] x, int a, int b, int c, ObjectComparatorDelegate<Object> comp)
         {
             int ab = comp(x[a], x[b]);
             int ac = comp(x[a], x[c]);
@@ -1346,7 +1346,7 @@
         /// <param name="c"></param>
         /// <param name="comp"></param>
         /// <returns></returns>
-        private static int Med3(short[] x, int a, int b, int c, ShortComparator comp)
+        private static int Med3(short[] x, int a, int b, int c, ShortComparatorDelegate comp)
         {
             int ab = comp(x[a], x[b]);
             int ac = comp(x[a], x[c]);
@@ -1378,7 +1378,7 @@
         /// <summary>
         /// Sorts the specified sub-array of ints into ascending order.
         /// </summary>
-        private static void QuickSort1(int[] x, int off, int len, IntComparator comp)
+        private static void QuickSort1(int[] x, int off, int len, IntComparatorDelegate comp)
         {
             // Insertion sort on smallest arrays
             if (len < SMALL)
@@ -1451,7 +1451,7 @@
         /// <summary>
         /// Sorts the specified sub-array of ints into ascending order.
         /// </summary>
-        private static void QuickSort1(double[] x, int off, int len, DoubleComparator comp)
+        private static void QuickSort1(double[] x, int off, int len, DoubleComparatorDelegate comp)
         {
             // Insertion sort on smallest arrays
             if (len < SMALL)
@@ -1525,7 +1525,7 @@
         /// <summary>
         /// Sorts the specified sub-array of ints into ascending order.
         /// </summary>
-        private static void QuickSort1(Byte[] x, int off, int len, ByteComparator comp)
+        private static void QuickSort1(Byte[] x, int off, int len, ByteComparatorDelegate comp)
         {
             // Insertion sort on smallest arrays
             if (len < SMALL)
@@ -1598,7 +1598,7 @@
         /// <summary>
         /// Sorts the specified sub-array of ints into ascending order.
         /// </summary>
-        private static void QuickSort1(Char[] x, int off, int len, CharComparator comp)
+        private static void QuickSort1(Char[] x, int off, int len, CharComparatorDelegate comp)
         {
             // Insertion sort on smallest arrays
             if (len < SMALL)
@@ -1671,7 +1671,7 @@
         /// <summary>
         /// Sorts the specified sub-array of ints into ascending order.
         /// </summary>
-        private static void QuickSort1(float[] x, int off, int len, FloatComparator comp)
+        private static void QuickSort1(float[] x, int off, int len, FloatComparatorDelegate comp)
         {
             // Insertion sort on smallest arrays
             if (len < SMALL)
@@ -1744,7 +1744,7 @@
         /// <summary>
         /// Sorts the specified sub-array of ints into ascending order.
         /// </summary>
-        private static void QuickSort1(long[] x, int off, int len, LongComparator comp)
+        private static void QuickSort1(long[] x, int off, int len, LongComparatorDelegate comp)
         {
             // Insertion sort on smallest arrays
             if (len < SMALL)
@@ -1885,7 +1885,7 @@
         /// <summary>
         /// Sorts the specified sub-array of ints into ascending order.
         /// </summary>
-        private static void QuickSort1(Object[] x, int off, int len, ObjectComparator<Object> comp)
+        private static void QuickSort1(Object[] x, int off, int len, ObjectComparatorDelegate<Object> comp)
         {
             // Insertion sort on smallest arrays
             if (len < SMALL)
@@ -1958,7 +1958,7 @@
         /// <summary>
         /// Sorts the specified sub-array of ints into ascending order.
         /// </summary>
-        private static void QuickSort1(short[] x, int off, int len, ShortComparator comp)
+        private static void QuickSort1(short[] x, int off, int len, ShortComparatorDelegate comp)
         {
             // Insertion sort on smallest arrays
             if (len < SMALL)
@@ -2149,7 +2149,7 @@
             }
         }
 
-        private static void MergeSort1(byte[] src, byte[] dest, int low, int high, ByteComparator c)
+        private static void MergeSort1(byte[] src, byte[] dest, int low, int high, ByteComparatorDelegate c)
         {
             int Length = high - low;
 
@@ -2221,7 +2221,7 @@
             }
         }
 
-        private static void MergeSort1(char[] src, char[] dest, int low, int high, CharComparator c)
+        private static void MergeSort1(char[] src, char[] dest, int low, int high, CharComparatorDelegate c)
         {
             int Length = high - low;
 
@@ -2293,7 +2293,7 @@
             }
         }
 
-        private static void MergeSort1(double[] src, double[] dest, int low, int high, DoubleComparator c)
+        private static void MergeSort1(double[] src, double[] dest, int low, int high, DoubleComparatorDelegate c)
         {
             int Length = high - low;
 
@@ -2365,7 +2365,7 @@
             }
         }
 
-        private static void MergeSort1(float[] src, float[] dest, int low, int high, FloatComparator c)
+        private static void MergeSort1(float[] src, float[] dest, int low, int high, FloatComparatorDelegate c)
         {
             int Length = high - low;
 
@@ -2437,7 +2437,7 @@
             }
         }
 
-        private static void MergeSort1(int[] src, int[] dest, int low, int high, IntComparator c)
+        private static void MergeSort1(int[] src, int[] dest, int low, int high, IntComparatorDelegate c)
         {
             int Length = high - low;
 
@@ -2509,7 +2509,7 @@
             }
         }
 
-        private static void MergeSort1(long[] src, long[] dest, int low, int high, LongComparator c)
+        private static void MergeSort1(long[] src, long[] dest, int low, int high, LongComparatorDelegate c)
         {
             int Length = high - low;
 
@@ -2581,7 +2581,7 @@
             }
         }
 
-        private static void MergeSort1(short[] src, short[] dest, int low, int high, ShortComparator c)
+        private static void MergeSort1(short[] src, short[] dest, int low, int high, ShortComparatorDelegate c)
         {
             int Length = high - low;
 
@@ -2886,7 +2886,7 @@
         #region ComparatorWrapper
         private class ByteComparatorWrapper : IComparer<byte>
         {
-            public ByteComparator comparator;
+            public ByteComparatorDelegate comparator;
 
             public int Compare(byte x, byte y)
             {
@@ -2899,7 +2899,7 @@
 
         private class CharComparatorWrapper : IComparer<char>
         {
-            public CharComparator comparator;
+            public CharComparatorDelegate comparator;
 
             public int Compare(char x, char y)
             {
@@ -2912,7 +2912,7 @@
 
         private class DoubleComparatorWrapper : IComparer<double>
         {
-            public DoubleComparator comparator;
+            public DoubleComparatorDelegate comparator;
 
             public int Compare(double x, double y)
             {
@@ -2925,7 +2925,7 @@
 
         private class FloatComparatorWrapper : IComparer<float>
         {
-            public FloatComparator comparator;
+            public FloatComparatorDelegate comparator;
 
             public int Compare(float x, float y)
             {
@@ -2938,7 +2938,7 @@
 
         private class IntComparatorWrapper : IComparer<int>
         {
-            public IntComparator comparator;
+            public IntComparatorDelegate comparator;
 
             public int Compare(int x, int y)
             {
@@ -2951,7 +2951,7 @@
 
         private class LongComparatorWrapper : IComparer<long>
         {
-            public LongComparator comparator;
+            public LongComparatorDelegate comparator;
 
             public int Compare(long x, long y)
             {
@@ -2964,7 +2964,7 @@
 
         private class ShortComparatorWrapper : IComparer<short>
         {
-            public ShortComparator comparator;
+            public ShortComparatorDelegate comparator;
 
             public int Compare(short x, short y)
             {
@@ -2977,7 +2977,7 @@
 
         private class ObjectComparatorWrapper<T> : IComparer<T>
         {
-            public ObjectComparator<T> comparator;
+            public ObjectComparatorDelegate<T> comparator;
 
             public int Compare(T x, T y)
             {

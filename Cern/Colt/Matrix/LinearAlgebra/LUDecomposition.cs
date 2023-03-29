@@ -39,7 +39,7 @@ namespace Cern.Colt.Matrix.LinearAlgebra
         /// Return structure to access L, U and piv.
         /// </summary>
         /// <param name="A">Rectangular matrix</param>
-        public LUDecomposition(DoubleMatrix2D A)
+        public LUDecomposition(IDoubleMatrix2D A)
         {
             quick = new LUDecompositionQuick(0); // zero tolerance for compatibility with Jama
             quick.Decompose(A.Copy());
@@ -69,7 +69,7 @@ namespace Cern.Colt.Matrix.LinearAlgebra
         /// <summary>
         /// Returns the lower triangular factor, <i>L</i>.
         /// </summary>
-        public DoubleMatrix2D L
+        public IDoubleMatrix2D L
         {
             get
             {
@@ -91,7 +91,7 @@ namespace Cern.Colt.Matrix.LinearAlgebra
         /// <summary>
         /// Returns the upper triangular factor, <i>U</i>.
         /// </summary>
-        public DoubleMatrix2D U
+        public IDoubleMatrix2D U
         {
             get
             {
@@ -119,9 +119,9 @@ namespace Cern.Colt.Matrix.LinearAlgebra
         /// <exception cref="ArgumentException">if B.rows() != A.rows().</exception>
         /// <exception cref="ArgumentException">if A is singular, that is, if !this.isNonsingular().</exception>
         /// <exception cref="ArgumentException">if A.rows() &lt; A.columns().</exception>
-        public DoubleMatrix2D Solve(DoubleMatrix2D B)
+        public IDoubleMatrix2D Solve(IDoubleMatrix2D B)
         {
-            DoubleMatrix2D X = B.Copy();
+            IDoubleMatrix2D X = B.Copy();
             quick.Solve(X);
             return X;
         }

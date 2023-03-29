@@ -16,9 +16,9 @@ namespace Cern.Colt.Matrix.ObjectAlgorithms
     public class Sorting : PersistentObject
     {
 
-        protected delegate void RunSortExec(int[] a, int fromIndex, int toIndex, IntComparator c);
+        protected delegate void RunSortExec(int[] a, int fromIndex, int toIndex, IntComparatorDelegate c);
 
-        protected delegate void RunSortSwapExec(int fromIndex, int toIndex, IntComparator c, Cern.Colt.Swapper swapper);
+        protected delegate void RunSortSwapExec(int fromIndex, int toIndex, IntComparatorDelegate c, Cern.Colt.Swapper swapper);
 
         protected RunSortExec SortExecuter;
         protected RunSortSwapExec SortSwapExecuter;
@@ -51,11 +51,11 @@ namespace Cern.Colt.Matrix.ObjectAlgorithms
         /// Makes this class non instantiable, but still let's others inherit from it.
         /// </summary>
         protected Sorting() { }
-        protected void RunSort(int[] a, int fromIndex, int toIndex, IntComparator c)
+        protected void RunSort(int[] a, int fromIndex, int toIndex, IntComparatorDelegate c)
         {
             Cern.Colt.Sorting.QuickSort(a, fromIndex, toIndex, c);
         }
-        protected void RunSort(int fromIndex, int toIndex, IntComparator c, Cern.Colt.Swapper swapper)
+        protected void RunSort(int fromIndex, int toIndex, IntComparatorDelegate c, Cern.Colt.Swapper swapper)
         {
             Cern.Colt.GenericSorting.QuickSort(fromIndex, toIndex, c, swapper);
         }
@@ -86,7 +86,7 @@ namespace Cern.Colt.Matrix.ObjectAlgorithms
             int[] indexes = new int[vector.Size]; // row indexes to reorder instead of matrix itself
             for (int i = indexes.Length; --i >= 0;) indexes[i] = i;
 
-            IntComparator comp = new IntComparator((a, b) =>
+            IntComparatorDelegate comp = new IntComparatorDelegate((a, b) =>
             {
                 IComparable av = (IComparable)(vector[a]);
                 IComparable bv = (IComparable)(vector[b]);
@@ -126,7 +126,7 @@ namespace Cern.Colt.Matrix.ObjectAlgorithms
             int[] indexes = new int[vector.Size]; // row indexes to reorder instead of matrix itself
             for (int i = indexes.Length; --i >= 0;) indexes[i] = i;
 
-            IntComparator comp = new IntComparator((a, b) => { return c.Compare((ObjectMatrix1D)vector[a], (ObjectMatrix1D)vector[b]); });
+            IntComparatorDelegate comp = new IntComparatorDelegate((a, b) => { return c.Compare((ObjectMatrix1D)vector[a], (ObjectMatrix1D)vector[b]); });
             {
             };
 
@@ -180,7 +180,7 @@ namespace Cern.Colt.Matrix.ObjectAlgorithms
             for (int i = rowIndexes.Length; --i >= 0;) rowIndexes[i] = i;
 
             ObjectMatrix1D col = matrix.ViewColumn(column);
-            IntComparator comp = new IntComparator((a, b) =>
+            IntComparatorDelegate comp = new IntComparatorDelegate((a, b) =>
             {
                 IComparable av = (IComparable)(col[a]);
                 IComparable bv = (IComparable)(col[b]);
@@ -226,7 +226,7 @@ namespace Cern.Colt.Matrix.ObjectAlgorithms
             ObjectMatrix1D[] views = new ObjectMatrix1D[matrix.Rows]; // precompute views for speed
             for (int i = views.Length; --i >= 0;) views[i] = matrix.ViewRow(i);
 
-            IntComparator comp = new IntComparator((a, b) => { return c(views[a], views[b]); });
+            IntComparatorDelegate comp = new IntComparatorDelegate((a, b) => { return c(views[a], views[b]); });
 
             RunSort(rowIndexes, 0, rowIndexes.Length, comp);
 
@@ -264,7 +264,7 @@ namespace Cern.Colt.Matrix.ObjectAlgorithms
             for (int i = sliceIndexes.Length; --i >= 0;) sliceIndexes[i] = i;
 
             ObjectMatrix1D sliceView = matrix.ViewRow(row).ViewColumn(column);
-            IntComparator comp = new IntComparator((a, b) =>
+            IntComparatorDelegate comp = new IntComparatorDelegate((a, b) =>
             {
                 IComparable av = (IComparable)(sliceView[a]);
                 IComparable bv = (IComparable)(sliceView[b]);
@@ -311,7 +311,7 @@ namespace Cern.Colt.Matrix.ObjectAlgorithms
             ObjectMatrix2D[] views = new ObjectMatrix2D[matrix.Slices]; // precompute views for speed
             for (int i = views.Length; --i >= 0;) views[i] = matrix.ViewSlice(i);
 
-            IntComparator comp = new IntComparator((a, b) => { return c(views[a], views[b]); });
+            IntComparatorDelegate comp = new IntComparatorDelegate((a, b) => { return c(views[a], views[b]); });
 
             RunSort(sliceIndexes, 0, sliceIndexes.Length, comp);
 

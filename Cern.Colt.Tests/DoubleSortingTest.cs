@@ -14,7 +14,7 @@ namespace Cern.Colt.Tests
 
     using Cern.Colt.Matrix;
     using Cern.Colt.Matrix.Implementation;
-
+    using Cern.Jet.Math;
     using NUnit.Framework;
 
     /// <summary>
@@ -30,7 +30,7 @@ namespace Cern.Colt.Tests
         public void Zdemo1()
         {
             var sort = Cern.Colt.Matrix.DoubleAlgorithms.Sorting.QuickSort;
-            DoubleMatrix2D matrix = DoubleFactory2D.Dense.Descending(4, 3);
+            IDoubleMatrix2D matrix = DoubleFactory2D.Dense.Descending(4, 3);
             var sorted = sort.Sort(
                 matrix,
                 (a, b) =>
@@ -52,8 +52,8 @@ namespace Cern.Colt.Tests
         {
             var sort = Cern.Colt.Matrix.DoubleAlgorithms.Sorting.QuickSort;
             double[] values = { 0.5, 1.5, 2.5, 3.5 };
-            DoubleMatrix1D matrix = new DenseDoubleMatrix1D(values);
-            DoubleMatrix1D sorted = sort.Sort(
+            IDoubleMatrix1D matrix = new DenseDoubleMatrix1D(values);
+            IDoubleMatrix1D sorted = sort.Sort(
                 matrix,
                 (a, b) =>
                 {
@@ -75,9 +75,9 @@ namespace Cern.Colt.Tests
         {
             double[] values1 = { 0, 1, 2, 3 };
             double[] values2 = { 0, 2, 4, 6 };
-            DoubleMatrix1D matrix1 = new DenseDoubleMatrix1D(values1);
-            DoubleMatrix1D matrix2 = new DenseDoubleMatrix1D(values2);
-            matrix1.Assign(matrix2, Math.Pow);
+            IDoubleMatrix1D matrix1 = new DenseDoubleMatrix1D(values1);
+            IDoubleMatrix1D matrix2 = new DenseDoubleMatrix1D(values2);
+            matrix1.Assign(matrix2, new DoubleDoubleFunction() { Eval = (a, b) => Math.Pow(a, b) });
             Assert.AreEqual(1, matrix1[0]);
             Assert.AreEqual(1, matrix1[1]);
             Assert.AreEqual(Math.Pow(2, 4), matrix1[2]);

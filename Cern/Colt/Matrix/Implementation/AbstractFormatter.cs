@@ -132,7 +132,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <returns>
         /// A short string representation describing the shape of the matrix.
         /// </returns>
-        public static string Shape(AbstractMatrix1D matrix)
+        public static string Shape<T>(IMatrix1D<T> matrix)
         {
             return matrix.Size + " matrix";
         }
@@ -146,7 +146,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <returns>
         /// A short string representation describing the shape of the matrix.
         /// </returns>
-        public static string Shape(AbstractMatrix2D matrix)
+        public static string Shape<T>(IMatrix2D<T> matrix)
         {
             return matrix.Rows + " x " + matrix.Columns + " matrix ";
         }
@@ -160,7 +160,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <returns>
         /// A short string representation describing the shape of the matrix.
         /// </returns>
-        public static string Shape(AbstractMatrix3D matrix)
+        public static string Shape<T>(IMatrix3D<T> matrix)
         {
             return matrix.Slices + " x " + matrix.Rows + " x " + matrix.Columns + " matrix ";
         }
@@ -402,7 +402,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <summary>
         /// Converts a given cell to a String; no alignment considered.
         /// </summary>
-        protected abstract String Form(AbstractMatrix1D matrix, int index, Former formatter);
+        protected abstract String Form<T>(IMatrix1D<T> matrix, int index, Former formatter);
 
         /// <summary>
         /// Returns a string representations of all cells; no alignment considered.
@@ -413,7 +413,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <returns>
         /// A string representations of all cells.
         /// </returns>
-        protected abstract string[][] Format(AbstractMatrix2D matrix);
+        protected abstract string[][] Format<T>(IMatrix2D<T> matrix);
 
         /// <summary>
         /// Returns a string representations of all cells; no alignment considered.
@@ -424,7 +424,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <returns>
         /// A string representations of all cells.
         /// </returns>
-        protected string[] FormatRow(AbstractMatrix1D vector) 
+        protected string[] FormatRow<T>(IMatrix1D<T> vector) 
         {
             Former formatter = null;
             formatter = factory.Create(formatString);
@@ -514,7 +514,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <returns>
         /// A string representation of the given matrix.
         /// </returns>
-        protected virtual string ToString(AbstractMatrix2D matrix)
+        protected virtual string ToString<T>(IMatrix2D<T> matrix)
         {
             var strings = this.Format(matrix);
             Align(strings);

@@ -20,7 +20,7 @@ namespace Cern.Colt.Matrix.Implementation
     /// <summary>
     /// Abstract base class for 1-d matrices (aka <i>vectors</i>) holding objects or primitive data types such as <code>int</code>, <code>double</code>, etc.
     /// </summary>
-    public abstract class AbstractMatrix1D : AbstractMatrix
+    public abstract class AbstractMatrix1D<T> : AbstractMatrix, IMatrix1D<T>
     {
         /// <summary>
         /// Gets or sets the number of indexes between any two elements, i.e. <tt>index(i+1) - index(i)</tt>.
@@ -41,7 +41,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <exception cref="ArgumentOutOfRangeException">
         /// If <tt>size() != B.size()</tt>.
         /// </exception>
-        public void CheckSize(AbstractMatrix1D b)
+        public void CheckSize(IMatrix1D<T> b)
         {
             if (Size != b.Size) throw new ArgumentOutOfRangeException("Incompatible sizes: " + this + " and " + b);
         }
@@ -74,6 +74,14 @@ namespace Cern.Colt.Matrix.Implementation
         }
 
         /// <summary>
+        /// Gets or sets the matrix cell value at coordinate <tt>index</tt>.
+        /// </summary>
+        /// <param name="index">
+        /// The index of the cell.
+        /// </param>
+        public abstract T this[int index] { get; set; }
+
+        /// <summary>
         /// Returns a string representation of the receiver's shape.
         /// </summary>
         /// <returns>
@@ -94,7 +102,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <returns>
         /// Returns the position of the element with the given relative rank.
         /// </returns>
-        protected internal virtual int Index(int rank)
+        public virtual int Index(int rank)
         {
             return GetOffset(GetRank(rank));
         }
@@ -238,7 +246,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <returns>
         /// A new flip view.
         /// </returns>
-        protected AbstractMatrix1D VFlip()
+        public IMatrix1D<T> VFlip()
         {
             if (Size > 0)
             {
@@ -265,7 +273,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// /// <exception cref="ArgumentException">
         /// If <tt>index &lt; 0 || index+width &gt; size()</tt>.
         /// </exception>
-        protected AbstractMatrix1D VPart(int index, int width)
+        public IMatrix1D<T> VPart(int index, int width)
         {
             CheckRange(index, width);
             this.Zero += this.Stride * index;
@@ -286,7 +294,7 @@ namespace Cern.Colt.Matrix.Implementation
         /// <exception cref="ArgumentOutOfRangeException">
         /// If <tt>stride &lt;= 0</tt>.
         /// </exception>
-        protected AbstractMatrix1D VStrides(int str)
+        public IMatrix1D<T> VStrides(int str)
         {
             if (Stride <= 0) throw new ArgumentOutOfRangeException("str", "illegal stride: " + Stride);
             this.Stride *= Stride;

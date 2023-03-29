@@ -327,7 +327,7 @@ namespace Cern.Colt.List
         /// <summary>
         /// <param name="procedure">   the procedure to be appliedd Stops iteration if the procedure returns <i>false</i>, otherwise continuesd</param>
         /// <returns><i>false</i> if the procedure stopped before all elements where iterated over, <i>true</i> otherwised</returns>
-        public virtual Boolean ForEach(IntProcedure procedure)
+        public virtual Boolean ForEach(IntProcedureDelegate procedure)
         {
             for (int i = 0; i < _size;) if (!procedure(Get(i++))) return false;
             return true;
@@ -478,7 +478,7 @@ namespace Cern.Colt.List
         ///	       <i>toIndex &gt; a.Length</i>
         /// <see cref="Comparator"></see>
         /// <exception cref="IndexOutOfRangeException">index is out of range (<i>_size()&gt;0 && (from&lt;0 || from&gt;to || to&gt;=_size())</i>). </exception>
-        public virtual void MergeSortFromTo(int from, int to, IntComparator c)
+        public virtual void MergeSortFromTo(int from, int to, IntComparatorDelegate c)
         {
             int mySize = Size;
             CheckRangeFromTo(from, to, mySize);
@@ -559,7 +559,7 @@ namespace Cern.Colt.List
         ///	       <i>toIndex &gt; a.Length</i>
         /// <see cref="Comparator"></see>
         /// <exception cref="IndexOutOfRangeException">index is out of range (<i>_size()&gt;0 && (from&lt;0 || from&gt;to || to&gt;=_size())</i>). </exception>
-        public virtual void QuickSortFromTo(int from, int to, IntComparator c)
+        public virtual void QuickSortFromTo(int from, int to, IntComparatorDelegate c)
         {
             int mySize = Size;
             CheckRangeFromTo(from, to, mySize);

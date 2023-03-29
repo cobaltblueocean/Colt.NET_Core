@@ -13,10 +13,10 @@ namespace Cern.Colt.Tests
         public delegate void TimerProcedure(Timer timer);
 
         public TimerProcedure timerProc;
-        public DoubleMatrix2D A;
-        public DoubleMatrix2D B;
-        public DoubleMatrix2D C;
-        public DoubleMatrix2D D;
+        public IDoubleMatrix2D A;
+        public IDoubleMatrix2D B;
+        public IDoubleMatrix2D C;
+        public IDoubleMatrix2D D;
 
         public abstract void Init();
 
@@ -30,7 +30,7 @@ namespace Cern.Colt.Tests
         /**
          * Sets the matrices to operate upon.
          */
-        public virtual void SetParameters(DoubleMatrix2D A, DoubleMatrix2D B)
+        public virtual void SetParameters(IDoubleMatrix2D A, IDoubleMatrix2D B)
         {
             this.A = A;
             this.B = B;

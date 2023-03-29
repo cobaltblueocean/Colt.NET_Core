@@ -9,7 +9,7 @@ namespace System
     public static class IListExtension2
     {
 
-        public static Boolean ForEach<T>(this IList<Double> list, Cern.Colt.Function.DoubleProcedure procedure)
+        public static Boolean ForEach<T>(this IList<Double> list, Cern.Colt.Function.DoubleProcedureDelegate procedure)
         {
             Double[] theElements = list.ToArray();
             int theSize = list.Count;

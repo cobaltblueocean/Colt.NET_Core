@@ -15,7 +15,7 @@ namespace Cern.Colt.Tests
     using Cern.Colt.Matrix;
     using Cern.Colt.Matrix.Implementation;
     using Cern.Colt.Matrix.LinearAlgebra;
-
+    using Cern.Jet.Math;
     using NUnit.Framework;
 
     /// <summary>
@@ -27,12 +27,12 @@ namespace Cern.Colt.Tests
         /// <summary>
         /// The matrix A (from LSA).
         /// </summary>
-        private DoubleMatrix2D _a;
+        private IDoubleMatrix2D _a;
 
         /// <summary>
         /// The matrix B (random).
         /// </summary>
-        private DoubleMatrix2D _b;
+        private IDoubleMatrix2D _b;
 
         /// <summary>
         /// A has values from (Deerwesteret al, 1990), B has random values.
@@ -96,7 +96,7 @@ namespace Cern.Colt.Tests
             var uu = u.ZMult(u.ViewDice(), null);
             var ul = uu.ZMult(d, null);
             var h = d.Copy().Assign(uu.ZMult(d, null), BinaryFunctions.Minus);
-            var k = Math.Sqrt(d.Aggregate(BinaryFunctions.Plus, a => a * a) - (2 * l.Aggregate(BinaryFunctions.Plus, a => a * a)) + ul.Aggregate(BinaryFunctions.Plus, a => a * a));
+            var k = Math.Sqrt(d.Aggregate(BinaryFunctions.Plus, new DoubleFunction() { Eval = (a) => a * a }) - (2 * l.Aggregate(BinaryFunctions.Plus, new DoubleFunction() { Eval = (a) => a * a })) + ul.Aggregate(BinaryFunctions.Plus, new DoubleFunction() { Eval = (a) => a * a})) ; 
             var j1 = h.Assign(UnaryFunctions.Div(k));
             Assert.AreEqual(j1.Assign(UnaryFunctions.Mult(k)), h);
 
