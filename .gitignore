@@ -161,3 +161,4 @@
 /Cern.Colt.Tests/obj/Cern.Colt.Tests.csproj.nuget.dgspec.json
 /Cern.Colt.Tests/bin/Debug/netcoreapp3.1/runtimes/win/lib/netcoreapp2.0/System.Management.dll
 /Cern/bin/Debug/Cern.Colt.NET.0.9.0.nupkg
+*.nuspec
