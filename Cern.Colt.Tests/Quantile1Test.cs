@@ -25,6 +25,7 @@ namespace Cern.Colt.Tests
     /// any positive long value.
     /// <summary>
     [TestFixture]
+    [Parallelizable(ParallelScope.ContextMask)]
     public class Quantile1Test
     {
         [Test]
@@ -50,8 +51,8 @@ namespace Cern.Colt.Tests
                     }
                     catch (Exception e)
                     {
-                        // Assert.Inconclusive("Unable to parse input line count argument");
-                        // Assert.Inconclusive(e.Message);
+                        // ClassicAssert.Inconclusive("Unable to parse input line count argument");
+                        // ClassicAssert.Inconclusive(e.Message);
                     }
                     writer.WriteLine("Got numExamples=" + numExamples);
 
@@ -76,8 +77,8 @@ namespace Cern.Colt.Tests
                     }
                     catch (Exception e)
                     {
-                        // Assert.Inconclusive("Error parsing flag for N");
-                        // Assert.Inconclusive(e.Message);
+                        // ClassicAssert.Inconclusive("Error parsing flag for N");
+                        // ClassicAssert.Inconclusive(e.Message);
                     }
                     writer.WriteLine("Got N=" + N);
 

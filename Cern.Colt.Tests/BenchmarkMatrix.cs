@@ -599,18 +599,18 @@ namespace Cern.Colt.Tests
                 //DoubleFactory2D factory = (k==0 ? DoubleFactory2D.Dense : k==1 ? DoubleFactory2D.Sparse : DoubleFactory2D.rowCompressed);
                 //DoubleFactory2D factory = (k==0 ? DoubleFactory2D.Dense : k==1 ? DoubleFactory2D.Sparse : k==2 ? DoubleFactory2D.rowCompressed : DoubleFactory2D.rowCompressedModified);
                 DoubleFactory2D factory = getFactory(types[k]);
-                // Assert.Inconclusive("\n@");
+                // ClassicAssert.Inconclusive("\n@");
 
                 for (int i = 0; i < sizes.Length; i++)
                 {
                     int size = sizes[i];
-                    // Assert.Inconclusive("x");
+                    // ClassicAssert.Inconclusive("x");
                     //writer.WriteLine("doing size="+size+"..");
 
                     for (int j = 0; j < densities.Length; j++)
                     {
                         double density = densities[j];
-                        // Assert.Inconclusive(".");
+                        // ClassicAssert.Inconclusive(".");
                         //writer.WriteLine("   doing density="+density+"..");
                         float opsPerSec;
 
@@ -682,9 +682,9 @@ namespace Cern.Colt.Tests
                 double density = densities[i];
                 Boolean sparse = sparses[i];
                 DoubleFactory2D factory = (sparse ? DoubleFactory2D.Sparse : DoubleFactory2D.Dense);
-                // Assert.Inconclusive("\n@");
+                // ClassicAssert.Inconclusive("\n@");
 
-                // Assert.Inconclusive("x");
+                // ClassicAssert.Inconclusive("x");
                 double val = 0.5;
                 function.A = null; function.B = null; function.C = null; function.D = null; // --> help gc before allocating new mem
                 IDoubleMatrix2D A = factory.Sample(size, size, val, density);

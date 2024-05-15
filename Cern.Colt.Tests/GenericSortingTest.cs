@@ -8,17 +8,16 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Cern.Colt.Tests
-{
     using System;
-
     using Cern.Colt;
     using Cern.Colt.Matrix;
     using Cern.Colt.Matrix.Implementation;
     using Cern.Colt.Matrix.DoubleAlgorithms;
-
     using NUnit.Framework;
+    using NUnit.Framework.Legacy;
 
+namespace Cern.Colt.Tests
+{
     /// <summary>
     /// Unit test for <see cref="GenericSorting"/>
     /// </summary>
@@ -48,15 +47,15 @@ namespace Cern.Colt.Tests
                     double t3 = z[a]; z[a] = z[b]; z[b] = t3;
                 });
 
-            Assert.AreEqual(1, x[0]);
-            Assert.AreEqual(2, x[1]);
-            Assert.AreEqual(3, x[2]);
-            Assert.AreEqual(1.0, y[0]);
-            Assert.AreEqual(2.0, y[1]);
-            Assert.AreEqual(3.0, y[2]);
-            Assert.AreEqual(8.0, z[0]);
-            Assert.AreEqual(7.0, z[1]);
-            Assert.AreEqual(6.0, z[2]);
+            ClassicAssert.AreEqual(1, x[0]);
+            ClassicAssert.AreEqual(2, x[1]);
+            ClassicAssert.AreEqual(3, x[2]);
+            ClassicAssert.AreEqual(1.0, y[0]);
+            ClassicAssert.AreEqual(2.0, y[1]);
+            ClassicAssert.AreEqual(3.0, y[2]);
+            ClassicAssert.AreEqual(8.0, z[0]);
+            ClassicAssert.AreEqual(7.0, z[1]);
+            ClassicAssert.AreEqual(6.0, z[2]);
         }
 
         /// <summary>
@@ -86,18 +85,18 @@ namespace Cern.Colt.Tests
                            double t3 = z[a]; z[a] = z[b]; z[b] = t3;
                        });
 
-            Assert.AreEqual(8, x[0]);
-            Assert.AreEqual(7, x[1]);
-            Assert.AreEqual(9, x[2]);
-            Assert.AreEqual(6, x[3]);
-            Assert.AreEqual(1.0, y[0]);
-            Assert.AreEqual(2.0, y[1]);
-            Assert.AreEqual(3.0, y[2]);
-            Assert.AreEqual(3.0, y[3]);
-            Assert.AreEqual(4.0, z[0]);
-            Assert.AreEqual(4.0, z[1]);
-            Assert.AreEqual(1.0, z[2]);
-            Assert.AreEqual(5.0, z[3]);
+            ClassicAssert.AreEqual(8, x[0]);
+            ClassicAssert.AreEqual(7, x[1]);
+            ClassicAssert.AreEqual(9, x[2]);
+            ClassicAssert.AreEqual(6, x[3]);
+            ClassicAssert.AreEqual(1.0, y[0]);
+            ClassicAssert.AreEqual(2.0, y[1]);
+            ClassicAssert.AreEqual(3.0, y[2]);
+            ClassicAssert.AreEqual(3.0, y[3]);
+            ClassicAssert.AreEqual(4.0, z[0]);
+            ClassicAssert.AreEqual(4.0, z[1]);
+            ClassicAssert.AreEqual(1.0, z[2]);
+            ClassicAssert.AreEqual(5.0, z[3]);
         }
 
         /// <summary>
@@ -151,7 +150,7 @@ namespace Cern.Colt.Tests
                 var v2 = s2.ViewColumn(Column);
                 var sv2 = v2.ToString();
 
-                Assert.IsTrue(v1.Equals(v2));
+                ClassicAssert.IsTrue(v1.Equals(v2));
             }
         }
     }

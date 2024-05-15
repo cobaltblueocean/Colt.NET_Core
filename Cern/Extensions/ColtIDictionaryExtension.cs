@@ -8,41 +8,8 @@ using Cern.Colt;
 
 namespace System.Collections.Generic
 {
-    public static class IDictionaryExtension2
+    public static class ColtIDictionaryExtension
     {
-
-
-        /// <summary>
-        /// Ensures that the receiver can hold at least the specified number of elements without needing to allocate new internal memory.
-        /// If necessary, allocates new internal memory and increases the capacity of the receiver.
-        /// <p>
-        /// This method never need be called; it is for performance tuning only.
-        /// Calling this method before<tt>put()</tt>ing a large number of associations boosts performance,
-        /// because the receiver will grow only once instead of potentially many times.
-        /// <p>
-        /// <b>This default implementation does nothing.</b> Override this method if necessary.
-        /// </summary>
-        /// <typeparam name="TKey"></typeparam>
-        /// <typeparam name="TValue"></typeparam>
-        /// <param name="dic">Target <see cref="IDictionary{TKey, TValue}"/> object</param>
-        /// <param name="minCapacity">the desired minimum capacity.</param>
-        /// <returns><see cref="IDictionary{TKey, TValue}"/> object that allocated size</returns>
-        public static IDictionary<TKey, TValue> EnsureCapacity<TKey, TValue>(this IDictionary<TKey, TValue> dic, int minCapacity)
-        {
-            if (dic.Count >= minCapacity)
-                return dic;
-            else
-            {
-                Dictionary<TKey, TValue> newDic = new Dictionary<TKey, TValue>(minCapacity);
-                foreach (KeyValuePair<TKey, TValue> pair in dic)
-                {
-                    newDic.Add(pair.Key, pair.Value);
-                }
-
-                return (IDictionary<TKey, TValue>)newDic;
-            }
-        }
-
         /// <summary>
         /// Chooses a new prime table capacity optimized for growing that (approximately) satisfies the invariant
         /// c * minLoadFactor &lt;= size &lt;= c * maxLoadFactor
@@ -121,27 +88,6 @@ namespace System.Collections.Generic
         public static int ChooseShrinkCapacity<TKey, TValue>(this IDictionary<TKey, TValue> dic, int size, double minLoad, double maxLoad)
         {
             return PrimeFinder.NextPrime(System.Math.Max(size + 1, (int)((4 * size / (minLoad + 3 * maxLoad)))));
-        }
-
-        /// <summary>
-        /// Trim the excess items from the Dictionary
-        /// </summary>
-        /// <typeparam name="TKey"></typeparam>
-        /// <typeparam name="TValue"></typeparam>
-        /// <param name="dic"></param>
-        /// <returns></returns>
-        public static IDictionary<TKey, TValue> TrimExcess<TKey, TValue>(this IDictionary<TKey, TValue> dic)
-        {
-            var kv = new KeyValuePair<TKey, TValue>[dic.Count];
-            dic.CopyTo(kv, 0);
-            List<KeyValuePair<TKey, TValue>> l = kv.ToList();
-            l.TrimExcess();
-            var newDic = new Dictionary<TKey, TValue>(l.Count);
-            AutoParallel.AutoParallelForEach(l, (p) =>
-            {
-                newDic.Add(p.Key, p.Value);
-            });
-            return newDic;
         }
     }
 }

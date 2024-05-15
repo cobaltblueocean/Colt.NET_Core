@@ -7,15 +7,15 @@
 //   Unit test of <see cref="Colt.Matrix.DoubleAlgorithms.Sorting" />
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+using System;
+using Cern.Colt.Matrix;
+using Cern.Colt.Matrix.Implementation;
+using Cern.Jet.Math;
+using NUnit.Framework;
+using NUnit.Framework.Legacy;
 
 namespace Cern.Colt.Tests
 {
-    using System;
-
-    using Cern.Colt.Matrix;
-    using Cern.Colt.Matrix.Implementation;
-    using Cern.Jet.Math;
-    using NUnit.Framework;
 
     /// <summary>
     /// Unit test of <see cref="Colt.Matrix.DoubleAlgorithms.Sorting"/>
@@ -38,10 +38,10 @@ namespace Cern.Colt.Tests
                     double aSum = a.ZSum(); double bSum = b.ZSum();
                     return aSum < bSum ? -1 : aSum == bSum ? 0 : 1;
                 });
-            Assert.AreEqual(2, sorted[0, 0]);
-            Assert.AreEqual(0, sorted[0, 2]);
-            Assert.AreEqual(11, sorted[3, 0]);
-            Assert.AreEqual(9, sorted[3, 2]);
+            ClassicAssert.AreEqual(2, sorted[0, 0]);
+            ClassicAssert.AreEqual(0, sorted[0, 2]);
+            ClassicAssert.AreEqual(11, sorted[3, 0]);
+            ClassicAssert.AreEqual(9, sorted[3, 2]);
         }
 
         /// <summary>
@@ -61,10 +61,10 @@ namespace Cern.Colt.Tests
                     double sinb = Math.Sin(b);
                     return sina < sinb ? -1 : sina == sinb ? 0 : 1;
                 });
-            Assert.AreEqual(3.5, sorted[0]);
-            Assert.AreEqual(0.5, sorted[1]);
-            Assert.AreEqual(2.5, sorted[2]);
-            Assert.AreEqual(1.5, sorted[3]);
+            ClassicAssert.AreEqual(3.5, sorted[0]);
+            ClassicAssert.AreEqual(0.5, sorted[1]);
+            ClassicAssert.AreEqual(2.5, sorted[2]);
+            ClassicAssert.AreEqual(1.5, sorted[3]);
         }
 
         /// <summary>
@@ -78,10 +78,10 @@ namespace Cern.Colt.Tests
             IDoubleMatrix1D matrix1 = new DenseDoubleMatrix1D(values1);
             IDoubleMatrix1D matrix2 = new DenseDoubleMatrix1D(values2);
             matrix1.Assign(matrix2, new DoubleDoubleFunction() { Eval = (a, b) => Math.Pow(a, b) });
-            Assert.AreEqual(1, matrix1[0]);
-            Assert.AreEqual(1, matrix1[1]);
-            Assert.AreEqual(Math.Pow(2, 4), matrix1[2]);
-            Assert.AreEqual(Math.Pow(3, 6), matrix1[3]);
+            ClassicAssert.AreEqual(1, matrix1[0]);
+            ClassicAssert.AreEqual(1, matrix1[1]);
+            ClassicAssert.AreEqual(Math.Pow(2, 4), matrix1[2]);
+            ClassicAssert.AreEqual(Math.Pow(3, 6), matrix1[3]);
         }
     }
 }

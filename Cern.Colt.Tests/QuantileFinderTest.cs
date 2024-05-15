@@ -12,6 +12,7 @@ namespace Cern.Colt.Tests
     /// A class holding test cases for exact and approximate quantile finders.
     /// </summary>
     [TestFixture]
+    [Parallelizable(ParallelScope.ContextMask)]
     public class QuantileFinderTest
     {
         [Test]

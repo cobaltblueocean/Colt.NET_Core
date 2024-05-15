@@ -7,14 +7,14 @@
 //   Unit test for <see cref="DoubleFactory2D"/>.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+    using Cern.Colt.Matrix;
+    using Cern.Colt.Matrix.LinearAlgebra;
+    using Cern.Colt.Matrix.Implementation;
+    using NUnit.Framework;
+    using NUnit.Framework.Legacy;
 
 namespace Cern.Colt.Tests
 {
-    using Cern.Colt.Matrix;
-    using Cern.Colt.Matrix.LinearAlgebra;
-
-    using NUnit.Framework;
-    using Cern.Colt.Matrix.Implementation;
 
     /// <summary>
     /// Unit test for <see cref="DoubleFactory2D"/>.
@@ -36,42 +36,42 @@ namespace Cern.Colt.Tests
                         new[] { null, f.Make(2, 2, 4), null }
                     };
                 var c1 = f.Compose(parts1);
-                Assert.AreEqual(0, c1[0, 0]);
-                Assert.AreEqual(0, c1[0, 3]);
-                Assert.AreEqual(0, c1[1, 0]);
-                Assert.AreEqual(0, c1[1, 3]);
-                Assert.AreEqual(1, c1[0, 4]);
-                Assert.AreEqual(1, c1[0, 5]);
-                Assert.AreEqual(1, c1[1, 4]);
-                Assert.AreEqual(1, c1[1, 5]);
-                Assert.AreEqual(0, c1[0, 6]);
-                Assert.AreEqual(0, c1[0, 8]);
-                Assert.AreEqual(0, c1[1, 6]);
-                Assert.AreEqual(0, c1[1, 8]);
-                Assert.AreEqual(2, c1[2, 0]);
-                Assert.AreEqual(2, c1[2, 3]);
-                Assert.AreEqual(2, c1[5, 0]);
-                Assert.AreEqual(2, c1[5, 3]);
-                Assert.AreEqual(0, c1[2, 4]);
-                Assert.AreEqual(0, c1[2, 5]);
-                Assert.AreEqual(0, c1[5, 4]);
-                Assert.AreEqual(0, c1[5, 5]);
-                Assert.AreEqual(3, c1[2, 6]);
-                Assert.AreEqual(3, c1[2, 8]);
-                Assert.AreEqual(3, c1[5, 6]);
-                Assert.AreEqual(3, c1[5, 8]);
-                Assert.AreEqual(0, c1[6, 0]);
-                Assert.AreEqual(0, c1[6, 3]);
-                Assert.AreEqual(0, c1[7, 0]);
-                Assert.AreEqual(0, c1[7, 3]);
-                Assert.AreEqual(4, c1[6, 4]);
-                Assert.AreEqual(4, c1[6, 5]);
-                Assert.AreEqual(4, c1[7, 4]);
-                Assert.AreEqual(4, c1[7, 5]);
-                Assert.AreEqual(0, c1[6, 6]);
-                Assert.AreEqual(0, c1[6, 8]);
-                Assert.AreEqual(0, c1[7, 6]);
-                Assert.AreEqual(0, c1[7, 8]);
+                ClassicAssert.AreEqual(0, c1[0, 0]);
+                ClassicAssert.AreEqual(0, c1[0, 3]);
+                ClassicAssert.AreEqual(0, c1[1, 0]);
+                ClassicAssert.AreEqual(0, c1[1, 3]);
+                ClassicAssert.AreEqual(1, c1[0, 4]);
+                ClassicAssert.AreEqual(1, c1[0, 5]);
+                ClassicAssert.AreEqual(1, c1[1, 4]);
+                ClassicAssert.AreEqual(1, c1[1, 5]);
+                ClassicAssert.AreEqual(0, c1[0, 6]);
+                ClassicAssert.AreEqual(0, c1[0, 8]);
+                ClassicAssert.AreEqual(0, c1[1, 6]);
+                ClassicAssert.AreEqual(0, c1[1, 8]);
+                ClassicAssert.AreEqual(2, c1[2, 0]);
+                ClassicAssert.AreEqual(2, c1[2, 3]);
+                ClassicAssert.AreEqual(2, c1[5, 0]);
+                ClassicAssert.AreEqual(2, c1[5, 3]);
+                ClassicAssert.AreEqual(0, c1[2, 4]);
+                ClassicAssert.AreEqual(0, c1[2, 5]);
+                ClassicAssert.AreEqual(0, c1[5, 4]);
+                ClassicAssert.AreEqual(0, c1[5, 5]);
+                ClassicAssert.AreEqual(3, c1[2, 6]);
+                ClassicAssert.AreEqual(3, c1[2, 8]);
+                ClassicAssert.AreEqual(3, c1[5, 6]);
+                ClassicAssert.AreEqual(3, c1[5, 8]);
+                ClassicAssert.AreEqual(0, c1[6, 0]);
+                ClassicAssert.AreEqual(0, c1[6, 3]);
+                ClassicAssert.AreEqual(0, c1[7, 0]);
+                ClassicAssert.AreEqual(0, c1[7, 3]);
+                ClassicAssert.AreEqual(4, c1[6, 4]);
+                ClassicAssert.AreEqual(4, c1[6, 5]);
+                ClassicAssert.AreEqual(4, c1[7, 4]);
+                ClassicAssert.AreEqual(4, c1[7, 5]);
+                ClassicAssert.AreEqual(0, c1[6, 6]);
+                ClassicAssert.AreEqual(0, c1[6, 8]);
+                ClassicAssert.AreEqual(0, c1[7, 6]);
+                ClassicAssert.AreEqual(0, c1[7, 8]);
 
                 var parts3 = new[]
                     {
@@ -80,19 +80,19 @@ namespace Cern.Colt.Tests
                     };
                 var c3 = f.Compose(parts3);
 
-                Assert.AreEqual(1, c3[0, 0]);
-                Assert.AreEqual(0, c3[0, 2]);
-                Assert.AreEqual(0, c3[1, 4]);
-                Assert.AreEqual(0, c3[4, 1]);
-                Assert.AreEqual(0, c3[3, 3]);
-                Assert.AreEqual(1, c3[3, 5]);
-                Assert.AreEqual(1, c3[5, 3]);
-                Assert.AreEqual(0, c3[5, 5]);
-                Assert.AreEqual(0, c3[6, 0]);
-                Assert.AreEqual(1, c3[6, 2]);
-                Assert.AreEqual(1, c3[8, 0]);
-                Assert.AreEqual(0, c3[8, 2]);
-                Assert.AreEqual(0, c3[6, 3]);
+                ClassicAssert.AreEqual(1, c3[0, 0]);
+                ClassicAssert.AreEqual(0, c3[0, 2]);
+                ClassicAssert.AreEqual(0, c3[1, 4]);
+                ClassicAssert.AreEqual(0, c3[4, 1]);
+                ClassicAssert.AreEqual(0, c3[3, 3]);
+                ClassicAssert.AreEqual(1, c3[3, 5]);
+                ClassicAssert.AreEqual(1, c3[5, 3]);
+                ClassicAssert.AreEqual(0, c3[5, 5]);
+                ClassicAssert.AreEqual(0, c3[6, 0]);
+                ClassicAssert.AreEqual(1, c3[6, 2]);
+                ClassicAssert.AreEqual(1, c3[8, 0]);
+                ClassicAssert.AreEqual(0, c3[8, 2]);
+                ClassicAssert.AreEqual(0, c3[6, 3]);
 
                 var a = f.Ascending(2, 2);
                 IDoubleMatrix2D b = f.Descending(2, 2);
@@ -100,14 +100,14 @@ namespace Cern.Colt.Tests
 
                 var parts4 = new[] { new[] { a, N, a, N }, new[] { N, a, N, b } };
                 var c4 = f.Compose(parts4);
-                Assert.AreEqual(1, c4[0, 0]);
-                Assert.AreEqual(2, c4[0, 1]);
-                Assert.AreEqual(3, c4[1, 0]);
-                Assert.AreEqual(4, c4[1, 1]);
-                Assert.AreEqual(0, c4[3, 7]);
-                Assert.AreEqual(1, c4[3, 6]);
-                Assert.AreEqual(2, c4[2, 7]);
-                Assert.AreEqual(3, c4[2, 6]);
+                ClassicAssert.AreEqual(1, c4[0, 0]);
+                ClassicAssert.AreEqual(2, c4[0, 1]);
+                ClassicAssert.AreEqual(3, c4[1, 0]);
+                ClassicAssert.AreEqual(4, c4[1, 1]);
+                ClassicAssert.AreEqual(0, c4[3, 7]);
+                ClassicAssert.AreEqual(1, c4[3, 6]);
+                ClassicAssert.AreEqual(2, c4[2, 7]);
+                ClassicAssert.AreEqual(3, c4[2, 6]);
             }
         }
 
@@ -153,10 +153,10 @@ namespace Cern.Colt.Tests
                     new[] { 3d, -3d, 1d }
                 });
             var principal = DoubleFactory2D.Dense.Diagonal(a);
-            Assert.AreEqual(5d, principal[0]);
-            Assert.AreEqual(6d, principal[1]);
-            Assert.AreEqual(1d, principal[2]);
-            Assert.AreEqual(12d, Algebra.Trace(a));
+            ClassicAssert.AreEqual(5d, principal[0]);
+            ClassicAssert.AreEqual(6d, principal[1]);
+            ClassicAssert.AreEqual(1d, principal[2]);
+            ClassicAssert.AreEqual(12d, Algebra.Trace(a));
         }
     }
 }

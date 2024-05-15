@@ -1,18 +1,19 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
     <AssemblyName>Cern.Colt</AssemblyName>
     <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
     <PackageId>Cern.Colt.NET</PackageId>
-    <Version>0.9.3.10</Version>
+    <Version>0.9.3.29</Version>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <Authors>Kei Nakai</Authors>
-    <Company />
+    <Company>Mercury Technologies</Company>
     <Product>Cern.Colt.NET Library</Product>
     <Description>Ported CERN Colt Library from Java to .NET Core.
 Some code such as Matrix, etc. are based on code written by Mauro Mazzieri.
 The files based on Mauro are clearly states as based on his work.</Description>
-    <Copyright>Kei Nakai</Copyright>
+    <Copyright>Copyright (C) Mercury Technologies. All rights reserved.</Copyright>
     <PackageProjectUrl>https://github.com/cobaltblueocean/Colt.NET_Core</PackageProjectUrl>
     <AssemblyVersion></AssemblyVersion>
     <RepositoryUrl>https://github.com/cobaltblueocean/Colt.NET_Core</RepositoryUrl>
@@ -25,11 +26,30 @@ The files based on Mauro are clearly states as based on his work.</Description>
 - Updated the Target framework to .NET 7.0
 - Fixed duplicated classes using Mercury.Language.Core library
 
-9.3.0
+[0.9.3.0]
  - Refactor the class implemented of Interfaces for Design Pattern
 
-9.3.1
- - Bug fixed for LUDecompositionQuick</PackageReleaseNotes>
+[0.9.3.1]
+ - Bug fixed for LUDecompositionQuick
+
+[0.9.3.11 ~ 0.9.3.18]
+ - Package reference updates
+
+[0.9.3.19]
+ - Moved AutoParallel class into Mercury.Language.Core library
+
+[0.9.3.20]
+ - Moved some Dictionary Extension Methods to Mercury.Language.Core library
+
+[0.9.3.21 - 0.9.3.22]
+ - Package reference updates
+
+[0.9.3.23]
+ - Added Japanese translated resource messages
+
+[0.9.3.24 ~ current]
+ - Package reference updates
+</PackageReleaseNotes>
     <Title>Colt Library for .NET</Title>
     <PackageIcon>colt-logo.png</PackageIcon>
   </PropertyGroup>
@@ -42,9 +62,9 @@ The files based on Mauro are clearly states as based on his work.</Description>
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Mercury.Language.Core" Version="0.8.1.14" />
+    <PackageReference Include="Mercury.Language.Core" Version="0.8.2.10" />
     <PackageReference Include="Microsoft.Win32.Registry" Version="5.0.0" />
-    <PackageReference Include="System.Management" Version="7.0.2" />
+    <PackageReference Include="System.Management" Version="8.0.0" />
   </ItemGroup>
 
   <ItemGroup>

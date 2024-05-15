@@ -10,11 +10,13 @@
 using System;
 using System.IO;
 using NUnit.Framework;
+using NUnit.Framework.Legacy;
 using Cern.Hep.Aida;
 using Cern.Hep.Aida.Ref;
 
 namespace Cern.Colt.Tests
 {
+    [Parallelizable(ParallelScope.ContextMask)]
     public class AidaRefTest1
     {
         [Test]
@@ -39,7 +41,7 @@ namespace Cern.Colt.Tests
             writeAsXML(h2.ProjectionX, path + "projectionX.xml");
             writeAsXML(h2.ProjectionY, path + "projectionY.xml");
 
-            Assert.Pass();
+            ClassicAssert.Pass();
         }
 
         private static void writeAsXML(IHistogram1D h, String filename)

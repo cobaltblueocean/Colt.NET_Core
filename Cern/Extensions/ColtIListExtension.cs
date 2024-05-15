@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace System
 {
-    public static class IListExtension2
+    public static class ColtIListExtension
     {
 
         public static Boolean ForEach<T>(this IList<Double> list, Cern.Colt.Function.DoubleProcedureDelegate procedure)

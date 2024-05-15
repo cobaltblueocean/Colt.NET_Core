@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using NUnit.Framework;
+using NUnit.Framework.Legacy;
 using Cern.Colt.Matrix.LinearAlgebra;
 using Cern.Colt.Matrix;
 
@@ -26,7 +27,7 @@ namespace Cern.Colt.Tests
             {
                 for(int j =0; j<expect.Columns; j++)
                 {
-                    Assert.AreEqual(expect[i, j], matrix[i, j], delta);
+                    ClassicAssert.AreEqual(expect[i, j], matrix[i, j], delta);
                 }
             }
         }

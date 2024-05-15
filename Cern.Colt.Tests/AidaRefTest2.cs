@@ -24,6 +24,7 @@ namespace Cern.Colt.Tests
     /// AidaRefTest2 Description
     /// </summary>
     [TestFixture]
+    [Parallelizable(ParallelScope.ContextMask)]
     public class AidaRefTest2
     {
         [Test]
