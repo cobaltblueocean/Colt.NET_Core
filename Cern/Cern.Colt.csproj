@@ -4,15 +4,16 @@
     <TargetFramework>net7.0</TargetFramework>
     <AssemblyName>Cern.Colt</AssemblyName>
     <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
-    <PackageId>Cern.Colt.NET</PackageId>
+    <PackageId>MercuryTech.Colt.Library</PackageId>
     <Version>0.9.3.30</Version>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <Authors>Kei Nakai</Authors>
     <Company>Mercury Technologies</Company>
-    <Product>Cern.Colt.NET Library</Product>
+    <Product>Mercury Colt.NET Library</Product>
     <Description>Ported CERN Colt Library from Java to .NET Core.
 Some code such as Matrix, etc. are based on code written by Mauro Mazzieri.
-The files based on Mauro are clearly states as based on his work.</Description>
+The files based on Mauro are clearly states as based on his work.
+https://sourceforge.net/projects/ncolt/</Description>
     <Copyright>Copyright (C) Mercury Technologies. All rights reserved.</Copyright>
     <PackageProjectUrl>https://github.com/cobaltblueocean/Colt.NET_Core</PackageProjectUrl>
     <AssemblyVersion></AssemblyVersion>
@@ -52,10 +53,20 @@ The files based on Mauro are clearly states as based on his work.</Description>
 </PackageReleaseNotes>
     <Title>Colt Library for .NET</Title>
     <PackageIcon>colt-logo.png</PackageIcon>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageLicenseFile>License.txt</PackageLicenseFile>
   </PropertyGroup>
 
   <ItemGroup>
     <None Include="..\colt-logo.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+    <None Include="..\License.txt">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+    <None Include="..\README.md">
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
     </None>
