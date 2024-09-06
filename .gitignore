@@ -162,3 +162,7 @@
 /Cern.Colt.Tests/bin/Debug/netcoreapp3.1/runtimes/win/lib/netcoreapp2.0/System.Management.dll
 /Cern/bin/Debug/Cern.Colt.NET.0.9.0.nupkg
 *.nuspec
+/Cern/bin
+/Cern/obj/Release/net7.0
+/Cern.Colt.Tests/bin/Release/net7.0
+/Cern.Colt.Tests/obj/Release/net7.0
