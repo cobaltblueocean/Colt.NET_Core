@@ -5,7 +5,7 @@
     <AssemblyName>Cern.Colt</AssemblyName>
     <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
     <PackageId>MercuryTech.Colt.Library</PackageId>
-    <Version>0.9.3.30</Version>
+    <Version>0.9.3.31</Version>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <Authors>Kei Nakai</Authors>
     <Company>Mercury Technologies</Company>
@@ -55,6 +55,7 @@ https://sourceforge.net/projects/ncolt/</Description>
     <PackageIcon>colt-logo.png</PackageIcon>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageLicenseFile>License.txt</PackageLicenseFile>
+    <PackageTags>Colt; math; high-performance; matrix</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
@@ -73,7 +74,7 @@ https://sourceforge.net/projects/ncolt/</Description>
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Mercury.Language.Core" Version="0.8.2.11" />
+    <PackageReference Include="MercuryTech.Language.Core" Version="0.8.2.12" />
     <PackageReference Include="Microsoft.Win32.Registry" Version="5.0.0" />
     <PackageReference Include="System.Management" Version="8.0.0" />
   </ItemGroup>
