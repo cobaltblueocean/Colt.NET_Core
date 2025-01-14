@@ -72,7 +72,7 @@ namespace Cern.Jet.Random.Engine
         /// <returns></returns>
         public static RandomEngine MakeDefault()
         {
-            return new Cern.Jet.Random.Engine.MersenneTwister(Environment.TickCount);
+            return new Cern.Jet.Random.Engine.MersenneTwister((int)DateTime.UtcNow.CurrentTimeMillis());
         }
 
         /// <summary>
@@ -125,22 +125,85 @@ namespace Cern.Jet.Random.Engine
         }
 
         /// <summary>
+        /// Returns a 32 bit uniformly distributed random number in the open unit interval <code>(0.0f,1.0f)</code> (excluding 0.0f and 1.0f).
+        /// </summary>
+        /// <returns></returns>
+        public float NextFloat()
+        {
+            // catch loss of precision of double --> float conversion
+            float nextFloat;
+            do { nextFloat = (float)Raw(); }
+            while (nextFloat >= 1.0f);
+
+            // --> in (0.0f,1.0f)
+            return nextFloat;
+        }
+
+        /// <summary>
         /// Returns a 64 bit uniformly distributed random number in the open unit interval <code>(0.0,1.0)</code> (excluding 0.0 and 1.0).
         /// </summary>
         /// <returns></returns>
         public virtual double NextDouble()
         {
-            long r1, r2;
-            r1 = NextLong();
-            r2 = NextLong();
-            return (r1 * (double)(2 << 11) + r2) / (double)(2 << 53);
+            // Discard - Kei Nakai (2024/12/2) --------------------------------------------------
+            //long r1, r2;
+            //r1 = NextLong();
+            //r2 = NextLong();
+            //return (r1 * (double)(2 << 11) + r2) / (double)(2 << 53);
+            // ----------------------------------------------------------------------------------
+
+            double nextDouble;
+
+            do
+            {
+                // -9.223372036854776E18 == (double) Long.MIN_VALUE
+                // 5.421010862427522E-20 == 1 / Math.pow(2,64) == 1 / ((double) Long.MAX_VALUE - (double) Long.MIN_VALUE);
+                nextDouble = ((double)NextLong() - -9.223372036854776E18) * 5.421010862427522E-20;
+            }
+            // catch loss of precision of long --> double conversion
+            while (!(nextDouble > 0.0 && nextDouble < 1.0));
+
+            // --> in (0.0,1.0)
+            return nextDouble;
+
+            /*
+                nextLong == Long.MAX_VALUE         --> 1.0
+                nextLong == Long.MIN_VALUE         --> 0.0
+                nextLong == Long.MAX_VALUE-1       --> 1.0
+                nextLong == Long.MAX_VALUE-100000L --> 0.9999999999999946
+                nextLong == Long.MIN_VALUE+1       --> 0.0
+                nextLong == Long.MIN_VALUE-100000L --> 0.9999999999999946
+                nextLong == 1L                     --> 0.5
+                nextLong == -1L                    --> 0.5
+                nextLong == 2L                     --> 0.5
+                nextLong == -2L                    --> 0.5
+                nextLong == 2L+100000L             --> 0.5000000000000054
+                nextLong == -2L-100000L            --> 0.49999999999999456
+            */
+        }
+
+        /// <summary>
+        /// Returns a 32 bit uniformly distributed random number in the open nit interval <code>(0.0,1.0)</code> (excluding 0.0 and 1.0).
+        /// </summary>
+        /// <returns></returns>
+        public double Raw()
+        {
+            Int32 nextInt;
+            do
+            { // accept anything but zero
+                nextInt = NextInt32(); // in [Integer.MinValue,Integer.MaxValue]-interval
+            } while (nextInt == 0);
+
+            // transform to (0.0,1.0)-interval
+            // 2.3283064365386963E-10 == 1.0 / System.Math.Pow(2,32)
+            return (double)(nextInt & 0xFFFFFFFFL) * 2.3283064365386963E-10;
         }
 
         /// <summary>
         /// Returns a 32 bit uniformly distributed random number in the open unit interval <code>(0.0,1.0)</code> (excluding 0.0 and 1.0).
         /// </summary>
         /// <returns></returns>
-        public double Raw()
+        public double URaw()
         {
             UInt32 nextInt;
             do

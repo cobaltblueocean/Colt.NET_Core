@@ -5,7 +5,7 @@
     <AssemblyName>Cern.Colt</AssemblyName>
     <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
     <PackageId>MercuryTech.Colt.Library</PackageId>
-    <Version>0.9.3.31</Version>
+    <Version>0.9.3.44</Version>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <Authors>Kei Nakai</Authors>
     <Company>Mercury Technologies</Company>
@@ -48,9 +48,17 @@ https://sourceforge.net/projects/ncolt/</Description>
 [0.9.3.23]
  - Added Japanese translated resource messages
 
-[0.9.3.24 ~ current]
+[0.9.3.24 ~ 0.9.3.26]
  - Package reference updates
-</PackageReleaseNotes>
+
+[0.9.3.27]
+ - Update MersenneTwister Random generator class
+
+[0.9.3.29 - 43]
+ - Bug fix of MersenneTwister Random generator class (setSeed() method)
+
+[0.9.3.44]
+- Added OldDefaultSeed field for compatibility</PackageReleaseNotes>
     <Title>Colt Library for .NET</Title>
     <PackageIcon>colt-logo.png</PackageIcon>
     <PackageReadmeFile>README.md</PackageReadmeFile>
@@ -74,9 +82,9 @@ https://sourceforge.net/projects/ncolt/</Description>
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="MercuryTech.Language.Core" Version="0.8.2.12" />
+    <PackageReference Include="MercuryTech.Language.Core" Version="0.8.2.17" />
     <PackageReference Include="Microsoft.Win32.Registry" Version="5.0.0" />
-    <PackageReference Include="System.Management" Version="8.0.0" />
+    <PackageReference Include="System.Management" Version="9.0.0" />
   </ItemGroup>
 
   <ItemGroup>
