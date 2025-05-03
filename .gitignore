@@ -166,3 +166,8 @@
 /Cern/obj/Release/net7.0
 /Cern.Colt.Tests/bin/Release/net7.0
 /Cern.Colt.Tests/obj/Release/net7.0
+/Cern/obj/Debug/net8.0
+/Cern/obj/Release/net8.0
+/Cern.Colt.Tests/bin/Debug/net8.0
+/Cern.Colt.Tests/bin/Release/net8.0
+/Cern.Colt.Tests/obj
