@@ -65,14 +65,14 @@ namespace Cern.Jet.Random.Sampling
             Console.WriteLine(bin);
         }
 
-        public static void main(String[] args)
-        {
-            int size = int.Parse(args[0]);
-            Boolean print = Boolean.Parse(args[1]);
-            double mean = Double.Parse(args[2]);
-            String generatorName = args[3];
-            random(size, print, mean, generatorName);
-        }
+        //public static void main(String[] args)
+        //{
+        //    int size = int.Parse(args[0]);
+        //    Boolean print = Boolean.Parse(args[1]);
+        //    double mean = Double.Parse(args[2]);
+        //    String generatorName = args[3];
+        //    random(size, print, mean, generatorName);
+        //}
 
         public static void random(int size, Boolean print, double mean, String generatorName)
         {

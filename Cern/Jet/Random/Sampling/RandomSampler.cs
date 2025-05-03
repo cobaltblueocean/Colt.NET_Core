@@ -158,21 +158,21 @@ namespace Cern.Jet.Random.Sampling
             return copy;
         }
 
-        /// <summary>
-        /// Tests this class.
-        /// </summary>
-        /// <param name="args"></param>
-        public static void Main(String[] args)
-        {
-            long n = long.Parse(args[0]);
-            long N = long.Parse(args[1]);
-            long low = long.Parse(args[2]);
-            int chunkSize = int.Parse(args[3]);
-            int times = int.Parse(args[4]);
+        ///// <summary>
+        ///// Tests this class.
+        ///// </summary>
+        ///// <param name="args"></param>
+        //public static void Main(String[] args)
+        //{
+        //    long n = long.Parse(args[0]);
+        //    long N = long.Parse(args[1]);
+        //    long low = long.Parse(args[2]);
+        //    int chunkSize = int.Parse(args[3]);
+        //    int times = int.Parse(args[4]);
 
-            //test(n, N, low, chunkSize, times);
-            //testNegAlphaInv(args);
-        }
+        //    //test(n, N, low, chunkSize, times);
+        //    //testNegAlphaInv(args);
+        //}
 
         /// <summary>
         /// Computes the next <tt>count</tt> random numbers of the sorted random set specified on instance construction

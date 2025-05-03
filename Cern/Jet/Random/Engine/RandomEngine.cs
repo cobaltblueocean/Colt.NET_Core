@@ -87,7 +87,7 @@ namespace Cern.Jet.Random.Engine
         /// <returns></returns>
         public virtual Int32 NextInt32()
         {
-            return (Int32)NextDouble();
+            return (Int32)NextUInt32();
         }
 
         /// <summary>

@@ -1,11 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <AssemblyName>Cern.Colt</AssemblyName>
     <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
     <PackageId>MercuryTech.Colt.Library</PackageId>
-    <Version>0.9.3.44</Version>
+    <Version>0.9.3.46</Version>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <Authors>Kei Nakai</Authors>
     <Company>Mercury Technologies</Company>
@@ -58,7 +58,13 @@ https://sourceforge.net/projects/ncolt/</Description>
  - Bug fix of MersenneTwister Random generator class (setSeed() method)
 
 [0.9.3.44]
-- Added OldDefaultSeed field for compatibility</PackageReleaseNotes>
+- Added OldDefaultSeed field for compatibility
+
+[0.9.3.44]
+- Updated target framework from .NET 7 to .NET 8
+
+[0.9.3.45]
+- Bug fix for RandomEngine.NextInt32() method, removed unnecesary entry points. (for .NET 8, important to fix for setting an entry point in a project using this assembly)</PackageReleaseNotes>
     <Title>Colt Library for .NET</Title>
     <PackageIcon>colt-logo.png</PackageIcon>
     <PackageReadmeFile>README.md</PackageReadmeFile>
@@ -82,9 +88,9 @@ https://sourceforge.net/projects/ncolt/</Description>
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="MercuryTech.Language.Core" Version="0.8.2.17" />
+    <PackageReference Include="MercuryTech.Language.Core" Version="0.8.2.19" />
     <PackageReference Include="Microsoft.Win32.Registry" Version="5.0.0" />
-    <PackageReference Include="System.Management" Version="9.0.0" />
+    <PackageReference Include="System.Management" Version="9.0.4" />
   </ItemGroup>
 
   <ItemGroup>
