@@ -1,0 +1,16 @@
+C:\Users\Mercury21\Repos\Colt.NET_Core\Cern\bin\Release\net10.0\Cern.Colt.deps.json
+C:\Users\Mercury21\Repos\Colt.NET_Core\Cern\bin\Release\net10.0\Cern.Colt.dll
+C:\Users\Mercury21\Repos\Colt.NET_Core\Cern\bin\Release\net10.0\Cern.Colt.pdb
+C:\Users\Mercury21\Repos\Colt.NET_Core\Cern\bin\Release\net10.0\ja-JP\Cern.Colt.resources.dll
+C:\Users\Mercury21\Repos\Colt.NET_Core\Cern\obj\Release\net10.0\Cern.Colt.csproj.AssemblyReference.cache
+C:\Users\Mercury21\Repos\Colt.NET_Core\Cern\obj\Release\net10.0\Cern.Colt.Properties.Resources.resources
+C:\Users\Mercury21\Repos\Colt.NET_Core\Cern\obj\Release\net10.0\Cern.Colt.Properties.Resources.ja-JP.resources
+C:\Users\Mercury21\Repos\Colt.NET_Core\Cern\obj\Release\net10.0\Cern.Colt.csproj.GenerateResource.cache
+C:\Users\Mercury21\Repos\Colt.NET_Core\Cern\obj\Release\net10.0\Cern.Colt.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Mercury21\Repos\Colt.NET_Core\Cern\obj\Release\net10.0\Cern.Colt.csproj.CoreCompileInputs.cache
+C:\Users\Mercury21\Repos\Colt.NET_Core\Cern\obj\Release\net10.0\Cern.Colt.sourcelink.json
+C:\Users\Mercury21\Repos\Colt.NET_Core\Cern\obj\Release\net10.0\ja-JP\Cern.Colt.resources.dll
+C:\Users\Mercury21\Repos\Colt.NET_Core\Cern\obj\Release\net10.0\Cern.Colt.dll
+C:\Users\Mercury21\Repos\Colt.NET_Core\Cern\obj\Release\net10.0\refint\Cern.Colt.dll
+C:\Users\Mercury21\Repos\Colt.NET_Core\Cern\obj\Release\net10.0\Cern.Colt.pdb
+C:\Users\Mercury21\Repos\Colt.NET_Core\Cern\obj\Release\net10.0\ref\Cern.Colt.dll
